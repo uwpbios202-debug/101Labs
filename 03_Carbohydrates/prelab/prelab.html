@@ -1,186 +1,1198 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Pre‑Lab • Lab 2</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbohydrate Lab - Interactive Learning</title>
     <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-            margin: 0
-        }
-
-        header {
-            padding: .75rem 1rem;
-            border-bottom: 2px solid #016836
-        }
-
-        a {
-            color: #016836
-        }
-
-        main {
-            padding: 1rem;
-            max-width: 960px;
-            margin: 0 auto
-        }
-
-        h1 {
-            font-size: 1rem;
-            margin: .5rem 0
-        }
-
-        ul {
-            padding: 0;
+        * {
             margin: 0;
-            list-style: none
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        li {
-            margin: .25rem 0
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #016836 0%, #00502f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #016836 0%, #00502f 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: white;
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .section {
+            padding: 40px;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .assessment-question {
+            background: #EFECE2;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #016836;
+        }
+        
+        .assessment-question h3 {
+            color: #212721;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-yes {
+            background: #016836;
+            color: white;
+        }
+        
+        .btn-yes:hover {
+            background: #00502f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(1,104,54,0.4);
+        }
+        
+        .btn-no {
+            background: #FF4500;
+            color: white;
+        }
+        
+        .btn-no:hover {
+            background: #cc3700;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,69,0,0.4);
+        }
+        
+        .btn-continue {
+            background: #105877;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .btn-continue:hover {
+            background: #0d4560;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16,88,119,0.4);
+        }
+        
+        .audio-control {
+            background: #FABA31;
+            color: #212721;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border: 3px solid #016836;
+        }
+        
+        .audio-control h3 {
+            margin-bottom: 15px;
+            color: #212721;
+        }
+        
+        .play-btn {
+            background: #016836;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .play-btn:hover {
+            background: #00502f;
+            transform: scale(1.05);
+        }
+        
+        .play-btn.playing {
+            background: #FF4500;
+        }
+        
+        .flowchart {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #DBD9D6;
+        }
+        
+        .flowchart-item {
+            background: linear-gradient(135deg, #016836 0%, #00502f 100%);
+            color: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .flowchart-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(1,104,54,0.4);
+            background: linear-gradient(135deg, #105877 0%, #016836 100%);
+        }
+        
+        .flowchart-item.active {
+            background: #FABA31;
+            color: #212721;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(250,186,49,0.5);
+        }
+        
+        .arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #016836;
+            margin: 10px 0;
+        }
+        
+        .bio-term {
+            color: #212721;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .bio-term:hover {
+            color: #016836;
+            background: #EFECE2;
+        }
+        
+        .bio-term.selected {
+            font-weight: bold;
+            text-decoration: underline;
+            background: #FABA31;
+            color: #212721;
+        }
+        
+        .reading-content {
+            line-height: 1.8;
+            font-size: 1.1em;
+            color: #212721;
+        }
+        
+        .chunking-panel {
+            background: #EFECE2;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 2px dashed #016836;
+        }
+        
+        .chunking-panel h3 {
+            color: #212721;
+            margin-bottom: 15px;
+        }
+        
+        .selected-terms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .term-chip {
+            background: #016836;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .term-chip .remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .cheerleader-panel {
+            background: #FABA31;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 3px solid #016836;
+        }
+        
+        .sentence-display {
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .recall-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #016836;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            margin: 15px 0;
+        }
+        
+        .verification-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .verify-btn {
+            padding: 15px;
+            border: 2px solid #016836;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 1em;
+        }
+        
+        .verify-btn:hover {
+            background: #EFECE2;
+            transform: translateX(5px);
+        }
+        
+        .verify-btn.correct {
+            background: #016836;
+            color: white;
+            border-color: #016836;
+        }
+        
+        .verify-btn.incorrect {
+            background: #FF4500;
+            color: white;
+            border-color: #FF4500;
+        }
+        
+        .draggable-term {
+            background: #016836;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: move;
+            transition: all 0.3s;
+            user-select: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .draggable-term:hover {
+            background: #00502f;
+            transform: scale(1.05);
+        }
+        
+        .draggable-term.dragging {
+            opacity: 0.5;
+        }
+        
+        .drop-zone {
+            background: #EFECE2;
+            border: 3px dashed #016836;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 80px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .drop-zone.drag-over {
+            background: #FABA31;
+            border-color: #00502f;
+        }
+        
+        .drop-zone h4 {
+            color: #016836;
+            margin-bottom: 10px;
+        }
+        
+        .drop-zone-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 40px;
+        }
+        
+        .score-display {
+            background: linear-gradient(135deg, #016836 0%, #00502f 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .score-display h2 {
+            font-size: 2em;
+        }
+        
+        .familiarity-level {
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+        
+        .instruction-box {
+            background: #FABA31;
+            color: #212721;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #016836;
         }
     </style>
-<style>
-.bios-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #016836;
-  border-bottom: 2px solid #FFD100;
-}
-.bios-nav-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 4px 8px;
-}
-.bios-home {
-  color: white;
-  font-weight: 700;
-  text-decoration: none;
-  letter-spacing: .5px;
-}
-.bios-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-.bios-menus {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.bios-menu { position: relative; }
-.bios-trigger {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 2px 4px;
-}
-.bios-trigger.active {
-  border-bottom: 2px solid #FFD100;
-}
-.bios-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  border: 1px solid #ccc;
-  min-width: 160px;
-  z-index: 1001;
-}
-.bios-dropdown a {
-  display: block;
-  padding: 6px 10px;
-  color: #212721;
-  text-decoration: none;
-}
-.bios-dropdown a:hover {
-  background: #EFECE2;
-}
-.bios-menu:hover .bios-dropdown,
-.bios-menu:focus-within .bios-dropdown {
-  display: block;
-}
-@media (max-width: 768px) {
-  .bios-toggle { display: block; }
-  .bios-menus {
-    display: none;
-    flex-direction: column;
-    background: #016836;
-    width: 100%;
-  }
-  .bios-menus.open { display: flex; }
-  .bios-dropdown {
-    position: static;
-    border: none;
-  }
-}
-</style>
 </head>
-
 <body>
-<nav class="bios-nav">
-  <div class="bios-nav-inner">
-    <a href="../index.html" class="bios-home">BIOS101</a>
-    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
-    <div class="bios-menus" id="biosMenus"></div>
-  </div>
-</nav>
-    <header><a href="index.html">◀ Goals</a></header>
-    <main>
-        <h1>🏠 Pre‑Lab Exercises</h1>
-        <ul>
-            <li>Review Qs: water, carbon, functional groups, basic organic chemistry</li>
-            <li>Draw structural formulas for functional groups & carbon compounds</li>
-            <li>Define polymer, monomer, dehydration, hydrolysis</li>
-            <li>Write molecular formulas for sucrose & maltose</li>
-        </ul>
-    </main>
-<script>
-(function() {
-  function initNav() {
-    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
-    var menus = document.getElementById('biosMenus');
-    var path = location.pathname;
-    if (!menus) return;
-    labs.forEach(function(lab) {
-      var m = document.createElement('div');
-      m.className = 'bios-menu';
-      var b = document.createElement('button');
-      b.className = 'bios-trigger';
-      b.textContent = lab.title;
-      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
-      var d = document.createElement('div');
-      d.className = 'bios-dropdown';
-      var bp = '../../' + lab.folder;
-      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
-      m.appendChild(b);
-      m.appendChild(d);
-      menus.appendChild(m);
-    });
-    var t = document.querySelector('.bios-toggle');
-    if (t) t.onclick = function() { menus.classList.toggle('open'); };
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNav);
-  } else {
-    initNav();
-  }
-})();
-</script>
-</body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 Carbohydrate Lab Journey</h1>
+            <p>From Molecules to Plant Life | UW-Parkside</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <!-- Assessment Section -->
+        <div class="section active" id="assessment">
+            <h2 style="color: #212721; margin-bottom: 30px;">Let's Check Your Starting Point!</h2>
+            <p style="color: #54534A; margin-bottom: 30px;">Answer honestly - this helps us know where to focus. There are no wrong answers!</p>
+            
+            <div id="questionContainer"></div>
+            
+            <div id="resultsSection" style="display: none;">
+                <div class="score-display">
+                    <h2>Your Familiarity Score</h2>
+                    <div id="scoreValue" style="font-size: 3em; margin: 20px 0;">0/10</div>
+                    <div class="familiarity-level" id="familiarityLevel"></div>
+                </div>
+                <button class="btn btn-continue" onclick="moveToLook()">Continue to Visual Learning →</button>
+            </div>
+        </div>
+        
+        <!-- Look Section -->
+        <div class="section" id="look">
+            <h2 style="color: #212721; margin-bottom: 20px;">👀 LOOK: The Big Picture</h2>
+            
+            <div class="audio-control">
+                <h3>🎧 Interactive Audio Guide</h3>
+                <p style="margin-bottom: 15px;">Press play and follow along! Your guide will encourage you to interact with each level of the flowchart.</p>
+                <button class="play-btn" id="playBtn" onclick="toggleAudio()">
+                    <span id="audioIcon">▶️</span>
+                    <span id="audioText">Start Audio Guide</span>
+                </button>
+            </div>
+            
+            <div class="instruction-box">
+                <strong>How to use this flowchart:</strong> Click on each box as the audio mentions it. Watch how molecules build into complex structures!
+            </div>
+            
+            <div class="flowchart" id="flowchart">
+                <h3 style="color: #016836; text-align: center; margin-bottom: 30px;">🌱 CARBOHYDRATE FLOW CHART</h3>
+                <p style="text-align: center; color: #54534A; margin-bottom: 30px;">From Molecules → Cells → Tissues → Organs → Whole Plant</p>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'monosaccharides')">
+                    🔬 MONOSACCHARIDES<br>
+                    <small>(Glucose, Fructose)</small>
+                </div>
+                <div class="arrow">↓</div>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'disaccharides')">
+                    🔗 DISACCHARIDES<br>
+                    <small>(Sucrose, Maltose)</small>
+                </div>
+                <div class="arrow">↓</div>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'polysaccharides')">
+                    🧬 POLYSACCHARIDES<br>
+                    <small>(Starch, Cellulose)</small>
+                </div>
+                <div class="arrow">↓</div>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'organelles')">
+                    🏗️ ORGANELLES<br>
+                    <small>(Amyloplasts (this is where we store starch), Cell Walls (formed from cellulose))</small>
+                </div>
+                <div class="arrow">↓</div>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'cells')">
+                    🔲 CELLS<br>
+                    <small>(Parenchyma, Collenchyma, Sclerenchyma (start practicing these cute words))</small>
+                </div>
+                <div class="arrow">↓</div>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'tissues')">
+                    📊 TISSUES<br>
+                    <small>(Cortex, Pith, Phloem)</small>
+                </div>
+                <div class="arrow">↓</div>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'organ')">
+                    🌻 ORGAN: SUNFLOWER STEM<br>
+                    <small>(Storage + Transport + Support)</small>
+                </div>
+                <div class="arrow">↓</div>
+                
+                <div class="flowchart-item" onclick="highlightItem(this, 'plant')">
+                    🌿 WHOLE PLANT FUNCTION<br>
+                    <small>(Energy + Structure)</small>
+                </div>
+            </div>
+            
+            <button class="btn btn-continue" onclick="moveToRead()">Continue to Deep Reading →</button>
+        </div>
+        
+        <!-- Read Section -->
+        <div class="section" id="read">
+            <h2 style="color: #212721; margin-bottom: 20px;">📖 READ: Understanding the Details</h2>
+            
+            <div class="instruction-box">
+                <strong>Instructions:</strong> Hover over highlighted terms to see them change color. Click any term to add it to your concept map below!
+            </div>
+            
+            <div class="reading-content" id="readingContent"></div>
+            
+            <div class="chunking-panel">
+                <h3>🧠 Your Metacognitive Concept Map</h3>
+                <p style="color: #54534A;">Click biological terms above to add them here. Build your understanding by connecting concepts!</p>
+                <div class="selected-terms" id="selectedTerms"></div>
+                <button class="btn btn-continue" onclick="moveToDeepRead()" style="margin-top: 20px;">Continue to Deep Reading →</button>
+            </div>
+        </div>
+        
+        <!-- Deep Read Section (Sentence by Sentence) -->
+        <div class="section" id="deepRead">
+            <h2 style="color: #212721; margin-bottom: 20px;">🎯 DEEP READ: Active Learning Mode</h2>
+            
+            <div class="instruction-box">
+                <strong>How this works:</strong> Read each sentence carefully, then follow your cheerleader's instructions. This method helps you truly understand and remember what you're learning!
+            </div>
+            
+            <div class="cheerleader-panel" id="cheerleaderPanel">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div style="font-size: 3em;">📣</div>
+                    <div>
+                        <strong style="color: #016836;">Your Learning Coach</strong>
+                        <p style="margin: 5px 0 0 0; color: #54534A;" id="cheerleaderText">Let's get started! Click 'Begin' when you're ready to dive deep into understanding carbohydrates!</p>
+                    </div>
+                </div>
+                <div id="cheerleaderButtons"></div>
+            </div>
+            
+            <div class="sentence-display" id="sentenceDisplay" style="display: none;">
+                <div style="background: white; padding: 25px; border-radius: 10px; border: 3px solid #016836; margin: 20px 0;">
+                    <p id="currentSentence" style="font-size: 1.2em; line-height: 1.8; color: #212721;"></p>
+                </div>
+            </div>
+            
+            <div id="interactionArea"></div>
+            
+            <div id="finalSummarySection" style="display: none;">
+                <div class="chunking-panel">
+                    <h3>🌟 Final Challenge: Summary Time!</h3>
+                    <p style="color: #54534A; margin-bottom: 15px;">Without looking back at the text, write a summary of the entire paragraph in your own words. What's the big picture story about carbohydrates?</p>
+                    <textarea id="finalSummary" style="width: 100%; min-height: 150px; padding: 15px; border: 2px solid #016836; border-radius: 10px; font-size: 1em; font-family: inherit;" placeholder="Write your summary here..."></textarea>
+                    <button class="btn btn-continue" onclick="moveToOrganize()" style="margin-top: 15px;">Continue to Organization Challenge →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Organization Section -->
+        <div class="section" id="organize">
+            <h2 style="color: #212721; margin-bottom: 20px;">🎯 ORGANIZE: Build the Hierarchy</h2>
+            
+            <div class="instruction-box">
+                <strong>Challenge:</strong> Drag and drop the carbohydrate concepts into the correct level of biological organization!
+            </div>
+            
+            <div class="cheerleader-panel">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 3em;">📣</div>
+                    <div>
+                        <strong style="color: #016836;">Your Learning Coach</strong>
+                        <p style="margin: 5px 0 0 0; color: #54534A;">Awesome work on that summary! Now let's organize everything you've learned into the hierarchy of life. Drag each term to its correct level - from tiny molecules all the way up to the whole organism!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+                <div>
+                    <h3 style="color: #016836; margin-bottom: 15px;">📦 Drag These Terms:</h3>
+                    <div id="termBank" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Terms will be populated here -->
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #016836; margin-bottom: 15px;">🎯 Drop Zones:</h3>
+                    <div id="dropZones">
+                        <!-- Drop zones will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-continue" onclick="checkOrganization()">Check My Organization</button>
+                <button class="btn" onclick="resetOrganization()" style="background: #54534A; color: white; margin-left: 10px;">Reset</button>
+            </div>
+            
+            <div id="organizationFeedback" style="margin-top: 20px;"></div>
+            
+            <div id="completeSection" style="display: none; text-align: center; margin-top: 30px;">
+                <button class="btn btn-continue" onclick="completeActivity()">Complete Pre-Lab →</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        const questions = [
+            "Are you familiar with monosaccharides (mono‑ = one &‑saccharide = sugar)?",
+            "Are you familiar with glucose and fructose (examples of monosaccharides)?",
+            "Are you familiar with disaccharides like sucrose or maltose (di- = two &‑saccharide = sugar) ?",
+            "Are you familiar with polysaccharides?",
+            "Are you familiar with starch and cellulose?",
+            "Are you familiar with amyloplasts (from last week's lab)?",
+            "Are you familiar with parenchyma cells (go ahead, sa the word out loud)?",
+            "Are you familiar with collenchyma and sclerenchyma?",
+            "Are you familiar with plant tissues like cortex and pith?",
+            "Are you familiar with phloem and xylem?"
+        ];
+        
+        let currentQuestion = 0;
+        let yesCount = 0;
+        let selectedTerms = [];
+        let audioContext = null;
+        let isPlaying = false;
+        
+        // Deep reading variables
+        let sentences = [];
+        let currentSentenceIndex = 0;
+        let readingPhase = 'start'; // start, reading, recalling, verifying
+        let recallNotes = [];
+        
+        // Organization variables
+        const organizationData = {
+            'Molecules': ['Glucose', 'Fructose', 'Sucrose', 'Maltose', 'Starch', 'Cellulose'],
+            'Organelles': ['Amyloplasts', 'Cell Walls'],
+            'Cells': ['Parenchyma', 'Collenchyma', 'Sclerenchyma'],
+            'Tissues': ['Cortex', 'Pith', 'Phloem', 'Xylem'],
+            'Organs': ['Sunflower Stem'],
+            'Organism': ['Whole Plant']
+        };
+        
+        let draggedElement = null;
+        
+        const bioTerms = [
+            "carbohydrates", "monosaccharides", "glucose", "fructose", "disaccharides",
+            "sucrose", "maltose", "polysaccharides", "starch", "cellulose",
+            "amyloplasts", "parenchyma", "collenchyma", "sclerenchyma", "cortex",
+            "pith", "phloem", "xylem", "sclereids", "lignified"
+        ];
+        
+        const readingText = `Carbohydrates are molecules made of carbon, hydrogen, and oxygen that plants and animals use for energy and structure. The smallest carbohydrate units are monosaccharides—single sugars like glucose and fructose. Although they share the same atoms, their shapes differ, and that small change affects what they can do. When two monosaccharides join, they form disaccharides: sucrose (glucose + fructose) is the main sugar plants transport through their tissues, and maltose (glucose + glucose) is the repeating building block of starch. Linking many glucose units makes polysaccharides: starch (built from α-glucose) is a compact storage form of energy in plants, while cellulose (built from β-glucose) forms tough cell walls that give plants their shape and strength. Inside plant cells, starch is packed into special storage organelles called amyloplasts, whereas cellulose forms the rigid wall that surrounds every plant cell. Groups of cells with similar roles form tissues: parenchyma cells store starch (found in the cortex and pith of stems), collenchyma cells provide flexible support with thickened cellulose corners, and sclerenchyma cells (including fibers and sclereids) provide rigid support with very thick, lignified walls (the gritty texture in pear comes from sclereids). These tissues assemble into organs like the sunflower stem, where phloem moves sucrose from leaves to growing parts, xylem carries water upward, parenchyma stores carbohydrates, and collenchyma/sclerenchyma keep the stem upright. In short: tiny glucose molecules become big carbohydrates, those carbohydrates become cell parts, those parts define cell types, cell types form tissues, and tissues build whole organs—powering and shaping the entire plant.`;
+        
+        // Web Audio API text-to-speech function
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                utterance.pitch = 1.1;
+                utterance.volume = 1.0;
+                
+                utterance.onend = () => {
+                    isPlaying = false;
+                    updateAudioButton();
+                };
+                
+                window.speechSynthesis.speak(utterance);
+                return utterance;
+            }
+            return null;
+        }
+        
+        function toggleAudio() {
+            if (isPlaying) {
+                window.speechSynthesis.cancel();
+                isPlaying = false;
+                updateAudioButton();
+            } else {
+                playAudioGuide();
+            }
+        }
+        
+        function updateAudioButton() {
+            const btn = document.getElementById('playBtn');
+            const icon = document.getElementById('audioIcon');
+            const text = document.getElementById('audioText');
+            
+            if (isPlaying) {
+                btn.classList.add('playing');
+                icon.textContent = '⏸️';
+                text.textContent = 'Pause Audio';
+            } else {
+                btn.classList.remove('playing');
+                icon.textContent = '▶️';
+                text.textContent = 'Start Audio Guide';
+            }
+        }
+        
+        function playAudioGuide() {
+            isPlaying = true;
+            updateAudioButton();
+            
+            const script = `Hey there, future biologist! I'm so excited to guide you through this amazing journey from molecules to plants! 
+            
+            Are you ready? Let's do this together! 
+            
+            First up: Click on MONOSACCHARIDES! These are the tiny building blocks - like glucose and fructose. Can you see them? You will build these in lab, ready to build carbs!
+            
+            Now click Disaccharides! When two monosaccharides hold hands, they make sucrose and maltose. You're doing awesome! You went from mono to di like going from 1 to 2!
+            
+            Next, click POLYSACCHARIDES! These are long chains - starch for energy storage and cellulose for strength. Did you know the POLYSACCHARIDES in your muscles are called Glycogen? Yep Yep - Keep going!
+            
+            Click ORGANELLES - I like this word - little orgnas - heh! See how these molecules become real cell parts? Amyloplasts the little organ that store starch, and cell walls are made of cellulose. You're connecting the dots beautifully!
+            
+            Now click on CELLS! Parenchyma, collenchyma, and sclerenchyma (go ahead, try saying these words - did you pronounce them correctly? Parenchyma - you say the next one (nice job!) - let me help you with the last one (sclerenchyma). This is so much fun, isn't it?
+            
+            Click TISSUES! These are groups of cells working together - cortex, pith, and phloem. You're seeing the big picture now!
+            
+            Almost there! Click the SUNFLOWER STEM! This is a real organ where everything you learned shows up in nature. Amazing!
+            
+            Finally, click WHOLE PLANT FUNCTION! This is it - energy and structure coming together to power life itself!
+            
+            You did it! Do you see how everything connects? Each level builds on the last one. You just traced the path from a single molecule all the way to a living, breathing plant! How cool is that? Take a moment to think about what you just learned. What surprised you? What connections did you make? Let's dive deeper into reading about carbohydrates, carbs for short - now click continue to deep reading!`;
+            
+            speakText(script);
+        }
+        
+        function highlightItem(element, type) {
+            // Remove active class from all items
+            document.querySelectorAll('.flowchart-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            element.classList.add('active');
+            
+            // Auto-remove after 2 seconds
+            setTimeout(() => {
+                element.classList.remove('active');
+            }, 2000);
+        }
+        
+        function initAssessment() {
+            displayQuestion();
+        }
+        
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                const container = document.getElementById('questionContainer');
+                container.innerHTML = `
+                    <div class="assessment-question">
+                        <h3>Question ${currentQuestion + 1} of ${questions.length}</h3>
+                        <p style="font-size: 1.3em; color: #212721; margin: 20px 0;">${questions[currentQuestion]}</p>
+                        <div class="button-group">
+                            <button class="btn btn-yes" onclick="answer(true)">Yes, I know this</button>
+                            <button class="btn btn-no" onclick="answer(false)">No, this is new</button>
+                        </div>
+                    </div>
+                `;
+                updateProgress();
+            } else {
+                showResults();
+            }
+        }
+        
+        function answer(isYes) {
+            if (isYes) yesCount++;
+            currentQuestion++;
+            displayQuestion();
+        }
+        
+        function showResults() {
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('scoreValue').textContent = `${yesCount}/${questions.length}`;
+            
+            let level = '';
+            if (yesCount <= 3) level = '🌱 Beginner - Perfect! We\'ll build everything from scratch.';
+            else if (yesCount <= 6) level = '🌿 Intermediate - Great foundation! We\'ll deepen your understanding.';
+            else level = '🌳 Advanced - Excellent! We\'ll help you connect everything together.';
+            
+            document.getElementById('familiarityLevel').textContent = level;
+            updateProgress();
+        }
+        
+        function moveToLook() {
+            document.getElementById('assessment').classList.remove('active');
+            document.getElementById('look').classList.add('active');
+            updateProgress();
+        }
+        
+        function moveToRead() {
+            window.speechSynthesis.cancel();
+            isPlaying = false;
+            document.getElementById('look').classList.remove('active');
+            document.getElementById('read').classList.add('active');
+            initReading();
+            updateProgress();
+        }
+        
+        function moveToDeepRead() {
+            document.getElementById('read').classList.remove('active');
+            document.getElementById('deepRead').classList.add('active');
+            initDeepReading();
+            updateProgress();
+        }
+        
+        function moveToOrganize() {
+            document.getElementById('deepRead').classList.remove('active');
+            document.getElementById('organize').classList.add('active');
+            initOrganization();
+            updateProgress();
+        }
+        
+        function initDeepReading() {
+            // Split paragraph into sentences
+            sentences = readingText.match(/[^.!?]+[.!?]+/g).map(s => s.trim());
+            currentSentenceIndex = 0;
+            readingPhase = 'start';
+            
+            // Show begin button
+            updateCheerleader("Let's get started! Click 'Begin' when you're ready to dive deep into understanding carbohydrates!", 
+                '<button class="btn btn-yes" onclick="startSentenceCycle()">Begin Deep Reading</button>');
+        }
+        
+        function updateCheerleader(message, buttons = '') {
+            document.getElementById('cheerleaderText').innerHTML = message;
+            document.getElementById('cheerleaderButtons').innerHTML = buttons;
+        }
+        
+        function startSentenceCycle() {
+            if (currentSentenceIndex < sentences.length) {
+                readingPhase = 'reading';
+                showSentence();
+            } else {
+                showFinalSummary();
+            }
+        }
+        
+        function showSentence() {
+            const sentence = sentences[currentSentenceIndex];
+            document.getElementById('currentSentence').textContent = sentence;
+            document.getElementById('sentenceDisplay').style.display = 'block';
+            document.getElementById('interactionArea').innerHTML = '';
+            
+            updateCheerleader(
+                `Great! Now read this sentence carefully. Take your time - really think about what it's saying. When you've got it, click 'I Finished Reading'.`,
+                '<button class="btn btn-yes" onclick="moveToRecall()">I Finished Reading</button>'
+            );
+        }
+        
+        function moveToRecall() {
+            readingPhase = 'recalling';
+            document.getElementById('sentenceDisplay').style.display = 'none';
+            
+            updateCheerleader(
+                `Perfect! Now look away from the screen for a moment. Think about what you just read, then write down ONE thing you learned from that sentence. What's the key idea?`,
+                ''
+            );
+            
+            document.getElementById('interactionArea').innerHTML = `
+                <div class="chunking-panel">
+                    <h3>✍️ What did you learn?</h3>
+                    <textarea class="recall-input" id="recallInput" placeholder="Write one thing you learned from that sentence..."></textarea>
+                    <button class="btn btn-yes" onclick="moveToVerify()">Submit My Learning</button>
+                </div>
+            `;
+        }
+        
+        function moveToVerify() {
+            const recall = document.getElementById('recallInput').value;
+            if (!recall.trim()) {
+                alert('Please write at least one thing you learned!');
+                return;
+            }
+            
+            recallNotes.push(recall);
+            readingPhase = 'verifying';
+            
+            // Generate comprehension question based on sentence
+            const questionData = generateComprehensionQuestion(currentSentenceIndex);
+            
+            updateCheerleader(
+                `Awesome recall! Now let's check your understanding. ${questionData.question}`,
+                ''
+            );
+            
+            const optionsHTML = questionData.options.map((option, index) => 
+                `<button class="verify-btn" onclick="checkAnswer(${index}, ${questionData.correctIndex})">${option}</button>`
+            ).join('');
+            
+            document.getElementById('interactionArea').innerHTML = `
+                <div class="chunking-panel">
+                    <h3>🤔 Comprehension Check</h3>
+                    <div class="verification-options">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateComprehensionQuestion(index) {
+            const questions = [
+                {
+                    question: "What are carbohydrates made of?",
+                    options: ["Carbon, hydrogen, and oxygen", "Carbon, nitrogen, and oxygen", "Hydrogen and oxygen only", "Carbon and water"],
+                    correctIndex: 0
+                },
+                {
+                    question: "What are monosaccharides?",
+                    options: ["Double sugars", "Single sugar units", "Complex carbohydrates", "Storage molecules"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Why do glucose and fructose have different properties?",
+                    options: ["They have different atoms", "Their shapes differ", "They have different sizes", "They are opposites"],
+                    correctIndex: 1
+                },
+                {
+                    question: "What is sucrose made from?",
+                    options: ["Two glucose molecules", "Glucose and fructose", "Two fructose molecules", "Many glucose molecules"],
+                    correctIndex: 1
+                },
+                {
+                    question: "What type of carbohydrate is starch?",
+                    options: ["Monosaccharide", "Disaccharide", "Polysaccharide", "Protein"],
+                    correctIndex: 2
+                },
+                {
+                    question: "What is the function of cellulose in plants?",
+                    options: ["Energy storage", "Forms cell walls for structure", "Transport sugar", "Make DNA"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Where is starch stored in plant cells?",
+                    options: ["Cell walls", "Amyloplasts", "Nucleus", "Phloem"],
+                    correctIndex: 1
+                },
+                {
+                    question: "What do parenchyma cells do?",
+                    options: ["Provide rigid support", "Store starch", "Transport water", "Make cellulose"],
+                    correctIndex: 1
+                },
+                {
+                    question: "What makes sclerenchyma cells rigid?",
+                    options: ["Starch", "Water", "Thick lignified walls", "Sugar"],
+                    correctIndex: 2
+                },
+                {
+                    question: "What does phloem transport?",
+                    options: ["Water", "Oxygen", "Sucrose", "Cellulose"],
+                    correctIndex: 2
+                },
+                {
+                    question: "What is the main point of the paragraph?",
+                    options: ["Plants need water", "Glucose molecules build up to form plant structures and functions", "Photosynthesis is important", "Cells are small"],
+                    correctIndex: 1
+                }
+            ];
+            
+            return questions[Math.min(index, questions.length - 1)];
+        }
+        
+        function checkAnswer(selectedIndex, correctIndex) {
+            const buttons = document.querySelectorAll('.verify-btn');
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === correctIndex) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex && index !== correctIndex) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            if (selectedIndex === correctIndex) {
+                setTimeout(() => {
+                    updateCheerleader(
+                        `YES! You got it! 🎉 You're really understanding this material. Ready for the next sentence?`,
+                        '<button class="btn btn-yes" onclick="nextSentence()">Next Sentence</button>'
+                    );
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    updateCheerleader(
+                        `Not quite, but that's okay! Learning happens through mistakes. The correct answer is highlighted in green. Think about why that's the right answer, then let's move on!`,
+                        '<button class="btn btn-yes" onclick="nextSentence()">Next Sentence</button>'
+                    );
+                }, 1000);
+            }
+        }
+        
+        function nextSentence() {
+            currentSentenceIndex++;
+            document.getElementById('interactionArea').innerHTML = '';
+            startSentenceCycle();
+        }
+        
+        function showFinalSummary() {
+            document.getElementById('sentenceDisplay').style.display = 'none';
+            document.getElementById('interactionArea').innerHTML = '';
+            
+            updateCheerleader(
+                `🌟 Wow! You made it through ALL the sentences! You've been doing amazing work. Now for the ultimate challenge - can you summarize the ENTIRE paragraph without looking back? This shows you really understand the big picture!`,
+                ''
+            );
+            
+            document.getElementById('finalSummarySection').style.display = 'block';
+        }
+        
+        function initOrganization() {
+            // Create shuffled term bank
+            const allTerms = Object.values(organizationData).flat();
+            const shuffled = allTerms.sort(() => Math.random() - 0.5);
+            
+            const termBankHTML = shuffled.map(term => 
+                `<div class="draggable-term" draggable="true" data-term="${term}">${term}</div>`
+            ).join('');
+            
+            document.getElementById('termBank').innerHTML = termBankHTML;
+            
+            // Create drop zones
+            const dropZonesHTML = Object.keys(organizationData).map(level => `
+                <div class="drop-zone" data-level="${level}">
+                    <h4>${level}</h4>
+                    <div class="drop-zone-content" data-level="${level}"></div>
+                </div>
+            `).join('');
+            
+            document.getElementById('dropZones').innerHTML = dropZonesHTML;
+            
+            // Add drag and drop event listeners
+            setupDragAndDrop();
+        }
+        
+        function setupDragAndDrop() {
+            const draggables = document.querySelectorAll('.draggable-term');
+            const dropZones = document.querySelectorAll('.drop-zone-content');
+            
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', (e) => {
+                    draggable.classList.add('dragging');
+                    draggedElement = draggable;
+                });
+                
+                draggable.addEventListener('dragend', (e) => {
+                    draggable.classList.remove('dragging');
+                });
+            });
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.parentElement.classList.add('drag-over');
+                });
+                
+                zone.addEventListener('dragleave', (e) => {
+                    zone.parentElement.classList.remove('drag-over');
+                });
+                
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.parentElement.classList.remove('drag-over');
+                    if (draggedElement) {
+                        zone.appendChild(draggedElement);
+                        draggedElement = null;
+                    }
+                });
+            });
+            
+            // Allow dropping back to term bank
+            const termBank = document.getElementById('termBank');
+            termBank.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+            
+            termBank.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (draggedElement && !termBank.contains(draggedElement)) {
+                    termBank.appendChild(draggedElement);
+                    draggedElement = null;
+                }
+            });
+        }
+        
+        function checkOrganization() {
+            let correct = 0;
+            let total = 0;
+            let feedback = '<div class="chunking-panel"><h3>📊 Results</h3><ul style="line-height: 2;">';
+            
+            Object.keys(organizationData).forEach(level => {
+                const zone = document.querySelector(`.drop-zone-content[data-level="${level}"]`);
+                const terms = Array.from(zone.children).map(el => el.dataset.term);
+                const correctTerms = organizationData[level];
+                
+                correctTerms.forEach(term => {
+                    total++;
+                    if (terms.includes(term)) {
+                        correct++;
+                        feedback += `<li style="color: #016836;">✓ ${term} in ${level} - Correct!</li>`;
+                    } else {
+                        feedback += `<li style="color: #FF4500;">✗ ${term} should be in ${level}</li>`;
+                    }
+                });
+            });
+            
+            const percentage = Math.round((correct / total) * 100);
+            feedback += `</ul><h3 style="color: #016836;">Score: ${correct}/${total} (${percentage}%)</h3>`;
+            
+            if (percentage === 100) {
+                feedback += `<p style="color: #016836; font-size: 1.2em; margin-top: 15px;">🎉 PERFECT! You've mastered the biological hierarchy! You can see exactly how carbohydrates fit into every level of life's organization. Outstanding work!</p>`;
+                document.getElementById('completeSection').style.display = 'block';
+            } else if (percentage >= 70) {
+                feedback += `<p style="color: #105877; margin-top: 15px;">Great job! You're almost there. Review the incorrect items and try again!</p>`;
+            } else {
+                feedback += `<p style="color: #54534A; margin-top: 15px;">Keep trying! Remember: molecules → organelles → cells → tissues → organs → organism. You've got this!</p>`;
+            }
+            
+            feedback += '</div>';
+            document.getElementById('organizationFeedback').innerHTML = feedback;
+        }
+        
+        function resetOrganization() {
+            document.getElementById('organizationFeedback').innerHTML = '';
+            document.getElementById('completeSection').style.display = 'none';
+            initOrganization();
+        }
+        
+        function initReading() {
+            let highlightedText = readingText;
+            bioTerms.forEach(term => {
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                highlightedText = highlightedText.replace(regex, 
+                    `<span class="bio-term" onclick="toggleTerm('${term}')">${term}</span>`);
+            });
+            document.getElementById('readingContent').innerHTML = highlightedText;
+        }
+        
+        function toggleTerm(term) {
+            const elements = document.querySelectorAll('.bio-term');
+            elements.forEach(el => {
+                if (el.textContent.toLowerCase() === term.toLowerCase()) {
+                    el.classList.toggle('selected');
+                }
+            });
+            
+            const index = selectedTerms.indexOf(term);
+            if (index > -1) {
+                selectedTerms.splice(index, 1);
+            } else {
+                selectedTerms.push(term);
+            }
+            updateSelectedTerms();
+        }
+        
+        function updateSelectedTerms() {
+            const container = document.getElementById('selectedTerms');
+            if (selectedTerms.length === 0) {
+                container.innerHTML = '<p style="color: #54534A;">No terms selected yet. Click terms in the text above!</p>';
+            } else {
+                container.innerHTML = selectedTerms.map(term => 
+                    `<div class="term-chip">
+                        ${term}
+                        <span class="remove" onclick="toggleTerm('${term}')">✕</span>
+                    </div>`
+                ).join('');
+            }
+        }
+        
+        function updateProgress() {
+            let progress = 0;
+            if (currentQuestion >= questions.length) progress = 20;
+            if (document.getElementById('look').classList.contains('active')) progress = 40;
+            if (document.getElementById('read').classList.contains('active')) progress = 60;
+            if (document.getElementById('deepRead').classList.contains('active')) progress = 80;
+            if (document.getElementById('organize').classList.contains('active')) progress = 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function completeActivity() {
+            alert(`🎉 Pre-Lab Complete!\n\nYou've identified ${selectedTerms.length} key concepts.\n\nYou're now ready for the hands-on lab activities where you'll build models, run tests, and examine real plant tissues!`);
+        }
+        
+        // Initialize
+        initAssessment();
+        updateSelectedTerms();
+    </script>
+</body>
 </html>
