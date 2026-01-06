@@ -1,0 +1,737 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post‑Lab: 02_Eukaryotes • Review Questions (v2)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Anton&display=swap" rel="stylesheet" />
+  <style>
+    /* UW–Parkside brand palette (placeholders consistent with earlier pages) */
+    :root {
+      --parkside-green: #016836;
+      --near-black: rgb(33,39,33);
+      --warm-grey: #54534A;
+      --cool-grey: #DBD9D6;
+      --goldenrod: #FABA31;
+      --white-birch: #EFECE2;
+      --white: #FFFFFF;
+      --bg-primary: var(--white);
+      --bg-secondary: var(--white-birch);
+      --text-primary: var(--near-black);
+      --text-secondary: var(--warm-grey);
+      --focus: #0b84a5;
+    }
+    [data-theme="dark"] {
+      --bg-primary: #1a1d1a;
+      --bg-secondary: #2a2d2a;
+      --cool-grey: #3a3d3a;
+      --white-birch: #2a2d2a;
+      --text-primary: #e8e8e8;
+      --text-secondary: #b8b8b8;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Open Sans', sans-serif; background: var(--bg-primary); color: var(--text-primary); margin:0; }
+    header { background: var(--parkside-green); color: var(--white); }
+    .header-container { max-width: 1100px; margin: 0 auto; display:flex; align-items:center; gap:16px; padding: 15px 20px; }
+    .back-button { background-color: rgba(255,255,255,0.2); color: var(--white); border:1px solid rgba(255,255,255,0.3); padding:6px 14px; text-decoration:none; font-weight:600; }
+    .back-button:hover { background-color: rgba(255,255,255,0.3); }
+    .title { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing:.5px; }
+    .save-controls { margin-left:auto; display:flex; gap:8px; }
+    .save-controls button { background: var(--goldenrod); color:#222; border:0; border-radius:6px; padding:6px 10px; font-weight:700; cursor:pointer; }
+    .save-controls button.clear { background:#c94f4f; color:#fff; }
+    main { max-width: 900px; margin: 32px auto; padding: 0 20px; }
+    h1 { font-family: 'Anton', sans-serif; color: var(--parkside-green); font-size: 2.2rem; margin: 0 0 16px; border-bottom: 3px solid var(--goldenrod); padding-bottom: 8px; }
+    .intro { color: var(--text-secondary); margin-bottom: 18px; }
+    .card { background: var(--bg-secondary); border: 2px solid var(--cool-grey); border-radius: 8px; padding: 18px; margin-bottom: 18px; }
+    .card h2 { color: var(--parkside-green); font-size: 1.25rem; margin: 0 0 8px; }
+    fieldset { border: 0; padding: 0; margin: 0; }
+    legend { font-weight: 700; margin-bottom: 8px; }
+    .choices { display:flex; flex-wrap:wrap; gap: 12px; margin: 8px 0 12px; }
+    label { display:inline-flex; align-items:center; gap:8px; }
+    input[type="radio"], input[type="checkbox"], input[type="text"] { accent-color: var(--parkside-green); }
+    input[type="text"] { padding:6px 8px; border:1.5px solid var(--cool-grey); border-radius:6px; min-width: 260px; }
+    .feedback { display:none; margin-top: 8px; padding: 10px; border-left: 4px solid var(--parkside-green); background: #fff; color: #222; }
+    .feedback.wrong { border-left-color: #b00020; }
+    button.check { background: var(--parkside-green); color:#fff; border: 0; border-radius:6px; padding:8px 14px; font-weight:600; cursor:pointer; }
+    button.secondary { background: var(--goldenrod); color: #222; border: 0; border-radius:6px; padding:8px 14px; font-weight:600; cursor:pointer; }
+    .footer { text-align:center; color: var(--text-secondary); margin-top: 24px; }
+    a { color: var(--parkside-green); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header>
+    <div class="header-container">
+      <a href="../02_Eukaryotes/index.html" class="back-button" aria-label="Back to Dashboard">← Back</a>
+      <span class="title">Post‑Lab • Week 2 • 02_Eukaryotes Review</span>
+      <div class="save-controls" role="group" aria-label="Progress controls">
+        <button id="saveBtn" title="Save progress now">Save Progress</button>
+        <button id="clearBtn" class="clear" title="Clear all saved answers">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" role="main" aria-labelledby="page-title">
+    <h1 id="page-title">Post‑Lab: Review Questions</h1>
+    <p class="intro">Your responses are saved locally on this device. Use <strong>Save Progress</strong> anytime, or it will auto‑save when you make changes.</p>
+
+    <!-- Q1: 3-part (freshwater tonicity, water movement, fill-in) -->
+    <section class="card" aria-labelledby="q1-title">
+      <h2 id="q1-title">1) Freshwater environment & examples</h2>
+      <fieldset>
+        <legend>Freshwater protists live in a (hypertonic or hypotonic) environment.</legend>
+        <div class="choices">
+          <label><input type="radio" name="q1a" value="hypertonic"> Hypertonic</label>
+          <label><input type="radio" name="q1a" value="hypotonic"> Hypotonic</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Therefore, water tends to (enter or leave) their cells.</legend>
+        <div class="choices">
+          <label><input type="radio" name="q1b" value="enter"> Enter</label>
+          <label><input type="radio" name="q1b" value="leave"> Leave</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: Name <strong>two</strong> freshwater protists you studied in lab.</legend>
+        <div class="choices">
+          <label class="sr-only" for="q1c1">Protist name 1</label>
+          <input type="text" id="q1c1" name="q1c1" placeholder="e.g., Paramecium" />
+          <label class="sr-only" for="q1c2">Protist name 2</label>
+          <input type="text" id="q1c2" name="q1c2" placeholder="e.g., Stentor" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ1()">Check</button>
+        <button class="secondary" onclick="showQ1()">Show Answer</button>
+      </div>
+      <div id="q1-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <!-- Q2: 3-part (contractile vs central vacuole + fill-in) -->
+    <section class="card" aria-labelledby="q2-title">
+      <h2 id="q2-title">2) Contractile vs Central Vacuole</h2>
+      <fieldset>
+        <legend>Which organelle performs osmoregulation in freshwater protists?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q2a" value="contractile"> Contractile vacuole</label>
+          <label><input type="radio" name="q2a" value="central"> Central vacuole</label>
+          <label><input type="radio" name="q2a" value="lysosome"> Lysosome</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>In plant cells, the central vacuole is primarily associated with:</legend>
+        <div class="choices">
+          <label><input type="radio" name="q2b" value="storage"> Storage & turgor/support</label>
+          <label><input type="radio" name="q2b" value="locomotion"> Locomotion</label>
+          <label><input type="radio" name="q2b" value="osmo"> Osmoregulation by pumping water out</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: Name a protist where you observed a <strong>contractile vacuole</strong>.</legend>
+        <div class="choices">
+          <label class="sr-only" for="q2c">Protist name</label>
+          <input type="text" id="q2c" name="q2c" placeholder="e.g., Stentor" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ2()">Check</button>
+        <button class="secondary" onclick="showQ2()">Show Answer</button>
+      </div>
+      <div id="q2-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <!-- Q3: single-part (locomotion structures) with added distractors nucleus + chromoplast -->
+    <section class="card" aria-labelledby="q3-title">
+      <h2 id="q3-title">3) Locomotion structures</h2>
+      <fieldset>
+        <legend>Select all structures used for locomotion in the organisms you observed.</legend>
+        <div class="choices">
+          <label><input type="checkbox" name="q3" value="cilia"> Cilia</label>
+          <label><input type="checkbox" name="q3" value="flagella"> Flagella</label>
+          <label><input type="checkbox" name="q3" value="pseudopodia"> Pseudopodia</label>
+          <label><input type="checkbox" name="q3" value="nucleus"> Nucleus</label>
+          <label><input type="checkbox" name="q3" value="chromoplasts"> Chromoplasts</label>
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ3()">Check</button>
+        <button class="secondary" onclick="showQ3()">Show Answer</button>
+      </div>
+      <div id="q3-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <!-- Q4: 3-part (cilia structure, function, fill-in) -->
+    <section class="card" aria-labelledby="q4-title">
+      <h2 id="q4-title">4) Cilia: protist vs animal tissue</h2>
+      <fieldset>
+        <legend>Is the internal structure of cilia in <em>Paramecium</em> the same as in human tracheal epithelial cells?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q4a" value="same"> Yes, the internal structure is the same</label>
+          <label><input type="radio" name="q4a" value="different"> No, it is different</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>In the trachea, cilia primarily move:</legend>
+        <div class="choices">
+          <label><input type="radio" name="q4b" value="mucus"> Mucus upward toward the throat</label>
+          <label><input type="radio" name="q4b" value="cells"> Whole cells through the airway</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: Name one ciliated protist you observed.</legend>
+        <div class="choices">
+          <label class="sr-only" for="q4c">Protist name</label>
+          <input type="text" id="q4c" name="q4c" placeholder="e.g., Paramecium" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ4()">Check</button>
+        <button class="secondary" onclick="showQ4()">Show Answer</button>
+      </div>
+      <div id="q4-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <!-- Q5: 3-part (plastids & pigments + fill-in) -->
+    <section class="card" aria-labelledby="q5-title">
+      <h2 id="q5-title">5) Plastids & pigments</h2>
+      <fieldset>
+        <legend>Chromoplasts in carrot root parenchyma contain which pigment?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q5a" value="chlorophyll"> Chlorophyll</label>
+          <label><input type="radio" name="q5a" value="carotene"> Carotene</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Leaf parenchyma chloroplasts primarily contain:</legend>
+        <div class="choices">
+          <label><input type="radio" name="q5b" value="chlorophyll"> Chlorophyll</label>
+          <label><input type="radio" name="q5b" value="carotene"> Carotene</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: What color did you observe in the carrot chromoplasts?</legend>
+        <div class="choices">
+          <label class="sr-only" for="q5c">Observed color</label>
+          <input type="text" id="q5c" name="q5c" placeholder="e.g., orange" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ5()">Check</button>
+        <button class="secondary" onclick="showQ5()">Show Answer</button>
+      </div>
+      <div id="q5-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <!-- Q6: 3-part (eukaryote classification, evidence selection, fill-in) -->
+    <section class="card" aria-labelledby="q6-title">
+      <h2 id="q6-title">6) Evidence protists are eukaryotes</h2>
+      <fieldset>
+        <legend>The protists you observed in this lab are:</legend>
+        <div class="choices">
+          <label><input type="radio" name="q6a" value="eukaryotic"> Eukaryotic</label>
+          <label><input type="radio" name="q6a" value="prokaryotic"> Prokaryotic</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Select all observations that support your answer.</legend>
+        <div class="choices">
+          <label><input type="checkbox" name="q6b" value="nucleus"> Visible nucleus / macronucleus</label>
+          <label><input type="checkbox" name="q6b" value="organelles"> Membrane‑bound organelles (e.g., chloroplasts, vacuoles)</label>
+          <label><input type="checkbox" name="q6b" value="size"> Typical eukaryotic size range (~10–100 µm)</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: Name one specific structure you observed that confirms a eukaryotic cell.</legend>
+        <div class="choices">
+          <label class="sr-only" for="q6c">Structure</label>
+          <input type="text" id="q6c" name="q6c" placeholder="e.g., nucleus" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ6()">Check</button>
+        <button class="secondary" onclick="showQ6()">Show Answer</button>
+      </div>
+      <div id="q6-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <!-- Q7–Q10: Life's organization (Cells, Organelles, Molecules, Color) -->
+    <section class="card" aria-labelledby="q7-title">
+      <h2 id="q7-title">7) Life's Organization: Cells</h2>
+      <fieldset>
+        <legend>The onion epidermal cells you observed belong to which domain/kingdom grouping?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q7a" value="plant"> Eukarya → Plantae</label>
+          <label><input type="radio" name="q7a" value="animal"> Eukarya → Animalia</label>
+          <label><input type="radio" name="q7a" value="bacteria"> Bacteria (Prokaryota)</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Which feature helped you identify these as plant cells?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q7b" value="cellwall"> A rigid cell wall outlining the cell</label>
+          <label><input type="radio" name="q7b" value="flagella"> A long flagellum</label>
+          <label><input type="radio" name="q7b" value="peptido"> Peptidoglycan cell wall</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: Name this cell type.</legend>
+        <div class="choices">
+          <label class="sr-only" for="q7c">Cell type</label>
+          <input type="text" id="q7c" name="q7c" placeholder="e.g., onion epidermal cell" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ7()">Check</button>
+        <button class="secondary" onclick="showQ7()">Show Answer</button>
+      </div>
+      <div id="q7-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section class="card" aria-labelledby="q8-title">
+      <h2 id="q8-title">8) Life's Organization: Organelles</h2>
+      <fieldset>
+        <legend>Which plastid is present in leaf parenchyma cells?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q8a" value="chloroplast"> Chloroplast</label>
+          <label><input type="radio" name="q8a" value="chromoplast"> Chromoplast</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Which plastid is present in carrot root parenchyma cells?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q8b" value="chloroplast"> Chloroplast</label>
+          <label><input type="radio" name="q8b" value="chromoplast"> Chromoplast</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: Name one structure involved in movement in protists.</legend>
+        <div class="choices">
+          <label class="sr-only" for="q8c">Movement structure</label>
+          <input type="text" id="q8c" name="q8c" placeholder="e.g., cilia or flagella" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ8()">Check</button>
+        <button class="secondary" onclick="showQ8()">Show Answer</button>
+      </div>
+      <div id="q8-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section class="card" aria-labelledby="q9-title">
+      <h2 id="q9-title">9) Life's Organization: Molecules</h2>
+      <fieldset>
+        <legend>The pigment responsible for the green color in leaves is:</legend>
+        <div class="choices">
+          <label><input type="radio" name="q9a" value="chlorophyll"> Chlorophyll</label>
+          <label><input type="radio" name="q9a" value="carotene"> Carotene</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Carotene typically imparts which color in plant tissues?</legend>
+        <div class="choices">
+          <label><input type="radio" name="q9b" value="orange"> Orange</label>
+          <label><input type="radio" name="q9b" value="green"> Green</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: Name one pigment molecule you observed.</legend>
+        <div class="choices">
+          <label class="sr-only" for="q9c">Pigment name</label>
+          <input type="text" id="q9c" name="q9c" placeholder="e.g., chlorophyll or carotene" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ9()">Check</button>
+        <button class="secondary" onclick="showQ9()">Show Answer</button>
+      </div>
+      <div id="q9-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section class="card" aria-labelledby="q10-title">
+      <h2 id="q10-title">10) Life's Organization: Color</h2>
+      <fieldset>
+        <legend>Chromoplasts in carrot root typically appear:</legend>
+        <div class="choices">
+          <label><input type="radio" name="q10a" value="orange"> Orange</label>
+          <label><input type="radio" name="q10a" value="green"> Green</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Chloroplasts in leaves typically appear:</legend>
+        <div class="choices">
+          <label><input type="radio" name="q10b" value="green"> Green</label>
+          <label><input type="radio" name="q10b" value="orange"> Orange</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Fill in: What color are the chloroplasts in <em>Euglena</em>?</legend>
+        <div class="choices">
+          <label class="sr-only" for="q10c">Observed color</label>
+          <input type="text" id="q10c" name="q10c" placeholder="e.g., green" />
+        </div>
+      </fieldset>
+      <div class="choices">
+        <button class="check" onclick="checkQ10()">Check</button>
+        <button class="secondary" onclick="showQ10()">Show Answer</button>
+      </div>
+      <div id="q10-feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <div class="footer">
+      <p>When finished, return to the dashboard or proceed to the submission portal.</p>
+      <p><a href="../02_Eukaryotes/index.html">← Back to Dashboard</a></p>
+    </div>
+  </main>
+
+  <script>
+    // === Theme restore ===
+    (function(){ var t = localStorage.getItem('theme'); if(t) document.documentElement.setAttribute('data-theme', t); })();
+
+    // === Save Progress ===
+    const STORE_KEY = 'euk_postlab_v2';
+    function saveState(){
+      const data = {};
+      document.querySelectorAll('input').forEach(el => {
+        if(el.type === 'radio'){
+          if(el.checked){ data[el.name] = el.value; }
+        } else if(el.type === 'checkbox'){
+          if(!data[el.name]) data[el.name] = [];
+          if(el.checked) data[el.name].push(el.value);
+        } else if(el.type === 'text'){
+          data[el.name] = el.value;
+        }
+      });
+      localStorage.setItem(STORE_KEY, JSON.stringify(data));
+    }
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(STORE_KEY);
+        if(!raw) return;
+        const data = JSON.parse(raw);
+        Object.keys(data).forEach(name => {
+          const val = data[name];
+          if(Array.isArray(val)){
+            document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
+              el.checked = val.includes(el.value);
+            });
+          } else {
+            const elRadio = document.querySelector(`input[name="${name}"][value="${val}"]`);
+            if(elRadio){ elRadio.checked = true; }
+            const elText = document.querySelector(`input[name="${name}"]`);
+            if(elText && elText.type === 'text'){ elText.value = val; }
+          }
+        });
+      }catch(e){ console.warn('No saved state or parse error', e); }
+    }
+    function clearState(){ localStorage.removeItem(STORE_KEY); location.reload(); }
+
+    // Auto-save on change
+    document.addEventListener('change', saveState);
+    // Manual controls
+    document.getElementById('saveBtn').addEventListener('click', saveState);
+    document.getElementById('clearBtn').addEventListener('click', clearState);
+    // Load at start
+    loadState();
+
+    // === Utility for feedback ===
+    function setFeedback(el, okText, badText, ok) {
+      el.style.display = 'block';
+      el.className = 'feedback' + (ok ? '' : ' wrong');
+      el.textContent = ok ? okText : badText;
+    }
+    function textVal(id){ return (document.getElementById(id).value || '').trim().toLowerCase(); }
+
+    // === Allowed sets ===
+    const freshwaterSet = new Set(['paramecium','stentor','vorticella','euglena','amoeba']);
+    const ciliatedSet = new Set(['paramecium','stentor','vorticella']);
+
+    // === Q1 ===
+    function checkQ1(){
+      const a = document.querySelector('input[name="q1a"]:checked');
+      const b = document.querySelector('input[name="q1b"]:checked');
+      const n1 = textVal('q1c1');
+      const n2 = textVal('q1c2');
+      const f = document.getElementById('q1-feedback');
+      const namesOk = n1 && n2 && n1 !== n2 && freshwaterSet.has(n1) && freshwaterSet.has(n2);
+      const ok = a && b && a.value === 'hypotonic' && b.value === 'enter' && namesOk;
+      setFeedback(f,
+        'Correct: Freshwater is hypotonic; water enters the cell. Examples include Paramecium, Stentor, Vorticella, Euglena, Amoeba.',
+        'Review: Environment = hypotonic; water enters. For examples, use two freshwater protists you studied (e.g., Paramecium, Stentor, Vorticella, Euglena, Amoeba).',
+        ok);
+    }
+    function showQ1(){
+      setFeedback(document.getElementById('q1-feedback'),
+        'Answer: Hypotonic; water enters the cell. Two examples: Paramecium and Stentor (others: Vorticella, Euglena, Amoeba).', '', true);
+    }
+
+    // === Q2 ===
+    function checkQ2(){
+      const a = document.querySelector('input[name="q2a"]:checked');
+      const b = document.querySelector('input[name="q2b"]:checked');
+      const c = textVal('q2c');
+      const f = document.getElementById('q2-feedback');
+      const cOk = c && freshwaterSet.has(c);
+      const ok = a && b && a.value === 'contractile' && b.value === 'storage' && cOk;
+      setFeedback(f,
+        'Correct: Contractile vacuole handles osmoregulation in protists; the central vacuole in plants is for storage and turgor. Example with contractile vacuole: Stentor (also Paramecium).',
+        'Revise: Pick contractile vacuole for protist osmoregulation; central vacuole for plant storage/turgor; and name a protist showing a contractile vacuole.',
+        ok);
+    }
+    function showQ2(){
+      setFeedback(document.getElementById('q2-feedback'),
+        'Answer: Contractile vacuole (osmoregulation); central vacuole (storage/turgor). Example: Paramecium or Stentor.', '', true);
+    }
+
+    // === Q3 ===
+    function checkQ3(){
+      const vals = Array.from(document.querySelectorAll('input[name="q3"]:checked')).map(i=>i.value);
+      const f = document.getElementById('q3-feedback');
+      const ok = ['cilia','flagella','pseudopodia'].every(v=>vals.includes(v)) && !vals.includes('chromoplasts') && !vals.includes('nucleus');
+      setFeedback(f,
+        'Correct: Locomotion structures are cilia, flagella, and pseudopodia; nucleus and chromoplasts are not locomotion structures.',
+        'Check selections: include cilia, flagella, pseudopodia; exclude nucleus and chromoplasts.',
+        ok);
+    }
+    function showQ3(){
+      setFeedback(document.getElementById('q3-feedback'),
+        'Answer: Cilia, flagella, pseudopodia. (Nucleus and chromoplasts are not for locomotion.)', '', true);
+    }
+
+    // === Q4 ===
+    function checkQ4(){
+      const a = document.querySelector('input[name="q4a"]:checked');
+      const b = document.querySelector('input[name="q4b"]:checked');
+      const c = textVal('q4c');
+      const f = document.getElementById('q4-feedback');
+      const cOk = c && ciliatedSet.has(c);
+      const ok = a && b && a.value === 'same' && b.value === 'mucus' && cOk;
+      setFeedback(f,
+        'Correct: Cilia have the same internal 9+2 microtubule arrangement in protists and animal epithelia; in the trachea they move mucus upward. Example ciliated protists: Paramecium, Stentor, Vorticella.',
+        'Revise: Internal structure = same; tracheal cilia move mucus; and name a ciliated protist you observed.', ok);
+    }
+    function showQ4(){
+      setFeedback(document.getElementById('q4-feedback'),
+        'Answer: Same internal 9+2 structure; move mucus upward. Example: Paramecium (also Stentor, Vorticella).', '', true);
+    }
+
+    // === Q5 ===
+    function checkQ5(){
+      const a = document.querySelector('input[name="q5a"]:checked');
+      const b = document.querySelector('input[name="q5b"]:checked');
+      const c = textVal('q5c');
+      const f = document.getElementById('q5-feedback');
+      const cOk = c && (c === 'orange');
+      const ok = a && b && a.value === 'carotene' && b.value === 'chlorophyll' && cOk;
+      setFeedback(f,
+        'Correct: Carrot chromoplasts contain carotene; leaf chloroplasts contain chlorophyll. Observed carrot chromoplast color: orange.',
+        'Revise: Chromoplasts → carotene; chloroplasts → chlorophyll; color of carrot chromoplasts is orange.', ok);
+    }
+    function showQ5(){
+      setFeedback(document.getElementById('q5-feedback'),
+        'Answer: Chromoplasts (carrot) → carotene; chloroplasts (leaf) → chlorophyll; color observed = orange.', '', true);
+    }
+
+    // === Q6 ===
+    function checkQ6(){
+      const a = document.querySelector('input[name="q6a"]:checked');
+      const vals = Array.from(document.querySelectorAll('input[name="q6b"]:checked')).map(i=>i.value);
+      const c = textVal('q6c');
+      const f = document.getElementById('q6-feedback');
+      const okSel = ['nucleus','organelles','size'].every(v=>vals.includes(v));
+      const cOk = c && (['nucleus','macronucleus','chloroplast','contractile vacuole','cilia','flagella'].includes(c));
+      const ok = a && a.value === 'eukaryotic' && okSel && cOk;
+      setFeedback(f,
+        'Correct: The protists are eukaryotic, supported by observing a nucleus/macronucleus, membrane‑bound organelles, and typical eukaryotic size. Your fill‑in confirms a specific structure.',
+        'Revise: Choose eukaryotic; select nucleus/macronucleus, membrane‑bound organelles, and typical size; add one confirming structure in the fill‑in.',
+        ok);
+    }
+    function showQ6(){
+      setFeedback(document.getElementById('q6-feedback'),
+        'Answer: Eukaryotic; evidence = nucleus/macronucleus + membrane‑bound organelles + typical size.', '', true);
+    }
+
+    // === Q7 ===
+    function checkQ7(){
+      const a = document.querySelector('input[name="q7a"]:checked');
+      const b = document.querySelector('input[name="q7b"]:checked');
+      const c = textVal('q7c');
+      const f = document.getElementById('q7-feedback');
+      const cOk = c && (c.includes('onion') && c.includes('epiderm')); // onion epidermal cell
+      const ok = a && b && a.value === 'plant' && b.value === 'cellwall' && cOk;
+      setFeedback(f,
+        'Correct: Onion epidermal cells are Eukarya → Plantae, identified by a rigid cell wall. Cell type: onion epidermal cell.',
+        'Revise: Domain/kingdom = Eukarya → Plantae; feature = cell wall; fill‑in as onion epidermal cell.', ok);
+    }
+    function showQ7(){ setFeedback(document.getElementById('q7-feedback'), 'Answer: Eukarya → Plantae; cell wall; onion epidermal cell.', '', true); }
+
+    // === Q8 ===
+    function checkQ8(){
+      const a = document.querySelector('input[name="q8a"]:checked');
+      const b = document.querySelector('input[name="q8b"]:checked');
+      const c = textVal('q8c');
+      const f = document.getElementById('q8-feedback');
+      const cOk = c && (['cilia','flagella','pseudopodia'].includes(c));
+      const ok = a && b && a.value === 'chloroplast' && b.value === 'chromoplast' && cOk;
+      setFeedback(f,
+        'Correct: Leaf parenchyma → chloroplasts; carrot root parenchyma → chromoplasts; movement structure = cilia/flagella/pseudopodia.',
+        'Revise: Choose chloroplast for leaf, chromoplast for carrot; fill movement structure as cilia, flagella, or pseudopodia.', ok);
+    }
+    function showQ8(){ setFeedback(document.getElementById('q8-feedback'), 'Answer: Leaf → chloroplast; carrot → chromoplast; movement → cilia/flagella/pseudopodia.', '', true); }
+
+    // === Q9 ===
+    function checkQ9(){
+      const a = document.querySelector('input[name="q9a"]:checked');
+      const b = document.querySelector('input[name="q9b"]:checked');
+      const c = textVal('q9c');
+      const f = document.getElementById('q9-feedback');
+      const cOk = c && (['chlorophyll','carotene'].includes(c));
+      const ok = a && b && a.value === 'chlorophyll' && b.value === 'orange' && cOk;
+      setFeedback(f,
+        'Correct: Green color in leaves → chlorophyll; carotene → orange; your pigment fill‑in is valid.',
+        'Revise: Choose chlorophyll for green; orange for carotene; fill pigment as chlorophyll or carotene.', ok);
+    }
+    function showQ9(){ setFeedback(document.getElementById('q9-feedback'), 'Answer: Chlorophyll (green); Carotene (orange); pigment = chlorophyll or carotene.', '', true); }
+
+    // === Q10 ===
+    function checkQ10(){
+      const a = document.querySelector('input[name="q10a"]:checked');
+      const b = document.querySelector('input[name="q10b"]:checked');
+      const c = textVal('q10c');
+      const f = document.getElementById('q10-feedback');
+      const cOk = c && (c === 'green');
+      const ok = a && b && a.value === 'orange' && b.value === 'green' && cOk;
+      setFeedback(f,
+        'Correct: Chromoplasts (carrot) → orange; chloroplasts (leaf) → green; Euglena chloroplasts are green.',
+        'Revise: Chromoplasts → orange; chloroplasts → green; color in Euglena = green.', ok);
+    }
+    function showQ10(){ setFeedback(document.getElementById('q10-feedback'), 'Answer: Orange; Green; Euglena = green.', '', true); }
+  </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In-Lab: Perform & Encode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Anton&display=swap"
+        rel="stylesheet">
+    <style>
+        /* [Insert same CSS block as prelab/prelab.html here for consistency] */
+        :root {
+            --parkside-green: #016836;
+            --near-black: rgb(33, 39, 33);
+            --warm-grey: #54534A;
+            --cool-grey: #DBD9D6;
+            --goldenrod: #FABA31;
+            --white-birch: #EFECE2;
+            --white: #FFFFFF;
+            --bg-primary: var(--white);
+            --bg-secondary: var(--white-birch);
+            --text-primary: var(--near-black);
+            --text-secondary: var(--warm-grey);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1d1a;
+            --bg-secondary: #2a2d2a;
+            --cool-grey: #3a3d3a;
+            --white-birch: #2a2d2a;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--parkside-green);
+            color: var(--white);
+            padding: 15px 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 20px;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-family: 'Anton', sans-serif;
+            color: var(--parkside-green);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--goldenrod);
+            padding-bottom: 10px;
+        }
+
+        .section {
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--cool-grey);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--parkside-green);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--cool-grey);
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        a {
+            color: var(--parkside-green);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <header>
+        <div class="header-container">
+            <a href="../index.html" class="back-button">← Back to Dashboard</a>
+            <span>Week 2</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>In-Lab: Perform & Encode</h1>
+
+        <div class="section">
+            <h2>Observation Focus</h2>
+            <p>In the lab, your goal is to observe carefully and record what you see. Focus on identifying key
+                structures—nucleus, nucleolus, plastids, cilia, flagella, and pseudopodia—in plant, animal, and protist
+                cells. Observe how these structures appear, note movement or arrangement, and connect what you observe
+                to function—especially differences tied to photosynthesis or locomotion.</p>
+        </div>
+
+        <div class="section">
+            <h2>Hands On Assignments</h2>
+            <ul>
+                <li>
+                    <a href="Eukaryote_Onion.html" target="_blank">Onion Cell</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Carrot.html" target="_blank">Carrot Cell</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Elodea.html" target="_blank">Elodea Cell</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Euglena.html" target="_blank">Euglena</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Sperm.html" target="_blank">Sperm</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Paramecium.html" target="_blank">Paramecium</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Stentor.html" target="_blank">Stentor</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_CPCE.html" target="_blank">Ciliated Pseudostratified Columnar Epithelium</a>
+                </li>
+                                <li>
+                    <a href="Eukaryote_Neutrophil.html" target="_blank">Neutrophil</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Amoeba.html" target="_blank">Amoeba</a>
+                </li>
+                <li>
+                    <a href="Eukaryote_Cell Detective.html" target="_blank">Cell Detective</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>In-Lab Quiz</h2>
+            <ul>
+                <li><a href="inlab_quiz.html">In-Lab Quiz</a> (Due at Lab Start + 10 minutes)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

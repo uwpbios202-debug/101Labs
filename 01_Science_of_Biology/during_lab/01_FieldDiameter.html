@@ -1,0 +1,1638 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Determining Microscope Field Diameter for Accurate Size Estimation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           UWP BRAND STANDARDS & PALETTE
+           Source: UWP Marketing & Design / Web Standards
+           ========================================= */
+        :root {
+            /* Primary Colors */
+            --uwp-green: #006938;
+            --uwp-green-dark: #004d2a;
+            --uwp-black: #000000;
+
+            /* Neutrals & Backgrounds */
+            --uwp-cool-gray: #54534A;
+            --uwp-white-birch: #F3F2EE;
+            --uwp-white: #FFFFFF;
+            --uwp-border: #D1D3D4;
+
+            /* Accents */
+            --uwp-goldenrod: #FFB71B;
+            --uwp-orange: #C65C2D;
+
+            /* Functional State Tokens */
+            --state-success-bg: #e6f4ea;
+            --state-success-text: #00502f;
+            --state-warn-bg: #fff8e1;
+            --state-warn-text: #8a5e00;
+            --state-error-bg: #fbeae9;
+            --state-error-text: #c62828;
+
+            /* Spacing */
+            --radius-std: 6px;
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* =========================================
+           GLOBAL RESET & TYPOGRAPHY
+           ========================================= */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--uwp-white-birch);
+            color: var(--uwp-cool-gray);
+            font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--uwp-black);
+            font-weight: 700;
+            margin-top: 0;
+        }
+
+        h1 {
+            color: var(--uwp-green);
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--uwp-goldenrod);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.25rem;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--uwp-green);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--uwp-green);
+            text-decoration: underline;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--uwp-green-dark);
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--uwp-goldenrod);
+            outline-offset: 2px;
+        }
+
+        /* =========================================
+           LAYOUT UTILITIES
+           ========================================= */
+        .fd-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header.fd-header {
+            background-color: var(--uwp-white);
+            padding: 2rem;
+            border-bottom: 5px solid var(--uwp-green);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 2rem;
+            border-radius: var(--radius-std);
+        }
+
+        .fd-subtitle {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: var(--uwp-cool-gray);
+            margin: 0;
+        }
+
+        /* =========================================
+           PAGES
+           ========================================= */
+        .fd-page {
+            display: block;
+        }
+
+        .fd-page-hidden {
+            display: none !important;
+        }
+
+        /* =========================================
+           CARDS & SECTIONS
+           ========================================= */
+        .fd-card {
+            background: var(--uwp-white);
+            border: 1px solid var(--uwp-border);
+            border-radius: var(--radius-std);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease;
+        }
+
+        .fd-section-title {
+            color: var(--uwp-black);
+            font-weight: 700;
+        }
+
+        .fd-muted {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        /* =========================================
+           FORMS & INPUTS
+           ========================================= */
+        .fd-step {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        /* Checkboxes */
+        input[type="checkbox"] {
+            accent-color: var(--uwp-green);
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-top: 0.25rem;
+            cursor: pointer;
+        }
+
+        .fd-form-row {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            background: var(--uwp-white-birch);
+            padding: 1rem;
+            border-radius: var(--radius-std);
+        }
+
+        .fd-input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--uwp-border);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+
+        .fd-input:focus {
+            outline: none;
+            border-color: var(--uwp-green);
+            box-shadow: 0 0 0 3px rgba(0, 105, 56, 0.2);
+        }
+
+        textarea.fd-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* =========================================
+           BUTTONS
+           ========================================= */
+        .fd-btn {
+            background-color: var(--uwp-green);
+            color: var(--uwp-white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .fd-btn:hover:not(:disabled) {
+            background-color: var(--uwp-green-dark);
+        }
+
+        .fd-btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .fd-btn:disabled {
+            background-color: var(--uwp-border);
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .fd-btn:focus-visible {
+            outline: 2px solid var(--uwp-goldenrod);
+            outline-offset: 2px;
+        }
+
+        .fd-btn-secondary {
+            background-color: var(--uwp-cool-gray);
+            color: var(--uwp-white);
+        }
+
+        .fd-btn-secondary:hover:not(:disabled) {
+            background-color: #3e3d36;
+        }
+
+        /* =========================================
+           MATH & FORMULAS
+           ========================================= */
+        .fd-math {
+            font-family: "Consolas", "Monaco", monospace;
+            background: var(--uwp-white-birch);
+            border-left: 4px solid var(--uwp-green);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--radius-std) var(--radius-std) 0;
+        }
+
+        .formula-container,
+        .formula-builder {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            background: #FAFAFA;
+            padding: 1.5rem;
+            border: 1px dashed var(--uwp-border);
+            border-radius: var(--radius-std);
+            margin: 1rem 0;
+        }
+
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            line-height: 1;
+            text-align: center;
+            vertical-align: middle;
+            margin: 0 0.25rem;
+        }
+
+        .fraction .numerator {
+            border-bottom: 2px solid var(--uwp-black);
+            padding-bottom: 0.2rem;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .fraction .denominator {
+            display: block;
+        }
+
+        /* =========================================
+           FEEDBACK & ALERTS
+           ========================================= */
+        .fd-note {
+            background-color: var(--state-warn-bg);
+            border-left: 5px solid var(--uwp-goldenrod);
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--state-warn-text);
+            border-radius: 4px;
+        }
+
+        .fd-feedback-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--radius-std);
+            font-weight: 600;
+        }
+
+        .fd-feedback-box.success {
+            background-color: var(--state-success-bg);
+            color: var(--state-success-text);
+            border: 1px solid #c3e6cb;
+        }
+
+        .fd-feedback-box.warn {
+            background-color: var(--state-warn-bg);
+            color: var(--state-warn-text);
+            border: 1px solid #ffeeba;
+        }
+
+        .fd-feedback-box.error {
+            background-color: var(--state-error-bg);
+            color: var(--state-error-text);
+            border: 1px solid #f5c6cb;
+        }
+
+        .validation-marker {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.8rem;
+        }
+
+        .validation-marker.valid {
+            background-color: var(--state-success-text);
+            color: white;
+        }
+
+        .validation-marker.invalid {
+            background-color: var(--state-error-text);
+            color: white;
+        }
+
+        /* =========================================
+           RESPONSIVE & PRINT
+           ========================================= */
+        @media (max-width: 600px) {
+            .fd-form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .fd-btn {
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .fd-card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                break-inside: avoid;
+            }
+
+            .fd-btn {
+                display: none !important;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div class="fd-container">
+        <a href="#main" class="sr-only" style="position:absolute; left:-9999px;">Skip to content</a>
+
+        <header class="fd-header" role="banner">
+            <h1>Measure & Master</h1>
+            <p class="fd-subtitle" style="color: var(--uwp-green); font-weight: 600;">
+                Use low-power measurement to calculate high-power estimates.
+            </p>
+        </header>
+
+        <main id="page1" class="fd-page">
+            <section class="learning-goal fd-card">
+                <h2>Goal</h2>
+                <p>
+                    To demonstrate mastery in calculating high-power field diameters (HPD) at 10× and 40× using the
+                    magnification ratio formula,
+                    and in applying these values to accurately estimate specimen size, beginning with <em>Hydra</em>.
+                </p>
+            </section>
+
+            <section class="metacognition-prompt fd-card">
+                <h2>Metacognitive Reflection</h2>
+                <ol style="padding-left: 1.5rem;">
+                    <li style="margin-bottom: 1rem;">
+                        How did you calculate the high-power field diameters (HPD) at 10× and 40× using the
+                        magnification ratio formula?
+                        <br>
+                        <em class="fd-muted">(Explain your reasoning, not just the steps.)</em>
+                    </li>
+                    <li style="margin-bottom: 1rem;">
+                        How did you apply your HPD values to estimate the size of <em>Hydra</em>, and how confident are
+                        you in your estimate?
+                    </li>
+                    <li style="margin-bottom: 1rem;">
+                        Does your estimated size make biological sense?
+                        <br>
+                        <em class="fd-muted">If not, what would you recheck or revise?</em>
+                    </li>
+                </ol>
+            </section>
+
+            <section id="fd-step-precheck" class="fd-card" aria-label="Pre-use technical checks">
+                <h2 class="fd-section-title">Step 0: Technical Checks</h2>
+                <p class="fd-muted" style="margin-bottom: 1.5rem;">Confirm these steps (by checking the box) before
+                    getting the slide.</p>
+
+                <ol style="list-style: none; padding: 0;">
+                    <li class="fd-step">
+                        <label><input type="checkbox" class="fd-check" /> Power cord is plugged in; on/off switch is
+                            accessible on the back.</label>
+                    </li>
+                    <li class="fd-step">
+                        <label><input type="checkbox" class="fd-check" /> Ocular lenses: rotate until
+                            <strong>64</strong> aligns with the white index line.</label>
+                    </li>
+                    <li class="fd-step">
+                        <label><input type="checkbox" class="fd-check" /> Condenser lens is positioned just below the
+                            stage.</label>
+                    </li>
+                    <li class="fd-step">
+                        <label><input type="checkbox" class="fd-check" /> Objective lens set to <strong>4X
+                                (scanning)</strong>; stage at highest position.</label>
+                    </li>
+                    <li class="fd-step">
+                        <label><input type="checkbox" class="fd-check" /> Illumination at medium/medium‑high (brightest
+                            is not always best).</label>
+                    </li>
+                </ol>
+
+                <button id="fd-btn-to-ruler" class="fd-btn" disabled>Next: Get Ruler Slide</button>
+            </section>
+
+            <section id="fd-step-get-ruler" class="fd-card" style="display: none;" aria-label="Retrieve ruler slide">
+                <h2 class="fd-section-title">Step 1A: Retrieve the Ruler Slide</h2>
+                <li class="fd-step">
+                    <label><input type="checkbox" class="fd-check" /> Find the slide tray on the side counter with
+                        slides that contain a small piece of a millimeter ruler.</label>
+                </li>
+                <li class="fd-step">
+                    <label><input type="checkbox" class="fd-check" />Place the millimeter ruler on the microscope
+                        stage.</label>
+                </li>
+                <button class="fd-btn" id="fd-btn-to-seat">Next: Seat the Ruler Slide</button>
+            </section>
+
+            <section id="fd-step-seat-ruler" class="fd-card" style="display: none;" aria-label="Seat the ruler slide">
+                <h2 class="fd-section-title">Step 1B: Seat the Ruler Properly</h2>
+                <ol style="list-style: none; padding: 0;">
+                    <li class="fd-step">
+                        <label><input type="checkbox" class="fd-seat" /> Open the stage clip with one hand and slide the
+                            ruler piece to the back of the stage. Do <em>not</em> let it go under the clips.</label>
+                    </li>
+                    <li class="fd-step">
+                        <label><input type="checkbox" class="fd-seat" /> Use the lower‑right stage knobs to center the
+                            ruler over the condenser lens.</label>
+                    </li>
+                </ol>
+                <button id="fd-btn-to-align" class="fd-btn" disabled>Next: Align the Field</button>
+            </section>
+
+            <section id="fd-step-align" class="fd-card" style="display: none;"
+                aria-label="Align field of view & measure">
+                <h2 class="fd-section-title">Step 1C: Align the Field & Measure</h2>
+
+                <div class="fd-math">
+                    <p style="margin-top:0;"><strong>Two critical alignments</strong></p>
+                    <ul>
+                        <li><strong>Left Align</strong>: Move the slide until a <strong>black millimeter line</strong>
+                            sits exactly at the <strong>left edge</strong> of the circular field of view.</li>
+                        <li><strong>Diameter Align</strong>: Count the <strong>white millimeter widths</strong> across
+                            the entire <strong>diameter</strong> of the field.</li>
+                    </ul>
+                </div>
+
+                <div class="fd-note" role="note">
+                    Use the <strong>4X</strong> objective for this measurement. Round <em>up</em> to the nearest whole
+                    number for memory, but record your actual reading first.
+                </div>
+
+                <form aria-label="Record 4X field diameter" onsubmit="return false">
+                    <div class="fd-form-row">
+                        <label for="fd-lpd-actual"><strong>LPD at 4X (Actual):</strong></label>
+                        <input id="fd-lpd-actual" class="fd-input" type="number" step="0.1" min="0.1"
+                            placeholder="mm (e.g., 4.7)" aria-describedby="fd-lpd-help" />
+                    </div>
+                    <div class="fd-form-row">
+                        <label for="fd-lpd-rounded"><strong>LPD at 4X (Rounded Up):</strong></label>
+                        <input id="fd-lpd-rounded" class="fd-input" type="number" step="1" min="1"
+                            placeholder="mm (whole number)" />
+                    </div>
+
+                    <p id="fd-lpd-help" class="fd-muted">
+                        Record your actual measurement to 0.1 mm, then round up to the nearest whole number for easier
+                        recall.
+                    </p>
+
+                    <div class="fd-copy-box"
+                        style="margin-top:1rem; padding:0.75rem; border:1px solid #ccc; border-radius:6px; background:#f9f9f9;">
+                        <p class="fd-muted" style="margin-bottom:0.25rem;">
+                            <strong>Copy & paste into Copilot:</strong>
+                        </p>
+
+                        <textarea readonly rows="6" style="width:100%; font-family:inherit; font-size:0.9rem;">
+List everyday, highly recognizable objects that most people can easily visualize, each with a maximum size of 5 millimeters or smaller.
+
+The items should be common, non-technical, and culturally familiar, avoiding specialized tools, scientific terms, or obscure objects.
+
+Choose examples that are intuitive size references for general audiences (e.g., students), ensure each item is clearly within or below the 5 mm range, and favor objects that remain recognizable without magnification.
+                        </textarea>
+
+                        <button type="button" class="fd-btn" style="margin-top:0.5rem;"
+                            onclick="copyPrompt()">
+                            Copy Prompt
+                        </button>
+                    </div>
+
+                    <div id="fd-copilot-results" style="display: none; margin-top: 1.5rem;">
+                        <div class="fd-form-row">
+                            <label for="fd-copilot-text"><strong>Paste Copilot Results:</strong></label>
+                            <textarea id="fd-copilot-text" class="fd-input"
+                                placeholder="Paste the list of objects from Copilot here..."></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin-top:.75rem;">
+                        <button type="button" class="fd-btn fd-btn-secondary" onclick="fdRoundUpLPD()">Calculate Rounded
+                            Value</button>
+                        <button type="button" class="fd-btn" onclick="fdConfirmLPD()">Confirm LPD & Return
+                            Ruler</button>
+                    </div>
+
+                    <div id="fd-feedback-lpd" class="fd-feedback-box"></div>
+                </form>
+            </section>
+
+            <section id="fd-step-replace-ruler" class="fd-card" style="display: none;" aria-label="Replace ruler">
+                <h2 class="fd-section-title">Step 1D: Replace the Ruler Slide</h2>
+                <p>Return the ruler slide to its tray. You will now calculate the field diameters for higher
+                    magnifications using the formula.</p>
+                <button id="fd-btn-to-calc" class="fd-btn">Proceed to Step 2</button>
+            </section>
+
+            <section class="fd-card" aria-label="Help and notes">
+                <h2 class="fd-section-title">Need Help with Setup?</h2>
+                <p>If you're having trouble with the microscope setup or measurements, ask your instructor for
+                    assistance before proceeding to calculations.</p>
+            </section>
+        </main>
+
+        <main id="page2" class="fd-page fd-page-hidden">
+            <div id="fd-step-calculate" class="fd-card">
+                <h2>Step 2: Calculating High Power Fields</h2>
+
+                <div class="fd-note">
+                    <strong>Teaching Point:</strong> In this calculation, the 4x lens is your <strong>Low Power
+                        (LP)</strong> baseline.
+                    Both the 10x lens AND the 40x lens are considered <strong>High Power (HP)</strong> relative to
+                    the 4x.
+                </div>
+
+                <h3>Part A: The 10x Objective</h3>
+                <p>You measured the diameter for the 4x objective lens, now it is time to calculate the diameter for the
+                    10x lens.</p>
+
+                <div class="formula-builder">
+                    <p><strong>1. Build the Formula:</strong></p>
+                    <div style="font-size: 1.2rem; width: 100%;">
+                        HPD =
+                        <select id="fd-f1-lpd" class="fd-input" style="width: auto; display: inline-block;">
+                            <option value="">?</option>
+                            <option value="HPM">HPM</option>
+                            <option value="LPD">LPD</option>
+                        </select>
+                        × (
+                        <div class="fraction">
+                            <span class="numerator">
+                                <select id="fd-f1-top" class="fd-input" style="width: auto;">
+                                    <option value="">?</option>
+                                    <option value="LPM">LPM</option>
+                                    <option value="HPM">HPM</option>
+                                </select>
+                            </span>
+                            <span class="denominator">
+                                <select id="fd-f1-bot" class="fd-input" style="width: auto;">
+                                    <option value="">?</option>
+                                    <option value="LPM">LPM</option>
+                                    <option value="HPM">HPM</option>
+                                </select>
+                            </span>
+                        </div>
+                        )
+                    </div>
+                    <button class="fd-btn" onclick="fdCheckFormula('10x')">Check Formula</button>
+                </div>
+                <div id="fd-feedback-formula-10x" class="fd-feedback-box"></div>
+
+                <div id="fd-calc-input-10x" style="display: none; margin-top: 2rem;">
+                    <p><strong>2. Enter your values and calculate:</strong></p>
+                    <div class="formula-container">
+                        Diameter (<strong>10x</strong> lens)=
+                        <input type="number" id="fd-val-lpd-10" class="fd-input"
+                            style="width: 120px; text-align: center;" placeholder="LPD">
+                        × (
+                        <div class="fraction">
+                            <span class="numerator">
+                                <input type="number" id="fd-val-lpm-10" class="fd-input"
+                                    style="width: 100px; text-align: center;" placeholder="LPM">
+                            </span>
+                            <span class="denominator">
+                                <input type="number" id="fd-val-hpm-10" class="fd-input"
+                                    style="width: 100px; text-align: center;" placeholder="HPM">
+                            </span>
+                        </div>
+                        )
+                        = <span id="fd-calc-result-10x" style="font-weight: bold; min-width: 60px;"></span> mm
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 1rem;">
+                        <button class="fd-btn fd-btn-secondary" onclick="fdCalculate10x()">Calculate 10x HPD</button>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <p><strong>3. Enter your calculated result:</strong></p>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="number" id="fd-ans-10x" class="fd-input" style="max-width: 200px;"
+                                placeholder="Your answer in mm">
+                            <button class="fd-btn" style="margin-top:0;" onclick="fdCheckMath('10x')">Check Answer</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="fd-feedback-math-10x" class="fd-feedback-box"></div>
+
+                <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--uwp-border);">
+
+                <div id="fd-section-40x" style="display: none;">
+                    <h3>Part B: The 40x Objective</h3>
+                    <p>Using the same formula, calculate the diameter for the 40x lens.</p>
+
+                    <div class="formula-builder">
+                        <p><strong>1. The formula is the same:</strong></p>
+                        <div style="font-size: 1.2rem; margin: 1rem 0;">
+                            HPD = LPD × (
+                            <div class="fraction">
+                                <span class="numerator">LPM</span>
+                                <span class="denominator">HPM</span>
+                            </div>
+                            )
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <p><strong>2. Enter your values and calculate:</strong></p>
+                        <div class="formula-container">
+                            Diameter (<strong>40x</strong> objective lens)=
+                            <input type="number" id="fd-val-lpd-40" class="fd-input"
+                                style="width: 120px; text-align: center;" placeholder="LPD">
+                            × (
+                            <div class="fraction">
+                                <span class="numerator">
+                                    <input type="number" id="fd-val-lpm-40" class="fd-input"
+                                        style="width: 100px; text-align: center;" placeholder="LPM">
+                                </span>
+                                <span class="denominator">
+                                    <input type="number" id="fd-val-hpm-40" class="fd-input"
+                                        style="width: 100px; text-align: center;" placeholder="HPM">
+                                </span>
+                            </div>
+                            )
+                            = <span id="fd-calc-result-40x" style="font-weight: bold; min-width: 60px;"></span> mm
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 1rem;">
+                            <button class="fd-btn fd-btn-secondary" onclick="fdCalculate40x()">Calculate 40x HPD</button>
+                        </div>
+
+                        <p style="margin-top: 1rem;"><strong>3. Enter your calculated result:</strong> <br><span
+                                class="fd-muted">Activity check - rotate the revolving nosepiece, observe the objective
+                                lens colors and recite the field diameter for each objective lens while looking into the
+                                microscope.</span></p>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="number" id="fd-ans-40x" class="fd-input" style="max-width: 200px;"
+                                placeholder="Your answer in mm">
+                            <button class="fd-btn" style="margin-top:0;" onclick="fdCheckMath('40x')">Check Answer</button>
+                        </div>
+                    </div>
+                    <div id="fd-feedback-math-40x" class="fd-feedback-box"></div>
+                </div>
+
+                <button id="fd-btn-to-mem" class="fd-btn" style="display: none;">Next: Memorization</button>
+            </div>
+
+            <div id="fd-step-memorize" class="fd-card" style="display: none;">
+                <h2>Step 3: The "Big Three"</h2>
+                <p>You must memorize these three numbers. You will use them constantly in BIOS101.</p>
+
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; margin: 2rem 0;">
+                    <div
+                        style="background: #006938; color: white; padding: 2rem; border-radius: 8px; text-align: center; flex: 1; min-width: 150px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <h3>4x</h3>
+                        <h1 style="font-size: 3rem; color: #fff; margin:0;">5<span style="font-size:1rem">mm</span></h1>
+                        <p style="margin:0;">Scanning</p>
+                    </div>
+                    <div
+                        style="background: #006938; color: white; padding: 2rem; border-radius: 8px; text-align: center; flex: 1; min-width: 150px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <h3>10x</h3>
+                        <h1 style="font-size: 3rem; color: #fff; margin:0;">2<span style="font-size:1rem">mm</span></h1>
+                        <p style="margin:0;">Low Power</p>
+                    </div>
+                    <div
+                        style="background: #006938; color: white; padding: 2rem; border-radius: 8px; text-align: center; flex: 1; min-width: 150px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <h3>40x</h3>
+                        <h1 style="font-size: 3rem; color: #fff; margin:0;">0.5<span style="font-size:1rem">mm</span>
+                        </h1>
+                        <p style="margin:0;">High Power</p>
+                    </div>
+                </div>
+
+                <div
+                    style="background: var(--uwp-white-birch); padding: 1.5rem; text-align: center; border-radius: 8px; border: 1px solid var(--uwp-border);">
+                    <h3>Space Repetition Check</h3>
+                    <p>Type the values to lock them in your memory. <strong>Try this</strong>: say the values out loud
+                        before going to sleep later</p>
+                    <div
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 320px; margin: 0 auto; align-items: center;">
+                        <label style="text-align:right;">4x Diameter:</label>
+                        <input type="number" class="fd-input" id="fd-mem-4" placeholder="mm">
+
+                        <label style="text-align:right;">10x Diameter:</label>
+                        <input type="number" class="fd-input" id="fd-mem-10" placeholder="mm">
+
+                        <label style="text-align:right;">40x Diameter:</label>
+                        <input type="number" class="fd-input" id="fd-mem-40" step="0.1" placeholder="mm">
+                    </div>
+                    <button class="fd-btn" onclick="fdCheckMemorization()">Check &amp; Continue</button>
+                    <div id="fd-feedback-mem" class="fd-feedback-box"></div>
+                </div>
+
+                <div id="fd-slide-abbrev"
+                    style="margin-top: 3rem; padding-top: 2rem; border-top: 1px dashed var(--uwp-border);">
+                    <h2 class="fd-section-title">Mini-Mastery: Reading Permanent Slide Labels</h2>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start;">
+                        <figure style="flex: 1 1 260px; margin: 0;">
+                            <img src="slies.jpg" alt="Example Hydra permanent slides with labels"
+                                style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.12);">
+                            <figcaption class="fd-muted" style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                Sample permanent slides: <em>Hydra wm. budding</em> (whole mount) and <em>Hydra c.s. and
+                                    l.s.</em> (cross and longitudinal sections).
+                            </figcaption>
+                        </figure>
+
+                        <div style="flex: 1 1 260px;">
+                            <p class="fd-muted" style="margin-bottom: 0.75rem;">
+                                Permanent slide labels pack a lot of information into a few letters. Mastering these
+                                abbreviations makes it much easier to know what you are looking at before you focus.
+                            </p>
+
+                            <div
+                                style="background-color: #fafafa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 1rem;">
+                                <h3 style="margin-top: 0; margin-bottom: 0.75rem; font-size: 1rem;">Core Abbreviations
+                                </h3>
+                                <ul style="list-style: none; padding-left: 0; font-size: 0.95rem; line-height: 1.6;">
+                                    <li><strong>w.m.</strong> – <strong>whole mount</strong>: the entire organism is
+                                        mounted on the slide (not sectioned).</li>
+                                    <li class="fd-muted" style="margin-left: 1.5rem; font-size: 0.9rem;">Do <em>not</em>
+                                        confuse this with a <strong>wet mount</strong>, which is a temporary slide you
+                                        prepare yourself.</li>
+                                    <li style="margin-top: 0.5rem;"><strong>c.s.</strong> (or <strong>x.s.</strong>) –
+                                        <strong>cross section</strong> or <strong>transverse section</strong>: a slice
+                                        taken across the width of the specimen.
+                                    </li>
+                                    <li style="margin-top: 0.5rem;"><strong>l.s.</strong> – <strong>longitudinal
+                                            section</strong>: a slice taken along the length of the specimen.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background-color: #fafafa; border: 1px solid #e0e0e0; border-radius: 6px; margin-top: 1.5rem; padding: 1rem;">
+                        <h3 style="margin-top: 0; margin-bottom: 0.75rem; font-size: 1rem;">Check Your Understanding
+                        </h3>
+                        <p class="fd-muted" style="margin-bottom: 0.75rem;">
+                            Answer these from memory first, then glance back at the image and list above to confirm.
+                        </p>
+
+                        <ol style="padding-left: 1.2rem; font-size: 0.95rem; line-height: 1.6;">
+                            <li style="margin-bottom: 0.75rem;">
+                                Bottom slide. The label reads "Hydra wm. budding".
+                                In your own words, what does w.m. tell you about how this specimen was
+                                prepared?
+                                <br>
+                                <textarea class="fd-input" rows="1" style="margin-top: 0.5rem; width: 100%;"></textarea>
+                            </li>
+                            <li style="margin-bottom: 0.75rem;">
+                                Top slide. The label reads "Hydra c.s. and l.s.".
+                                What do c.s. and l.s. each stand for, and how are
+                                those sections different?
+                                <br>
+                                <textarea class="fd-input" rows="1" style="margin-top: 0.5rem; width: 100%;"></textarea>
+                            </li>
+                            <li>
+                                You went to the side table and picked up a slide that reads: "Hydra x.s.".
+                                Predict what you would expect to see when you first focus this slide at 4x magnification.
+                                <br>
+                                <textarea class="fd-input" rows="1" style="margin-top: 0.5rem; width: 100%;"></textarea>
+                            </li>
+                            <li>
+                                Your instructor asks you to retrieve a freshly prepared wet-mount slide of living Anabaena. Based on standard microscope slide abbreviations, which one would you expect to see?.
+                                <br>
+                                <textarea class="fd-input" rows="1" style="margin-top: 0.5rem; width: 100%;"></textarea>
+                            </li>
+                        </ol>
+
+                        <p class="fd-muted" style="margin-top: 0.75rem; font-size: 0.9rem;">
+                            Mastery tip: When you pick up any permanent slide in this course, pause for three seconds,
+                            read the abbreviations out loud, and picture the orientation of the specimen before placing
+                            it on the stage.
+                        </p>
+                    </div>
+                </div>
+                <button id="fd-btn-to-est" class="fd-btn" style="display: none; margin-top: 2rem; width: 100%;">Next:
+                    Estimation</button>
+            </div>
+
+            <section id="fd-step-estimate" class="fd-card" style="display: none;" aria-label="Estimate specimen size">
+                <h2 class="fd-section-title">Step 4: Estimate the Length of <em>Hydra</em></h2>
+
+                <div class="fd-note">
+                    <strong>Background:</strong> The lab manual notes that <em>Hydra</em> can extend to 25-30 mm when
+                    hungry, but
+                    specimens on slides are typically <strong>less than 2 mm</strong> in length.
+                    <br><br>
+                    <strong>📺 Watch:</strong> <a href="https://www.youtube.com/watch?v=7Wb7gVUvtT4" target="_blank"
+                        rel="noopener noreferrer"><em>Hydra</em> Video (YouTube)</a>
+                </div>
+
+                <section>
+                    <h2 class="fd-section-title">Step 0: Technical Checks</h2>
+                    <p>Confirm these steps (by checking the box) before getting the slide.</p>
+
+                    <ol style="list-style: none; padding: 0;">
+                        <li class="fd-step">
+                            <label><input type="checkbox" class="fd-check" /> Power cord is plugged in; on/off
+                                switch is
+                                accessible on the back.</label>
+                        </li>
+                        <li class="fd-step">
+                            <label><input type="checkbox" class="fd-check" /> Ocular lenses: rotate until
+                                <strong>64</strong> aligns with the white index line.</label>
+                        </li>
+                        <li class="fd-step">
+                            <label><input type="checkbox" class="fd-check" /> Condenser lens is positioned just
+                                below
+                                the
+                                stage.</label>
+                        </li>
+                        <li class="fd-step">
+                            <label><input type="checkbox" class="fd-check" /> Objective lens set to <strong>4X
+                                    (scanning)</strong>; stage at highest position.</label>
+                        </li>
+                        <li class="fd-step">
+                            <label><input type="checkbox" class="fd-check" /> Illumination at medium/medium‑high
+                                (brightest
+                                is not always best).</label>
+                        </li>
+                        <li class="fd-step">
+                            <label><input type="checkbox" class="fd-check" /> The stage is free and clear of the
+                                ruler
+                                slide.</label>
+                        </li>
+                    </ol>
+                </section>
+
+                <h3>Markings on the <em>Hydra</em> Slide</h3>
+                <p>Your slide contains both a cross section (c.s.) and a longitudinal section (l.s.) mounts, located
+                    side-by-side. You will use the <strong>l.s. (longitudinal section)</strong> to estimate
+                    <strong>length</strong>.
+                </p>
+
+                <ol style="padding-left: 1.5rem;">
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Retrieve a permanently prepared slide on the side counter.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Obseve the markings on the slide. How many <em>sections</em> are present?
+                        <br><span class="fd-muted">There should be two (2): a cross section (c.s.) and a longitudinal
+                            section (l.s.).</span>
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Seat the <em>Hydra</em> slide on the microscope stage, then locate the
+                        <strong>longitudinal section (l.s.) using the stage adjustment knobs. It is critical to center
+                            the <em>Hydra</em> at 4X magnification, because doing so compensates for small alignment
+                            errors in the microscope and greatly increases the chance that the specimen will stay in
+                            view at higher magnifications.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Bring the <strong>longitudinal section (l.s.) into focus</strong> at <strong>4X</strong> using
+                        the course focus knob. Use the fine focus knob to sharpen the image. Adjust the illumination as
+                        needed using the diaphragm lever.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        The l.s. shows the full length of the body from base to tentacles. Identify these key anatomical
+                        parts of the <em>Hydra</em>.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Calculate the total magnification: where; total magnification = ocular magnification × objective
+                        magnification.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Carefully turn the revolving nosepiece clockwise to click the <strong>10X</strong> lens into
+                        place. Remember that the coarse focus adjustment should <strong>not</strong> be moved when using
+                        the 10X or 40X lenses. Bring the <strong>longitudinal section (l.s.) into focus</strong> at
+                        <strong>10X</strong> using the <strong>fine</strong> focus knob. Adjust the illumination as
+                        needed using the diaphragm lever.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Calculate the total magnification: where; total magnification = ocular magnification × objective
+                        magnification.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Carefully turn the revolving nosepiece clockwise to click the <strong>40X</strong> lens into
+                        place.
+                        Bring the <strong>longitudinal section (l.s.) into focus</strong> at <strong>40X</strong> using
+                        the
+                        <strong>fine</strong> focus knob, and adjust the illumination as needed with the diaphragm
+                        lever.
+                        <strong>Note:</strong> Your microscope's 40X objective lens may have dye residue that reduces
+                        resolution.
+                        Please let your instructor know if you experience difficulty focusing at 40X.
+                    </li>
+
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1rem;">
+                        Calculate the total magnification: where; total magnification = ocular magnification × objective
+                        magnification.
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1.5rem;">
+                        Return to the magnification at which the entire <em>Hydra</em> fits within the field of view. Do
+                        <em>not</em> include any broken tentacles extending above the body when estimating length.
+                        <br><span class="fd-muted">Measure from the base (basal disc) to the mouth region where the
+                            tentacles attach.</span>
+                    </li>
+                    <li class="fd-step" style="display: list-item; margin-bottom: 1.5rem;">
+                        How many <em>Hydra</em> fit in the field of view?
+                    </li>
+                </ol>
+
+                <h3>Make Your Estimation</h3>
+                <ol start="4" style="padding-left: 1.5rem;">
+                    <li class="fd-step" style="display: block; margin-bottom: 1rem;">
+                        <div class="fd-form-row">
+                            <label for="fd-objective"><strong>Objective lens used:</strong></label>
+                            <select id="fd-objective" class="fd-input" aria-describedby="fd-objective-help">
+                                <option value="">Choose…</option>
+                                <option value="4">4X (Scanning)</option>
+                                <option value="10">10X (Low Power)</option>
+                                <option value="40">40X (High Power)</option>
+                            </select>
+                        </div>
+                        <p id="fd-objective-help" class="fd-muted">Pick the highest magnification where most of the
+                            <em>Hydra</em> l.s. fits in the field of view.
+                        </p>
+                    </li>
+                    <li class="fd-step" style="display: block; margin-bottom: 1rem;">
+                        <div class="fd-form-row">
+                            <label for="fd-field"><strong>Field diameter at this objective:</strong></label>
+                            <input id="fd-field" class="fd-input" type="number" step="0.01" placeholder="mm">
+                        </div>
+                        <p class="fd-muted">Enter the value you calculated/memorized for the objective lens selected
+                            above.</p>
+                        <div id="fd-feedback-field-check" class="fd-feedback-box"></div>
+                    </li>
+                    <li class="fd-step" style="display: block; margin-bottom: 1rem;">
+                        <div class="fd-form-row">
+                            <label for="fd-fraction"><strong>What fraction of the field does the <em>Hydra</em>
+                                    occupy? Estimate: if you could line up <em>Hydra</em> specimens end-to-end
+                                    across
+                                    the diameter, how many would fit?</strong></label>
+                            <select id="fd-fraction" class="fd-input" aria-describedby="fd-fraction-help">
+                                <option value="">Choose…</option>
+                                <option value="0.75">Three-quarters (3/4)</option>
+                                <option value="0.8">Four-fifths (4/5)</option>
+                                <option value="0.9">Nine-tenths (9/10)</option>
+                                <option value="1">Entire field (1/1)</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="fd-step" style="display: block; margin-bottom: 1rem;">
+                        <div class="fd-form-row">
+                            <label for="fd-hydra-length"><strong>Estimated <em>Hydra</em> length:</strong></label>
+                            <input id="fd-hydra-length" class="fd-input" type="number" step="0.01" placeholder="mm"
+                                readonly />
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 1rem;">
+                            <button class="fd-btn fd-btn-secondary" onclick="calculateHydraLength()">Calculate Hydra
+                                Length</button>
+                        </div>
+                        <p class="fd-muted">Calculation: Field diameter × Fraction = Length</p>
+                        <div id="fd-feedback-hydra" class="fd-feedback-box"></div>
+                    </li>
+                </ol>
+
+                <div class="fd-note"
+                    style="background-color: var(--state-success-bg); border-left-color: var(--uwp-green);">
+                    <strong>Biological Sense Check:</strong>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                        <li>Does your estimate fall below 2 mm? (prepared <em>Hydra</em> specimens are "generally
+                            less than 2 mm")</li>
+                        <li>Does it seem reasonable compared to everyday objects of that size?</li>
+                        <li>If your estimate seems too large or small, recheck your objective lens selection and
+                            fraction estimate.</li>
+                    </ul>
+                </div>
+
+                <h3>Sketching Exercise</h3>
+                <p>Sketch both the cross section (c.s.) and longitudinal section (l.s.) at
+                    4X:</p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0;">
+                    <div style="text-align: center;">
+                        <h4 style="margin-bottom: 0.5rem;"><em>Hydra</em>, c.s. (4X lens)</h4>
+                        <div
+                            style="border: 2px solid var(--uwp-border); border-radius: var(--radius-std); min-height: 200px; background: white;">
+                            <p class="fd-muted" style="padding: 1rem;">Sketch the cross section view here in your lab
+                                notebook.</p>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <h4 style="margin-bottom: 0.5rem;"><em>Hydra</em>, l.s. (4X lens)</h4>
+                        <div
+                            style="border: 2px solid var(--uwp-border); border-radius: var(--radius-std); min-height: 200px; background: white;">
+                            <p class="fd-muted" style="padding: 1rem;">Sketch the longitudinal section view here in your
+                                lab notebook.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fd-note" id="validation-summary" style="display: none;">
+                    <strong>Validation Status:</strong>
+                    <ul id="validation-list" style="margin: 0.5rem 0; padding-left: 1.5rem;"></ul>
+                </div>
+
+                <button id="fd-btn-complete" class="fd-btn" disabled>Complete Assignment</button>
+                <div id="fd-feedback-complete" class="fd-feedback-box"></div>
+            </section>
+
+            <section class="fd-card" aria-label="Help and notes">
+                <h2 class="fd-section-title">Need Help with Calculations?</h2>
+                <p>Asking questions is evidence that your brain is actively working to understand, make connections, and
+                    go deeper into the ideas in front of you. Do not hesitate to ask</p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Initialize validation state
+            window.validationState = {
+                step0Complete: false,
+                lpdRecorded: false,
+                formula10xCorrect: false,
+                math10xCorrect: false,
+                math40xCorrect: false,
+                memorizationCorrect: false,
+                hydraLengthCalculated: false,
+                hydraLengthValid: false
+            };
+
+            // Initialize global variables
+            window.fdLPDActual = null;
+            window.fdLPDRounded = null;
+            window.fdFieldDiameter = null;
+
+            // Step 0: Enable "Next" when all precheck boxes are checked
+            const precheckChecks = document.querySelectorAll('#fd-step-precheck .fd-check');
+            const precheckBtn = document.getElementById('fd-btn-to-ruler');
+            
+            precheckChecks.forEach(c => {
+                c.addEventListener('change', function() {
+                    const allChecked = Array.from(precheckChecks).every(x => x.checked);
+                    precheckBtn.disabled = !allChecked;
+                    validationState.step0Complete = allChecked;
+                });
+            });
+
+            precheckBtn.addEventListener('click', function() {
+                document.getElementById('fd-step-get-ruler').style.display = 'block';
+                this.style.display = 'none';
+            });
+
+            // Step 1A to 1B navigation
+            document.getElementById('fd-btn-to-seat').addEventListener('click', function() {
+                document.getElementById('fd-step-seat-ruler').style.display = 'block';
+                this.style.display = 'none';
+            });
+
+            // Step 1B: Enable "Next" when both boxes are checked
+            const seatChecks = document.querySelectorAll('#fd-step-seat-ruler .fd-seat');
+            const seatBtn = document.getElementById('fd-btn-to-align');
+            
+            seatChecks.forEach(c => {
+                c.addEventListener('change', function() {
+                    const allChecked = Array.from(seatChecks).every(x => x.checked);
+                    seatBtn.disabled = !allChecked;
+                });
+            });
+
+            seatBtn.addEventListener('click', function() {
+                document.getElementById('fd-step-align').style.display = 'block';
+                this.style.display = 'none';
+            });
+
+            // Step 1D navigation
+            document.getElementById('fd-btn-to-calc').addEventListener('click', function() {
+                document.getElementById('page1').classList.add('fd-page-hidden');
+                document.getElementById('page2').classList.remove('fd-page-hidden');
+            });
+
+            // Step 2: Show memorization step
+            document.getElementById('fd-btn-to-mem').addEventListener('click', function() {
+                document.getElementById('fd-step-calculate').style.display = 'none';
+                document.getElementById('fd-step-memorize').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Step 3: Show estimation step
+            document.getElementById('fd-btn-to-est').addEventListener('click', function() {
+                document.getElementById('fd-step-memorize').style.display = 'none';
+                document.getElementById('fd-step-estimate').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Initialize field diameter tracking
+            const fieldInput = document.getElementById('fd-field');
+            if (fieldInput) {
+                fieldInput.addEventListener('input', function() {
+                    window.fdFieldDiameter = parseFloat(this.value);
+                });
+            }
+
+            // Initialize complete button
+            const completeBtn = document.getElementById('fd-btn-complete');
+            if (completeBtn) {
+                completeBtn.addEventListener('click', handleComplete);
+            }
+        }
+
+        // Copy prompt function
+        function copyPrompt() {
+            const textarea = document.querySelector('.fd-copy-box textarea');
+            textarea.select();
+            document.execCommand('copy');
+            alert('Prompt copied to clipboard!');
+        }
+
+        // Round-up helper for LPD
+        function fdRoundUpLPD() {
+            const actual = parseFloat(document.getElementById('fd-lpd-actual').value);
+            const fb = document.getElementById('fd-feedback-lpd');
+            
+            if (isNaN(actual) || actual <= 0) {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = 'Please enter a valid actual LPD measured at 4X.';
+                return;
+            }
+            
+            const rounded = Math.ceil(actual);
+            document.getElementById('fd-lpd-rounded').value = rounded;
+            fb.className = 'fd-feedback-box success';
+            fb.textContent = `Rounded up to ${rounded} mm for memory; keeping actual = ${actual.toFixed(1)} mm.`;
+        }
+
+        // Confirm LPD
+        function fdConfirmLPD() {
+            const actual = parseFloat(document.getElementById('fd-lpd-actual').value);
+            const rounded = parseFloat(document.getElementById('fd-lpd-rounded').value);
+            const fb = document.getElementById('fd-feedback-lpd');
+
+            if (isNaN(actual) || actual <= 0) {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = 'Enter your actual LPD (to 0.1 mm).';
+                return;
+            }
+            
+            if (isNaN(rounded) || rounded < actual) {
+                fb.className = 'fd-feedback-box warn';
+                fb.textContent = 'Rounded LPD should be a whole number ≥ actual (rounded up).';
+                return;
+            }
+
+            // Store globally
+            window.fdLPDActual = actual;
+            window.fdLPDRounded = rounded;
+            validationState.lpdRecorded = true;
+
+            // Show Copilot results
+            document.getElementById('fd-copilot-results').style.display = 'block';
+            fb.className = 'fd-feedback-box success';
+            fb.textContent = 'LPD recorded. Please paste your Copilot results below.';
+
+            // Update button
+            const confirmBtn = document.querySelector('button[onclick="fdConfirmLPD()"]');
+            confirmBtn.textContent = 'Proceed to Step 1D';
+            confirmBtn.onclick = function() {
+                document.getElementById('fd-step-replace-ruler').style.display = 'block';
+                document.getElementById('fd-step-align').style.display = 'none';
+            };
+        }
+
+        // Check formula for 10x
+        function fdCheckFormula(which) {
+            const fb = document.getElementById('fd-feedback-formula-10x');
+            const l = document.getElementById('fd-f1-lpd').value;
+            const n = document.getElementById('fd-f1-top').value;
+            const d = document.getElementById('fd-f1-bot').value;
+
+            const correct = (l === 'LPD' && n === 'LPM' && d === 'HPM');
+            fb.className = correct ? 'fd-feedback-box success' : 'fd-feedback-box error';
+            fb.textContent = correct
+                ? 'Correct: HPD = LPD × (LPM ÷ HPM). Now enter your values and calculate.'
+                : 'Try again: HPD should equal LPD multiplied by (LPM divided by HPM).';
+
+            if (correct) {
+                document.getElementById('fd-calc-input-10x').style.display = 'block';
+                validationState.formula10xCorrect = true;
+            }
+        }
+
+        // Calculate 10x HPD
+        function fdCalculate10x() {
+            const LPD = parseFloat(document.getElementById('fd-val-lpd-10').value);
+            const LPM = parseFloat(document.getElementById('fd-val-lpm-10').value);
+            const HPM = parseFloat(document.getElementById('fd-val-hpm-10').value);
+            const resultSpan = document.getElementById('fd-calc-result-10x');
+
+            if ([LPD, LPM, HPM].some(v => isNaN(v) || v <= 0)) {
+                resultSpan.textContent = '';
+                resultSpan.style.color = 'var(--state-error-text)';
+                return;
+            }
+
+            const calc = LPD * (LPM / HPM);
+            resultSpan.textContent = calc.toFixed(2);
+            resultSpan.style.color = 'var(--state-success-text)';
+        }
+
+        // Calculate 40x HPD
+        function fdCalculate40x() {
+            const LPD = parseFloat(document.getElementById('fd-val-lpd-40').value);
+            const LPM = parseFloat(document.getElementById('fd-val-lpm-40').value);
+            const HPM = parseFloat(document.getElementById('fd-val-hpm-40').value);
+            const resultSpan = document.getElementById('fd-calc-result-40x');
+
+            if ([LPD, LPM, HPM].some(v => isNaN(v) || v <= 0)) {
+                resultSpan.textContent = '';
+                resultSpan.style.color = 'var(--state-error-text)';
+                return;
+            }
+
+            const calc = LPD * (LPM / HPM);
+            resultSpan.textContent = calc.toFixed(2);
+            resultSpan.style.color = 'var(--state-success-text)';
+        }
+
+        // Check math for 10x and 40x
+        function fdCheckMath(which) {
+            let LPD, LPM, HPM, ansField, fb, resultSpan;
+            
+            if (which === '10x') {
+                LPD = parseFloat(document.getElementById('fd-val-lpd-10').value);
+                LPM = parseFloat(document.getElementById('fd-val-lpm-10').value);
+                HPM = parseFloat(document.getElementById('fd-val-hpm-10').value);
+                ansField = document.getElementById('fd-ans-10x');
+                fb = document.getElementById('fd-feedback-math-10x');
+                resultSpan = document.getElementById('fd-calc-result-10x');
+            } else {
+                LPD = parseFloat(document.getElementById('fd-val-lpd-40').value);
+                LPM = parseFloat(document.getElementById('fd-val-lpm-40').value);
+                HPM = parseFloat(document.getElementById('fd-val-hpm-40').value);
+                ansField = document.getElementById('fd-ans-40x');
+                fb = document.getElementById('fd-feedback-math-40x');
+                resultSpan = document.getElementById('fd-calc-result-40x');
+            }
+
+            if ([LPD, LPM, HPM].some(v => isNaN(v) || v <= 0)) {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = 'Enter valid positive numbers for LPD, LPM, and HPM.';
+                return;
+            }
+
+            const calc = LPD * (LPM / HPM);
+            const userAns = parseFloat(ansField.value);
+
+            if (isNaN(userAns)) {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = 'Please enter your calculated answer.';
+                return;
+            }
+
+            const tolerance = 0.01;
+            const close = Math.abs(userAns - calc) < tolerance;
+
+            if (close) {
+                fb.className = 'fd-feedback-box success';
+                fb.textContent = `Correct: ${userAns.toFixed(2)} mm.`;
+                
+                if (which === '10x') {
+                    validationState.math10xCorrect = true;
+                    // Show 40x section
+                    document.getElementById('fd-section-40x').style.display = 'block';
+                } else {
+                    validationState.math40xCorrect = true;
+                }
+            } else {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = `Not quite. The correct calculation is: ${calc.toFixed(2)} mm. Try again.`;
+            }
+
+            // Show "Next: Memorization" when both are correct
+            if (validationState.math10xCorrect && validationState.math40xCorrect) {
+                document.getElementById('fd-btn-to-mem').style.display = 'inline-block';
+            }
+        }
+
+        // Check memorization
+        function fdCheckMemorization() {
+            const a = parseFloat(document.getElementById('fd-mem-4').value);
+            const b = parseFloat(document.getElementById('fd-mem-10').value);
+            const c = parseFloat(document.getElementById('fd-mem-40').value);
+            const fb = document.getElementById('fd-feedback-mem');
+
+            const correct = (a === 5 && b === 2 && c === 0.5);
+            fb.className = correct ? 'fd-feedback-box success' : 'fd-feedback-box error';
+            fb.textContent = correct
+                ? 'Nice work. Those "Big Three" are locked in. Now set your alarm for 24 hours from now. Say the numbers out loud when your alarm goes off.'
+                : 'Try again: 4x = 5 mm, 10x = 2 mm, 40x = 0.5 mm.';
+
+            if (correct) {
+                validationState.memorizationCorrect = true;
+                document.getElementById('fd-btn-to-est').style.display = 'inline-block';
+            }
+        }
+
+        // Calculate Hydra length
+        function calculateHydraLength() {
+            const fieldDiameter = parseFloat(document.getElementById('fd-field').value);
+            const fraction = parseFloat(document.getElementById('fd-fraction').value);
+            const lengthField = document.getElementById('fd-hydra-length');
+            const fb = document.getElementById('fd-feedback-hydra');
+
+            if (isNaN(fieldDiameter) || fieldDiameter <= 0) {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = 'Please enter a valid field diameter.';
+                return;
+            }
+
+            if (isNaN(fraction) || fraction <= 0) {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = 'Please select a fraction of the field.';
+                return;
+            }
+
+            const length = fieldDiameter * fraction;
+            lengthField.value = length.toFixed(2);
+            validationState.hydraLengthCalculated = true;
+
+            // Check biological sense
+            if (length <= 2) {
+                fb.className = 'fd-feedback-box success';
+                fb.textContent = `${length.toFixed(2)} mm - This makes biological sense! Lab specimens are typically less than 2 mm.`;
+                validationState.hydraLengthValid = true;
+            } else {
+                fb.className = 'fd-feedback-box warn';
+                fb.textContent = `${length.toFixed(2)} mm is larger than typical prepared specimens (< 2 mm). Consider rechecking your measurements.`;
+                validationState.hydraLengthValid = false;
+            }
+
+            updateValidationSummary();
+            updateCompleteButton();
+        }
+
+        // Update validation summary
+        function updateValidationSummary() {
+            const summary = document.getElementById('validation-summary');
+            const list = document.getElementById('validation-list');
+            
+            if (!validationState.hydraLengthCalculated) {
+                summary.style.display = 'none';
+                return;
+            }
+
+            summary.style.display = 'block';
+            list.innerHTML = '';
+
+            const checks = [
+                { id: 'step0', label: 'Technical checks completed', value: validationState.step0Complete },
+                { id: 'lpd', label: 'LPD measured and recorded', value: validationState.lpdRecorded },
+                { id: 'formula', label: '10x formula correct', value: validationState.formula10xCorrect },
+                { id: 'math10x', label: '10x calculation correct', value: validationState.math10xCorrect },
+                { id: 'math40x', label: '40x calculation correct', value: validationState.math40xCorrect },
+                { id: 'memorization', label: '"Big Three" memorized', value: validationState.memorizationCorrect },
+                { id: 'hydra', label: 'Hydra length calculated', value: validationState.hydraLengthCalculated },
+                { id: 'biological', label: 'Biological sense check', value: validationState.hydraLengthValid }
+            ];
+
+            checks.forEach(check => {
+                const li = document.createElement('li');
+                const marker = document.createElement('span');
+                marker.className = `validation-marker ${check.value ? 'valid' : 'invalid'}`;
+                marker.textContent = check.value ? '✓' : '✗';
+                
+                li.textContent = check.label + ' ';
+                li.appendChild(marker);
+                list.appendChild(li);
+            });
+        }
+
+        // Update complete button
+        function updateCompleteButton() {
+            const completeBtn = document.getElementById('fd-btn-complete');
+            if (!completeBtn) return;
+
+            const allValid = Object.values(validationState).every(v => v === true);
+            completeBtn.disabled = !allValid;
+
+            if (allValid) {
+                completeBtn.textContent = 'Complete Assignment (Ready)';
+            } else {
+                completeBtn.textContent = 'Complete Assignment';
+            }
+        }
+
+        // Handle complete button click
+        function handleComplete() {
+            const fb = document.getElementById('fd-feedback-complete');
+            const hydraLength = document.getElementById('fd-hydra-length').value;
+            const objective = document.getElementById('fd-objective').value;
+            const fraction = document.getElementById('fd-fraction').value;
+
+            if (!hydraLength || !objective || !fraction) {
+                fb.className = 'fd-feedback-box error';
+                fb.textContent = 'Please complete all estimation fields before finishing.';
+                return;
+            }
+
+            fb.className = 'fd-feedback-box success';
+            fb.innerHTML = `
+                <h3 style="margin-top: 0;">Congratulations! 🎉</h3>
+                <p><strong>Assignment Summary:</strong></p>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    <li>LPD (4X): ${window.fdLPDActual ? window.fdLPDActual.toFixed(1) : '?'} mm (rounded to ${window.fdLPDRounded || '?'} mm)</li>
+                    <li>HPD (10X): ${document.getElementById('fd-ans-10x').value || '?'} mm</li>
+                    <li>HPD (40X): ${document.getElementById('fd-ans-40x').value || '?'} mm</li>
+                    <li>Hydra length estimate: ${hydraLength} mm at ${objective}X magnification</li>
+                </ul>
+                <p style="margin-top: 1rem;">Don't forget to complete your sketches of the c.s. and l.s. views in your lab notebook!</p>
+                <p><strong>Remember:</strong> Say your "Big Three" values out loud tonight before bed, and again in 24 hours!</p>
+                <p>On a scale of 1-10, how would you rate your confidence in your ability to retrieve this information on an assessment?</p>
+                <p>On a scale of 1-10, how would you rate your confidence in your ability to retrieve the size formula?</p>
+                <p>Are there any other questions or concerns about the microscope field diameter lab?</p>
+            `;
+
+            this.disabled = true;
+            this.textContent = 'Assignment Complete ✓';
+        }
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

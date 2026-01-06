@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BIOS101 Labs</title>
+
+<style>
+/* ================= RESET ================= */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #016836 0%, #016736 100%);
+  min-height: 100vh;
+  padding: 8px;
+}
+
+/* ================= NAV ================= */
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bios-menu { position: relative; }
+
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+}
+
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+
+/* ================= CONTENT ================= */
+.container {
+  max-width: 1400px;
+  margin: 10px auto;
+}
+
+header {
+  background: #016836;
+  padding: 16px;
+  border-radius: 6px;
+  color: white;
+  text-align: center;
+  margin-bottom: 12px;
+  border-top: 4px solid #FFD100;
+}
+
+h1 { font-size: 2.1em; }
+.subtitle { font-size: 1.05em; color: #eaeced; }
+
+.labs-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.lab-card {
+  background: white;
+  border-radius: 6px;
+  padding: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.lab-card:hover { transform: translateY(-2px); }
+
+.lab-image {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+}
+
+.lab-status {
+  text-align: center;
+  font-size: 0.75em;
+  font-weight: bold;
+  background: #FFD100;
+  color: #002F6C;
+  border-radius: 12px;
+  padding: 3px;
+  margin-top: 6px;
+}
+
+footer {
+  text-align: center;
+  color: white;
+  margin-top: 20px;
+  font-size: 0.85em;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+
+<div class="container">
+<header>
+  <h1>🧪 BIOS101 Labs</h1>
+  <p class="subtitle">Laboratory Exercises</p>
+</header>
+
+<div class="labs-grid" id="labsGrid"></div>
+
+<footer>
+  <p>&copy; 2025 UW–Parkside Biological Sciences</p>
+</footer>
+</div>
+
+<!-- ================= SCRIPT (DEFERRED) ================= -->
+<script defer>
+/* ===== LAB DATA (MATCHES YOUR REPO EXACTLY) ===== */
+const labs = [
+  { title: "Metacognition", folder: "bios101-learning", image: "00_metacognition.png", visible: true },
+  { title: "Scientific Process", folder: "01_Science_of_Biology", image: "01_science_of_biology.png", visible: true },
+  { title: "Eukaryotes", folder: "02_Eukaryotes", image: "02_eukaryotes.png", visible: true },
+  { title: "Carbohydrates", folder: "03_Carbohydrates", image: "03_carbohydrates.png", visible: true },
+  { title: "Proteins", folder: "04_Proteins", image: "04_proteins.png", visible: true },
+  { title: "Lipids", folder: "05_Lipids", image: "05_lipids.png", visible: true },
+  { title: "Photosynthesis", folder: "06_Photosynthetic_Pigments", image: "06_photosynthesis.png", visible: true },
+  { title: "Nucleic Acids", folder: "07_Nucleic Acids", image: "07_nucleic_acids.png", visible: true },
+  { title: "Mitosis", folder: "08_Mitosis", image: "08_mitosis.png", visible: true },
+  { title: "Meiosis", folder: "09_Meiosis", image: "09_meiosis.png", visible: true },
+  { title: "Genetics", folder: "10_Genetics", image: "10_genetics.png", visible: true }
+];
+
+const showHidden = localStorage.getItem("showHiddenLabs") === "true";
+const menus = document.getElementById("biosMenus");
+const grid = document.getElementById("labsGrid");
+const path = location.pathname;
+
+const menuFrag = document.createDocumentFragment();
+const gridFrag = document.createDocumentFragment();
+
+labs.forEach(lab => {
+  if (!lab.visible && !showHidden) return;
+
+  /* MENU */
+  const m = document.createElement("div");
+  m.className = "bios-menu";
+
+  const b = document.createElement("button");
+  b.className = "bios-trigger";
+  b.textContent = lab.title;
+  if (path.includes(lab.folder)) b.classList.add("active");
+
+  const d = document.createElement("div");
+  d.className = "bios-dropdown";
+  d.innerHTML = `
+    <a href="${lab.folder}/index.html">Overview</a>
+    <a href="${lab.folder}/prelab/prelab.html">Pre-Lab</a>
+    <a href="${lab.folder}/during_lab/in-lab.html">In-Lab</a>
+    <a href="${lab.folder}/postlab/postlab.html">Post-Lab</a>
+    <a href="${lab.folder}/advanced/optional.html">Optional</a>
+  `;
+
+  m.append(b, d);
+  menuFrag.appendChild(m);
+
+  /* GRID */
+  const c = document.createElement("a");
+  c.href = `${lab.folder}/index.html`;
+  c.className = "lab-card";
+  c.innerHTML = `
+    <img class="lab-image" loading="lazy" src="images/${lab.image}" alt="${lab.title}">
+    <span class="lab-status">${lab.title}</span>
+  `;
+  gridFrag.appendChild(c);
+});
+
+menus.appendChild(menuFrag);
+grid.appendChild(gridFrag);
+
+/* MOBILE */
+document.querySelector(".bios-toggle").onclick =
+  () => menus.classList.toggle("open");
+
+/* INSTRUCTOR TOGGLE: CTRL+SHIFT+L */
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.shiftKey && e.key === "L") {
+    localStorage.setItem("showHiddenLabs", !showHidden);
+    location.reload();
+  }
+});
+</script>
+
+</body>
+</html>

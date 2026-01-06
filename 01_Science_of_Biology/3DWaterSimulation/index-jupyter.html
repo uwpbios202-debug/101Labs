@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Molecule 3D - Plotly Version</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body style="background: linear-gradient(135deg, #0a0a2a 0%, #1a1a3a 100%); color: white; padding: 20px;">
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h1 style="text-align: center; color: #4fc3f7; margin-bottom: 30px;">
+            <i class="fas fa-water"></i> Water Molecule 3D Visualization (Plotly)
+        </h1>
+        
+        <div id="plotly-3d" style="width: 100%; height: 700px;"></div>
+        
+        <div style="margin-top: 30px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
+            <h3 style="color: #4fc3f7;">Scientific Data</h3>
+            <p>This visualization shows the exact coordinates of a water molecule with accurate bond lengths and angles.</p>
+            <p>Use your mouse to rotate, zoom, and pan the 3D model.</p>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="index.html" style="color: #4fc3f7; text-decoration: none; padding: 10px 20px; border: 1px solid #4fc3f7; border-radius: 5px;">
+                ← Back to Main Simulation
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Water molecule coordinates (in Ångströms)
+        const atoms = [
+            { x: 0, y: 0, z: 0, element: 'O', color: 'red', size: 15 },
+            { x: 0.96, y: 0, z: 0, element: 'H', color: 'white', size: 10 },
+            { x: -0.96 * Math.cos(104.5/2 * Math.PI/180), y: 0.96 * Math.sin(104.5/2 * Math.PI/180), z: 0, element: 'H', color: 'white', size: 10 }
+        ];
+        
+        // Create traces for atoms
+        const atomTraces = atoms.map(atom => ({
+            x: [atom.x],
+            y: [atom.y],
+            z: [atom.z],
+            mode: 'markers',
+            marker: {
+                size: atom.size,
+                color: atom.color,
+                symbol: 'circle',
+                line: { color: 'black', width: 1 }
+            },
+            name: `${atom.element} atom`,
+            text: [`${atom.element} atom`],
+            hoverinfo: 'text'
+        }));
+        
+        // Create bonds
+        const bondTraces = [
+            {
+                x: [0, 0.96],
+                y: [0, 0],
+                z: [0, 0],
+                mode: 'lines',
+                line: { color: 'gray', width: 5 },
+                name: 'O-H bond',
+                hoverinfo: 'none'
+            },
+            {
+                x: [0, -0.96 * Math.cos(104.5/2 * Math.PI/180)],
+                y: [0, 0.96 * Math.sin(104.5/2 * Math.PI/180)],
+                z: [0, 0],
+                mode: 'lines',
+                line: { color: 'gray', width: 5 },
+                name: 'O-H bond',
+                hoverinfo: 'none'
+            }
+        ];
+        
+        // Combine all traces
+        const data = [...atomTraces, ...bondTraces];
+        
+        // Layout configuration
+        const layout = {
+            title: 'Water Molecule (H₂O) - 3D Structure',
+            scene: {
+                xaxis: { title: 'X (Å)' },
+                yaxis: { title: 'Y (Å)' },
+                zaxis: { title: 'Z (Å)' },
+                camera: {
+                    eye: { x: 1.5, y: 1.5, z: 1.5 }
+                },
+                bgcolor: 'rgba(10,10,40,0.8)'
+            },
+            paper_bgcolor: 'rgba(10,10,40,0.8)',
+            plot_bgcolor: 'rgba(10,10,40,0.8)',
+            font: { color: 'white' },
+            width: 1200,
+            height: 700,
+            showlegend: true
+        };
+        
+        // Create plot
+        Plotly.newPlot('plotly-3d', data, layout);
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

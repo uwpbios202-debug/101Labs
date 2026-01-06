@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Sheet - Lab 1</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .checkbox-item { 
+            display: flex; align-items: center; padding: 0.5rem; 
+            border-bottom: 1px solid #eee; 
+        }
+        .checkbox-item input { width: 20px; height: 20px; margin-right: 1rem; }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <header class="global">
+        <a href="../index.html">← Back to Hub</a>
+        <span>🧪 During Lab Run Sheet</span>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h3>1. Safety & Setup (4 pts)</h3>
+            <div class="checkbox-item"><label><input type="checkbox"> Carry microscope upright with two hands</label></div>
+            <div class="checkbox-item"><label><input type="checkbox"> Clean ocular & objectives with lens paper</label></div>
+            <div class="checkbox-item"><label><input type="checkbox"> Adjust iris diaphragm for contrast</label></div>
+        </div>
+
+        <div class="card">
+            <h3>2. Field Diameter (4 pts)</h3>
+            <p>Measure <strong>LPD (4X)</strong> with ruler slide.</p>
+            <label>LPD (mm): <input type="number" id="lpd" style="padding:0.3rem; width:80px;"></label>
+            <p>Calculate HPD using: $HPD = LPD \times (LPM / HPM)$</p>
+        </div>
+        
+        <div class="card">
+            <h3>3. Wet Mounts</h3>
+            <div class="checkbox-item"><label><input type="checkbox"> Prepare Anabaena wet mount</label></div>
+            <div class="checkbox-item"><label><input type="checkbox"> Locate Cheek Cells (stained)</label></div>
+            <div class="checkbox-item"><label><input type="checkbox"> TA Verification Signature</label></div>
+        </div>
+    </div>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

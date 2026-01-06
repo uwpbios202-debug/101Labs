@@ -1,0 +1,760 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BIOS101 Learning System - Your Scientific Approach to Mastery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #016836 0%, #016736 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: grid-flow 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes grid-flow {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(30px, 30px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 0;
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-4px);
+        }
+
+        .back-button::before {
+            content: '←';
+            margin-right: 6px;
+            font-size: 1.2rem;
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: repeat(4, 140px);
+            gap: -10px;
+            justify-content: center;
+            margin: 30px auto 20px auto;
+            max-width: 540px;
+        }
+
+        .student-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 1px solid goldenrod;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .student-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-cta {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Main Content */
+        main {
+            padding: 50px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .intro-section h2 {
+            font-size: 2rem;
+            color: #016836;
+            margin-bottom: 20px;
+        }
+
+        .intro-section p {
+            font-size: 1.1rem;
+            color: #546e7a;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .learning-cycle-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #016836;
+            margin-bottom: 50px;
+            font-weight: 600;
+        }
+
+        /* Process Steps */
+        .process {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #666;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Step-specific colors - Thematic */
+        .step-1 {
+            border-left-color: #e74c3c;
+        }
+
+        /* Red - Medical/diagnostic */
+        .step-1:hover {
+            border-left-color: #c0392b;
+        }
+
+        .step-1 .step-number {
+            background: #e74c3c;
+        }
+
+        .step-2 {
+            border-left-color: #f39c12;
+        }
+
+        /* Orange - Testing/experimentation */
+        .step-2:hover {
+            border-left-color: #d68910;
+        }
+
+        .step-2 .step-number {
+            background: #f39c12;
+        }
+
+        .step-3 {
+            border-left-color: #3498db;
+        }
+
+        /* Blue - Analysis/data */
+        .step-3:hover {
+            border-left-color: #2980b9;
+        }
+
+        .step-3 .step-number {
+            background: #3498db;
+        }
+
+        .step-4 {
+            border-left-color: #9b59b6;
+        }
+
+        /* Purple - Design/creativity */
+        .step-4:hover {
+            border-left-color: #8e44ad;
+        }
+
+        .step-4 .step-number {
+            background: #9b59b6;
+        }
+
+        .step-5 {
+            border-left-color: #16a085;
+        }
+
+        /* Teal - Deployment/action */
+        .step-5:hover {
+            border-left-color: #138d75;
+        }
+
+        .step-5 .step-number {
+            background: #16a085;
+        }
+
+        .step-6 {
+            border-left-color: #27ae60;
+        }
+
+        /* Green - Growth/measurement */
+        .step-6:hover {
+            border-left-color: #229954;
+        }
+
+        .step-6 .step-number {
+            background: #27ae60;
+        }
+
+        .step-7 {
+            border-left-color: #34495e;
+        }
+
+        /* Dark gray - Refinement/mastery */
+        .step-7:hover {
+            border-left-color: #2c3e50;
+        }
+
+        .step-7 .step-number {
+            background: #34495e;
+        }
+
+        .step-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .step h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            padding-right: 50px;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+            color: #546e7a;
+            margin-bottom: 18px;
+            line-height: 1.7;
+        }
+
+        .step-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: #016836;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-link:hover {
+            background: goldenrod;
+            transform: translateX(4px);
+        }
+
+        .step-1 .step-link {
+            background: #e74c3c;
+        }
+
+        .step-1 .step-link:hover {
+            background: #c0392b;
+        }
+
+        .step-2 .step-link {
+            background: #f39c12;
+        }
+
+        .step-2 .step-link:hover {
+            background: #d68910;
+        }
+
+        .step-3 .step-link {
+            background: #3498db;
+        }
+
+        .step-3 .step-link:hover {
+            background: #2980b9;
+        }
+
+        .step-4 .step-link {
+            background: #9b59b6;
+        }
+
+        .step-4 .step-link:hover {
+            background: #8e44ad;
+        }
+
+        .step-5 .step-link {
+            background: #16a085;
+        }
+
+        .step-5 .step-link:hover {
+            background: #138d75;
+        }
+
+        .step-6 .step-link {
+            background: #27ae60;
+        }
+
+        .step-6 .step-link:hover {
+            background: #229954;
+        }
+
+        .step-7 .step-link {
+            background: #34495e;
+        }
+
+        .step-7 .step-link:hover {
+            background: #2c3e50;
+        }
+
+        .step-link::after {
+            content: '→';
+            margin-left: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* Cycle Visual - Positioned with Step 7 */
+        .cycle-visual {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #016836;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cycle-visual:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .cycle-visual svg {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 16px;
+        }
+
+        .cycle-text {
+            font-size: 1rem;
+            color: #016836;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .cycle-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #016836;
+            color: white;
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.1rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .student-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .hero-images {
+                grid-template-columns: repeat(4, 120px);
+                gap: 6px;
+                max-width: 280px;
+            }
+
+            .learning-cycle-title {
+                font-size: 1.7rem;
+            }
+
+            .process {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>
+                <a href="../index.html" class="back-button">Back</a>
+                BIOS101: Build Your Learning System
+            </h1>
+            <p class="hero-tagline">You Are the Scientist. Your Learning Is the Experiment.</p>
+            <p class="hero-subtitle">
+                Successful students don't study harder—they run better experiments.
+                Discover the evidence-based approach to mastering biology and any academic challenge.
+            </p>
+            <div class="hero-images">
+                <img src="images/PreMed_White_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_White_Female.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Black_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Black_Female.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_EastAsian_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_EastAsian_Female.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_SouthAsian_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_SouthAsian_Female.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Hispanic_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Hispanic_Female.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_MiddleEastern_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_MiddleEastern_Female.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Indigenous_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Indigenous_Female.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Mixed_Male.png" alt="Student researcher" class="student-avatar">
+                <img src="images/PreMed_Mixed_Female.png" alt="Student researcher" class="student-avatar">
+            </div>
+            <p class="hero-cta">
+                🔬 Ready to transform how you learn? Start your journey below.
+            </p>
+        </div>
+    </div>
+
+    <main>
+
+        <section class="intro-section">
+            <h2>Your Foundation for Academic Success</h2>
+            <p>
+                This isn't just about BIOS101. This is about developing a systematic,
+                scientific approach to learning that will serve you throughout your academic
+                career and beyond. You'll diagnose, test, measure, and refine—just like a real experiment.
+            </p>
+        </section>
+
+        <h2 class="learning-cycle-title">The 7-Step Learning Cycle</h2>
+
+        <section class="process">
+
+            <div class="step step-1">
+                <div class="step-number">1</div>
+                <h3>Diagnose</h3>
+                <p>Identify your current study habits and assumptions. What do you believe about how you learn? Let's
+                    examine it scientifically.</p>
+                <a href="step1-diagnose.html" class="step-link">Begin Diagnosis</a>
+            </div>
+
+            <div class="step step-2">
+                <div class="step-number">2</div>
+                <h3>Test Assumptions</h3>
+                <p>Experience metacognition experiments that challenge your intuition. Discover what learning science
+                    reveals about effective study.</p>
+                <a href="step2-metacognition.html" class="step-link">Run Experiments</a>
+            </div>
+
+            <div class="step step-3">
+                <div class="step-number">3</div>
+                <h3>Analyze BIOS101</h3>
+                <p>Determine what this course actually demands. Different courses require different strategies—let's
+                    decode this one.</p>
+                <a href="step3-course-demands.html" class="step-link">Analyze Course</a>
+            </div>
+
+            <div class="step step-4">
+                <div class="step-number">4</div>
+                <h3>Design Strategy</h3>
+                <p>Match evidence-based learning strategies to BIOS101's specific demands. No generic advice—targeted
+                    solutions.</p>
+                <a href="step4-design.html" class="step-link">Design System</a>
+            </div>
+
+            <div class="step step-5">
+                <div class="step-number">5</div>
+                <h3>Deploy</h3>
+                <p>Turn your plan into a realistic weekly system. Build habits that fit your life, not someone else's
+                    ideal schedule.</p>
+                <a href="step5-deploy.html" class="step-link">Create Schedule</a>
+            </div>
+
+            <div class="step step-6">
+                <div class="step-number">6</div>
+                <h3>Measure</h3>
+                <p>Collect data on recall, accuracy, and performance. Real scientists measure results—so will you.</p>
+                <a href="step6-measure.html" class="step-link">Track Progress</a>
+            </div>
+
+            <div class="step step-7">
+                <div class="step-number">7</div>
+                <h3>Refine</h3>
+                <p>Adjust your system using evidence, not emotion. Iterate based on what the data tells you, creating
+                    continuous improvement.</p>
+                <a href="step7-refine.html" class="step-link">Optimize System</a>
+            </div>
+
+            <div class="cycle-visual">
+                <div class="cycle-icon">🔄</div>
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#016836" stroke-width="3"
+                        stroke-dasharray="5,5" />
+                    <path d="M 100 20 Q 180 100 100 180 Q 20 100 100 20" fill="none" stroke="#016736"
+                        stroke-width="2" />
+                    <circle cx="100" cy="20" r="8" fill="#e74c3c" />
+                    <circle cx="170" cy="70" r="8" fill="#f39c12" />
+                    <circle cx="170" cy="130" r="8" fill="#3498db" />
+                    <circle cx="100" cy="180" r="8" fill="#9b59b6" />
+                    <circle cx="30" cy="130" r="8" fill="#16a085" />
+                    <circle cx="30" cy="70" r="8" fill="#27ae60" />
+                    <circle cx="100" cy="100" r="15" fill="#34495e" />
+                    <text x="100" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">YOU</text>
+                </svg>
+                <p class="cycle-text">A continuous cycle of improvement—you at the center</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p><strong>BIOS101</strong> • Learning Science Applied • UW–Parkside</p>
+        <p style="margin-top:10px;opacity:0.8;font-size:0.85rem;">
+            Empowering students to become expert learners through scientific self-experimentation.
+        </p>
+    </footer>
+
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>
+

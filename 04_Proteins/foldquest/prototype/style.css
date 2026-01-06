@@ -1,0 +1,95 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  padding: 20px;
+}
+
+h1, h2, h3, p {
+  text-align: center;
+}
+
+#aa-pool, #chain, #waterPool {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  margin: 15px auto;
+  max-width: 1100px;
+}
+
+/* === Amino Acid Pool === */
+
+.aa {
+  width: 45px;
+  height: 45px;
+  border-radius: 6px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+
+.nonpolar { background: #ffe082; }
+.polar    { background: #a5d6a7; }
+.acidic  { background: #ef9a9a; }
+.basic   { background: #90caf9; }
+
+/* === Residue Skeleton === */
+
+.residue {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  font-size: 12px;
+}
+
+.atom {
+  position: absolute;
+  font-weight: bold;
+}
+
+.bond {
+  position: absolute;
+  background: #000;
+}
+
+/* Bonds */
+.bond.h { width: 2px; height: 20px; }
+.bond.v { width: 20px; height: 2px; }
+
+/* Atom positions */
+.N  { left: 10px;  top: 50px; }
+.Ca { left: 45px;  top: 50px; }
+.C  { left: 80px;  top: 50px; }
+.O  { left: 105px; top: 50px; }
+
+.R  { left: 45px;  top: 5px;  }
+.Ha { left: 45px;  top: 90px; }
+
+/* Bonds around alpha carbon */
+.bond.NCa { left: 25px; top: 60px; }
+.bond.CaC { left: 60px; top: 60px; }
+.bond.R   { left: 55px; top: 25px; transform: rotate(90deg); }
+.bond.Ha  { left: 55px; top: 75px; transform: rotate(90deg); }
+
+/* Carbonyl double bond */
+.double {
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  background: #000;
+  left: 90px;
+}
+
+.double.one { top: 45px; }
+.double.two { top: 55px; }
+
+/* Water molecules */
+.water {
+  font-weight: bold;
+  color: #2196f3;
+}

@@ -1,0 +1,1016 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EukaryLingo - Cell Biology Terminology Mastery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-align: center;
+        }
+
+        .intro-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 30px;
+            border-radius: 6px;
+        }
+
+        .intro-section h2 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .intro-section p {
+            line-height: 1.8;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .intro-section ol {
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .intro-section li {
+            margin-bottom: 8px;
+        }
+
+        .intro-section strong {
+            color: #667eea;
+        }
+
+        .term-selector {
+            margin: 30px 0;
+        }
+
+        .term-selector label {
+            display: block;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d0e0ff;
+            border-radius: 6px;
+            font-size: 1em;
+            color: #333;
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        select:hover {
+            border-color: #667eea;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .prompt-section {
+            display: none;
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #d0e0ff;
+        }
+
+        .prompt-section.active {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .prompt-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .prompt-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #e8efff;
+            border-radius: 6px;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .prompt-header:hover {
+            background: #dce4ff;
+        }
+
+        .toggle-arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+        }
+
+        .toggle-arrow.open {
+            transform: rotate(90deg);
+        }
+
+        .prompt-label {
+            color: #667eea;
+            font-weight: 600;
+            flex-grow: 1;
+        }
+
+        .prompt-content {
+            display: none;
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            margin-bottom: 15px;
+            line-height: 1.7;
+            font-size: 0.95em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            color: #444;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .prompt-content.open {
+            display: block;
+        }
+
+        .instructions {
+            background: #e8efff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 3px solid #667eea;
+        }
+
+        .instructions p {
+            margin: 8px 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .instructions li {
+            margin-bottom: 6px;
+        }
+
+        .step-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .text-input-section {
+            margin-bottom: 20px;
+        }
+
+        .text-input-section label {
+            display: block;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d0e0ff;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95em;
+            resize: vertical;
+            min-height: 80px;
+            color: #333;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .note-box {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #856404;
+        }
+
+        .singular-plural-note {
+            background: #d1ecf1;
+            border-left: 3px solid #17a2b8;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #0c5460;
+        }
+
+        .sample-sentence {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-left: 3px solid #667eea;
+            border-radius: 4px;
+            font-style: italic;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            border: 1px solid #d0e0ff;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #d0e0ff;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #667eea;
+        }
+
+        .audio-section {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            margin-top: 10px;
+        }
+
+        .audio-section audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        #audioStatus {
+            color: #999;
+            font-size: 0.85em;
+            margin-left: 12px;
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div class="container">
+        <h1>🔬 EukaryLingo: Cell Biology Terminology Mastery</h1>
+
+        <div class="intro-section">
+            <h2>How This System Works</h2>
+            <p>This interactive system will help you become fluent in biological terminology through a proven 6-step
+                process:</p>
+            <ol>
+                <li><strong>Select a term</strong> from the dropdown menu</li>
+                <li><strong>Copy the AI prompt</strong> and paste it into an AI tool (ChatGPT, Claude, or Copilot)</li>
+                <li><strong>Explain</strong> the morpheme and etymology in your own words</li>
+                <li><strong>Apply</strong> the term with examples from your lab manual</li>
+                <li><strong>Listen</strong> to correct pronunciation and practice aloud</li>
+                <li><strong>Assess</strong> your pronunciation using Microsoft's Speech Assessment Tool</li>
+            </ol>
+            <p style="margin-top: 15px;">📚 <strong>Additional Resource:</strong> <a
+                    href="https://pdxscholar.library.pdx.edu/cgi/viewcontent.cgi?article=2087&context=open_access_etds"
+                    target="_blank">Read more about biological terminology learning strategies</a></p>
+        </div>
+
+        <div class="term-selector">
+            <label for="termSelect">Select a Biological Term:</label>
+            <select id="termSelect" onchange="displayPrompt(this.value)">
+                <option value="">-- Choose a term --</option>
+
+                <!-- Singular/Plural Pairs (with morpheme breakdown) -->
+                <option value="nucleus">Nucleus (singular) & Nuclei (plural)</option>
+                <option value="flagellum">Flagellum (singular) & Flagella (plural)</option>
+                <option value="cilium">Cilium (singular) & Cilia (plural)</option>
+                <option value="pseudopodium">Pseudopodium (singular) & Pseudopodia (plural)</option>
+                <option value="nucleolus">Nucleolus (singular) & Nucleoli (plural)</option>
+                <option value="mitochondrion">Mitochondrion (singular) & Mitochondria (plural)</option>
+
+                <!-- Organelles and Structures (with morpheme breakdown) -->
+                <option value="ribosome">Ribosome</option>
+                <option value="lysosome">Lysosome</option>
+                <option value="nucleoid">Nucleoid</option>
+                <option value="organelle">Organelle</option>
+                <option value="chloroplast">Chloroplast</option>
+                <option value="chromoplast">Chromoplast</option>
+                <option value="plastid">Plastid</option>
+                <option value="amyloplast">Amyloplast</option>
+                <option value="tonoplast">Tonoplast</option>
+                <option value="cytoplasm">Cytoplasm</option>
+                <option value="cytoskeleton">Cytoskeleton</option>
+                <option value="microtubule">Microtubule</option>
+                <option value="microfilament">Microfilament</option>
+                <option value="chromatin">Chromatin</option>
+                <option value="cell">Cell</option>
+                <option value="cellwall">Cell wall</option>
+                <option value="golgi">Golgi apparatus</option>
+                <option value="parenchyma">Parenchyma</option>
+                <option value="pigment">Pigment</option>
+                <option value="chlorophyll">Chlorophyll</option>
+                <option value="carotene">Carotene</option>
+
+                <!-- Organism/Proper Nouns (no morpheme breakdown) -->
+                <option value="protist">Protist</option>
+                <option value="euglena">Euglena</option>
+                <option value="chlamydomonas">Chlamydomonas</option>
+                <option value="volvox">Volvox</option>
+
+                <!-- Physiological/Chemical Processes (with morpheme breakdown) -->
+                <option value="osmoregulation">Osmoregulation</option>
+                <option value="phagocytosis">Phagocytosis</option>
+                <option value="macronucleus">Macronucleus</option>
+                <option value="hypotonic">Hypotonic</option>
+                <option value="neutrophil">Neutrophil</option>
+                <option value="leukocyte">Leukocyte</option>
+                <option value="platelet">Platelet</option>
+                <option value="actin">Actin</option>
+                <option value="myosin">Myosin</option>
+            </select>
+        </div>
+
+        <!-- Prompt Display Area -->
+        <div id="promptArea" class="prompt-section">
+            <h3 id="termTitle"></h3>
+
+            <!-- Singular/Plural Rule Note (shown only for plural terms) -->
+            <div id="pluralNote" class="singular-plural-note" style="display: none;"></div>
+
+            <!-- AI Prompt Section -->
+            <div class="instructions">
+                <p><strong>📋 Step 1: Copy and Paste This AI Prompt</strong></p>
+                <p>Use this prompt to generate a comprehensive linguistic analysis:</p>
+            </div>
+
+            <div class="prompt-header" onclick="togglePromptContent(this)">
+                <span class="toggle-arrow">▶</span>
+                <span class="prompt-label">Click to view & copy AI prompt</span>
+            </div>
+            <div class="prompt-content" id="promptContent"></div>
+
+            <!-- Step 2: Morpheme & Etymology Explanation -->
+            <div class="step-title">📝 Step 2: Explain in Your Own Words</div>
+            <div class="text-input-section">
+                <label for="morphemeInput">What did you learn about the morpheme and etymology?</label>
+                <textarea id="morphemeInput"
+                    placeholder="In your own words, explain the word parts (morphemes) and origins (etymology) of this term..."></textarea>
+            </div>
+
+            <!-- Step 3: Application Examples -->
+            <div class="step-title">🔬 Step 3: Provide Examples</div>
+            <div class="text-input-section">
+                <label for="examplesInput">Where does this term appear in your lab manual or relate to structures you've
+                    observed?</label>
+                <textarea id="examplesInput"
+                    placeholder="Provide specific examples of how this term is used in biology or appears in your lab experiences..."></textarea>
+            </div>
+
+            <!-- Step 4: Pronunciation -->
+            <div class="step-title">🎧 Step 4: Listen & Repeat</div>
+            <div class="instructions">
+                <p><strong>Listening Tips:</strong></p>
+                <ul>
+                    <li>Play the audio multiple times</li>
+                    <li>Pay attention to which syllable is stressed</li>
+                    <li>Repeat aloud after each listen</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Audio Pronunciation:</strong></p>
+                <div class="audio-section">
+                    <audio id="audioPlayer" controls>
+                        Your browser does not support the audio element.
+                    </audio>
+                    <button id="playAudioBtn" onclick="playPronunciation()">
+                        🔊 Play Pronunciation
+                    </button>
+                    <span id="audioStatus"></span>
+                </div>
+            </div>
+
+            <!-- Step 5: Reading Aloud -->
+            <div class="step-title">📖 Step 5: Read Aloud</div>
+            <div class="instructions">
+                <p>Read this sentence containing your selected term aloud several times. Focus on correct pronunciation
+                    of the highlighted word:</p>
+                <div class="sample-sentence" id="sampleSentence"></div>
+            </div>
+
+            <!-- Step 6: Speech Assessment -->
+            <div class="step-title">✅ Step 6: Formal Pronunciation Feedback</div>
+            <div class="instructions">
+                <p><strong>Use Microsoft's Pronunciation Assessment Tool</strong> for formal, detailed feedback on your
+                    pronunciation:</p>
+                <p style="margin-top: 15px; font-weight: 600; color: #667eea;">Step 1: Click the button below to open
+                    the assessment tool</p>
+                <a href="https://speech.microsoft.com/portal/pronunciationassessmenttool" target="_blank"
+                    style="display: inline-block; background: #667eea; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: 10px; transition: background 0.3s ease; cursor: pointer;">
+                    🔗 Open Microsoft Pronunciation Assessment Tool
+                </a>
+                <p style="margin-top: 15px; font-weight: 600; color: #667eea;">Step 2: Upload your screenshot</p>
+                <p style="font-size: 0.95em; color: #555; margin-top: 10px;">After using the tool, take a screenshot of
+                    your results and upload it here:</p>
+                <input type="file" id="assessmentFile" accept="image/*"
+                    style="margin-top: 10px; padding: 8px; border: 1px solid #d0e0ff; border-radius: 6px; width: 100%;">
+                <div class="note-box" style="margin-top: 15px;">
+                    💡 <strong>How to Use Microsoft's Tool:</strong>
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li>Paste your biological term into the search box</li>
+                        <li>Click "Assess my pronunciation"</li>
+                        <li>Follow the audio recording prompts</li>
+                        <li>Review your detailed accuracy scores</li>
+                        <li>Screenshot your results to submit with this assignment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📚 EukaryLingo helps you master biological terminology through linguistic understanding, audio
+                pronunciation, and practical application.</p>
+        </div>
+    </div>
+
+    <script>
+        const termData = {
+            // Singular/Plural pairs
+            nucleus: {
+                hasMorpheme: true,
+                singular: "Nucleus",
+                plural: "Nuclei",
+                pluralRule: "Latin -us changes to -i (second declension masculine noun)",
+                sample: "The <strong>nucleus</strong> controls cellular functions, and the cell contains multiple <strong>nuclei</strong> during division.",
+                phonetic: "NEW-klee-us / NEW-klee-eye",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/nucleus--_us_1.mp3"
+            },
+            flagellum: {
+                hasMorpheme: true,
+                singular: "Flagellum",
+                plural: "Flagella",
+                pluralRule: "Latin -um changes to -a (second declension neuter noun)",
+                sample: "A single <strong>flagellum</strong> propels the bacterium, while multiple <strong>flagella</strong> create coordinated movement.",
+                phonetic: "fluh-JEL-um / fluh-JEL-uh",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/flagellum--_us_1.mp3"
+            },
+            cilium: {
+                hasMorpheme: true,
+                singular: "Cilium",
+                plural: "Cilia",
+                pluralRule: "Latin -um changes to -a (second declension neuter noun)",
+                sample: "Each <strong>cilium</strong> beats rhythmically, and the collective movement of <strong>cilia</strong> propels mucus.",
+                phonetic: "SIL-ee-um / SIL-ee-uh",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/cilium--_us_1.mp3"
+            },
+            pseudopodium: {
+                hasMorpheme: true,
+                singular: "Pseudopodium",
+                plural: "Pseudopodia",
+                pluralRule: "Latin -um changes to -a (second declension neuter noun); 'pseudo-' (false) + 'podium' (foot)",
+                sample: "The amoeba extends a <strong>pseudopodium</strong>, and multiple <strong>pseudopodia</strong> help it move and capture food.",
+                phonetic: "soo-doh-POH-dee-um / soo-doh-POH-dee-uh",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/pseudopodium--_us_1.mp3"
+            },
+            nucleolus: {
+                hasMorpheme: true,
+                singular: "Nucleolus",
+                plural: "Nucleoli",
+                pluralRule: "Latin -us changes to -i (second declension masculine noun); diminutive of 'nucleus'",
+                sample: "The <strong>nucleolus</strong> is visible within the nucleus, and some cells contain multiple <strong>nucleoli</strong>.",
+                phonetic: "new-KLEE-oh-lus / new-KLEE-oh-lye",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/nucleolus--_us_1.mp3"
+            },
+            mitochondrion: {
+                hasMorpheme: true,
+                singular: "Mitochondrion",
+                plural: "Mitochondria",
+                pluralRule: "Greek -on changes to -a; 'mito-' (thread) + 'chondr-' (grain/granule)",
+                sample: "A single <strong>mitochondrion</strong> produces ATP, and hundreds of <strong>mitochondria</strong> power the cell.",
+                phonetic: "my-toh-KON-dree-on / my-toh-KON-dree-uh",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/mitochondrion--_us_1.mp3"
+            },
+
+            // Organelles and structures
+            ribosome: {
+                hasMorpheme: true,
+                sample: "The <strong>ribosome</strong> synthesizes proteins by reading mRNA codons.",
+                phonetic: "RY-boh-sohm",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/ribosome--_us_1.mp3"
+            },
+            lysosome: {
+                hasMorpheme: true,
+                sample: "The <strong>lysosome</strong> breaks down waste using hydrolytic enzymes.",
+                phonetic: "LY-soh-sohm",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/lysosome--_us_1.mp3"
+            },
+            nucleoid: {
+                hasMorpheme: true,
+                sample: "Bacterial DNA is contained in the <strong>nucleoid</strong>, which lacks a membrane.",
+                phonetic: "NEW-klee-oyd",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/nucleoid--_us_1.mp3"
+            },
+            organelle: {
+                hasMorpheme: true,
+                sample: "Each <strong>organelle</strong> performs specific functions within the cell.",
+                phonetic: "or-guh-NEL",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/organelle--_us_1.mp3"
+            },
+            chloroplast: {
+                hasMorpheme: true,
+                sample: "The <strong>chloroplast</strong> performs photosynthesis in plant cells.",
+                phonetic: "KLOR-oh-plast",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/chloroplast--_us_1.mp3"
+            },
+            chromoplast: {
+                hasMorpheme: true,
+                sample: "The <strong>chromoplast</strong> contains red and yellow pigments in flower petals.",
+                phonetic: "KROH-moh-plast",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/chromoplast--_us_1.mp3"
+            },
+            plastid: {
+                hasMorpheme: true,
+                sample: "The <strong>plastid</strong> is a double-membraned organelle found in plants.",
+                phonetic: "PLAS-tid",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/plastid--_us_1.mp3"
+            },
+            amyloplast: {
+                hasMorpheme: true,
+                sample: "The <strong>amyloplast</strong> stores starch in plant cells.",
+                phonetic: "AM-ih-loh-plast",
+                audio: "mp3/amyloplast.mp3"
+            },
+            tonoplast: {
+                hasMorpheme: true,
+                sample: "The <strong>tonoplast</strong> membrane surrounds the vacuole in plant cells.",
+                phonetic: "TON-oh-plast",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/tonoplast--_us_1.mp3"
+            },
+            cytoplasm: {
+                hasMorpheme: true,
+                sample: "The <strong>cytoplasm</strong> is the gel-like substance containing organelles.",
+                phonetic: "SY-toh-plaz-um",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/cytoplasm--_us_1.mp3"
+            },
+            cytoskeleton: {
+                hasMorpheme: true,
+                sample: "The <strong>cytoskeleton</strong> provides structural support and enables cell movement.",
+                phonetic: "sy-toh-SKEL-uh-ton",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/cytoskeleton--_us_1.mp3"
+            },
+            microtubule: {
+                hasMorpheme: true,
+                sample: "The <strong>microtubule</strong> is composed of tubulin protein subunits.",
+                phonetic: "my-kroh-TOO-byool",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/microtubule--_us_1.mp3"
+            },
+            microfilament: {
+                hasMorpheme: true,
+                sample: "The <strong>microfilament</strong> is made of actin proteins and enables cell movement.",
+                phonetic: "my-kroh-FIL-uh-ment",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/microfilament--_us_1.mp3"
+            },
+            chromatin: {
+                hasMorpheme: true,
+                sample: "The <strong>chromatin</strong> condenses into chromosomes during cell division.",
+                phonetic: "KROH-muh-tin",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/chromatin--_us_1.mp3"
+            },
+            cell: {
+                hasMorpheme: false,
+                sample: "The <strong>cell</strong> is the basic unit of life.",
+                phonetic: "SEL",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/cell--_us_1.mp3"
+            },
+            cellwall: {
+                hasMorpheme: true,
+                sample: "The <strong>cell wall</strong> provides rigid support around the plant cell membrane.",
+                phonetic: "SEL WAWL",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/cell--_us_1.mp3"
+            },
+            golgi: {
+                hasMorpheme: false,
+                sample: "The <strong>Golgi apparatus</strong> modifies and packages proteins for export.",
+                phonetic: "GOHL-jee",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/golgi--_us_1.mp3"
+            },
+            parenchyma: {
+                hasMorpheme: true,
+                sample: "The <strong>parenchyma</strong> tissue in plants performs photosynthesis and storage.",
+                phonetic: "puh-REN-kih-muh",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/parenchyma--_us_1.mp3"
+            },
+            pigment: {
+                hasMorpheme: true,
+                sample: "The <strong>pigment</strong> chlorophyll absorbs light energy for photosynthesis.",
+                phonetic: "PIG-ment",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/pigment--_us_1.mp3"
+            },
+            chlorophyll: {
+                hasMorpheme: true,
+                sample: "The <strong>chlorophyll</strong> molecule captures light energy in the thylakoid membrane.",
+                phonetic: "KLOR-oh-fil",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/chlorophyll--_us_1.mp3"
+            },
+            carotene: {
+                hasMorpheme: true,
+                sample: "The <strong>carotene</strong> pigment produces orange and yellow leaf colors in autumn.",
+                phonetic: "KAIR-uh-teen",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/carotene--_us_1.mp3"
+            },
+
+            // Organism names (no morpheme)
+            protist: {
+                hasMorpheme: false,
+                sample: "A <strong>protist</strong> is a eukaryotic organism, such as an amoeba or paramecium.",
+                phonetic: "PROH-tist",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/protist--_us_1.mp3"
+            },
+            euglena: {
+                hasMorpheme: false,
+                sample: "The <strong>Euglena</strong> is a protist that can photosynthesize or consume bacteria.",
+                phonetic: "yoo-GLEE-nuh",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/euglena--_us_1.mp3"
+            },
+            chlamydomonas: {
+                hasMorpheme: false,
+                sample: "The <strong>Chlamydomonas</strong> is a green alga with two flagella.",
+                phonetic: "klam-id-oh-MOH-nas",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/chlamydomonas--_us_1.mp3"
+            },
+            volvox: {
+                hasMorpheme: false,
+                sample: "The <strong>Volvox</strong> forms hollow spheres of thousands of cells.",
+                phonetic: "VOL-voks",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/volvox--_us_1.mp3"
+            },
+
+            // Physiological/chemical processes
+            osmoregulation: {
+                hasMorpheme: true,
+                sample: "The cell uses <strong>osmoregulation</strong> to maintain water balance across the membrane.",
+                phonetic: "oz-moh-reg-yoo-LAY-shun",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/osmoregulation--_us_1.mp3"
+            },
+            phagocytosis: {
+                hasMorpheme: true,
+                sample: "The white blood cell uses <strong>phagocytosis</strong> to engulf pathogens.",
+                phonetic: "fag-oh-sy-TOH-sis",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/phagocytosis--_us_1.mp3"
+            },
+            macronucleus: {
+                hasMorpheme: true,
+                sample: "The <strong>macronucleus</strong> in a ciliate controls gene expression for daily functions.",
+                phonetic: "mak-roh-NEW-klee-us",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/macronucleus--_us_1.mp3"
+            },
+            hypotonic: {
+                hasMorpheme: true,
+                sample: "In a <strong>hypotonic</strong> solution, water enters the cell by osmosis.",
+                phonetic: "hy-poh-TON-ik",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/hypotonic--_us_1.mp3"
+            },
+            neutrophil: {
+                hasMorpheme: true,
+                sample: "The <strong>neutrophil</strong> is the most abundant white blood cell.",
+                phonetic: "NOO-troh-fil",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/neutrophil--_us_1.mp3"
+            },
+            leukocyte: {
+                hasMorpheme: true,
+                sample: "A <strong>leukocyte</strong> (white blood cell) helps defend against pathogens.",
+                phonetic: "LOO-koh-site",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/leukocyte--_us_1.mp3"
+            },
+            platelet: {
+                hasMorpheme: false,
+                sample: "A <strong>platelet</strong> is a blood cell fragment that aids in clotting.",
+                phonetic: "PLAYT-let",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/platelet--_us_1.mp3"
+            },
+            actin: {
+                hasMorpheme: false,
+                sample: "The <strong>actin</strong> protein forms microfilaments in the cytoskeleton.",
+                phonetic: "AK-tin",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/actin--_us_1.mp3"
+            },
+            myosin: {
+                hasMorpheme: false,
+                sample: "The <strong>myosin</strong> protein interacts with actin to enable muscle contraction.",
+                phonetic: "MY-oh-sin",
+                audio: "https://ssl.gstatic.com/dictionary/static/sounds/20200429/myosin--_us_1.mp3"
+            }
+        };
+
+        function displayPrompt(value) {
+            const promptArea = document.getElementById('promptArea');
+            const termTitle = document.getElementById('termTitle');
+            const promptContent = document.getElementById('promptContent');
+            const morphemeInput = document.getElementById('morphemeInput');
+            const examplesInput = document.getElementById('examplesInput');
+            const pluralNote = document.getElementById('pluralNote');
+            const sampleSentence = document.getElementById('sampleSentence');
+            const audioPlayer = document.getElementById('audioPlayer');
+
+            if (!value || !termData[value]) {
+                promptArea.classList.remove('active');
+                return;
+            }
+
+            const term = termData[value];
+            let titleText = value.charAt(0).toUpperCase() + value.slice(1);
+
+            // Check if it's a singular/plural pair
+            if (term.singular && term.plural) {
+                titleText = `${term.singular} (singular) & ${term.plural} (plural)`;
+                pluralNote.innerHTML = `<strong>📚 Pluralization Rule:</strong> ${term.pluralRule}`;
+                pluralNote.style.display = 'block';
+            } else {
+                pluralNote.style.display = 'none';
+            }
+
+            termTitle.textContent = titleText;
+
+            // Set up the AI prompt based on whether term has morphemes
+            if (term.hasMorpheme) {
+                promptContent.textContent = `For the biological term "${value.charAt(0).toUpperCase() + value.slice(1)}," provide:
+- Its morpheme breakdown (root(s), prefixes, and suffixes), explaining the meaning of each part
+- Its etymology, tracing the word to its original language(s) with literal meanings
+- Its phoneme (phonetic pronunciation)
+- An audio file of the word being pronounced correctly
+- Examples of how the word is used in biology
+
+Use standard biological and linguistic references. Do not invent meanings, roots, or examples. If a component is uncertain, explicitly state that.`;
+            } else {
+                promptContent.textContent = `For the biological term "${value.charAt(0).toUpperCase() + value.slice(1)}," provide:
+- Its etymology, tracing the word to its original language(s) with literal meanings
+- Its phoneme (phonetic pronunciation)
+- An audio file of the word being pronounced correctly
+- Examples of how the word is used in biology
+
+Use standard biological and linguistic references. Do not invent meanings, roots, or examples. If a component is uncertain, explicitly state that.`;
+            }
+
+            // Set sample sentence
+            if (term.sample) {
+                sampleSentence.innerHTML = term.sample;
+            }
+
+            // Set audio source
+            if (term.audio) {
+                audioPlayer.src = term.audio;
+            }
+
+            // Clear text inputs for new term
+            morphemeInput.value = '';
+            examplesInput.value = '';
+
+            promptArea.classList.add('active');
+        }
+
+        function togglePromptContent(header) {
+            const arrow = header.querySelector('.toggle-arrow');
+            const content = header.nextElementSibling;
+
+            arrow.classList.toggle('open');
+            content.classList.toggle('open');
+        }
+
+        function playPronunciation() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const statusEl = document.getElementById('audioStatus');
+            const btnEl = document.getElementById('playAudioBtn');
+
+            if (!audioPlayer.src) {
+                statusEl.textContent = '⚠️ Please select a term first';
+                return;
+            }
+
+            btnEl.disabled = true;
+            statusEl.textContent = '🔊 Playing...';
+
+            audioPlayer.play().then(() => {
+                audioPlayer.onended = function () {
+                    btnEl.disabled = false;
+                    statusEl.textContent = '✓ Done';
+                };
+            }).catch(error => {
+                btnEl.disabled = false;
+                statusEl.textContent = '⚠️ Unable to play audio';
+                console.error('Audio playback error:', error);
+            });
+        }
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

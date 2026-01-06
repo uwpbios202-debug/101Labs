@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 6 – Measure Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .lucide { width: 1em; height: 1em; stroke-width: 2px; }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+        
+        const Icon = ({ name, size = 18, className = "" }) => {
+            const ref = useRef(null);
+            useEffect(() => {
+                if (window.lucide && ref.current) {
+                    window.lucide.createIcons({
+                        attrs: { class: `lucide lucide-${name.toLowerCase()} ${className}`, style: `width: ${size}px; height: ${size}px;` },
+                        nameAttr: 'data-lucide'
+                    });
+                }
+            }, [name, size, className]);
+            return <i ref={ref} data-lucide={name.toLowerCase()} className={className}></i>;
+        };
+
+        const App = () => {
+            const [sessions, setSessions] = useState([{ id: 1, date: '', attempts: '', correct: '', hints: '', fail: '', topics: '' }]);
+            const [mvw, setMvw] = useState({ r: '', c: '', v: '' });
+            const [conf, setConf] = useState({ hc: '', hw: '', mc: '', mw: '', lc: '', lw: '' });
+            const [errors, setErrors] = useState({ sim: false, app: false, part: false, blank: false, calc: false, seq: false, struct: false });
+            const [hyp, setHyp] = useState('');
+            const [fail, setFail] = useState('');
+            const [qual, setQual] = useState({ s3: false, quiz: false, time: false, acc: false });
+            const [pat, setPat] = useState('');
+            const [oldConf, setOldConf] = useState('');
+            const [newConf, setNewConf] = useState('');
+            const [evImprove, setEvImprove] = useState('');
+            const [dec, setDec] = useState('');
+
+            const addSession = () => setSessions([...sessions, { id: sessions.length + 1, date: '', attempts: '', correct: '', hints: '', fail: '', topics: '' }]);
+            const updateSess = (id, k, v) => setSessions(sessions.map(s => s.id === id ? {...s, [k]: v} : s));
+            const calcAcc = (s) => { const a = parseInt(s.attempts) || 0, c = parseInt(s.correct) || 0; return a === 0 ? 0 : Math.round((c/a)*100); };
+            const calcAdh = () => { const p = 9, a = (parseInt(mvw.r)||0) + (parseInt(mvw.c)||0) + (parseInt(mvw.v)||0); return p === 0 ? 0 : Math.round((a/p)*100); };
+            const errCnt = () => Object.values(errors).filter(v => v).length;
+            const topErr = () => {
+                const e = [];
+                if (errors.sim) e.push('Similar terms');
+                if (errors.app) e.push('Wrong application');
+                if (errors.part) e.push('Partial recall');
+                if (errors.blank) e.push('Complete blank');
+                if (errors.calc) e.push('Calculations');
+                if (errors.seq) e.push('Sequence');
+                if (errors.struct) e.push('Structure-function');
+                return e[0] || 'None';
+            };
+
+            return (
+                <div className="min-h-screen pb-12">
+                    <header className="bg-[#0b3d2e] text-white p-4 sticky top-0 z-10">
+                        <div className="max-w-4xl mx-auto flex justify-between items-center">
+                            <button onClick={()=> (window.location.href = "index.html")} className="text-sm" > ← Back</button>
+                            <h1 className="text-xl font-bold">Step 6 – Measure Learning</h1>
+                            <div className="w-8"></div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+                        <section className="bg-blue-50 p-5 rounded-xl border-2 border-blue-200">
+                            <div className="flex gap-3">
+                                <Icon name="Target" className="text-blue-600 mt-1" size={24} />
+                                <div>
+                                    <h2 className="font-bold text-[#0b3d2e] mb-2">Purpose: Evidence Over Emotion</h2>
+                                    <p className="text-sm">This separates <strong>how studying feels</strong> from <strong>what it produces</strong>. You made predictions in Step 4. Now we measure if they came true.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border shadow-sm">
+                            <div className="flex gap-2 mb-4"><Icon name="Flask-Conical" className="text-purple-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">1. Hypothesis Accountability</h3></div>
+                            <div className="space-y-3">
+                                <div className="bg-purple-50 p-3 rounded border border-purple-200">
+                                    <p className="text-xs font-semibold text-purple-700 mb-2">YOUR HYPOTHESIS (from Step 4)</p>
+                                    <textarea className="w-full p-2 border rounded text-sm" placeholder='Paste your "Because..." statement' rows="2"/>
+                                </div>
+                                <div className="bg-purple-50 p-3 rounded border border-purple-200">
+                                    <p className="text-xs font-semibold text-purple-700 mb-2">YOUR PREDICTED EVIDENCE (from Step 4)</p>
+                                    <textarea className="w-full p-2 border rounded text-sm" placeholder="What you predicted would change" rows="2"/>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold mb-2">Did this prediction come true?</label>
+                                    {[['yes','Yes, completely'],['partial','Partially (explain)'],['no','No (explain)'],['insuf','Insufficient data']].map(([v,l]) => (
+                                        <label key={v} className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                            <input type="radio" name="hyp" value={v} checked={hyp===v} onChange={e=>setHyp(e.target.value)} className="accent-[#0b3d2e]"/>
+                                            <span className="text-sm">{l}</span>
+                                        </label>
+                                    ))}
+                                    {(hyp==='partial'||hyp==='no') && <textarea className="w-full p-2 border rounded text-sm mt-2" placeholder="Explain..." rows="2"/>}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border shadow-sm">
+                            <div className="flex gap-2 mb-4"><Icon name="Check-Circle" className="text-green-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">2. Deployment Adherence</h3></div>
+                            <div className="bg-green-50 p-4 rounded border border-green-200 mb-4">
+                                <p className="text-xs font-semibold text-green-700 mb-2">MVW COMMITMENT (from Step 5)</p>
+                                <table className="w-full text-sm bg-white rounded">
+                                    <thead><tr className="border-b"><th className="text-left p-2">Activity</th><th className="text-center p-2">Planned</th><th className="text-center p-2">Did</th></tr></thead>
+                                    <tbody>
+                                        <tr className="border-b"><td className="p-2">Retrieval practice</td><td className="text-center">3×</td><td className="text-center"><input type="number" value={mvw.r} onChange={e=>setMvw({...mvw,r:e.target.value})} className="w-14 p-1 border rounded text-center"/></td></tr>
+                                        <tr className="border-b"><td className="p-2">Concept comparison</td><td className="text-center">3×</td><td className="text-center"><input type="number" value={mvw.c} onChange={e=>setMvw({...mvw,c:e.target.value})} className="w-14 p-1 border rounded text-center"/></td></tr>
+                                        <tr><td className="p-2">Process verbalization</td><td className="text-center">3×</td><td className="text-center"><input type="number" value={mvw.v} onChange={e=>setMvw({...mvw,v:e.target.value})} className="w-14 p-1 border rounded text-center"/></td></tr>
+                                    </tbody>
+                                </table>
+                                <div className="mt-3 p-3 bg-white rounded border">
+                                    <div className="flex justify-between mb-2"><span className="text-sm font-semibold">MVW Adherence:</span><span className="text-xl font-bold text-[#0b3d2e]">{calcAdh()}%</span></div>
+                                    <div className="w-full bg-gray-200 rounded-full h-3"><div className="bg-green-600 h-3 rounded-full" style={{width:`${calcAdh()}%`}}/></div>
+                                </div>
+                            </div>
+                            <div className="bg-blue-50 p-3 rounded border border-blue-200">
+                                <p className="text-xs font-semibold text-blue-700 mb-2">Friction Reduction (return to Step 5 and count items checked)</p>
+                                <div className="grid grid-cols-2 gap-2 text-xs">
+                                    <div className="bg-white p-2 rounded">Environmental: <input type="number" min="0" max="8" className="w-10 p-1 border rounded"/> / 8</div>
+                                    <div className="bg-white p-2 rounded">Digital: <input type="number" min="0" max="6" className="w-10 p-1 border rounded"/> / 6</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border shadow-sm">
+                            <div className="flex gap-2 mb-4"><Icon name="Line-Chart" className="text-blue-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">3. Performance Data</h3></div>
+                            <div className="mb-5">
+                                <div className="flex justify-between mb-3">
+                                    <h4 className="font-semibold text-sm">A. Retrieval Accuracy</h4>
+                                    <button onClick={addSession} className="text-xs bg-[#0b3d2e] text-white px-3 py-1 rounded hover:bg-[#165c45]">+ Session</button>
+                                </div>
+                                {sessions.map((s,i) => (
+                                    <div key={s.id} className="mb-3 p-3 bg-gray-50 rounded border">
+                                        <div className="flex justify-between mb-2">
+                                            <span className="text-sm font-semibold">Session {i+1}</span>
+                                            {calcAcc(s)>0 && <span className="font-bold text-[#0b3d2e]">{calcAcc(s)}%</span>}
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
+                                            <div><label className="block text-gray-600 mb-1">Date</label><input type="date" value={s.date} onChange={e=>updateSess(s.id,'date',e.target.value)} className="w-full p-1 border rounded"/></div>
+                                            <div><label className="block text-gray-600 mb-1">Attempts</label><input type="number" value={s.attempts} onChange={e=>updateSess(s.id,'attempts',e.target.value)} className="w-full p-1 border rounded"/></div>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-2 mb-2 text-xs">
+                                            <div><label className="block text-gray-600 mb-1">Correct</label><input type="number" value={s.correct} onChange={e=>updateSess(s.id,'correct',e.target.value)} className="w-full p-1 border rounded"/></div>
+                                            <div><label className="block text-gray-600 mb-1">Hints</label><input type="number" value={s.hints} onChange={e=>updateSess(s.id,'hints',e.target.value)} className="w-full p-1 border rounded"/></div>
+                                            <div><label className="block text-gray-600 mb-1">Failures</label><input type="number" value={s.fail} onChange={e=>updateSess(s.id,'fail',e.target.value)} className="w-full p-1 border rounded"/></div>
+                                        </div>
+                                        <input type="text" value={s.topics} onChange={e=>updateSess(s.id,'topics',e.target.value)} placeholder="Topics" className="w-full p-1 border rounded text-xs"/>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="mb-5">
+                                <h4 className="font-semibold text-sm mb-2">B. Confidence Calibration</h4>
+                                <table className="w-full text-xs border-collapse">
+                                    <thead><tr className="bg-gray-100"><th className="border p-2"></th><th className="border p-2">Very Conf</th><th className="border p-2">Some Conf</th><th className="border p-2">Not Conf</th></tr></thead>
+                                    <tbody>
+                                        <tr><td className="border p-2 font-semibold bg-gray-50">Correct</td><td className="border p-2"><input type="number" value={conf.hc} onChange={e=>setConf({...conf,hc:e.target.value})} className="w-full p-1 border rounded text-center"/></td><td className="border p-2"><input type="number" value={conf.mc} onChange={e=>setConf({...conf,mc:e.target.value})} className="w-full p-1 border rounded text-center"/></td><td className="border p-2"><input type="number" value={conf.lc} onChange={e=>setConf({...conf,lc:e.target.value})} className="w-full p-1 border rounded text-center"/></td></tr>
+                                        <tr><td className="border p-2 font-semibold bg-gray-50">Wrong</td><td className="border p-2"><input type="number" value={conf.hw} onChange={e=>setConf({...conf,hw:e.target.value})} className="w-full p-1 border rounded text-center"/></td><td className="border p-2"><input type="number" value={conf.mw} onChange={e=>setConf({...conf,mw:e.target.value})} className="w-full p-1 border rounded text-center"/></td><td className="border p-2"><input type="number" value={conf.lw} onChange={e=>setConf({...conf,lw:e.target.value})} className="w-full p-1 border rounded text-center"/></td></tr>
+                                    </tbody>
+                                </table>
+                                <div className="mt-2 p-2 bg-blue-50 rounded text-xs"><strong>Key:</strong> High+Correct=Calibrated✓ | High+Wrong=Overconfident⚠️</div>
+                            </div>
+
+                            <div>
+                                <h4 className="font-semibold text-sm mb-2">C. Error Patterns</h4>
+                                <div className="space-y-1 text-xs mb-2">
+                                    {[['sim','Similar terms'],['app','Wrong application'],['part','Partial recall'],['blank','Complete blank'],['calc','Calculations'],['seq','Sequence'],['struct','Structure-function']].map(([k,l]) => (
+                                        <label key={k} className="flex items-center gap-2 p-1 hover:bg-gray-50 rounded cursor-pointer">
+                                            <input type="checkbox" checked={errors[k]} onChange={e=>setErrors({...errors,[k]:e.target.checked})} className="accent-[#0b3d2e]"/>
+                                            <span>{l}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                                {errCnt()>0 && <div className="p-2 bg-amber-50 rounded text-xs"><strong>Top error:</strong> {topErr()} ({errCnt()} types)</div>}
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border shadow-sm">
+                            <div className="flex gap-2 mb-4"><Icon name="Alert-Circle" className="text-orange-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">4. Reality Check</h3></div>
+                            <div className="bg-orange-50 p-3 rounded border border-orange-200 mb-3">
+                                <p className="text-xs font-semibold text-orange-700 mb-2">PREDICTED FAILURE POINT (from Step 4)</p>
+                                <textarea className="w-full p-2 border rounded text-sm bg-white" placeholder="Where you thought it would break" rows="2"/>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold mb-2">Did it break there?</label>
+                                {[['exact','Yes, exactly'],['diff','Yes, different reasons'],['no','No, held up'],['else','Broke elsewhere']].map(([v,l]) => (
+                                    <label key={v} className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">
+                                        <input type="radio" name="fail" value={v} checked={fail===v} onChange={e=>setFail(e.target.value)} className="accent-[#0b3d2e]"/>
+                                        {l}
+                                    </label>
+                                ))}
+                                {(fail==='diff'||fail==='else') && <textarea className="w-full p-2 border rounded text-sm mt-2" placeholder="Explain..." rows="2"/>}
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border shadow-sm">
+                            <div className="flex gap-2 mb-4"><Icon name="Activity" className="text-teal-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">5. Signal vs Noise</h3></div>
+                            <div className="mb-3">
+                                <p className="text-sm font-semibold mb-2">Data quality check:</p>
+                                <div className="space-y-1 text-sm">
+                                    {[['s3','≥3 study sessions'],['quiz','≥1 quiz/exam'],['time','Tracked time'],['acc','Accuracy numbers']].map(([k,l]) => (
+                                        <label key={k} className="flex items-center gap-2 p-1 hover:bg-gray-50 rounded cursor-pointer">
+                                            <input type="checkbox" checked={qual[k]} onChange={e=>setQual({...qual,[k]:e.target.checked})} className="accent-[#0b3d2e]"/>
+                                            {l}
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold mb-2">Pattern confidence:</label>
+                                {[['strong','Strong pattern (continue/adjust)'],['weak','Weak (need 1 more week)'],['noise','Noise (need 2+ weeks)']].map(([v,l]) => (
+                                    <label key={v} className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">
+                                        <input type="radio" name="pat" value={v} checked={pat===v} onChange={e=>setPat(e.target.value)} className="accent-[#0b3d2e]"/>
+                                        {l}
+                                    </label>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border shadow-sm">
+                            <div className="flex gap-2 mb-4"><Icon name="Repeat" className="text-indigo-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">6. Comparison to Baseline</h3></div>
+                            <div className="grid grid-cols-2 gap-4 mb-3">
+                                <div>
+                                    <label className="block text-xs font-semibold text-gray-600 mb-1">Step 1 confidence (old method):</label>
+                                    <select value={oldConf} onChange={e=>setOldConf(e.target.value)} className="w-full p-2 border rounded text-sm">
+                                        <option value="">Select</option>
+                                        {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-semibold text-gray-600 mb-1">Current confidence (new method):</label>
+                                    <select value={newConf} onChange={e=>setNewConf(e.target.value)} className="w-full p-2 border rounded text-sm">
+                                        <option value="">Select</option>
+                                        {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold mb-2">Has your evidence quality improved?</label>
+                                {[['yes','Yes - objective data now'],['some','Somewhat - partly subjective'],['no','No - still subjective']].map(([v,l]) => (
+                                    <label key={v} className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer text-sm">
+                                        <input type="radio" name="ev" value={v} checked={evImprove===v} onChange={e=>setEvImprove(e.target.value)} className="accent-[#0b3d2e]"/>
+                                        {l}
+                                    </label>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border-2 border-[#0b3d2e] shadow-lg">
+                            <div className="flex gap-2 mb-4"><Icon name="GitBranch" className="text-[#0b3d2e]" size={22} /><h3 className="font-bold text-[#0b3d2e] text-lg">7. Decision Protocol</h3></div>
+                            <p className="text-sm mb-3">Based on your data, what happens next?</p>
+                            <div className="space-y-2">
+                                {[
+                                    ['continue','CONTINUE - Hypothesis confirmed, keep going','Schedule 2 more weeks, same plan'],
+                                    ['adjust','ADJUST - Partial success, needs tweaks','Identify what to change in Step 7'],
+                                    ['abandon','ABANDON - Hypothesis rejected, try different','Return to Step 4, new hypothesis'],
+                                    ['data','INSUFFICIENT DATA - Can\'t tell yet','Continue 1 more week, remeasure']
+                                ].map(([v,label,action]) => (
+                                    <div key={v} className={`p-3 border-2 rounded-lg cursor-pointer ${dec===v?'border-[#0b3d2e] bg-green-50':'border-gray-200 hover:border-gray-300'}`} onClick={()=>setDec(v)}>
+                                        <label className="flex items-start gap-2 cursor-pointer">
+                                            <input type="radio" name="dec" value={v} checked={dec===v} onChange={e=>setDec(e.target.value)} className="mt-1 accent-[#0b3d2e]"/>
+                                            <div>
+                                                <p className="font-semibold text-sm">{label}</p>
+                                                <p className="text-xs text-gray-600 mt-1">→ Next: {action}</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        <button onClick={()=>window.location.href='step7-refine.html'} className="w-full bg-[#0b3d2e] text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-[#165c45] flex items-center justify-center gap-2 group">
+                            Proceed to Step 7: Refine <Icon name="Arrow-Right" className="group-hover:translate-x-1 transition-transform" />
+                        </button>
+                    </main>
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>
+

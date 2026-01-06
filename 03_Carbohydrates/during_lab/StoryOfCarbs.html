@@ -1,0 +1,976 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biologist's Eye: Visual Literacy Tool</title>
+    <style>
+        :root {
+            --uwp-green: #007A33;
+            --uwp-amber: #FFB81C;
+            --uwp-purple: #6A2E91;
+            --uwp-blue: #002F6C;
+            --uwp-gray: #E0E0E0;
+            --uwp-light: #F8F9FA;
+            --uwp-dark: #212529;
+        }
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--uwp-light);
+            color: var(--uwp-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background-color: var(--uwp-blue);
+            color: white;
+            padding: 20px 30px;
+            border-bottom: 5px solid var(--uwp-green);
+        }
+        
+        h1 {
+            margin: 0 0 10px 0;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        @media (max-width: 1100px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: var(--uwp-blue);
+            border-bottom: 2px solid var(--uwp-gray);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+        
+        .prompt-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid var(--uwp-blue);
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid var(--uwp-gray);
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+        
+        .image-display {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+        
+        .recorder-box {
+            background-color: #f9f9f9;
+            border: 2px dashed var(--uwp-gray);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .record-button {
+            background-color: var(--uwp-green);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .record-button:hover {
+            background-color: #006227;
+        }
+        
+        .record-button.recording {
+            background-color: #d32f2f;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .status-indicator {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .status-listening {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-processing {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .full-width-section {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+        
+        .transcript-box {
+            min-height: 200px;
+            border: 1px solid var(--uwp-gray);
+            border-radius: 4px;
+            padding: 20px;
+            background-color: white;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        .analysis-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--uwp-gray);
+        }
+        
+        @media (max-width: 900px) {
+            .analysis-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .highlight-green {
+            background-color: rgba(0, 122, 51, 0.15);
+            text-decoration: underline;
+            text-decoration-color: var(--uwp-green);
+            text-decoration-thickness: 2px;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        
+        .highlight-amber {
+            background-color: rgba(255, 184, 28, 0.25);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        
+        .glossary-box {
+            background-color: rgba(106, 46, 145, 0.08);
+            border-left: 4px solid var(--uwp-purple);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .glossary-title {
+            color: var(--uwp-purple);
+            margin-top: 0;
+        }
+        
+        .glossary-item {
+            margin: 5px 0;
+            padding: 5px 0;
+        }
+        
+        .score-display {
+            display: inline-block;
+            background-color: var(--uwp-blue);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 4px;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .score-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .example-narrative {
+            font-size: 15px;
+            background-color: #f5f5f5;
+            padding: 25px;
+            border-radius: 4px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            border-left: 4px solid var(--uwp-amber);
+        }
+        
+        .instructions {
+            font-size: 14px;
+            color: #666;
+            margin: 10px 0;
+        }
+        
+        .read-aloud-button {
+            background-color: var(--uwp-purple);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 15px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .read-aloud-button:hover {
+            background-color: #5a1c7a;
+        }
+        
+        .terms-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .terms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .term-chip {
+            background-color: rgba(0, 122, 51, 0.1);
+            border: 1px solid rgba(0, 122, 51, 0.3);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid var(--uwp-gray);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .microphone-permission {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div class="container">
+        <header>
+            <h1>Biologist's Eye: Visual Literacy Tool</h1>
+            <p class="subtitle">From observation to narration - training the scientific eye</p>
+        </header>
+        
+        <div class="content-grid">
+            <!-- Left Column: Analytical Prompt -->
+            <div class="left-column">
+                <div class="section">
+                    <h2 class="section-title">1. Analytical Prompt</h2>
+                    <div class="prompt-box">
+                        <p><strong>You are an exceptionally meticulous biologist with advanced training in visual analysis and scientific observation.</strong> You are known for detecting and articulating minute, easily overlooked details in images—textures, spatial relationships, patterns, anomalies, and implied processes.</p>
+                        
+                        <p>You believe that the phrase "an image is worth a thousand words" dramatically underestimates the depth of information contained in a single visual artifact. Your task is to demonstrate this belief through storytelling grounded in precise observation.</p>
+                        
+                        <p><strong>Carefully examine the attached image.</strong> Without inventing elements that are not visually present, write a detailed, immersive narrative that translates everything observable in the image into words.</p>
+                        
+                        <p>Your story should:</p>
+                        <ul>
+                            <li>Be driven entirely by what can be seen or reasonably inferred from visual evidence</li>
+                            <li>Explicitly articulate fine details (scale, orientation, structure, contrast, repetition, irregularities)</li>
+                            <li>Reflect a biologist's way of seeing—attentive, systematic, and curious</li>
+                            <li>Read as either a coherent, engaging story or as a bullet-point description</li>
+                        </ul>
+                        
+                        <p>Provide the full narrative account of the image, demonstrating how disciplined observation can expand a single image into a richly detailed written world.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Image and Recorder -->
+            <div class="right-column">
+                <div class="section">
+                    <h2 class="section-title">2. Image for Analysis</h2>
+                    <div class="image-container">
+                        <img src="../03_Carbohydrates/images/polymers.jpg" alt="Storage structures (plastids) containing starch granules in a potato tuber cell" class="image-display" id="mainImage">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">3. Record Your Narrative</h2>
+                    <div class="microphone-permission">
+                        <p><strong>Note:</strong> When you click "Start Recording", your browser will ask for permission to access your microphone. Please allow this to record your narration.</p>
+                    </div>
+                    
+                    <div class="recorder-box">
+                        <button id="recordButton" class="record-button">
+                            <span id="micIcon">🎤</span> Start Recording
+                        </button>
+                        
+                        <div id="statusIndicator" class="status-indicator" style="display:none;">
+                            <!-- Status will appear here -->
+                        </div>
+                        
+                        <p id="recordingInstructions" class="instructions" style="display:none;">
+                            Recording in progress... Speak your observations clearly. Click "Stop Recording" when finished.
+                        </p>
+                        
+                        <button id="stopButton" class="record-button" style="background-color: #666; display:none;">
+                            ⏹️ Stop Recording
+                        </button>
+                        
+                        <p class="instructions">Or type your narrative directly below:</p>
+                        
+                        <textarea id="manualInput" placeholder="Type your detailed narrative here... Be sure to include specific observations about structures, scales, and relationships shown in the image." rows="6" style="width:100%; padding:15px; margin-top:10px; border:1px solid #ccc; border-radius:4px; font-size:15px;"></textarea>
+                        <button id="submitText" class="record-button" style="background-color: var(--uwp-blue); margin-top:10px; width:100%;">
+                            Submit Narrative for Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Full Width: Student Narrative -->
+            <div class="full-width-section">
+                <h2 class="section-title">4. Your Narrative</h2>
+                <div id="transcriptBox" class="transcript-box">
+                    Your narrative will appear here after recording or typing...
+                </div>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button id="readAloudButton" class="read-aloud-button" style="display:none;">
+                        🔊 Read Out Loud
+                    </button>
+                    <p id="readAloudInstructions" class="instructions" style="display:none;">
+                        Follow along as the narration is read aloud. Look at the image to see the description come alive.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Full Width: Analysis Results -->
+            <div class="full-width-section hidden" id="analysisSection">
+                <div class="analysis-container">
+                    <div>
+                        <h2 class="section-title">5. Analysis & Biological Terminology</h2>
+                        <div id="analysisResult">
+                            <p>Your narrative has been analyzed for biological terminology:</p>
+                            <ul>
+                                <li><span class="highlight-green">Green highlight + underline</span>: Key biological terms that match expert analysis</li>
+                                <li><span class="highlight-amber">Amber highlight</span>: Additional biological terms you included</li>
+                            </ul>
+                            
+                            <div id="highlightedText" class="transcript-box" style="margin-top: 20px; min-height: 150px;">
+                                <!-- Highlighted text will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="section-title">6. Biological Terminology Score</h2>
+                        <div id="scoreDisplay">
+                            <div class="score-display">
+                                <span id="scoreValue">0</span>
+                                <div class="score-label">Biological Terms</div>
+                            </div>
+                            <p>This objective metric counts the number of precise biological terms in your narrative.</p>
+                            <p><strong>Scoring:</strong> Each unique biological term (green or amber) counts as 1 point.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Biological Terms Reference (shown after analysis) -->
+                <div id="termsReference" class="glossary-box hidden">
+                    <h3 class="glossary-title">Key Biological Terms Reference</h3>
+                    <p>Here are some terms that belong to the image (try again to see if you can find these terms?):</p>
+                    <div class="terms-grid" id="termsGrid">
+                        <!-- Terms will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Example Expert Narrative (shown only after completion) -->
+            <div class="full-width-section hidden" id="exampleSection">
+                <h2 class="section-title">Example Expert Narrative</h2>
+                <div class="example-narrative">
+                    <p><strong>From the image analysis:</strong></p>
+                    <p>"Our story begins not with a potato, but with a universe contained within its flesh. The canvas is a pale, granular plane, the interior of a tuber cell, but we are too close to see the vegetable. Instead, we are adrift in a starfield. These are the storage structures—plastids—each one a captive galaxy. They are not smooth spheres, but irregular, ovoid bodies with sharply defined edges, like continents viewed from high atmosphere. Their interiors are not uniform; they are stuffed to capacity with countless, angular granules. These are the starch, the stored sunlight. Each granule is a layered thing, a geological formation built from sugar, showing faint, concentric rings of growth—the quiet, day-by-day deposition of abundance."</p>
+                    
+                    <p>"A scale bar etches the truth across the void: <strong>50 μm</strong>. This entire constellation of plastids fits within the width of a human hair."</p>
+                    
+                    <p>"The narrative of these granules splits, shown in schematic clarity. On one side, the chain of <strong>amylose</strong>: a relentless, unbranched procession of glucose monomers, a simple, tight helix of potential energy. On the other, its sibling <strong>amylopectin</strong>: the same chain, but fracturing occasionally into short, orderly branches, like a fir tree's growth pattern. This is the architecture of the plant's long-term treasury, compact and semi-crystalline, built for dormancy."</p>
+                    
+                    <p>"The scene shifts violently. We are no longer in the cool, ordered vault of a plant. We are in the frenetic, hydrated world of <strong>muscle tissue</strong>. The scale collapses tenfold: <strong>1 μm</strong>. Here, the storage is not in specialized organelles, but in the cytoplasmic soup itself. The <strong>glycogen</strong> granules are not sharp-edged crystals; they are dark, fuzzy smudges, like rosettes of charcoal dust scattered between the sleek protein cables of the myofibrils. Their schematic reveals their nature: <strong>glycogen, extensively branched</strong>. This is energy storage for crisis, a polymer exploded into a dizzying, fractal thicket of ends."</p>
+                    
+                    <p>"And then, the lens pulls back, and we remember the potato's context. A <strong>plant cell</strong>, entire, appears. It is a geometric prison, its shape defined not by itself, but by the rigid, transparent box that encases it: the <strong>cell wall</strong>. This wall is the final character in our trilogy, and we dive into its substance."</p>
+                    
+                    <p>"At <strong>10 μm</strong>, the wall's texture emerges—a felt-like weave of immense strength. Zooming further, to <strong>0.5 μm</strong>, the weave resolves into <strong>cellulose microfibrils</strong>, running in parallel bands, a layered plywood of astonishing regularity. Each microfibril is a bundle of about 80 <strong>cellulose molecules</strong>, and here the schematic completes the journey. A <strong>cellulose molecule</strong> is revealed: another unbranched glucose chain, almost deceptively similar to amylose. But the difference is in the relationship. These chains do not coil in solitude; they lie side-by-side in strict, parallel formation. Between them, a forest of <strong>hydrogen bonds</strong>—invisible lines of force represented by fine, connecting lines—locks them into a cable of tensile steel."</p>
+                    
+                    <p>"This is not storage. This is identity. This is the exoskeleton that allows the plant to stand against gravity, the rigid box that contains the turgor pressure that gives seedlings their defiant erectness. The very starch granules we began with are housed within chambers defined by this cellulose scaffold."</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Biologist's Eye: Visual Literacy Tool | Designed for pedagogical use in scientific observation training</p>
+            <p>Colors and styling based on UWP Style Guide</p>
+        </footer>
+    </div>
+
+    <script>
+        // Key biological terms from the expert narrative
+        const exampleTerms = [
+            "plastids", "starch", "granules", "potato", "tuber", "cell", 
+            "amylose", "glucose", "monomer", "amylopectin", "glycogen",
+            "muscle", "tissue", "cell wall", "plant cell", "cellulose",
+            "microfibrils", "molecules", "hydrogen bonds", "polymer",
+            "cytoplasmic", "myofibrils", "organelles", "molecule",
+            "chains", "branched", "unbranched", "crystals", "storage",
+            "structures", "scale", "μm", "micro", "granular", "texture",
+            "energy", "helix", "schematic", "parallel", "formation",
+            "rings", "growth", "abundance", "deposition", "constellation",
+            "cable", "steel", "exoskeleton", "gravity", "turgor", "pressure",
+            "scaffold", "dormancy", "crisis", "fractal", "frenetic", "vault"
+        ];
+        
+        // Additional biological terms for amber highlighting
+        const additionalBioTerms = [
+            "organism", "membrane", "nucleus", "mitochondria", "chloroplast", 
+            "ribosome", "enzyme", "protein", "lipid", "carbohydrate", 
+            "nucleic", "acid", "dna", "rna", "atp", "metabolism", 
+            "photosynthesis", "respiration", "vacuole", "lysosome",
+            "endoplasmic", "reticulum", "golgi", "apparatus",
+            "cytoskeleton", "microtubules", "filaments", "vesicles",
+            "membrane", "protein", "synthesis", "transcription", "translation"
+        ];
+        
+        // DOM Elements
+        const recordButton = document.getElementById('recordButton');
+        const stopButton = document.getElementById('stopButton');
+        const micIcon = document.getElementById('micIcon');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const recordingInstructions = document.getElementById('recordingInstructions');
+        const transcriptBox = document.getElementById('transcriptBox');
+        const manualInput = document.getElementById('manualInput');
+        const submitText = document.getElementById('submitText');
+        const analysisSection = document.getElementById('analysisSection');
+        const exampleSection = document.getElementById('exampleSection');
+        const analysisResult = document.getElementById('analysisResult');
+        const highlightedText = document.getElementById('highlightedText');
+        const termsReference = document.getElementById('termsReference');
+        const termsGrid = document.getElementById('termsGrid');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const scoreValue = document.getElementById('scoreValue');
+        const readAloudButton = document.getElementById('readAloudButton');
+        const readAloudInstructions = document.getElementById('readAloudInstructions');
+        const mainImage = document.getElementById('mainImage');
+        
+        // Speech Recognition
+        let recognition;
+        let isRecording = false;
+        let finalTranscript = '';
+        
+        // Speech Synthesis for read aloud
+        let speechSynth = window.speechSynthesis;
+        let isReading = false;
+        let currentUtterance = null;
+        
+        // Initialize speech recognition
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                alert("Speech recognition is not supported in this browser. Please use Chrome or Edge.");
+                return;
+            }
+            
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+            
+            recognition.onstart = function() {
+                isRecording = true;
+                recordButton.classList.add('recording');
+                recordButton.innerHTML = '<span id="micIcon">🎤</span> Recording...';
+                stopButton.style.display = 'inline-block';
+                recordingInstructions.style.display = 'block';
+                statusIndicator.style.display = 'block';
+                statusIndicator.textContent = "Listening... Speak your observations now.";
+                statusIndicator.className = "status-indicator status-listening";
+            };
+            
+            recognition.onresult = function(event) {
+                let interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                // Display the transcript
+                transcriptBox.textContent = finalTranscript + interimTranscript;
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error', event.error);
+                statusIndicator.textContent = "Error: " + event.error;
+                statusIndicator.className = "status-indicator status-processing";
+                
+                if (event.error === 'not-allowed') {
+                    statusIndicator.textContent = "Microphone access denied. Please allow microphone access to record.";
+                }
+            };
+            
+            recognition.onend = function() {
+                isRecording = false;
+                recordButton.classList.remove('recording');
+                recordButton.innerHTML = '<span id="micIcon">🎤</span> Start Recording';
+                stopButton.style.display = 'none';
+                recordingInstructions.style.display = 'none';
+                statusIndicator.style.display = 'none';
+                
+                // Process the transcript
+                if (finalTranscript.trim().length > 0) {
+                    processTranscript(finalTranscript);
+                }
+            };
+        }
+        
+        // Process transcript/text input
+        function processTranscript(text) {
+            const userText = text.trim();
+            
+            if (userText.length === 0) {
+                alert("Please provide a narrative to analyze.");
+                return;
+            }
+            
+            // Display the raw transcript
+            transcriptBox.textContent = userText;
+            
+            // Show read aloud button
+            readAloudButton.style.display = 'inline-block';
+            readAloudInstructions.style.display = 'block';
+            
+            // Analyze the text
+            analyzeText(userText);
+            
+            // Show analysis section
+            analysisSection.classList.remove('hidden');
+            
+            // Scroll to analysis
+            setTimeout(() => {
+                analysisSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+        
+        // Analyze text for biological terms
+        function analyzeText(text) {
+            // Convert to lowercase for comparison
+            const textLower = text.toLowerCase();
+            
+            // Find matches for example terms
+            const foundExampleTerms = [];
+            const missedExampleTerms = [];
+            
+            exampleTerms.forEach(term => {
+                // Create regex to find the term as a whole word
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                const matches = text.match(regex);
+                
+                if (matches && matches.length > 0) {
+                    foundExampleTerms.push({
+                        term: term,
+                        count: matches.length
+                    });
+                } else {
+                    missedExampleTerms.push(term);
+                }
+            });
+            
+            // Find additional biological terms
+            const foundAdditionalTerms = [];
+            
+            additionalBioTerms.forEach(term => {
+                // Skip if already in example terms
+                if (exampleTerms.includes(term.toLowerCase())) return;
+                
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                const matches = text.match(regex);
+                
+                if (matches && matches.length > 0) {
+                    foundAdditionalTerms.push({
+                        term: term,
+                        count: matches.length
+                    });
+                }
+            });
+            
+            // Create highlighted text
+            let highlightedHTML = text;
+            
+            // First, highlight additional terms (amber)
+            foundAdditionalTerms.forEach(item => {
+                const regex = new RegExp(`\\b${item.term}\\b`, 'gi');
+                highlightedHTML = highlightedHTML.replace(regex, 
+                    `<span class="highlight-amber">$&</span>`);
+            });
+            
+            // Then highlight example terms (green) - will override amber if overlap
+            foundExampleTerms.forEach(item => {
+                const regex = new RegExp(`\\b${item.term}\\b`, 'gi');
+                highlightedHTML = highlightedHTML.replace(regex, 
+                    `<span class="highlight-green">$&</span>`);
+            });
+            
+            // Display highlighted text
+            highlightedText.innerHTML = highlightedHTML;
+            
+            // Show terms reference with missed terms
+            showTermsReference(foundExampleTerms, missedExampleTerms);
+            
+            // Calculate score
+            const totalBioTerms = foundExampleTerms.length + foundAdditionalTerms.length;
+            scoreValue.textContent = totalBioTerms;
+            
+            // Update analysis result
+            analysisResult.innerHTML = `
+                <p>Your narrative has been analyzed for biological terminology:</p>
+                <ul>
+                    <li><span class="highlight-green">Green highlight + underline</span>: ${foundExampleTerms.length} key biological terms that match expert analysis</li>
+                    <li><span class="highlight-amber">Amber highlight</span>: ${foundAdditionalTerms.length} additional biological terms you included</li>
+                </ul>
+                <p>${missedExampleTerms.length > 0 ? 
+                  `You missed ${missedExampleTerms.length} key terms from the expert analysis. See the terms reference below.` : 
+                  `Excellent! You included all key biological terms from the expert analysis.`}</p>
+            `;
+            
+            // Show example section after analysis
+            setTimeout(() => {
+                exampleSection.classList.remove('hidden');
+            }, 1000);
+        }
+        
+        // Show terms reference
+        function showTermsReference(foundTerms, missedTerms) {
+            // Clear previous terms
+            termsGrid.innerHTML = '';
+            
+            // Show missed terms first
+            missedTerms.forEach(term => {
+                const termEl = document.createElement('div');
+                termEl.className = 'term-chip';
+                termEl.textContent = term;
+                termEl.style.backgroundColor = 'rgba(106, 46, 145, 0.1)';
+                termEl.style.borderColor = 'rgba(106, 46, 145, 0.3)';
+                termsGrid.appendChild(termEl);
+            });
+            
+            // Show found terms
+            foundTerms.forEach(item => {
+                const termEl = document.createElement('div');
+                termEl.className = 'term-chip';
+                termEl.textContent = item.term;
+                termsGrid.appendChild(termEl);
+            });
+            
+            // Show the terms reference
+            termsReference.classList.remove('hidden');
+        }
+        
+        // Read narrative aloud
+        function readNarrativeAloud() {
+            const narrative = transcriptBox.textContent;
+            
+            if (narrative.length === 0 || narrative === "Your narrative will appear here after recording or typing...") {
+                alert("No narrative to read aloud. Please record or type a narrative first.");
+                return;
+            }
+            
+            if (isReading) {
+                // Stop reading
+                speechSynth.cancel();
+                isReading = false;
+                readAloudButton.innerHTML = '🔊 Read Out Loud';
+                readAloudButton.style.backgroundColor = '';
+                return;
+            }
+            
+            // Start reading
+            isReading = true;
+            readAloudButton.innerHTML = '⏹️ Stop Reading';
+            readAloudButton.style.backgroundColor = '#d32f2f';
+            
+            currentUtterance = new SpeechSynthesisUtterance(narrative);
+            currentUtterance.rate = 0.9;
+            currentUtterance.pitch = 1;
+            currentUtterance.volume = 1;
+            
+            currentUtterance.onend = function() {
+                isReading = false;
+                readAloudButton.innerHTML = '🔊 Read Out Loud';
+                readAloudButton.style.backgroundColor = '';
+            };
+            
+            currentUtterance.onerror = function() {
+                isReading = false;
+                readAloudButton.innerHTML = '🔊 Read Out Loud';
+                readAloudButton.style.backgroundColor = '';
+            };
+            
+            speechSynth.speak(currentUtterance);
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize speech recognition
+            initSpeechRecognition();
+            
+            // Record button
+            recordButton.addEventListener('click', function() {
+                if (!isRecording && recognition) {
+                    finalTranscript = '';
+                    transcriptBox.textContent = '';
+                    
+                    // Reset analysis section
+                    analysisSection.classList.add('hidden');
+                    exampleSection.classList.add('hidden');
+                    termsReference.classList.add('hidden');
+                    readAloudButton.style.display = 'none';
+                    readAloudInstructions.style.display = 'none';
+                    
+                    // Start recording
+                    recognition.start();
+                }
+            });
+            
+            // Stop button
+            stopButton.addEventListener('click', function() {
+                if (isRecording && recognition) {
+                    recognition.stop();
+                }
+            });
+            
+            // Submit text button
+            submitText.addEventListener('click', function() {
+                // Reset analysis section
+                analysisSection.classList.add('hidden');
+                exampleSection.classList.add('hidden');
+                termsReference.classList.add('hidden');
+                readAloudButton.style.display = 'none';
+                readAloudInstructions.style.display = 'none';
+                
+                processTranscript(manualInput.value);
+            });
+            
+            // Allow Enter key in textarea (but with Shift+Enter for new line)
+            manualInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    submitText.click();
+                }
+            });
+            
+            // Read aloud button
+            readAloudButton.addEventListener('click', readNarrativeAloud);
+            
+            // Sample narrative for demonstration
+            setTimeout(() => {
+                const sampleNarrative = `Looking at this image, I can see starch granules inside plastids within a potato tuber cell. The starch appears as granular structures with concentric rings. There are diagrams showing amylose as an unbranched glucose polymer and amylopectin as a branched one. Another panel shows glycogen granules in muscle tissue - these are more extensively branched than plant starch. Finally, I can see cellulose microfibrils in the plant cell wall, with cellulose molecules forming hydrogen bonds between parallel chains. The scale bars show these structures at 50 μm, 1 μm, and 0.5 μm scales.`;
+                
+                manualInput.value = sampleNarrative;
+            }, 1000);
+        });
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

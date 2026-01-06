@@ -1,0 +1,1539 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cell Row Challenge - Eukaryotic Cells Game</title>
+    <style>
+        /* UW-Parkside inspired color palette */
+        :root {
+            --parkside-green: #016836;     /* primary brand-like green */
+            --near-black:    #212721;      /* body text */
+            --warm-grey:     #54534A;      /* secondary text */
+            --cool-grey:     #DBD9D6;      /* borders */
+            --goldenrod:     #FABA31;      /* accent */
+            --white-birch:   #EFECE2;      /* panel bg */
+            --white:         #FFFFFF;      /* page bg */
+            --success-green: #2E7D32;      /* success color */
+            --error-red:     #C62828;      /* error color */
+            --bg-primary: var(--white);
+            --bg-secondary: var(--white-birch);
+            --text-primary: var(--near-black);
+            --text-secondary: var(--warm-grey);
+        }
+
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Accessibility - screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Header and controls */
+        header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--cool-grey);
+        }
+
+        h1 {
+            color: var(--parkside-green);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .controls-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .score-display {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--parkside-green);
+            min-width: 150px;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--cool-grey);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--parkside-green);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-label {
+            font-weight: bold;
+            color: var(--warm-grey);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--cool-grey);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--parkside-green);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .toggle-option {
+            font-size: 0.9rem;
+            color: var(--warm-grey);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background-color: var(--parkside-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover, .btn:focus {
+            background-color: #01502b;
+            outline: 3px solid var(--goldenrod);
+        }
+
+        .btn-secondary {
+            background-color: var(--warm-grey);
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background-color: #43423a;
+        }
+
+        /* Table styles */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 30px;
+            border: 1px solid var(--cool-grey);
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        caption {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--parkside-green);
+            padding: 15px 0 5px 0;
+            text-align: center;
+            caption-side: top;
+        }
+
+        .table-instructions {
+            text-align: center;
+            color: var(--warm-grey);
+            padding: 0 0 15px 0;
+            font-size: 0.95rem;
+        }
+
+        .table-instructions strong {
+            color: var(--parkside-green);
+        }
+
+        th {
+            background-color: var(--parkside-green);
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--cool-grey);
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--bg-secondary);
+        }
+
+        .input-cell {
+            position: relative;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid var(--cool-grey);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+            background-color: white;
+        }
+
+        input[type="text"]:focus {
+            outline: 3px solid var(--goldenrod);
+            border-color: var(--parkside-green);
+            background-color: white;
+        }
+
+        input[type="text"]:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        /* Placeholder styling */
+        input::placeholder {
+            color: #888;
+            opacity: 0.8;
+        }
+
+        /* Validation states */
+        .valid {
+            border-color: var(--success-green) !important;
+        }
+
+        .invalid {
+            border-color: var(--error-red) !important;
+        }
+
+        .locked {
+            background-color: #fff9e6;
+        }
+
+        .status-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .valid-icon {
+            color: var(--success-green);
+        }
+
+        .invalid-icon {
+            color: var(--error-red);
+        }
+
+        /* Row completion badge */
+        .row-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background-color: var(--goldenrod);
+            color: var(--near-black);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        /* Confetti animation */
+        @keyframes confetti {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--goldenrod);
+            top: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Rules section */
+        .rules-container {
+            margin: 20px 0 30px 0;
+            padding: 0;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--cool-grey);
+        }
+
+        .rules-header {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-secondary);
+            border-radius: 8px 8px 0 0;
+            transition: background-color 0.2s;
+        }
+
+        .rules-header:hover {
+            background-color: #e8e5da;
+        }
+
+        .rules-header h2 {
+            color: var(--parkside-green);
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .rules-toggle {
+            font-size: 1.5rem;
+            color: var(--parkside-green);
+            transition: transform 0.3s;
+        }
+
+        .rules-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            border-top: 1px solid transparent;
+        }
+
+        .rules-content.show {
+            padding: 20px;
+            max-height: 1000px;
+            border-top: 1px solid var(--cool-grey);
+        }
+
+        .rules-list {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .rules-list li {
+            margin-bottom: 8px;
+        }
+
+        .cell-sequence {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--white);
+            border-radius: 6px;
+            border-left: 4px solid var(--parkside-green);
+        }
+
+        .cell-sequence h3 {
+            color: var(--parkside-green);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .sequence-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 5px;
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+
+        /* Audio control */
+        .audio-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background-color: var(--parkside-green);
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .controls-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .progress-container {
+                width: 100%;
+            }
+            
+            .button-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                flex-grow: 1;
+                text-align: center;
+            }
+            
+            .mode-toggle {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            input[type="text"] {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .sequence-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <header>
+        <h1>Eukaryotic Cell Row Challenge</h1>
+        
+        <div class="controls-container">
+            <div class="score-display" id="score-display">Score: 0 / 45</div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="mode-toggle">
+                <span class="toggle-label">Answer Mode:</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="mode-toggle">
+                    <span class="toggle-slider"></span>
+                </div>
+                <div>
+                    <div class="toggle-option">One Word</div>
+                    <div class="toggle-option">Multiple Words</div>
+                </div>
+            </div>
+            
+            <div class="audio-control">
+                <button class="btn btn-secondary" id="audio-toggle">🔊 Enable Audio</button>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn" id="save-btn">Save Progress</button>
+                <button class="btn btn-secondary" id="reset-all-btn">Reset All</button>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="rules-container">
+            <div class="rules-header" id="rules-header" tabindex="0" role="button" aria-expanded="false" aria-controls="rules-content">
+                <h2>Game Rules & Instructions</h2>
+                <span class="rules-toggle" id="rules-toggle">▼</span>
+            </div>
+            <div class="rules-content" id="rules-content">
+                <ol class="rules-list">
+                    <li><strong>Follow the sequence:</strong> Complete rows in order from 1 to 10 as listed below.</li>
+                    <li><strong>Start each row</strong> by entering the exact "Cell Name" (spelling matters!).</li>
+                    <li>Only after correct spelling will the rest of the row unlock for input.</li>
+                    <li>Fill in each cell from memory with short, precise answers.</li>
+                    <li>Toggle between <strong>One Word</strong> and <strong>Multiple Words</strong> answer modes.</li>
+                    <li>Each correct answer in scored columns earns 1 point (Notes column is not scored).</li>
+                    <li>Use "Save Progress" to save your work or "Reset All" to start over.</li>
+                    <li>Enable audio for spoken feedback when you unlock a row.</li>
+                </ol>
+                
+                <div class="cell-sequence">
+                    <h3>Cell Sequence (Complete in This Order):</h3>
+                    <ol class="sequence-list">
+                        <li>Onion</li>
+                        <li>Carrot</li>
+                        <li>Elodea</li>
+                        <li>Euglena</li>
+                        <li>Sperm</li>
+                        <li>Paramecium</li>
+                        <li>Stentor</li>
+                        <li>Ciliated Pseudostratified Columnar Epithelium</li>
+                        <li>Neutrophil</li>
+                        <li>Amoeba</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-wrapper">
+            <table id="cell-table">
+                <caption>Cell Row Challenge</caption>
+                <div class="table-instructions">
+                    Test your knowledge of eukaryotic cells from Lab 2. Enter the exact cell name to unlock each row, then fill in the details from memory. <strong>Cell names must follow the sequence as seen in the lab manual starting with Onion and ending with Neutrophil.</strong>
+                </div>
+                <thead>
+                    <tr>
+                        <th scope="col">Cell Name<br><small>(LOCKED GATE)</small></th>
+                        <th scope="col">Domain/Kingdom</th>
+                        <th scope="col">Key Organelle</th>
+                        <th scope="col">Movement Structure</th>
+                        <th scope="col">Pigment/Color</th>
+                        <th scope="col">Notes<br><small>(1-5 words, not scored)</small></th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Rows will be generated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Toast notification for audio fallback -->
+        <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+        
+        <!-- Confetti container -->
+        <div id="confetti-container"></div>
+    </main>
+
+    <script>
+        // Game data - cell names and accepted answers in EXACT order from lab manual
+        const cellData = [
+            { // 1. Onion
+                name: "Onion",
+                domain: ["Eukarya/Plantae"],
+                organelle: ["nucleus"],
+                movement: ["none"],
+                pigment: ["none", "clear"],
+                notes: [""] // Notes not scored, just needs 1-5 words
+            },
+            { // 2. Carrot
+                name: "Carrot",
+                domain: ["Eukarya/Plantae"],
+                organelle: ["chromoplast"],
+                movement: ["none"],
+                pigment: ["carotene", "orange"],
+                notes: [""]
+            },
+            { // 3. Elodea
+                name: "Elodea",
+                domain: ["Eukarya/Plantae"],
+                organelle: ["chloroplast"],
+                movement: ["none"],
+                pigment: ["chlorophyll", "green"],
+                notes: [""]
+            },
+            { // 4. Euglena
+                name: "Euglena",
+                domain: ["Eukarya/Protista"],
+                organelle: ["chloroplast"],
+                movement: ["flagellum", "flagella"],
+                pigment: ["chlorophyll", "green"],
+                notes: [""]
+            },
+            { // 5. Sperm
+                name: "Sperm",
+                domain: ["Eukarya/Animalia"],
+                organelle: ["flagellum", "flagella"],
+                movement: ["flagellum", "flagella"],
+                pigment: ["none", "clear"],
+                notes: [""]
+            },
+            { // 6. Paramecium
+                name: "Paramecium",
+                domain: ["Eukarya/Protista"],
+                organelle: ["contractile vacuole", "macronucleus"],
+                movement: ["cilia"],
+                pigment: ["none", "clear"],
+                notes: [""]
+            },
+            { // 7. Stentor
+                name: "Stentor",
+                domain: ["Eukarya/Protista"],
+                organelle: ["contractile vacuole", "macronucleus"],
+                movement: ["cilia"],
+                pigment: ["none", "clear"],
+                notes: [""]
+            },
+            { // 8. Ciliated Pseudostratified Columnar Epithelium
+                name: "Ciliated Pseudostratified Columnar Epithelium",
+                domain: ["Eukarya/Animalia"],
+                organelle: ["cilia"],
+                movement: ["cilia"],
+                pigment: ["none", "clear"],
+                notes: [""]
+            },
+            { // 9. Neutrophil
+                name: "Neutrophil",
+                domain: ["Eukarya/Animalia"],
+                organelle: ["lobed nucleus"],
+                movement: ["pseudopodia"],
+                pigment: ["none", "clear"],
+                notes: [""]
+            },
+            { // 10. Amoeba
+                name: "Amoeba",
+                domain: ["Eukarya/Protista"],
+                organelle: ["contractile vacuole"],
+                movement: ["pseudopodia"],
+                pigment: ["none", "clear"],
+                notes: [""]
+            }
+        ];
+
+        // Game state
+        let gameState = {
+            score: 0,
+            totalPossible: 45, // 10 rows * (name + 4 scored columns) = 10 * 4.5 = 45 (notes not scored)
+            mode: "one-word", // or "multi-word"
+            audioEnabled: false,
+            rows: [],
+            currentRow: 0 // Track which row should be attempted next
+        };
+
+        // DOM elements
+        let tableBody;
+        let scoreDisplay;
+        let progressFill;
+        let modeToggle;
+        let audioToggle;
+        let saveBtn;
+        let resetAllBtn;
+        let rulesHeader;
+        let rulesContent;
+        let rulesToggle;
+        let toast;
+        let confettiContainer;
+
+        // Initialize the game
+        function initGame() {
+            // Get DOM elements
+            tableBody = document.getElementById("table-body");
+            scoreDisplay = document.getElementById("score-display");
+            progressFill = document.getElementById("progress-fill");
+            modeToggle = document.getElementById("mode-toggle");
+            audioToggle = document.getElementById("audio-toggle");
+            saveBtn = document.getElementById("save-btn");
+            resetAllBtn = document.getElementById("reset-all-btn");
+            rulesHeader = document.getElementById("rules-header");
+            rulesContent = document.getElementById("rules-content");
+            rulesToggle = document.getElementById("rules-toggle");
+            toast = document.getElementById("toast");
+            confettiContainer = document.getElementById("confetti-container");
+            
+            // Load saved state
+            loadState();
+            
+            // Create table rows
+            createTableRows();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Update display
+            updateScoreDisplay();
+        }
+
+        // Create table rows from cell data
+        function createTableRows() {
+            tableBody.innerHTML = "";
+            
+            cellData.forEach((cell, index) => {
+                // Check if we have saved state for this row
+                const savedRow = gameState.rows[index] || {
+                    name: { value: "", correct: false },
+                    domain: { value: "", correct: false },
+                    organelle: { value: "", correct: false },
+                    movement: { value: "", correct: false },
+                    pigment: { value: "", correct: false },
+                    notes: { value: "", correct: false }
+                };
+                
+                const row = document.createElement("tr");
+                row.id = `row-${index}`;
+                row.dataset.index = index;
+                
+                // Determine if row is unlocked (name is correct)
+                const isUnlocked = savedRow.name.correct;
+                
+                // Determine if this row should be disabled (must complete in order)
+                // Only enable if it's the current row or if it's already been completed
+                const isCurrentRow = index === gameState.currentRow;
+                const isCompletedRow = index < gameState.currentRow;
+                const shouldBeEnabled = isCurrentRow || isCompletedRow;
+                
+                // Cell Name column (locked gate)
+                const nameCell = document.createElement("td");
+                nameCell.className = "input-cell";
+                const nameInput = document.createElement("input");
+                nameInput.type = "text";
+                nameInput.dataset.column = "name";
+                nameInput.dataset.index = index;
+                nameInput.value = savedRow.name.value;
+                nameInput.placeholder = "Enter exact cell name...";
+                nameInput.setAttribute("aria-label", `Cell name for row ${index + 1}: ${cell.name}`);
+                
+                // Disable if not the current row
+                if (!shouldBeEnabled) {
+                    nameInput.disabled = true;
+                    nameInput.placeholder = "Complete previous rows first";
+                }
+                
+                if (savedRow.name.correct) {
+                    nameInput.classList.add("valid");
+                    nameCell.innerHTML += '<span class="status-icon valid-icon">✓</span>';
+                } else if (savedRow.name.value && !savedRow.name.correct) {
+                    nameInput.classList.add("invalid");
+                    nameCell.innerHTML += '<span class="status-icon invalid-icon">✗</span>';
+                }
+                
+                nameCell.appendChild(nameInput);
+                row.appendChild(nameCell);
+                
+                // Domain/Kingdom column
+                const domainCell = createInputCell("domain", index, savedRow.domain, isUnlocked, shouldBeEnabled, "Eukarya/?");
+                row.appendChild(domainCell);
+                
+                // Key Organelle column
+                const organelleCell = createInputCell("organelle", index, savedRow.organelle, isUnlocked, shouldBeEnabled, "e.g., chloroplast");
+                row.appendChild(organelleCell);
+                
+                // Movement Structure column
+                const movementCell = createInputCell("movement", index, savedRow.movement, isUnlocked, shouldBeEnabled, "e.g., cilia");
+                row.appendChild(movementCell);
+                
+                // Pigment/Color column
+                const pigmentCell = createInputCell("pigment", index, savedRow.pigment, isUnlocked, shouldBeEnabled, "e.g., chlorophyll");
+                row.appendChild(pigmentCell);
+                
+                // Notes column (not scored but required)
+                const notesCell = createInputCell("notes", index, savedRow.notes, isUnlocked, shouldBeEnabled, "1-5 words", false);
+                row.appendChild(notesCell);
+                
+                // Add row to table
+                tableBody.appendChild(row);
+                
+                // Add to game state if not already there
+                if (!gameState.rows[index]) {
+                    gameState.rows[index] = savedRow;
+                }
+            });
+            
+            // Calculate initial score
+            calculateScore();
+        }
+
+        // Create an input cell
+        function createInputCell(column, index, savedState, isUnlocked, shouldBeEnabled, placeholder = "Enter answer...", isScored = true) {
+            const cell = document.createElement("td");
+            cell.className = "input-cell";
+            
+            const input = document.createElement("input");
+            input.type = "text";
+            input.dataset.column = column;
+            input.dataset.index = index;
+            input.dataset.scored = isScored;
+            input.value = savedState.value;
+            input.setAttribute("aria-label", `${column} for row ${index + 1}`);
+            
+            // Set placeholder
+            input.placeholder = placeholder;
+            
+            // Set disabled state based on row unlock status and sequential order
+            if (column !== "name") {
+                // Disable if row is not unlocked OR if not the current/completed row
+                const shouldDisable = !isUnlocked || !shouldBeEnabled;
+                input.disabled = shouldDisable;
+                
+                if (shouldDisable) {
+                    cell.classList.add("locked");
+                    if (!shouldBeEnabled) {
+                        input.placeholder = "Complete previous rows first";
+                    }
+                }
+            }
+            
+            // Set validation state
+            if (savedState.correct && isScored) {
+                input.classList.add("valid");
+                cell.innerHTML += '<span class="status-icon valid-icon">✓</span>';
+            } else if (savedState.value && !savedState.correct && isScored) {
+                input.classList.add("invalid");
+                cell.innerHTML += '<span class="status-icon invalid-icon">✗</span>';
+            }
+            
+            cell.appendChild(input);
+            return cell;
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Input validation on blur
+            tableBody.addEventListener("blur", function(e) {
+                if (e.target.tagName === "INPUT") {
+                    validateInput(e.target);
+                }
+            }, true);
+            
+            // Also validate on Enter key
+            tableBody.addEventListener("keydown", function(e) {
+                if (e.target.tagName === "INPUT" && e.key === "Enter") {
+                    validateInput(e.target);
+                    // Move to next input in same row if available
+                    moveToNextInput(e.target);
+                }
+            });
+            
+            // Mode toggle
+            modeToggle.addEventListener("change", function() {
+                gameState.mode = this.checked ? "multi-word" : "one-word";
+                saveState();
+                showToast(`Switched to ${gameState.mode} mode`);
+            });
+            
+            // Audio toggle
+            audioToggle.addEventListener("click", function() {
+                gameState.audioEnabled = !gameState.audioEnabled;
+                this.textContent = gameState.audioEnabled ? "🔊 Audio On" : "🔇 Audio Off";
+                saveState();
+                showToast(gameState.audioEnabled ? "Audio feedback enabled" : "Audio feedback disabled");
+            });
+            
+            // Save button
+            saveBtn.addEventListener("click", function() {
+                saveState();
+                showToast("Progress saved!");
+            });
+            
+            // Reset all button
+            resetAllBtn.addEventListener("click", function() {
+                if (confirm("Are you sure you want to reset all progress? This cannot be undone.")) {
+                    resetGame();
+                }
+            });
+            
+            // Rules toggle
+            rulesHeader.addEventListener("click", toggleRules);
+            rulesHeader.addEventListener("keydown", function(e) {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    toggleRules();
+                }
+            });
+        }
+
+        // Toggle rules display
+        function toggleRules() {
+            const isExpanded = rulesContent.classList.toggle("show");
+            rulesToggle.textContent = isExpanded ? "▲" : "▼";
+            rulesHeader.setAttribute("aria-expanded", isExpanded);
+        }
+
+        // Validate an input
+        function validateInput(input) {
+            const column = input.dataset.column;
+            const index = parseInt(input.dataset.index);
+            const value = input.value.trim();
+            const isScored = input.dataset.scored === "true";
+            
+            // Clear previous validation state
+            input.classList.remove("valid", "invalid");
+            
+            // Remove any existing status icon
+            const parent = input.parentElement;
+            const existingIcon = parent.querySelector(".status-icon");
+            if (existingIcon) {
+                parent.removeChild(existingIcon);
+            }
+            
+            // If empty, just return (except for notes which needs validation)
+            if (!value && column !== "notes") {
+                // Update game state
+                gameState.rows[index][column].value = "";
+                gameState.rows[index][column].correct = false;
+                saveState();
+                calculateScore();
+                return;
+            }
+            
+            // Special handling for cell name (exact match required)
+            if (column === "name") {
+                validateCellName(input, index, value);
+                return;
+            }
+            
+            // For notes column, validate word count (1-5 words)
+            if (column === "notes") {
+                validateNotes(input, index, value);
+                return;
+            }
+            
+            // For other columns, use fuzzy matching
+            const isCorrect = checkAnswer(value, column, index);
+            
+            // Update UI
+            if (isCorrect) {
+                input.classList.add("valid");
+                parent.innerHTML += '<span class="status-icon valid-icon">✓</span>';
+                
+                // Update game state
+                gameState.rows[index][column].value = value;
+                gameState.rows[index][column].correct = true;
+                
+                // Check if entire row is complete (excluding notes)
+                checkRowCompletion(index);
+            } else {
+                input.classList.add("invalid");
+                parent.innerHTML += '<span class="status-icon invalid-icon">✗</span>';
+                
+                // Update game state
+                gameState.rows[index][column].value = value;
+                gameState.rows[index][column].correct = false;
+            }
+            
+            // Save state and update score
+            saveState();
+            calculateScore();
+        }
+
+        // Validate cell name (exact match required)
+        function validateCellName(input, index, value) {
+            const normalizedInput = normalizeString(value);
+            const cellName = cellData[index].name.toLowerCase();
+            
+            // Check for exact match
+            if (normalizedInput === cellName) {
+                input.classList.add("valid");
+                input.parentElement.innerHTML += '<span class="status-icon valid-icon">✓</span>';
+                
+                // Update game state
+                gameState.rows[index].name.value = value;
+                gameState.rows[index].name.correct = true;
+                
+                // Unlock the row
+                unlockRow(index);
+                
+                // Update current row pointer
+                if (index === gameState.currentRow) {
+                    gameState.currentRow = Math.min(gameState.currentRow + 1, cellData.length - 1);
+                }
+                
+                // Provide audio feedback
+                if (gameState.audioEnabled) {
+                    speakText(`You entered ${cellData[index].name}. Now complete the row.`);
+                } else {
+                    showToast(`Row unlocked! Now complete details for ${cellData[index].name}`);
+                }
+                
+                // Enable next row if applicable
+                if (gameState.currentRow > index) {
+                    setTimeout(() => {
+                        enableNextRow();
+                    }, 500);
+                }
+                
+                // Save state
+                saveState();
+                calculateScore();
+            } else {
+                input.classList.add("invalid");
+                input.parentElement.innerHTML += '<span class="status-icon invalid-icon">✗</span>';
+                showToast("Check spelling. Cell name must match exactly.");
+                
+                // Update game state
+                gameState.rows[index].name.value = value;
+                gameState.rows[index].name.correct = false;
+                saveState();
+            }
+        }
+
+        // Validate notes (1-5 words required, not scored)
+        function validateNotes(input, index, value) {
+            const wordCount = value.split(/\s+/).filter(word => word.length > 0).length;
+            
+            if (wordCount >= 1 && wordCount <= 5) {
+                input.classList.add("valid");
+                input.parentElement.innerHTML += '<span class="status-icon valid-icon">✓</span>';
+                
+                // Update game state
+                gameState.rows[index].notes.value = value;
+                gameState.rows[index].notes.correct = true;
+                
+                // Check if entire row is complete (excluding notes from completion check)
+                checkRowCompletion(index);
+            } else {
+                input.classList.add("invalid");
+                input.parentElement.innerHTML += '<span class="status-icon invalid-icon">✗</span>';
+                showToast("Notes must be 1-5 words long.");
+                
+                // Update game state
+                gameState.rows[index].notes.value = value;
+                gameState.rows[index].notes.correct = false;
+            }
+            
+            saveState();
+        }
+
+        // Unlock a row (enable all inputs in the row)
+        function unlockRow(index) {
+            const row = document.getElementById(`row-${index}`);
+            const inputs = row.querySelectorAll("input");
+            
+            inputs.forEach(input => {
+                if (input.dataset.column !== "name") {
+                    input.disabled = false;
+                    input.parentElement.classList.remove("locked");
+                    
+                    // Restore original placeholder
+                    const column = input.dataset.column;
+                    const placeholders = {
+                        domain: "Eukarya/?",
+                        organelle: "e.g., chloroplast",
+                        movement: "e.g., cilia",
+                        pigment: "e.g., chlorophyll",
+                        notes: "1-5 words"
+                    };
+                    input.placeholder = placeholders[column] || "Enter answer...";
+                }
+            });
+        }
+
+        // Enable the next row in sequence
+        function enableNextRow() {
+            if (gameState.currentRow < cellData.length) {
+                const nextRow = document.getElementById(`row-${gameState.currentRow}`);
+                if (nextRow) {
+                    const nameInput = nextRow.querySelector('input[data-column="name"]');
+                    if (nameInput) {
+                        nameInput.disabled = false;
+                        nameInput.placeholder = "Enter exact cell name...";
+                        nameInput.parentElement.classList.remove("locked");
+                        showToast(`Now try: ${cellData[gameState.currentRow].name}`);
+                    }
+                }
+            }
+        }
+
+        // Check if answer is correct using fuzzy matching
+        function checkAnswer(value, column, index) {
+            const normalizedInput = normalizeString(value);
+            const acceptedAnswers = cellData[index][column];
+            
+            // If no accepted answers for this column, return false
+            if (!acceptedAnswers || acceptedAnswers.length === 0) {
+                return false;
+            }
+            
+            // Check for exact match in accepted answers
+            for (let answer of acceptedAnswers) {
+                if (normalizedInput === answer.toLowerCase()) {
+                    return true;
+                }
+            }
+            
+            // Check for fuzzy match (Levenshtein distance)
+            for (let answer of acceptedAnswers) {
+                const normalizedAnswer = answer.toLowerCase();
+                const distance = levenshteinDistance(normalizedInput, normalizedAnswer);
+                
+                // Calculate thresholds based on answer length
+                let threshold;
+                if (normalizedAnswer.length <= 6) {
+                    threshold = 1;
+                } else {
+                    threshold = 2;
+                }
+                
+                if (distance <= threshold) {
+                    return true;
+                }
+                
+                // For multi-word answers, check token overlap
+                if (normalizedAnswer.includes(" ")) {
+                    const inputTokens = normalizedInput.split(" ");
+                    const answerTokens = normalizedAnswer.split(" ");
+                    
+                    let matchCount = 0;
+                    for (let token of inputTokens) {
+                        if (answerTokens.some(answerToken => 
+                            levenshteinDistance(token, answerToken) <= 1)) {
+                            matchCount++;
+                        }
+                    }
+                    
+                    const matchRatio = matchCount / answerTokens.length;
+                    if (matchRatio >= 0.7) {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+
+        // Check if a row is completely correct (excluding notes)
+        function checkRowCompletion(index) {
+            const rowState = gameState.rows[index];
+            let allCorrect = true;
+            
+            // Check all scored columns only (name, domain, organelle, movement, pigment)
+            const scoredColumns = ["name", "domain", "organelle", "movement", "pigment"];
+            for (let column of scoredColumns) {
+                if (!rowState[column].correct) {
+                    allCorrect = false;
+                    break;
+                }
+            }
+            
+            // Notes is required but not scored - just needs valid word count
+            if (!rowState.notes.correct) {
+                allCorrect = false;
+            }
+            
+            if (allCorrect) {
+                celebrateRowCompletion(index);
+            }
+            
+            return allCorrect;
+        }
+
+        // Celebrate row completion
+        function celebrateRowCompletion(index) {
+            const row = document.getElementById(`row-${index}`);
+            const cellName = cellData[index].name;
+            
+            // Add completion badge if not already present
+            if (!row.querySelector(".row-badge")) {
+                const badge = document.createElement("span");
+                badge.className = "row-badge";
+                badge.textContent = `${cellName} Mastered!`;
+                badge.setAttribute("aria-label", `${cellName} row mastered`);
+                row.cells[5].appendChild(badge);
+            }
+            
+            // Create confetti animation
+            createConfetti();
+            
+            // Show celebration message
+            showToast(`Congratulations! You've mastered ${cellName}!`);
+        }
+
+        // Create confetti animation
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                confetti.style.borderRadius = "50%";
+                
+                confettiContainer.appendChild(confetti);
+                
+                // Animate
+                confetti.style.animation = `confetti ${Math.random() * 1 + 0.5}s linear forwards`;
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (confetti.parentElement) {
+                        confettiContainer.removeChild(confetti);
+                    }
+                }, 1500);
+            }
+        }
+
+        // Get random color for confetti
+        function getRandomColor() {
+            const colors = [
+                "#FABA31", "#016836", "#C62828", "#2E7D32", 
+                "#1976D2", "#7B1FA2", "#D32F2F", "#388E3C"
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // Move to next input in the same row
+        function moveToNextInput(currentInput) {
+            const row = currentInput.closest("tr");
+            const inputs = Array.from(row.querySelectorAll("input:not(:disabled)"));
+            const currentIndex = inputs.indexOf(currentInput);
+            
+            if (currentIndex < inputs.length - 1) {
+                inputs[currentIndex + 1].focus();
+            }
+        }
+
+        // Calculate and update score
+        function calculateScore() {
+            let score = 0;
+            
+            // Count correct answers in scored columns only
+            gameState.rows.forEach((row, rowIndex) => {
+                // Scored columns only (name, domain, organelle, movement, pigment)
+                const scoredColumns = ["name", "domain", "organelle", "movement", "pigment"];
+                scoredColumns.forEach(column => {
+                    if (row[column].correct) score++;
+                });
+            });
+            
+            gameState.score = score;
+            updateScoreDisplay();
+        }
+
+        // Update score display and progress bar
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Score: ${gameState.score} / ${gameState.totalPossible}`;
+            const percentage = (gameState.score / gameState.totalPossible) * 100;
+            progressFill.style.width = `${percentage}%`;
+        }
+
+        // Text-to-speech function
+        function speakText(text) {
+            if (!gameState.audioEnabled) return;
+            
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                speechSynthesis.speak(utterance);
+            } else {
+                // Fallback to toast if SpeechSynthesis not available
+                showToast(text);
+            }
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add("show");
+            
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+        // Normalize string for comparison
+        function normalizeString(str) {
+            return str.toLowerCase()
+                .trim()
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+                .replace(/\s+/g, ' ');
+        }
+
+        // Levenshtein distance algorithm for fuzzy matching
+        function levenshteinDistance(a, b) {
+            const matrix = [];
+            
+            // Initialize matrix
+            for (let i = 0; i <= b.length; i++) {
+                matrix[i] = [i];
+            }
+            
+            for (let j = 0; j <= a.length; j++) {
+                matrix[0][j] = j;
+            }
+            
+            // Fill matrix
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1, // substitution
+                            matrix[i][j - 1] + 1,     // insertion
+                            matrix[i - 1][j] + 1      // deletion
+                        );
+                    }
+                }
+            }
+            
+            return matrix[b.length][a.length];
+        }
+
+        // Save game state to localStorage
+        function saveState() {
+            const stateToSave = {
+                score: gameState.score,
+                mode: gameState.mode,
+                audioEnabled: gameState.audioEnabled,
+                rows: gameState.rows,
+                currentRow: gameState.currentRow
+            };
+            
+            localStorage.setItem("cellRowChallenge", JSON.stringify(stateToSave));
+        }
+
+        // Load game state from localStorage
+        function loadState() {
+            const saved = localStorage.getItem("cellRowChallenge");
+            
+            if (saved) {
+                try {
+                    const savedState = JSON.parse(saved);
+                    
+                    gameState.score = savedState.score || 0;
+                    gameState.mode = savedState.mode || "one-word";
+                    gameState.audioEnabled = savedState.audioEnabled || false;
+                    gameState.rows = savedState.rows || [];
+                    gameState.currentRow = savedState.currentRow || 0;
+                    
+                    // Update UI based on loaded state
+                    modeToggle.checked = gameState.mode === "multi-word";
+                    audioToggle.textContent = gameState.audioEnabled ? "🔊 Audio On" : "🔇 Audio Off";
+                } catch (e) {
+                    console.error("Error loading saved state:", e);
+                }
+            }
+        }
+
+        // Reset the entire game
+        function resetGame() {
+            // Clear localStorage
+            localStorage.removeItem("cellRowChallenge");
+            
+            // Reset game state
+            gameState = {
+                score: 0,
+                totalPossible: 45,
+                mode: "one-word",
+                audioEnabled: false,
+                rows: [],
+                currentRow: 0
+            };
+            
+            // Reset UI
+            modeToggle.checked = false;
+            audioToggle.textContent = "🔊 Enable Audio";
+            
+            // Recreate table
+            createTableRows();
+            
+            // Show confirmation
+            showToast("Game reset. Start fresh!");
+        }
+
+        // Initialize the game when page loads
+        document.addEventListener("DOMContentLoaded", initGame);
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

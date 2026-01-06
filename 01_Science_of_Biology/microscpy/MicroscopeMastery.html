@@ -1,0 +1,3288 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microscope Mastery Hub - Complete Learning System</title>
+    <style>
+        /* ===== ROOT & GLOBAL ===== */
+        :root {
+            --primary-blue: #004b87;
+            --primary-dark: #003d6b;
+            --accent-gold: #ffc845;
+            --accent-dark: #e6b33e;
+            --success: #2e7d32;
+            --error: #c62828;
+            --bg-light: #f5f5f5;
+            --white: #ffffff;
+            --card-shadow: 0 10px 30px rgba(0, 75, 135, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVIGATION BUTTONS ===== */
+        .landing-nav {
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        .back-button-external {
+            background: white;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .back-button-external:hover {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 75, 135, 0.2);
+        }
+
+        /* ===== LANDING PAGE ===== */
+        .hero-section {
+            background: linear-gradient(rgba(0, 75, 135, 0.9), rgba(0, 59, 107, 0.9)),
+                url('microoo.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23004b87' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            text-align: center;
+        }
+
+        .microscope-icon {
+            font-size: 4rem;
+            margin-bottom: 0;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ffc845, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ===== MODULE SELECTION ===== */
+        .modules-section {
+            padding: 3rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-blue);
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 2px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .module-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 75, 135, 0.15);
+            border-color: var(--accent-gold);
+        }
+
+        .card-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .card-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content p {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .card-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: auto;
+            box-shadow: 0 4px 6px rgba(0, 75, 135, 0.2);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 75, 135, 0.3);
+        }
+
+        .btn-accent {
+            background: var(--accent-gold);
+            color: var(--primary-blue);
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* ===== APP CONTAINERS ===== */
+        .app-container {
+            display: none;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .app-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== MICROSCOPE MASTERY STYLES ===== */
+        .microscope-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .microscope-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .microscope-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-container {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 900px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #ffc845;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #004b87;
+            font-weight: bold;
+        }
+
+        .concept-chip {
+            display: inline-block;
+            background: #004b87;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        .concept-chip.active {
+            opacity: 1;
+            font-weight: bold;
+            border: 2px solid #ffc845;
+        }
+
+        .concept-chip.mastery-complete {
+            background: #4caf50;
+            opacity: 1;
+            border: none;
+        }
+
+        .module {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .module.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .module h2 {
+            color: #004b87;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .concept-box {
+            background: #f0f7ff;
+            border-left: 4px solid #004b87;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .analogy-box {
+            background: #fff9e6;
+            border-left: 4px solid #ffc845;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .alert-box {
+            background: #ffebee;
+            border-left: 5px solid #d32f2f;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .demo-display {
+            min-height: 250px;
+            background: white;
+            border: 2px solid #004b87;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .question-box {
+            background: white;
+            border: 2px solid #004b87;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .option {
+            background: #f5f5f5;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background: #e8f4ff;
+            border-color: #004b87;
+        }
+
+        .option.selected {
+            background: #ffc845;
+            border-color: #ffc845;
+        }
+
+        .option.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+            cursor: default;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .feedback.incorrect {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            color: #c62828;
+        }
+
+        #magImage {
+            image-rendering: pixelated;
+            transition: width 0.1s;
+        }
+
+        .anabaena-filament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+            transform: rotate(-5deg);
+        }
+
+        .ana-cell {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #88c488;
+            transition: all 0.3s ease;
+        }
+
+        .ana-heterocyst {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #b5dcb5;
+            transition: all 0.3s ease;
+        }
+
+        .wd-simulator {
+            height: 400px;
+            background: linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%);
+            position: relative;
+            border-bottom: 10px solid #333;
+            overflow: hidden;
+        }
+
+        .nosepiece {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 60px;
+            background: #333;
+            border-radius: 0 0 50% 50%;
+            z-index: 5;
+        }
+
+        .objective-lens {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            background: linear-gradient(90deg, #999, #eee, #999);
+            border: 1px solid #666;
+            border-radius: 0 0 4px 4px;
+            transition: height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            z-index: 4;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-band {
+            width: 100%;
+            height: 8px;
+            margin-bottom: 10px;
+        }
+
+        .microscope-slide {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 8px;
+            background: rgba(200, 230, 255, 0.8);
+            border: 1px solid #888;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .specimen {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 15px;
+            background: radial-gradient(circle at 30% 30%, #ff7777, #aa0000);
+            border-radius: 50px 50px 0 0;
+            z-index: 3;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .measurement-arrow {
+            position: absolute;
+            right: 20%;
+            bottom: 10px;
+            width: 2px;
+            background: #d32f2f;
+            transition: height 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .measurement-arrow::before,
+        .measurement-arrow::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 2px;
+            background: #d32f2f;
+            left: -4px;
+        }
+
+        .measurement-arrow::before {
+            top: 0;
+        }
+
+        .measurement-arrow::after {
+            bottom: 0;
+        }
+
+        .measurement-label {
+            position: absolute;
+            right: -130px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 2px 6px;
+            border: 1px solid #d32f2f;
+            color: #d32f2f;
+            font-weight: bold;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            width: 120px;
+        }
+
+        .lens-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .lens-btn {
+            padding: 10px 20px;
+            border: 2px solid #ccc;
+            background: white;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lens-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .lens-btn.active {
+            border-color: #004b87;
+            background: #e3f2fd;
+            color: #004b87;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-red {
+            background: #ff4444;
+        }
+
+        .dot-yellow {
+            background: #ffeb3b;
+        }
+
+        .dot-blue {
+            background: #2196f3;
+        }
+
+        .dot-white {
+            background: #ffffff;
+            border: 1px solid #ccc;
+        }
+
+        .image-comparison {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .comparison-item {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        /* ===== FIELD DIAMETER MASTERY STYLES ===== */
+        .field-diameter-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .fd-header {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .fd-header h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .fd-card {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--primary-blue);
+            transition: transform 0.2s;
+        }
+
+        .fd-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .fd-hidden {
+            display: none;
+        }
+
+        .fd-progress-container {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 100;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .fd-progress-track {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .fd-progress-fill {
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .fd-status-text {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        .fd-btn {
+            background: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+        .fd-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .fd-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .fd-feedback-box {
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .fd-feedback-box.correct {
+            background: #e8f5e9;
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .fd-feedback-box.incorrect {
+            background: #ffebee;
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .formula-container {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.3rem;
+            background: #f9f9f9;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            text-align: center;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 0.2rem;
+        }
+
+        .fraction>span {
+            display: block;
+            padding: 0.1rem;
+        }
+
+        .fraction span.numerator {
+            border-bottom: 2px solid #000;
+        }
+
+        .fraction span.denominator {
+            border-top: 0;
+        }
+
+        .math-symbol {
+            font-size: 1.5rem;
+            vertical-align: middle;
+        }
+
+        .formula-builder {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px dashed #004b87;
+            text-align: center;
+        }
+
+        .scope-view {
+            width: 300px;
+            height: 300px;
+            background: #fff;
+            border: 15px solid #333;
+            border-radius: 50%;
+            margin: 1rem auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fov-circle {
+            width: 350px;
+            height: 350px;
+            border: 3px solid #b0c4de;
+            border-radius: 50%;
+            background: white;
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .fov-guideline {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            border-top: 1px dashed #ccc;
+        }
+
+        .ruler-scale {
+            position: absolute;
+            height: 60px;
+            background-image:
+                repeating-linear-gradient(90deg, black 0, black 1px, transparent 1px, transparent 10%),
+                repeating-linear-gradient(90deg, black 0, black 1px, transparent 1px, transparent 2%);
+            background-size: 100% 100%, 100% 50%;
+            background-repeat: no-repeat;
+            background-position: bottom;
+            border-bottom: 2px solid black;
+            top: 55%;
+            left: 0px;
+            width: 108.7%;
+        }
+
+        .ruler-number {
+            position: absolute;
+            bottom: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #certificate-area {
+            border: 10px double var(--primary-blue);
+            padding: 3rem;
+            text-align: center;
+            background: #fff;
+        }
+
+        .cert-title {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            font-family: serif;
+            margin-bottom: 1rem;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #certificate-area,
+            #certificate-area * {
+                visibility: visible;
+            }
+
+            #certificate-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                border: 5px double #000;
+            }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* ===== MAGNIFICATION MASTERY STYLES (THEME UPDATED) ===== */
+        .magnification-mastery-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .mag-card {
+            background: var(--white);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .mag-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 2rem;
+        }
+
+        .mag-header h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .mag-header p {
+            margin: 0 auto;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .mag-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .mag-h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .mag-formula {
+            background: #f0f7ff;
+            border-left: 4px solid var(--primary-blue);
+            padding: 1rem;
+            border-radius: 4px;
+            color: #333;
+            font-family: 'Segoe UI', monospace;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .mag-label {
+            display: block;
+            margin: 0.5rem 0 0.25rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .mag-input,
+        .mag-select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #333;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .mag-input:focus,
+        .mag-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(0, 75, 135, 0.2);
+        }
+
+        .mag-button {
+            cursor: pointer;
+            background: var(--primary-blue);
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            transition: var(--transition);
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .mag-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .mag-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .mag-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            color: #333;
+            text-align: center;
+        }
+
+        .mag-hint {
+            color: #666 !important;
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .mag-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        .mag-pill {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: var(--primary-blue);
+            color: white !important;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .mag-list {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+            color: #333;
+        }
+
+        .mag-list li {
+            margin: 0.5rem 0;
+        }
+
+        .mag-kbd {
+            font-family: monospace;
+            background: #eee;
+            border: 1px solid #ccc;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            color: #333;
+        }
+
+        .mag-mastery {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .mag-progress {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .mag-bar {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .mag-tiny {
+            font-size: 0.85rem;
+            color: #666 !important;
+        }
+
+        .mag-good {
+            color: var(--success) !important;
+            font-weight: bold;
+        }
+
+        .mag-bad {
+            color: var(--error) !important;
+            font-weight: bold;
+        }
+
+        .mag-warn {
+            color: #e65100 !important;
+            font-weight: bold;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--primary-blue);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 1rem;
+        }
+
+        .back-to-home {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .back-to-home:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-section {
+                padding: 3rem 1rem;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .microscope-icon {
+                font-size: 3rem;
+            }
+
+            .mag-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div id="landing-page">
+        <div class="landing-nav">
+            <button class="back-button-external" onclick="exitToExternal()">
+                ← Back to Lab Index
+            </button>
+        </div>
+
+        <section class="hero-section">
+            <div class="hero-row">
+                <span class="microscope-icon">🔬</span>
+                <div class="hero-content">
+                    <h1>Microscope Mastery Hub</h1>
+                    <p>Your comprehensive guide to mastering microscope concepts through interactive learning,
+                        simulations, and hands-on practice.</p>
+                    <button class="btn btn-accent" onclick="scrollToModules()">Start Learning</button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="modules-section">
+            <h2 class="section-title">Choose Your Learning Path</h2>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <div class="card-header">
+                        <span class="card-icon">📐</span>
+                        <h3>Microscope Set Up</h3>
+                        <p>Interactive Video Demo</p>
+                    </div>
+                    <div class="card-content">
+                        <p>Master the correct setup, use, troubleshooting, and shutdown of a compound light microscope.
+                        </p>
+                        <ul class="card-features">
+                            <li>Safe handling</li>
+                            <li>Proper setup</li>
+                            <li>Accurate focusing</li>
+                            <li>Objective switching</li>
+                            <li>Basic troubleshooting</li>
+                            <li>Proper cleanup</li>
+                        </ul>
+                        <a href="Microscope_Setup.html" class="btn" target="_blank">Launch the Video Demo</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <span class="card-icon">📐</span>
+                        <h3>Microscope Mastery</h3>
+                        <p>Core Concepts & Interactive Demos</p>
+                    </div>
+                    <div class="card-content">
+                        <p>Master the four essential microscopy concepts through interactive demonstrations, real-world
+                            analogies, and spaced repetition.</p>
+                        <ul class="card-features">
+                            <li>Magnification & Empty Magnification</li>
+                            <li>Resolution vs. Magnification</li>
+                            <li>Contrast & Staining Techniques</li>
+                            <li>Working Distance & Lens Safety</li>
+                            <li>Interactive Simulations</li>
+                            <li>Progress Tracking</li>
+                        </ul>
+                        <button class="btn" onclick="loadApp('microscope-mastery')">Launch Learning Module</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <span class="card-icon">🔍</span>
+                        <h3>Magnification Mastery</h3>
+                        <p>Calculate Total Magnification</p>
+                    </div>
+                    <div class="card-content">
+                        <p>Master the calculation of total magnification (ocular × objective) through interactive
+                            practice and mastery checks.</p>
+                        <ul class="card-features">
+                            <li>Core concept explanation</li>
+                            <li>Interactive calculator</li>
+                            <li>Guided practice problems</li>
+                            <li>Mastery check with progress tracking</li>
+                            <li>Multiple ocular variations</li>
+                            <li>Randomized question sets</li>
+                        </ul>
+                        <button class="btn" onclick="loadApp('magnification-mastery')">Launch Magnification
+                            Tool</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <span class="card-icon">📏</span>
+                        <h3>Field Diameter Lab</h3>
+                        <p>Measure • Calculate • Estimate • Memorize</p>
+                    </div>
+                    <div class="card-content">
+                        <p>Master microscope field diameter calculations and specimen estimation through guided lab
+                            simulations. Essential for BIOS101 lab work.</p>
+                        <ul class="card-features">
+                            <li>Direct Measurement with 4x Lens</li>
+                            <li>Field Diameter Calculations</li>
+                            <li>The "Big Three" Memorization</li>
+                            <li>Specimen Size Estimation</li>
+                            <li>Final Mastery Exam</li>
+                            <li>Printable Certificate</li>
+                        </ul>
+                        <button class="btn" onclick="loadApp('field-diameter-mastery')">Launch Lab Module</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <span class="card-icon">🔬</span>
+                        <h3>Microscope Anatomy</h3>
+                        <p>Structure & Function</p>
+                    </div>
+                    <div class="card-content">
+                        <p>Master each anatomical part of the microscope through click and learn interactive
+                            exploration.</p>
+                        <ul class="card-features">
+                            <li>Ocular Lens (Eyepiece)</li>
+                            <li>Objective Lenses</li>
+                            <li>Mechanical Stage</li>
+                            <li>Coarse Adjustment Knob</li>
+                            <li>Fine Adjustment Knob</li>
+                            <li>Iris Diaphragm</li>
+                        </ul>
+                        <a href="MicroscopeAnatomy.html" class="btn" target="_blank">Launch the Anatomy Tool</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <span class="card-icon">📚</span>
+                        <h3>Quick Reference Guide</h3>
+                        <p>Essential Formulas & Values</p>
+                    </div>
+                    <div class="card-content">
+                        <p>Access key formulas, microscope values, and quick tips for both learning modules in one
+                            convenient reference.</p>
+                        <ul class="card-features">
+                            <li>Total Magnification Formula</li>
+                            <li>Field Diameter Calculations</li>
+                            <li>Working Distance Guidelines</li>
+                            <li>Microscope Safety Tips</li>
+                            <li>Common Stains & Uses</li>
+                            <li>Troubleshooting Guide</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="showQuickReference()">View Reference Guide</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Developed for BIOS101 Microscopy Lab • uwp,edu</p>
+            <p>© 2026 Microscope Mastery Hub. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <div id="microscope-mastery-app" class="app-container">
+        <div class="microscope-container">
+            <div class="microscope-header">
+                <h1>Microscope Mastery</h1>
+
+                <p>Magnification • Resolution • Contrast • Working Distance</p>
+            </div>
+
+            <div class="progress-container">
+                <h3>Your Learning Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0%</div>
+                </div>
+                <div id="conceptMastery" style="text-align: center;">
+                    <span class="concept-chip" id="chip-mag">Magnification</span>
+                    <span class="concept-chip" id="chip-res">Resolution</span>
+                    <span class="concept-chip" id="chip-con">Contrast</span>
+                    <span class="concept-chip" id="chip-wd">Working Distance</span>
+                </div>
+            </div>
+
+            <div class="microscope-container">
+                <div class="module active" id="module-intro">
+                    <h2>Welcome to Microscope Mastery!</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">This tool will guide you through four essential
+                        microscopy concepts using multiple learning approaches to ensure deep understanding.</p>
+
+                    <div class="concept-box">
+                        <h3>What You'll Master:</h3>
+                        <ul style="margin-left: 2rem; margin-top: 1rem;">
+                            <li><strong>Magnification</strong> - How much bigger things appear</li>
+                            <li><strong>Resolution</strong> - How much detail you can see</li>
+                            <li><strong>Contrast</strong> - How easily you can distinguish structures</li>
+                            <li><strong>Working Distance</strong> - The space between lens and slide</li>
+                        </ul>
+                    </div>
+
+                    <div class="analogy-box">
+                        <h3>🎯 Learning Approach</h3>
+                        <p>We'll use real-world analogies, interactive demonstrations, and spaced repetition to
+                            guarantee mastery. Each concept builds on the previous one.</p>
+                    </div>
+
+                    <button class="btn" onclick="startLearning()">Begin Learning Journey</button>
+                </div>
+
+                <div class="module" id="module-magnification">
+                    <h2>📐 Concept 1: Magnification</h2>
+
+                    <div class="concept-box">
+                        <h3>Definition</h3>
+                        <p><strong>Magnification</strong> is how many times larger an object appears compared to its
+                            actual size.</p>
+                        <p style="margin-top: 1rem;"><strong>Formula:</strong> Total Magnification = Ocular Lens ×
+                            Objective Lens</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <h3>🌎 Real-World Analogy: Zooming on Your Phone</h3>
+                        <p>Think about zooming in on a photo on your smartphone. When you pinch to zoom 2x, everything
+                            appears twice as large. At 10x zoom, things appear 10 times larger.</p>
+                        <p style="margin-top: 1rem;">However, if you zoom too much on a low-quality photo, it gets big
+                            but pixelated. This is called "Empty Magnification."</p>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3>Interactive Demo: Magnification & Pixelation</h3>
+                        <p>Slide to increase magnification of the cheek cell below:</p>
+                        <input type="range" min="10" max="100" value="10" class="slider" id="magSlider">
+                        <div class="demo-display" id="magDisplay">
+                            <div id="magImage"
+                                style="width: 50px; height: 50px; background-color: #ffb6c1; border-radius: 50%; border: 2px solid #ff6b6b;">
+                            </div>
+                        </div>
+                        <p><strong>Current Size: <span id="magValue">100</span>%</strong></p>
+                        <p style="margin-top: 1rem; color: #666;">Notice: The object gets BIGGER, but details don't
+                            necessarily get clearer.</p>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Quick Check: Understanding Magnification</h3>
+                        <p><strong>If your eyepiece is 10x and your objective lens is 40x, what is the total
+                                magnification?</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'mag1')">A) 50x (10 + 40)</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'mag1')">B) 400x (10 × 40)</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'mag1')">C) 30x (40 - 10)</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'mag1')">D) 4x (40 ÷ 10)</div>
+                        <div class="feedback" id="feedback-mag1"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Application Question</h3>
+                        <p><strong>You're looking at a cell that's actually 0.01mm wide. Under 400x magnification, how
+                                wide does it appear?</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'mag2')">A) 0.4mm</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'mag2')">B) 4mm</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'mag2')">C) 40mm</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'mag2')">D) 0.04mm</div>
+                        <div class="feedback" id="feedback-mag2"></div>
+                    </div>
+
+                    <button class="btn" id="btn-mag" onclick="completeModule('magnification')" disabled>Continue to
+                        Resolution →</button>
+                </div>
+
+                <div class="module" id="module-resolution">
+                    <h2>🔍 Concept 2: Resolution</h2>
+
+                    <div class="concept-box">
+                        <h3>Definition</h3>
+                        <p><strong>Resolution</strong> is the ability to distinguish two separate points as distinct
+                            from each other. It's about DETAIL and CLARITY, not size.</p>
+                        <p style="margin-top: 1rem;"><strong>Key Point:</strong> Better resolution = Can see finer
+                            details</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <h3>📺 Real-World Analogy: TV Screen Pixels</h3>
+                        <p>Imagine watching a movie on two TVs of the same size:</p>
+                        <ul style="margin-left: 2rem; margin-top: 1rem;">
+                            <li><strong>720p TV:</strong> Lower resolution - you might see pixelation, blurry edges</li>
+                            <li><strong>4K TV:</strong> Higher resolution - crystal clear, sharp details</li>
+                        </ul>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3>Interactive Demo: Resolution vs. Magnification</h3>
+                        <div class="image-comparison">
+                            <div class="comparison-item">
+                                <h4>High Magnification<br>Low Resolution</h4>
+                                <div style="font-size: 4rem; filter: blur(5px); margin: 1rem;">👁️</div>
+                                <p>BIG but BLURRY</p>
+                            </div>
+                            <div class="comparison-item">
+                                <h4>High Magnification<br>High Resolution</h4>
+                                <div style="font-size: 4rem; margin: 1rem;">👁️</div>
+                                <p>BIG and CLEAR</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Quick Check: Understanding Resolution</h3>
+                        <p><strong>Two bacteria are very close together. Which statement is TRUE?</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'res1')">A) Higher magnification will
+                            always let you see them as separate</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'res1')">B) Better resolution is needed to
+                            see them as separate cells</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'res1')">C) Magnification and resolution
+                            are the same thing</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'res1')">D) Neither magnification nor
+                            resolution affects what you see</div>
+                        <div class="feedback" id="feedback-res1"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Critical Thinking Question</h3>
+                        <p><strong>You have two microscopes, both at 400x magnification. Microscope A cost $200,
+                                Microscope B cost $2000. When viewing the same sample, Microscope B shows much clearer
+                                details. What's the most likely explanation?</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'res2')">A) Microscope B has higher
+                            magnification</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'res2')">B) Microscope B has better
+                            resolution (higher quality optics)</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'res2')">C) Microscope B uses more light
+                        </div>
+                        <div class="option" onclick="checkAnswer(this, false, 'res2')">D) The samples are different
+                        </div>
+                        <div class="feedback" id="feedback-res2"></div>
+                    </div>
+
+                    <button class="btn" id="btn-res" onclick="completeModule('resolution')" disabled>Continue to
+                        Contrast →</button>
+                </div>
+
+                <div class="module" id="module-contrast">
+                    <h2>🎨 Concept 3: Contrast</h2>
+
+                    <div class="concept-box">
+                        <h3>Definition</h3>
+                        <p><strong>Contrast</strong> is the difference in light intensity or color between the specimen
+                            and its background. It makes structures visible and distinguishable.</p>
+                        <p style="margin-top: 1rem;"><strong>Key Point:</strong> Without contrast, even with perfect
+                            magnification and resolution, transparent organisms (like bacteria) are almost invisible
+                            against bright light.</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <h3>🎭 Real-World Analogy: Reading Text</h3>
+                        <p>Imagine trying to read text in these scenarios:</p>
+                        <ul style="margin-left: 2rem; margin-top: 1rem;">
+                            <li><strong>Black text on white paper:</strong> HIGH contrast - easy to read</li>
+                            <li><strong>Light gray text on white paper:</strong> LOW contrast - hard to read</li>
+                            <li><strong>White text on white paper:</strong> NO contrast - impossible to read</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">In microscopy, we use <strong>stains</strong> (dyes) to color the
+                            cells.</p>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3>Interactive Demo: Visualizing <i>Anabaena</i></h3>
+                        <p>Below is a filament of <i>Anabaena</i> (cyanobacteria). Adjust the slider to increase
+                            contrast (simulate adding a stain):</p>
+
+                        <input type="range" min="0" max="100" value="10" class="slider" id="contrastSlider">
+
+                        <div class="demo-display" id="contrastDisplay" style="background: #ffffff;">
+                            <div class="anabaena-filament" id="anabaenaStrand">
+                                <div class="ana-cell"></div>
+                                <div class="ana-cell"></div>
+                                <div class="ana-cell"></div>
+                                <div class="ana-heterocyst"></div>
+                                <div class="ana-cell"></div>
+                                <div class="ana-cell"></div>
+                                <div class="ana-cell"></div>
+                            </div>
+                        </div>
+
+                        <p><strong>Contrast Level: <span id="contrastValue">Low (Unstained)</span></strong></p>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Quick Check: Understanding Contrast</h3>
+                        <p><strong>You're viewing transparent cheek cells that are nearly invisible. What would help you
+                                see them better?</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'con1')">A) Increase magnification to
+                            1000x</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'con1')">B) Use a microscope with better
+                            resolution</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'con1')">C) Add a stain to increase
+                            contrast</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'con1')">D) Use a brighter light source
+                        </div>
+                        <div class="feedback" id="feedback-con1"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Application Question</h3>
+                        <p><strong>Which scenario demonstrates the importance of contrast?</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'con2')">A) A small cell appears larger at
+                            higher magnification</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'con2')">B) Two close bacteria are seen as
+                            separate with better resolution</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'con2')">C) Clear cell structures become
+                            visible after adding methylene blue stain</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'con2')">D) Using a 40x objective instead
+                            of 10x objective</div>
+                        <div class="feedback" id="feedback-con2"></div>
+                    </div>
+
+                    <button class="btn" id="btn-con" onclick="completeModule('contrast')" disabled>Continue to Working
+                        Distance →</button>
+                </div>
+
+                <div class="module" id="module-working-distance">
+                    <h2>📏 Concept 4: Working Distance</h2>
+
+                    <div class="concept-box">
+                        <h3>Definition</h3>
+                        <p>The <strong>working distance</strong> is the space between the slide and the
+                            <strong>objective</strong> lens when the object being viewed is in focus.
+                        </p>
+                        <p style="margin-top: 1rem;">We will often use the <strong>4X lens</strong> when we need to add
+                            a reagent like iodine to a slide since it provides the most working distance.</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <h3>🚗 Real-World Analogy: Parking the Car</h3>
+                        <p>Think of the objective lens like the nose of a car you are parking in a garage (the slide):
+                        </p>
+                        <ul style="margin-left: 2rem; margin-top: 1rem;">
+                            <li><strong>4x Lens:</strong> Like parking in a huge empty warehouse. You have tons of room
+                                in front of you.</li>
+                            <li><strong>100x Lens:</strong> Like parallel parking with only 1 inch of space. You are
+                                terrified of hitting the bumper!</li>
+                        </ul>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3>Interactive Simulator: Lens Selection</h3>
+                        <p>Click the lenses to see how the physical length of the lens changes the Working Distance
+                            (Gap).</p>
+
+                        <div class="lens-controls">
+                            <button class="lens-btn" onclick="setLens(4)"><span class="dot dot-red"></span> 4x</button>
+                            <button class="lens-btn" onclick="setLens(10)"><span class="dot dot-yellow"></span>
+                                10x</button>
+                            <button class="lens-btn" onclick="setLens(40)"><span class="dot dot-blue"></span>
+                                40x</button>
+                            <button class="lens-btn" onclick="setLens(100)"><span class="dot dot-white"></span>
+                                100x</button>
+                        </div>
+
+                        <div class="demo-display wd-simulator">
+                            <div class="nosepiece"></div>
+                            <div class="objective-lens" id="objLens">
+                                <div class="color-band" id="lensBand"></div>
+                            </div>
+
+                            <div class="measurement-arrow" id="measureArrow">
+                                <div class="measurement-label" id="measureLabel">Gap: Large</div>
+                            </div>
+
+                            <div class="microscope-slide">
+                                <div class="specimen"></div>
+                            </div>
+                        </div>
+
+                        <div class="alert-box" id="lens-warning" style="display:none; text-align: left;">
+                            <strong>⚠️ CAUTION:</strong> The lens is extremely close to the specimen! Do not use the
+                            Coarse Focus knob here or you will crush the sample.
+                        </div>
+
+                        <p id="wd-observation" style="margin-top: 1rem; font-weight: bold;">Observation: The 4x lens is
+                            short, leaving plenty of room.</p>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Concept Mastery</h3>
+                        <p><strong>Circle the best choice for the following sentence:</strong></p>
+                        <p style="font-size: 1.1rem; margin: 1rem 0;">"The working distance ( increases or decreases )
+                            as the objective lens magnification increases"</p>
+
+                        <div class="option" onclick="checkAnswer(this, false, 'wd1')">A) Increases (Gets bigger)</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'wd1')">B) Decreases (Gets smaller)</div>
+                        <div class="feedback" id="feedback-wd1"></div>
+                    </div>
+
+                    <button class="btn" id="btn-wd" onclick="completeModule('working-distance')" disabled>Continue to
+                        Synthesis →</button>
+                </div>
+
+                <div class="module" id="module-synthesis">
+                    <h2>🎓 Synthesis: Putting It All Together</h2>
+
+                    <div class="question-box">
+                        <h3>Synthesis Challenge 1</h3>
+                        <p><strong>You're viewing a specimen at 400x magnification. The image is large but blurry, and
+                                you can barely see any structures. Which TWO improvements would help most?</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'syn1')">A) Increase magnification further
+                        </div>
+                        <div class="option" onclick="checkAnswer(this, true, 'syn1')">B) Use a microscope with better
+                            resolution AND add a stain for contrast</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'syn1')">C) Decrease magnification</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'syn1')">D) Use a different eyepiece only
+                        </div>
+                        <div class="feedback" id="feedback-syn1"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <h3>Synthesis Challenge 2</h3>
+                        <p><strong>Rank these situations from BEST to WORST for viewing cell details:</strong></p>
+                        <div class="option" onclick="checkAnswer(this, false, 'syn2')">A) High mag, Low res, High
+                            contrast → High mag, High res, Low contrast → Low mag, High res, High contrast</div>
+                        <div class="option" onclick="checkAnswer(this, true, 'syn2')">B) High mag, High res, High
+                            contrast → High mag, High res, Low contrast → Low mag, Low res, Low contrast</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'syn2')">C) High contrast, Low mag, Low
+                            res → Low contrast, High mag, High res → High contrast, High mag, Low res</div>
+                        <div class="option" onclick="checkAnswer(this, false, 'syn2')">D) They're all equally good</div>
+                        <div class="feedback" id="feedback-syn2"></div>
+                    </div>
+
+                    <button class="btn" id="btn-syn" onclick="goToFinalAssessment()" disabled>Take Final Mastery
+                        Assessment →</button>
+                </div>
+
+                <div class="module" id="module-final">
+                    <h2>🎯 Final Mastery Assessment</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 2rem;">Answer all questions to demonstrate your mastery.
+                    </p>
+
+                    <div class="question-box">
+                        <p><strong>1. Calculate: Eyepiece = 15x, Objective = 60x. Total magnification = ?</strong></p>
+                        <div class="option" onclick="selectFinal(this, 'q1', false)">A) 75x</div>
+                        <div class="option" onclick="selectFinal(this, 'q1', true)">B) 900x</div>
+                        <div class="option" onclick="selectFinal(this, 'q1', false)">C) 45x</div>
+                        <div class="option" onclick="selectFinal(this, 'q1', false)">D) 4x</div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>2. What does resolution determine?</strong></p>
+                        <div class="option" onclick="selectFinal(this, 'q2', false)">A) How large objects appear</div>
+                        <div class="option" onclick="selectFinal(this, 'q2', true)">B) How much detail can be
+                            distinguished</div>
+                        <div class="option" onclick="selectFinal(this, 'q2', false)">C) How bright the image is</div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>3. Why do we use stains in microscopy?</strong></p>
+                        <div class="option" onclick="selectFinal(this, 'q3', false)">A) To increase magnification</div>
+                        <div class="option" onclick="selectFinal(this, 'q3', true)">B) To increase contrast and make
+                            structures visible</div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>4. True or False: Magnifying a blurry image will make it clearer.</strong></p>
+                        <div class="option" onclick="selectFinal(this, 'q4', true)">A) False - magnification doesn't
+                            improve clarity, that's resolution's job</div>
+                        <div class="option" onclick="selectFinal(this, 'q4', false)">B) True - higher magnification
+                            always improves clarity</div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>5. As magnification increases, what happens to Working Distance?</strong></p>
+                        <div class="option" onclick="selectFinal(this, 'q5', false)">A) It increases (more space)</div>
+                        <div class="option" onclick="selectFinal(this, 'q5', true)">B) It decreases (less space)</div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>6. Which lens provides the most working distance for adding reagents?</strong></p>
+                        <div class="option" onclick="selectFinal(this, 'q6', true)">A) 4x (Scanning)</div>
+                        <div class="option" onclick="selectFinal(this, 'q6', false)">B) 100x (Oil Immersion)</div>
+                    </div>
+
+                    <button class="btn btn-secondary" onclick="gradeFinalAssessment()">Submit Final Assessment</button>
+                    <div class="feedback" id="final-feedback"></div>
+                </div>
+
+                <div class="module" id="module-results">
+                    <h2>🎉 Assessment Complete!</h2>
+                    <div class="mastery-score" id="finalScore">0%</div>
+                    <div id="resultsContent"></div>
+                    <button class="btn" onclick="restartLearning()">Start Over</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 2rem 0;">
+            <button class="btn btn-outline" onclick="returnToLanding()">← Back to All Modules</button>
+        </div>
+    </div>
+
+    <div id="magnification-mastery-app" class="app-container">
+        <div class="magnification-mastery-container">
+            <div class="mag-header">
+                <h2>Magnification Mastery</h2>
+                <p>Learn, practice, and master how to calculate total magnification for light microscopy using a 10×
+                    ocular and common objectives (4×, 10×, 40×, 100×).</p>
+            </div>
+
+            <main style="padding: 1rem">
+                <section class="mag-card" aria-labelledby="concept-title">
+                    <h2 class="mag-h2" id="concept-title">1) Core Concept</h2>
+                    <p class="mag-formula" aria-label="magnification formula">
+                        Total Magnification = Ocular Magnification × Objective Magnification
+                    </p>
+                    <p class="mag-formula" aria-label="magnification formula">
+                        Total = Ocular × Objective
+                    </p>
+                    <div class="mag-grid">
+                        <div>
+                            <p><span class="mag-pill">Ocular (eyepiece)</span> is typically <strong>10×</strong>.</p>
+                            <ul class="mag-list">
+                                <li>Look for the marking on each objective lens<span class="mag-kbd">10×</span> on the
+                                    eyepiece.</li>
+                                <li>Ocular magnification does not change when objectives are rotated.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p><span class="mag-pill">Objectives</span> include:</p>
+                            <ul class="mag-list">
+                                <li>4× (Scanning)</li>
+                                <li>10× (Low power)</li>
+                                <li>40× (High dry)</li>
+                                <li>100× (Oil immersion), we never use 100x oil immersion in BIOS101</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="mag-hint">Example: with a 10× ocular and a 40× objective, total magnification is 10 × 40 =
+                        <strong>400×</strong>.
+                    </p>
+                </section>
+
+                <section class="mag-card" aria-labelledby="calc-title">
+                    <h2 class="mag-h2" id="calc-title">2) Interactive Calculator (use this auto-calculator as a learning
+                        tool)</h2>
+                    <div class="mag-row" role="group" aria-label="Magnification inputs">
+                        <div>
+                            <label for="mag-ocular" class="mag-label">Ocular magnification (×)</label>
+                            <input class="mag-input" id="mag-ocular" type="number" inputmode="numeric" min="1" step="1"
+                                value="10" aria-describedby="ocular-help" />
+                            <div id="ocular-help" class="mag-tiny">Your microscope has a 10× ocular lens.</div>
+                        </div>
+                        <div>
+                            <label for="mag-objective" class="mag-label">Objective magnification (×)</label>
+                            <select class="mag-select" id="mag-objective" aria-describedby="obj-help">
+                                <option value="4">4× (Scanning)</option>
+                                <option value="10" selected>10× (Low power)</option>
+                                <option value="40">40× (High dry)</option>
+                                <option value="100">100× (Oil immersion)</option>
+                            </select>
+                            <div id="obj-help" class="mag-tiny">Choose the objective currently in place above the
+                                microscope slide.</div>
+                        </div>
+                    </div>
+                    <button class="mag-button" id="mag-calcBtn"
+                        aria-label="Calculate total magnification">Calculate</button>
+                    <div class="mag-result" id="mag-calcResult" aria-live="polite"></div>
+                </section>
+
+                <section class="mag-card" aria-labelledby="practice-title">
+                    <h2 class="mag-h2" id="practice-title">3) Guided Practice</h2>
+                    <p>Enter the total magnification for each objective using the selected ocular. Click "Check Answers"
+                        to get feedback.</p>
+                    <div class="mag-row">
+                        <div>
+                            <label for="mag-p-4" class="mag-label">10× X 4× objective = ? Total magnification</label>
+                            <input class="mag-input" id="mag-p-4" type="number" inputmode="numeric"
+                                placeholder="enter the answer" />
+                        </div>
+                        <div>
+                            <label for="mag-p-10" class="mag-label">10× x 10× objective = ? Total magnification</label>
+                            <input class="mag-input" id="mag-p-10" type="number" inputmode="numeric"
+                                placeholder="enter the answer" />
+                        </div>
+                    </div>
+                    <div class="mag-row">
+                        <div>
+                            <label for="mag-p-40" class="mag-label">10× x 40× objective = ? Total magnification</label>
+                            <input class="mag-input" id="mag-p-40" type="number" inputmode="numeric"
+                                placeholder="enter the answer" />
+                        </div>
+                        <div>
+                            <label for="mag-p-100" class="mag-label">10× x 100× objective = ? Total
+                                magnification</label>
+                            <input class="mag-input" id="mag-p-100" type="number" inputmode="numeric"
+                                placeholder="enter the answer" />
+                        </div>
+                    </div>
+                    <div class="mag-row">
+                        <div>
+                            <label for="mag-p-ocular" class="mag-label">Ocular (×) for this practice set</label>
+                            <input class="mag-input" id="mag-p-ocular" type="number" inputmode="numeric" min="1"
+                                step="1" value="10" />
+                        </div>
+                        <div style="align-self:end">
+                            <button class="mag-button" id="mag-checkPractice">Check Answers</button>
+                        </div>
+                    </div>
+                    <div class="mag-feedback" id="mag-practiceFeedback" aria-live="polite"></div>
+                    <p class="mag-hint">Formula reminder: <span class="mag-kbd">Total = Ocular × Objective</span>.</p>
+                </section>
+
+                <section class="mag-card" aria-labelledby="mastery-title">
+                    <h2 class="mag-h2" id="mastery-title">4) Mastery Check</h2>
+                    <p>Answer three randomized questions correctly to reach mastery. You can regenerate a new set at any
+                        time.</p>
+                    <div id="mag-items" class="mag-mastery"></div>
+                    <div class="mag-row">
+                        <button class="mag-button" id="mag-checkMastery">Submit Answers</button>
+                        <button class="mag-button" id="mag-newSet">New Question Set</button>
+                    </div>
+                    <div class="mag-progress" aria-label="Mastery progress">
+                        <div class="mag-bar" id="mag-bar"></div>
+                    </div>
+                    <div id="mag-masteryFeedback" class="mag-feedback" aria-live="polite"></div>
+                </section>
+
+                <section class="mag-card" aria-labelledby="reflect-title">
+                    <h2 class="mag-h2" id="reflect-title">5) Reflect & Transfer</h2>
+                    <p>Consider:</p>
+                    <ul class="mag-list">
+                        <li>How does increasing the objective from 10× to 40× affect the total magnification?</li>
+                        <li>Why must you **only** adjust the fine focus at higher objectives?</li>
+                        <li>How would total magnification change if your ocular were 15× instead of 10×?</li>
+                    </ul>
+                    <p class="mag-hint">Being able to predict total magnification helps plan observations and size
+                        estimations later in the lab.</p>
+                </section>
+            </main>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <button class="btn btn-outline" onclick="returnToLanding()">← Back to All Modules</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="field-diameter-mastery-app" class="app-container">
+        <div class="field-diameter-container">
+            <div class="fd-progress-container">
+                <div class="fd-progress-track">
+                    <div class="fd-progress-fill" id="fd-progressBar"></div>
+                </div>
+                <div class="fd-status-text" id="fd-statusText">Lab Progress: 0%</div>
+            </div>
+
+            <div class="fd-header">
+                <h1>🔬 Microscope Field Diameter Mastery</h1>
+                <p>Measure • Calculate • Estimate • Memorize</p>
+            </div>
+
+            <div class="field-diameter-container">
+                <div id="fd-step-setup" class="fd-card active">
+                    <h2>👋 Welcome to BIOS101 Lab</h2>
+                    <p>This interactive tool will guide you through measuring, calculating, and memorizing microscope
+                        field diameters. These numbers (5mm, 2mm, 0.5mm) will be used throughout your next year of
+                        study.</p>
+                    <div style="margin-top: 1rem;">
+                        <label><strong>Student Name:</strong></label><br>
+                        <input type="text" id="fd-studentName" placeholder="e.g. Jane Doe">
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <label><strong>Lab Section:</strong></label><br>
+                        <input type="text" id="fd-labSection" placeholder="e.g. BIOS101-L02">
+                    </div>
+                    <button class="fd-btn" onclick="fdInitLab()">Enter Lab</button>
+                </div>
+
+                <div id="fd-step-measure" class="fd-card fd-hidden">
+                    <h3>Step 1: Direct Diameter Measurement of the Low Power Magnification (LPM) (4x) lens</h3>
+                    <p>The <strong>Scanning Lens (4x)</strong> is the only lens with a field diameter (a straight line passing from side to side through the center of thec circle) large enough to measure
+                        with a physical ruler.</p>
+
+                    <div style="margin: 2rem 0;">
+                        <div class="fov-circle">
+                            <div class="fov-guideline"></div>
+
+                            <div class="ruler-scale">
+                                <span class="ruler-number" style="left: 1%;">0</span>
+                                <span class="ruler-number" style="left: 21%;">1</span>
+                                <span class="ruler-number" style="left: 41%;">2</span>
+                                <span class="ruler-number" style="left: 61%;">3</span>
+                                <span class="ruler-number" style="left: 81%;">4</span>
+                                <span class="ruler-number" style="left: 99%;">5</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p><strong>Instructions:</strong> Look at the ruler above. The field of view ends <em>past</em> the
+                        4mm mark and <em>past</em> the 4.5mm mark.</p>
+
+                    <div style="background: #e3f2fd; padding: 1rem; border-radius: 4px; margin: 1rem 0;">
+                        <p><strong>💡 Rounding Rule:</strong> If the measurement is greater than 4.5mm, we always round
+                            UP to the next whole number to make calculations easier.</p>
+                    </div>
+
+                    <label>1. Enter the raw estimated measurement (e.g., 4.6):</label><br>
+                    <input type="number" id="fd-rawMeasurement" step="0.1" placeholder="mm"><br>
+
+                    <label>2. Enter the ROUNDED UP whole number (This is your LPD):</label><br>
+                    <input type="number" id="fd-roundedMeasurement" placeholder="mm">
+
+                    <button class="fd-btn" onclick="fdSubmitMeasurement()">Submit Measurement</button>
+                    <div id="fd-feedback-measure" class="fd-feedback-box"></div>
+                    <button id="fd-btn-to-calc" class="fd-btn fd-hidden" onclick="fdNextStep('fd-step-calculate')">Next:
+                        Calculations</button>
+                </div>
+
+                <div id="fd-step-calculate" class="fd-card fd-hidden">
+                    <h2>Step 2: Calculating High Power Diameters</h2>
+
+                    <div style="background: #fff3cd; border: 1px solid #ffeeba; padding: 1rem; margin-bottom: 1rem;">
+                       <p><strong>Teaching Point:</strong> Remember the thre (3) objective lenses? The Low Power objective lens that provides 4x Magnification; and the two High Power objective lenses that provide 10x & 40x Magnification.</p>
+                       <p>The 4x lens provides Low Power Magnificaiont   (LPM)</p>
+                       <p>The 10x lens provides High Power Magnificaiont (HPM)<<sub>(10x)</sub></p>
+                       <p>The 40x lens provides High Power Magnificaiont (HPM)<<sub>(40x)</sub></p>
+                        
+                       
+                        In this calculation, the 4x lens is your <strong>Low Power
+                            magnification<(LPM) lenses </strong>.
+                        Both the 10x lens AND the 40x lens are considered <strong>High Power magnification(HPM) lenses</strong> relative to
+                        the 4x.
+                    </div>
+
+                    <h3>Part A: The 10x Objective lens</h3>
+                    <p>Our goal is to determine (calculate) the diameter for the 10x lens. Let's use a simple formula</p>
+
+                    <div class="formula-builder">
+                        <p><strong>1. Build the Formula:</strong></p>
+                        <p>Select the correct variables to construct the equation.</p>
+                        <div style="font-size: 1.2rem; margin: 1rem 0;">
+                            HPD =
+                            <select id="fd-f1-lpd">
+                                <option value="">?</option>
+                                <option value="HPM">HPM</option>
+                                <option value="LPD">LPD</option>
+                            </select>
+                            × (
+                            <div class="fraction">
+                                <span class="numerator">
+                                    <select id="fd-f1-top">
+                                        <option value="">?</option>
+                                        <option value="LPM">LPM</option>
+                                        <option value="HPM">HPM</option>
+                                    </select>
+                                </span>
+                                <span class="denominator">
+                                    <select id="fd-f1-bot">
+                                        <option value="">?</option>
+                                        <option value="LPM">LPM</option>
+                                        <option value="HPM">HPM</option>
+                                    </select>
+                                </span>
+                            </div>
+                            )
+                        </div>
+                        <button class="fd-btn" onclick="fdCheckFormula('10x')">Check Formula</button>
+                    </div>
+                    <div id="fd-feedback-formula-10x" class="fd-feedback-box"></div>
+
+                    <div id="fd-calc-input-10x" class="fd-hidden"
+                        style="margin-top: 2rem; border-top: 1px dashed #ccc; padding-top: 1rem;">
+                        <p><strong>2. Plug in the numbers:</strong></p>
+                        <div class="formula-container">
+                            Diameter =
+                            <input type="number" id="fd-val-lpd-10" style="width: 120px; text-align: center;"
+                                placeholder="LPD">
+                            × (
+                            <div class="fraction">
+                                <span class="numerator">
+                                    <input type="number" id="fd-val-lpm-10" style="width: 100px; text-align: center;"
+                                        placeholder="LPM">
+                                </span>
+                                <span class="denominator">
+                                    <input type="number" id="fd-val-hpm-10" style="width: 100px; text-align: center;"
+                                        placeholder="HPM">
+                                </span>
+                            </div>
+                            )
+                        </div>
+                        <p><strong>3. Result:</strong> What is the diameter?</p>
+                        <input type="number" id="fd-ans-10x" placeholder="mm">
+                        <button class="fd-btn" onclick="fdCheckMath('10x')">Check Math</button>
+                    </div>
+                    <div id="fd-feedback-math-10x" class="fd-feedback-box"></div>
+
+                    <hr style="margin: 2rem 0;">
+
+                    <div id="fd-section-40x" class="fd-hidden">
+                        <h3>Part B: The 40x Objective</h3>
+                        <p>Now calculate for the 40x lens. Remember, 40x is now the "High Power" (HPM) relative to the
+                            4x (LPM).</p>
+
+                        <div class="formula-builder">
+                            <p><strong>1. Build the Formula:</strong></p>
+                            <div style="font-size: 1.2rem; margin: 1rem 0;">
+                                HPD = LPD × (
+                                <div class="fraction">
+                                    <span class="numerator">LPM</span>
+                                    <span class="denominator">HPM</span>
+                                </div>
+                                )
+                            </div>
+                            <p><em>(Formula remains the same, variables change)</em></p>
+                        </div>
+
+                        <div style="margin-top: 1rem;">
+                            <p><strong>2. Plug in the numbers:</strong></p>
+                            <div class="formula-container">
+                                Diameter =
+                                <input type="number" id="fd-val-lpd-40" style="width: 120px; text-align: center;"
+                                    placeholder="LPD">
+                                × (
+                                <div class="fraction">
+                                    <span class="numerator">
+                                        <input type="number" id="fd-val-lpm-40"
+                                            style="width: 100px; text-align: center;" placeholder="LPM">
+                                    </span>
+                                    <span class="denominator">
+                                        <input type="number" id="fd-val-hpm-40"
+                                            style="width: 100px; text-align: center;" placeholder="HPM">
+                                    </span>
+                                </div>
+                                )
+                            </div>
+                            <p><strong>3. Result:</strong> What is the diameter? <em>Activity check - when in lab rotate
+                                    the revolving nosepiece and recite the field diameter for each objective lens while
+                                    looking into the microscope.</em></p>
+                            <input type="number" id="fd-ans-40x" placeholder="mm">
+                            <button class="fd-btn" onclick="fdCheckMath('40x')">Check Math</button>
+                        </div>
+                        <div id="fd-feedback-math-40x" class="fd-feedback-box"></div>
+                    </div>
+
+                    <button id="fd-btn-to-mem" class="fd-btn fd-hidden" onclick="fdNextStep('fd-step-memorize')">Next:
+                        Memorization</button>
+                </div>
+
+                <div id="fd-step-memorize" class="fd-card fd-hidden">
+                    <h2>Step 3: The "Big Three"</h2>
+                    <p>You must memorize these three numbers. You will use them constantly in BIOS101.</p>
+
+                    <div
+                        style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; margin: 2rem 0;">
+                        <div
+                            style="background: #004b87; color: white; padding: 2rem; border-radius: 8px; text-align: center; flex: 1;">
+                            <h3>4x</h3>
+                            <h1 style="font-size: 3rem;">5<span style="font-size:1rem">mm</span></h1>
+                            <p>Scanning</p>
+                        </div>
+                        <div
+                            style="background: #004b87; color: white; padding: 2rem; border-radius: 8px; text-align: center; flex: 1;">
+                            <h3>10x</h3>
+                            <h1 style="font-size: 3rem;">2<span style="font-size:1rem">mm</span></h1>
+                            <p>Low Power</p>
+                        </div>
+                        <div
+                            style="background: #004b87; color: white; padding: 2rem; border-radius: 8px; text-align: center; flex: 1;">
+                            <h3>40x</h3>
+                            <h1 style="font-size: 3rem;">0.5<span style="font-size:1rem">mm</span></h1>
+                            <p>High Power</p>
+                        </div>
+                    </div>
+
+                    <div style="background: #e3f2fd; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                        <h3>Space Repetition Check</h3>
+                        <p>Type the values to lock them in your memory.</p>
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 300px; margin: 0 auto;">
+                            <label style="text-align:right; padding-top:10px;">4x Diameter:</label>
+                            <input type="number" id="fd-mem-4" placeholder="mm">
+                            <label style="text-align:right; padding-top:10px;">10x Diameter:</label>
+                            <input type="number" id="fd-mem-10" placeholder="mm">
+                            <label style="text-align:right; padding-top:10px;">40x Diameter:</label>
+                            <input type="number" id="fd-mem-40" step="0.1" placeholder="mm">
+                        </div>
+                        <button class="fd-btn" onclick="fdCheckMemorization()">Check & Continue</button>
+                        <div id="fd-feedback-mem" class="fd-feedback-box"></div>
+                    </div>
+
+                    <button id="fd-btn-to-est" class="fd-btn fd-hidden" onclick="fdNextStep('fd-step-estimate')">Next:
+                        Estimation</button>
+                </div>
+
+                <div id="fd-step-estimate" class="fd-card fd-hidden">
+                    <h2>Step 4: Estimating Specimen Size</h2>
+                    <p>Now that you know the field diameter, you can estimate the organism's size.</p>
+
+                    <div class="scope-view" style="border-color: #004b87;">
+                        <svg width="300" height="300" viewBox="0 0 300 300">
+                            <circle cx="150" cy="150" r="140" fill="#fff" stroke="none" />
+                            <path d="M10,150 Q75,140 80,150 T150,150" stroke="green" stroke-width="5" fill="none" />
+                            <path d="M80,150 Q145,160 150,150 T220,150" stroke="green" stroke-width="5" fill="none" />
+                            <path d="M150,150 Q215,140 220,150 T290,150" stroke="green" stroke-width="5" fill="none" />
+                            <line x1="0" y1="150" x2="300" y2="150" stroke="#ccc" stroke-dasharray="5,5" />
+                        </svg>
+                    </div>
+                    <p style="text-align:center;">View at <strong>40x Objective</strong> (Field Diameter = 0.5mm)</p>
+
+                    <div class="formula-builder">
+                        <p><strong>1. Build the Word Formula:</strong></p>
+                        <div style="font-size: 1.2rem; margin: 1rem 0;">
+                            Length =
+                            <select id="fd-est-top">
+                                <option value="">?</option>
+                                <option value="Number">Number that fit</option>
+                                <option value="Diameter">Field Diameter</option>
+                            </select>
+                            /
+                            <select id="fd-est-bot">
+                                <option value="">?</option>
+                                <option value="Number">Number that fit</option>
+                                <option value="Diameter">Field Diameter</option>
+                            </select>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #666;">(L = D / N)</p>
+                        <button class="fd-btn" onclick="fdCheckEstFormula()">Check Formula</button>
+                    </div>
+                    <div id="fd-feedback-est-formula" class="fd-feedback-box"></div>
+
+                    <div id="fd-est-calc-area" class="fd-hidden" style="margin-top: 2rem;">
+                        <p><strong>2. Calculate:</strong></p>
+                        <p>Based on the image above, about <strong>92</strong> cells organized in a filament fit across the diameter (0.5mm).
+                        </p>
+                        <div class="formula-container">
+                            Length = 0.5mm / 92
+                        </div>
+
+                        <label>Length in mm:</label>
+                        <input type="number" id="fd-est-ans-mm" placeholder="mm (decimal)">
+
+                        <label>Convert to micrometers (µm):</label>
+                        <input type="number" id="fd-est-ans-um" placeholder="µm">
+
+                        <button class="fd-btn" onclick="fdCheckEstMath()">Check Estimate</button>
+                        <div id="fd-feedback-est-math" class="fd-feedback-box"></div>
+                    </div>
+
+                    <button id="fd-btn-to-exam" class="fd-btn fd-hidden" onclick="fdNextStep('fd-step-exam')">Go to
+                        Final Exam</button>
+                </div>
+
+                <div id="fd-step-exam" class="fd-card fd-hidden">
+                    <h2>🏆 Final Mastery Exam</h2>
+                    <p>Pass this to generate your certificate. You must know your numbers!</p>
+                    <div id="fd-quiz-container"></div>
+                    <button class="fd-btn" onclick="fdSubmitExam()">Submit Exam</button>
+                    <div id="fd-exam-result" class="fd-feedback-box"></div>
+                </div>
+
+                <div id="fd-certificate-area" class="fd-hidden">
+                    <h1 class="cert-title">Certificate of Mastery</h1>
+                    <p>This certifies that</p>
+                    <div style="font-size: 2rem; font-family: cursive; border-bottom: 2px solid #333; display: inline-block; min-width: 300px; margin: 1rem 0;"
+                        id="fd-cert-name-display"></div>
+                    <p>has mastered Microscope Field Diameter & Estimation</p>
+                    <div style="margin: 2rem 0; font-size: 1.2rem;">
+                        <p><strong>Memorized Values:</strong></p>
+                        <p>4x Field: 5 mm</p>
+                        <p>10x Field: 2 mm</p>
+                        <p>40x Field: 0.5 mm</p>
+                    </div>
+                    <p>Section: <span id="fd-cert-section-display"></span></p>
+                    <p>Date: <span id="fd-cert-date"></span></p>
+                    <div
+                        style="margin-top: 3rem; border-top: 1px solid #ccc; width: 250px; margin-left: auto; margin-right: auto;">
+                        Instructor Signature</div>
+                </div>
+
+                <div id="fd-print-controls" class="fd-hidden" style="text-align: center; margin: 2rem 0;">
+                    <button class="fd-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 2rem 0;">
+            <button class="btn btn-outline" onclick="returnToLanding()">← Back to All Modules</button>
+        </div>
+    </div>
+
+    <div id="quick-reference-app" class="app-container">
+        <div
+            style="max-width: 900px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--card-shadow);">
+            <h2 style="color: var(--primary-blue); margin-bottom: 2rem; text-align: center;">Microscope Mastery Quick
+                Reference</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="concept-box">
+                    <h3>📐 Magnification</h3>
+                    <p><strong>Formula:</strong> Total Magnification = Ocular × Objective</p>
+                    <p><strong>Example:</strong> 10x eyepiece × 40x objective = 400x total</p>
+                    <p><strong>Key Concept:</strong> Empty Magnification - making something bigger without adding detail
+                    </p>
+                </div>
+
+                <div class="concept-box">
+                    <h3>🔍 Resolution</h3>
+                    <p><strong>Definition:</strong> Ability to distinguish two separate points</p>
+                    <p><strong>Key Point:</strong> Different from magnification - about detail, not size</p>
+                    <p><strong>Analogy:</strong> 720p TV vs 4K TV - same size, different clarity</p>
+                </div>
+
+                <div class="concept-box">
+                    <h3>🎨 Contrast</h3>
+                    <p><strong>Definition:</strong> Difference between specimen and background</p>
+                    <p><strong>Solution:</strong> Use stains (methylene blue, iodine, etc.)</p>
+                    <p><strong>Analogy:</strong> Black text on white paper vs gray on white</p>
+                </div>
+
+                <div class="concept-box">
+                    <h3>📏 Working Distance</h3>
+                    <p><strong>Definition:</strong> Space between objective lens and slide</p>
+                    <p><strong>Rule:</strong> Higher magnification = Shorter working distance</p>
+                    <p><strong>Tip:</strong> Use 4x lens when adding reagents to slide</p>
+                </div>
+
+                <div class="concept-box">
+                    <h3>🎯 Field Diameter</h3>
+                    <p><strong>The "Big Three":</strong></p>
+                    <ul>
+                        <li><strong>4x:</strong> 5 mm (Scanning)</li>
+                        <li><strong>10x:</strong> 2 mm (Low Power)</li>
+                        <li><strong>40x:</strong> 0.5 mm (High Power)</li>
+                    </ul>
+                    <p><strong>Formula:</strong> HPD = LPD × (LPM / HPM)</p>
+                </div>
+
+                <div class="concept-box">
+                    <h3>📊 Size Estimation</h3>
+                    <p><strong>Formula:</strong> Length = Field Diameter ÷ # that fit</p>
+                    <p><strong>Conversion:</strong> 1 mm = 1000 µm (micrometers)</p>
+                    <p><strong>Example:</strong> 3 cells across 0.5mm field = 0.167mm each</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; padding: 1.5rem; background: #f0f7ff; border-radius: 8px;">
+                <h3>⚠️ Microscope Safety Tips</h3>
+                <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                    <li>Always start with the <strong>4x (scanning) lens</strong> when focusing</li>
+                    <li>Never use the <strong>coarse focus</strong> with 40x or 100x lenses</li>
+                    <li>Carry with <strong>two hands</strong> - one on arm, one under base</li>
+                    <li>Clean lenses only with <strong>lens paper</strong>, not tissue or cloth</li>
+                    <li>Turn off light when not in use to preserve bulb life</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn" onclick="window.location.href='../prelab/prelab.html'">Back to Pre-Lab Modules</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== LANDING PAGE FUNCTIONS =====
+        function scrollToModules() {
+            document.querySelector('.modules-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Logic for loading specific game apps
+        function loadApp(appName) {
+            // Hide landing page
+            document.getElementById('landing-page').style.display = 'none';
+
+            // Hide all other apps
+            document.getElementById('microscope-mastery-app').classList.remove('active');
+            document.getElementById('magnification-mastery-app').classList.remove('active');
+            document.getElementById('field-diameter-mastery-app').classList.remove('active');
+            document.getElementById('quick-reference-app').classList.remove('active');
+
+            // Show selected app
+            const app = document.getElementById(appName + '-app');
+            if (app) {
+                app.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function showQuickReference() {
+            loadApp('quick-reference');
+        }
+
+        // Logic for switching view back to the 5-card Landing Page
+        function returnToLanding() {
+            // Hide all apps
+            document.querySelectorAll('.app-container').forEach(app => {
+                app.classList.remove('active');
+            });
+
+            // Show landing page
+            document.getElementById('landing-page').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // Logic for the Landing Page "Back" button to go to external URL
+        function exitToExternal() {
+            window.location.href = 'https://harriauwp.github.io/101Labs/01_Science_of_Biology/index.html';
+        }
+
+        // ===== MICROSCOPE MASTERY FUNCTIONS (from original) =====
+        const learningState = {
+            questionsAnswered: {
+                mag1: false, mag2: false,
+                res1: false, res2: false,
+                con1: false, con2: false,
+                wd1: false,
+                syn1: false, syn2: false
+            },
+            finalAnswers: {}
+        };
+
+        // --- MAGNIFICATION LOGIC ---
+        const magSlider = document.getElementById('magSlider');
+        const magImage = document.getElementById('magImage');
+        const magValue = document.getElementById('magValue');
+        if (magSlider) {
+            magSlider.addEventListener('input', function () {
+                const value = this.value;
+                const newWidth = value * 5;
+                if (magImage) {
+                    magImage.style.width = newWidth + 'px';
+                }
+                if (magValue) {
+                    magValue.textContent = value + '0';
+                }
+            });
+        }
+
+        // --- CONTRAST LOGIC ---
+        const contrastSlider = document.getElementById('contrastSlider');
+        const contrastValue = document.getElementById('contrastValue');
+        const anaCells = document.querySelectorAll('.ana-cell');
+        const anaHeterocysts = document.querySelectorAll('.ana-heterocyst');
+
+        if (contrastSlider) {
+            contrastSlider.addEventListener('input', function () {
+                const value = parseInt(this.value);
+                let opacity, colorVeg, colorHet;
+                if (value < 30) {
+                    contrastValue.textContent = 'Low (Unstained/Transparent)';
+                    opacity = 0.1 + (value / 100);
+                    colorVeg = `rgba(136, 196, 136, ${opacity})`;
+                    colorHet = `rgba(181, 220, 181, ${opacity})`;
+                } else if (value < 70) {
+                    contrastValue.textContent = 'Medium';
+                    opacity = 0.4 + (value / 200);
+                    colorVeg = `rgba(100, 180, 100, ${opacity})`;
+                    colorHet = `rgba(150, 210, 150, ${opacity})`;
+                } else {
+                    contrastValue.textContent = 'High (Stained)';
+                    opacity = 1;
+                    colorVeg = '#2e7d32';
+                    colorHet = '#81c784';
+                }
+                anaCells.forEach(cell => { cell.style.backgroundColor = colorVeg; });
+                anaHeterocysts.forEach(het => { het.style.backgroundColor = colorHet; });
+            });
+            if (contrastSlider) {
+                contrastSlider.dispatchEvent(new Event('input'));
+            }
+        }
+
+        // --- WORKING DISTANCE LOGIC (IMPROVED) ---
+        function setLens(mag) {
+            const lens = document.getElementById('objLens');
+            const band = document.getElementById('lensBand');
+            const arrow = document.getElementById('measureArrow');
+            const label = document.getElementById('measureLabel');
+            const obs = document.getElementById('wd-observation');
+            const warning = document.getElementById('lens-warning');
+
+            if (!lens || !band || !arrow || !label || !obs || !warning) return;
+
+            // Reset buttons
+            document.querySelectorAll('.lens-btn').forEach(b => b.classList.remove('active'));
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            let lensHeight, gapHeight, color, text;
+
+            switch (mag) {
+                case 4:
+                    lensHeight = 100;
+                    gapHeight = 247;
+                    color = '#ff4444';
+                    text = "4x Lens: Short lens. Large Working Distance. Perfect for adding reagents.";
+                    warning.style.display = 'none';
+                    break;
+                case 10:
+                    lensHeight = 200;
+                    gapHeight = 147;
+                    color = '#ffeb3b';
+                    text = "10x Lens: Longer lens. Working Distance decreases.";
+                    warning.style.display = 'none';
+                    break;
+                case 40:
+                    lensHeight = 300;
+                    gapHeight = 47;
+                    color = '#2196f3';
+                    text = "40x Lens: Long lens. Small Working Distance. Be careful.";
+                    warning.style.display = 'none';
+                    break;
+                case 100:
+                    lensHeight = 345;
+                    gapHeight = 2;
+                    color = '#ffffff';
+                    text = "100x Lens: Almost touching the specimen! Risk of breaking slide is high.";
+                    warning.style.display = 'block';
+                    break;
+            }
+
+            lens.style.height = lensHeight + 'px';
+            band.style.backgroundColor = color;
+
+            arrow.style.height = gapHeight + 'px';
+            arrow.style.bottom = (23) + 'px';
+
+            label.innerText = `WD: ~${(gapHeight / 10).toFixed(1)}mm`;
+            obs.innerText = "Observation: " + text;
+        }
+
+        // --- GENERAL LEARNING LOGIC ---
+        function startLearning() {
+            showModule('magnification');
+            setLens(4);
+            updateProgress();
+        }
+
+        function showModule(moduleName) {
+            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+            const module = document.getElementById('module-' + moduleName);
+            if (module) {
+                module.classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function checkAnswer(element, isCorrect, questionId) {
+            const parent = element.parentElement;
+            const allOptions = parent.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback-' + questionId);
+
+            if (isCorrect) {
+                allOptions.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                    if (opt === element) opt.classList.add('correct');
+                });
+
+                if (feedback) {
+                    feedback.className = 'feedback show correct';
+                    feedback.innerHTML = '<strong>✓ Correct!</strong> ' + getExplanation(questionId);
+                }
+
+                learningState.questionsAnswered[questionId] = true;
+                checkModuleCompletion(questionId);
+
+            } else {
+                element.classList.add('incorrect');
+
+                if (feedback) {
+                    feedback.className = 'feedback show incorrect';
+                    feedback.innerHTML = '<strong>✗ Not quite.</strong> Try again! ' + getExplanation(questionId);
+                }
+            }
+
+            updateProgress();
+        }
+
+        function checkModuleCompletion(qId) {
+            const magQs = ['mag1', 'mag2'];
+            const resQs = ['res1', 'res2'];
+            const conQs = ['con1', 'con2'];
+            const wdQs = ['wd1'];
+            const synQs = ['syn1', 'syn2'];
+
+            if (magQs.includes(qId) && magQs.every(q => learningState.questionsAnswered[q])) {
+                document.getElementById('btn-mag').disabled = false;
+                updateChip('magnification');
+            }
+            if (resQs.includes(qId) && resQs.every(q => learningState.questionsAnswered[q])) {
+                document.getElementById('btn-res').disabled = false;
+                updateChip('resolution');
+            }
+            if (conQs.includes(qId) && conQs.every(q => learningState.questionsAnswered[q])) {
+                document.getElementById('btn-con').disabled = false;
+                updateChip('contrast');
+            }
+            if (wdQs.includes(qId) && wdQs.every(q => learningState.questionsAnswered[q])) {
+                document.getElementById('btn-wd').disabled = false;
+                updateChip('working-distance');
+            }
+            if (synQs.includes(qId) && synQs.every(q => learningState.questionsAnswered[q])) {
+                document.getElementById('btn-syn').disabled = false;
+            }
+        }
+
+        function getExplanation(questionId) {
+            const explanations = {
+                'mag1': 'Total Mag = Eyepiece (10) × Objective (40) = 400x.',
+                'mag2': '0.01mm × 400 = 4mm.',
+                'res1': 'Resolution is about seeing detail and separating close objects.',
+                'res2': 'Better lenses (optics) provide better resolution.',
+                'con1': 'Stains add color/contrast to transparent specimens.',
+                'con2': 'Staining makes invisible structures visible.',
+                'wd1': 'As magnification increases, the lens gets longer, so space decreases.',
+                'syn1': 'Blurry = Needs Resolution. Invisible = Needs Contrast.',
+                'syn2': 'Best = High Mag + High Res + High Contrast.'
+            };
+            return explanations[questionId] || 'Correct!';
+        }
+
+        function completeModule(moduleName) {
+            const nextMap = {
+                'magnification': 'resolution',
+                'resolution': 'contrast',
+                'contrast': 'working-distance',
+                'working-distance': 'synthesis'
+            };
+            showModule(nextMap[moduleName]);
+        }
+
+        function updateChip(concept) {
+            const chipMap = {
+                'magnification': 'chip-mag',
+                'resolution': 'chip-res',
+                'contrast': 'chip-con',
+                'working-distance': 'chip-wd'
+            };
+            const chip = document.getElementById(chipMap[concept]);
+            if (chip) chip.classList.add('mastery-complete');
+        }
+
+        function updateProgress() {
+            const questions = Object.values(learningState.questionsAnswered).filter(v => v).length;
+            const percentage = Math.min(100, Math.round(((questions) / 9) * 100));
+            const progressFill = document.getElementById('progressFill');
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+                progressFill.textContent = percentage + '%';
+            }
+        }
+
+        // FIXED: This function now works correctly
+        function goToFinalAssessment() {
+            showModule('final');
+        }
+
+        function selectFinal(element, questionId, isCorrect) {
+            const allOptions = element.parentElement.querySelectorAll('.option');
+            allOptions.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            learningState.finalAnswers[questionId] = isCorrect;
+        }
+
+        function gradeFinalAssessment() {
+            const totalQuestions = 6;
+            const answeredCount = Object.keys(learningState.finalAnswers).length;
+
+            if (answeredCount < totalQuestions) {
+                alert('Please answer all questions before submitting!');
+                return;
+            }
+
+            const correctCount = Object.values(learningState.finalAnswers).filter(v => v).length;
+            const score = Math.round((correctCount / totalQuestions) * 100);
+
+            showModule('results');
+            document.getElementById('finalScore').textContent = score + '%';
+            const content = document.getElementById('resultsContent');
+
+            if (score >= 80) {
+                content.innerHTML = `<div class="concept-box" style="background:#e8f5e9; border-color:#4caf50;"><h3>🎓 MASTERY ACHIEVED!</h3><p>You scored ${correctCount}/${totalQuestions}. You are ready for the lab!</p></div>`;
+            } else {
+                content.innerHTML = `<div class="concept-box" style="background:#ffebee; border-color:#f44336;"><h3>🔄 Review Needed</h3><p>You scored ${correctCount}/${totalQuestions}. Please review and try again.</p></div>`;
+            }
+        }
+
+        function restartLearning() {
+            location.reload();
+        }
+
+        // ===== MAGNIFICATION MASTERY FUNCTIONS (from MagnificationMastery.html) =====
+        // --- Calculator ---
+        const magOcularInput = document.getElementById('mag-ocular');
+        const magObjectiveSelect = document.getElementById('mag-objective');
+        const magCalcBtn = document.getElementById('mag-calcBtn');
+        const magCalcResult = document.getElementById('mag-calcResult');
+
+        function magFormatMag(x) { return Number.isFinite(x) ? `${x.toLocaleString()}×` : '—'; }
+        function magCalcTotal(ocular, objective) { return ocular * objective; }
+
+        if (magCalcBtn) {
+            magCalcBtn.addEventListener('click', () => {
+                const ocular = parseFloat(magOcularInput.value);
+                const objective = parseFloat(magObjectiveSelect.value);
+                if (!ocular || !objective || ocular <= 0 || objective <= 0) {
+                    magCalcResult.innerHTML = `<span class="mag-bad">Please enter valid magnifications (&gt; 0).</span>`;
+                    return;
+                }
+                const total = magCalcTotal(ocular, objective);
+                magCalcResult.innerHTML = `
+                    <span class="mag-tiny">Computed as ${ocular} × ${objective}.</span><br/>
+                    <strong>Total Magnification:</strong> ${magFormatMag(total)}
+                `;
+            });
+        }
+
+        // --- Guided Practice ---
+        const magP4 = document.getElementById('mag-p-4');
+        const magP10 = document.getElementById('mag-p-10');
+        const magP40 = document.getElementById('mag-p-40');
+        const magP100 = document.getElementById('mag-p-100');
+        const magPOcular = document.getElementById('mag-p-ocular');
+        const magCheckPracticeBtn = document.getElementById('mag-checkPractice');
+        const magPracticeFeedback = document.getElementById('mag-practiceFeedback');
+
+        if (magCheckPracticeBtn) {
+            magCheckPracticeBtn.addEventListener('click', () => {
+                const oc = parseFloat(magPOcular.value);
+                if (!oc || oc <= 0) {
+                    magPracticeFeedback.innerHTML = `<span class="mag-bad">Enter a valid ocular (×) value.</span>`;
+                    return;
+                }
+                const answers = {
+                    '4×': oc * 4,
+                    '10×': oc * 10,
+                    '40×': oc * 40,
+                    '100×': oc * 100
+                };
+                const student = {
+                    '4×': parseFloat(magP4.value),
+                    '10×': parseFloat(magP10.value),
+                    '40×': parseFloat(magP40.value),
+                    '100×': parseFloat(magP100.value)
+                };
+                let correct = 0;
+                let report = '<ul class="mag-list">';
+                for (const key of Object.keys(answers)) {
+                    const s = student[key];
+                    const a = answers[key];
+                    const ok = (Number.isFinite(s) && Math.round(s) === Math.round(a));
+                    if (ok) {
+                        correct++;
+                        report += `<li><span class="mag-good">✔</span> ${key}: ${s} (correct)</li>`;
+                    } else {
+                        report += `<li><span class="mag-bad">✖</span> ${key}: ${Number.isFinite(s) ? s : '—'} (should be <strong>${a}</strong>)</li>`;
+                    }
+                }
+                report += '</ul>';
+                const msg = correct === 4
+                    ? `<span class="mag-good">Great job!</span> All answers are correct.`
+                    : `<span class="mag-warn">Keep going.</span> ${4 - correct} item(s) need correction.`;
+                magPracticeFeedback.innerHTML = msg + report + `<p class="mag-hint">Remember: Total = Ocular × Objective.</p>`;
+            });
+        }
+
+        // --- Mastery Check ---
+        const magItemsContainer = document.getElementById('mag-items');
+        const magNewSetBtn = document.getElementById('mag-newSet');
+        const magCheckMasteryBtn = document.getElementById('mag-checkMastery');
+        const magMasteryFeedback = document.getElementById('mag-masteryFeedback');
+        const magBar = document.getElementById('mag-bar');
+
+        const magOcularOptions = [8, 10, 12, 15];
+        const magObjectiveOptions = [4, 10, 40, 100];
+
+        function magMakeItem(id, ocular, objective) {
+            const total = ocular * objective;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'mag-card';
+            wrapper.style.background = 'transparent';
+            wrapper.style.border = '1px dashed #334155';
+            wrapper.style.padding = '.8rem';
+
+            wrapper.innerHTML = `
+                <label for="mag-q-${id}" class="mag-label">Ocular ${ocular}× with Objective ${objective}× → Total magnification:</label>
+                <input class="mag-input" id="mag-q-${id}" type="number" inputmode="numeric" placeholder="Enter your answer here" aria-describedby="mag-h-${id}" />
+                <div id="mag-h-${id}" class="mag-tiny">Compute: ${ocular} × ${objective}</div>
+                <div id="mag-f-${id}" class="mag-feedback mag-tiny"></div>
+            `;
+            wrapper.dataset.answer = total;
+            wrapper.dataset.id = id;
+            return wrapper;
+        }
+
+        function magGenerateSet() {
+            if (!magItemsContainer) return;
+            magItemsContainer.innerHTML = '';
+            magMasteryFeedback.innerHTML = '';
+            magBar.style.width = '0%';
+            const usedPairs = new Set();
+            let count = 0;
+            while (count < 3) {
+                const oc = magOcularOptions[Math.floor(Math.random() * magOcularOptions.length)];
+                const obj = magObjectiveOptions[Math.floor(Math.random() * magObjectiveOptions.length)];
+                const key = `${oc}-${obj}`;
+                if (usedPairs.has(key)) continue;
+                usedPairs.add(key);
+                magItemsContainer.appendChild(magMakeItem(count + 1, oc, obj));
+                count++;
+            }
+        }
+
+        function magCheckSet() {
+            const items = Array.from(magItemsContainer.querySelectorAll('[data-answer]'));
+            let correct = 0;
+            items.forEach(item => {
+                const ans = parseFloat(item.dataset.answer);
+                const input = item.querySelector('input');
+                const fb = item.querySelector('.mag-feedback');
+                const val = parseFloat(input.value);
+                if (Number.isFinite(val) && Math.round(val) === Math.round(ans)) {
+                    fb.innerHTML = `<span class="mag-good">✔ Correct:</span> ${val}×`;
+                    correct++;
+                } else {
+                    fb.innerHTML = `<span class="mag-bad">✖ Not quite.</span> It should be <strong>${ans}×</strong>.`;
+                }
+            });
+            const pct = Math.round((correct / items.length) * 100);
+            magBar.style.width = pct + '%';
+            magMasteryFeedback.innerHTML = correct === items.length
+                ? `<span class="mag-good">Mastery achieved!</span> Perfect score on ${items.length} items.`
+                : `<span class="mag-warn">Almost there.</span> ${items.length - correct} item(s) to fix.`;
+        }
+
+        if (magNewSetBtn && magCheckMasteryBtn) {
+            magNewSetBtn.addEventListener('click', magGenerateSet);
+            magCheckMasteryBtn.addEventListener('click', magCheckSet);
+        }
+
+        // Initialize magnification mastery
+        if (magItemsContainer) {
+            magGenerateSet();
+        }
+
+        // ===== FIELD DIAMETER MASTERY FUNCTIONS (from original) =====
+        const fdState = {
+            name: '',
+            section: '',
+            lpd: 5,
+            progress: 0
+        };
+
+        function fdInitLab() {
+            const name = document.getElementById('fd-studentName').value;
+            const section = document.getElementById('fd-labSection').value;
+            if (!name || !section) { alert("Please enter name and section."); return; }
+
+            fdState.name = name;
+            fdState.section = section;
+            fdUpdateProgress(10);
+            fdTransition('fd-step-setup', 'fd-step-measure');
+        }
+
+        function fdTransition(fromId, toId) {
+            const fromEl = document.getElementById(fromId);
+            const toEl = document.getElementById(toId);
+            if (!fromEl || !toEl) return;
+
+            fromEl.classList.remove('active');
+            fromEl.classList.add('fd-hidden');
+
+            toEl.classList.remove('fd-hidden');
+            toEl.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function fdNextStep(toId) {
+            document.querySelectorAll('.fd-card').forEach(c => {
+                c.classList.remove('active');
+                c.classList.add('fd-hidden');
+            });
+            const t = document.getElementById(toId);
+            t.classList.remove('fd-hidden');
+            t.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function fdUpdateProgress(val) {
+            const bar = document.getElementById('fd-progressBar');
+            const text = document.getElementById('fd-statusText');
+            if (bar) bar.style.width = val + '%';
+            if (text) text.innerText = 'Lab Progress: ' + val + '%';
+        }
+
+        function fdShowFeedback(id, isCorrect, msg) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = 'block';
+            el.className = isCorrect ? 'fd-feedback-box correct' : 'fd-feedback-box incorrect';
+            el.innerHTML = (isCorrect ? '✅ ' : '❌ ') + msg;
+        }
+
+        function fdSubmitMeasurement() {
+            const raw = parseFloat(document.getElementById('fd-rawMeasurement').value);
+            const rounded = parseInt(document.getElementById('fd-roundedMeasurement').value);
+
+            if (raw < 4.5 || raw > 4.9) {
+                fdShowFeedback('fd-feedback-measure', false, "Look closer at the ruler. The edge is past the halfway mark between 4 and 5.");
+                return;
+            }
+
+            if (rounded !== 5) {
+                fdShowFeedback('fd-feedback-measure', false, "Incorrect rounding. If it's greater than 4.5, we round UP to the next whole number (5).");
+                return;
+            }
+
+            fdShowFeedback('fd-feedback-measure', true, "Perfect! Your Low Power Diameter (LPD) is 5mm.");
+            document.getElementById('fd-btn-to-calc').classList.remove('fd-hidden');
+            fdUpdateProgress(20);
+        }
+
+        function fdCheckFormula(lens) {
+            if (lens === '10x') {
+                const v1 = document.getElementById('fd-f1-lpd').value;
+                const v2 = document.getElementById('fd-f1-top').value;
+                const v3 = document.getElementById('fd-f1-bot').value;
+
+                if (v1 === 'LPD' && v2 === 'LPM' && v3 === 'HPM') {
+                    fdShowFeedback('fd-feedback-formula-10x', true, "Correct Formula! Students are required to memorize this formula. Now plug in the numbers.");
+                    document.getElementById('fd-calc-input-10x').classList.remove('fd-hidden');
+                } else {
+                    fdShowFeedback('fd-feedback-formula-10x', false, "Incorrect. Remember: HPD = LPD × (LPM / HPM).");
+                }
+            }
+        }
+
+        function fdCheckMath(lens) {
+            if (lens === '10x') {
+                const lpdVal = parseInt(document.getElementById('fd-val-lpd-10').value);
+                const lpmVal = parseInt(document.getElementById('fd-val-lpm-10').value);
+                const hpmVal = parseInt(document.getElementById('fd-val-hpm-10').value);
+                const ans = parseFloat(document.getElementById('fd-ans-10x').value);
+
+                if (lpdVal === 5 && lpmVal === 4 && hpmVal === 10 && ans === 2) {
+                    fdShowFeedback('fd-feedback-math-10x', true, "Correct! 5 × (4/10) = 2mm.");
+                    document.getElementById('fd-section-40x').classList.remove('fd-hidden');
+                    fdUpdateProgress(35);
+                } else {
+                    fdShowFeedback('fd-feedback-math-10x', false, "Check your inputs. LPD=5, LPM=4, HPM=10. The result should be 2.");
+                }
+            }
+            else if (lens === '40x') {
+                const lpdVal = parseInt(document.getElementById('fd-val-lpd-40').value);
+                const lpmVal = parseInt(document.getElementById('fd-val-lpm-40').value);
+                const hpmVal = parseInt(document.getElementById('fd-val-hpm-40').value);
+                const ans = parseFloat(document.getElementById('fd-ans-40x').value);
+
+                if (lpdVal === 5 && lpmVal === 4 && hpmVal === 40 && ans === 0.5) {
+                    fdShowFeedback('fd-feedback-math-40x', true, "Correct! 5 × (4/40) = 0.5mm.");
+                    document.getElementById('fd-btn-to-mem').classList.remove('fd-hidden');
+                    fdUpdateProgress(50);
+                } else {
+                    fdShowFeedback('fd-feedback-math-40x', false, "Check inputs. LPD=5, LPM=4, HPM=40. Result should be 0.5.");
+                }
+            }
+        }
+
+        function fdCheckMemorization() {
+            const v4 = parseInt(document.getElementById('fd-mem-4').value);
+            const v10 = parseInt(document.getElementById('fd-mem-10').value);
+            const v40 = parseFloat(document.getElementById('fd-mem-40').value);
+
+            if (v4 === 5 && v10 === 2 && v40 === 0.5) {
+                fdShowFeedback('fd-feedback-mem', true, "You've got it! 5, 2, 0.5.");
+                document.getElementById('fd-btn-to-est').classList.remove('fd-hidden');
+                fdUpdateProgress(70);
+            } else {
+                fdShowFeedback('fd-feedback-mem', false, "Incorrect. Review the cards above and try again.");
+            }
+        }
+
+        function fdCheckEstFormula() {
+            const top = document.getElementById('fd-est-top').value;
+            const bot = document.getElementById('fd-est-bot').value;
+
+            if (top === 'Diameter' && bot === 'Number') {
+                fdShowFeedback('fd-feedback-est-formula', true, "Correct! Length = Diameter / Number that fit.");
+                document.getElementById('fd-est-calc-area').classList.remove('fd-hidden');
+            } else {
+                fdShowFeedback('fd-feedback-est-formula', false, "Incorrect. Think: You have the total Diameter, you need to divide it by how many fit.");
+            }
+        }
+
+        function fdCheckEstMath() {
+            const mm = parseFloat(document.getElementById('fd-est-ans-mm').value);
+            const um = parseFloat(document.getElementById('fd-est-ans-um').value);
+
+            const validMM = (mm >= 0.16 && mm <= 0.17);
+            const validUM = (um >= 160 && um <= 170);
+
+            if (validMM && validUM) {
+                fdShowFeedback('fd-feedback-est-math', true, "Excellent! You are ready for the final exam.");
+                document.getElementById('fd-btn-to-exam').classList.remove('fd-hidden');
+                fdUpdateProgress(85);
+            } else {
+                fdShowFeedback('fd-feedback-est-math', false, "Math check: 0.5 divided by 3. Then multiply by 1000 for µm.");
+            }
+        }
+
+        const fdQuestions = [
+            {
+                q: "What is the memorized field diameter for the 4x objective?",
+                options: ["2mm", "4mm", "5mm", "0.5mm"],
+                a: 2
+            },
+            {
+                q: "What is the memorized field diameter for the 40x objective?",
+                options: ["0.2mm", "0.5mm", "5mm", "2mm"],
+                a: 1
+            },
+            {
+                q: "Which formula is correct for estimation?",
+                options: ["L = D × N", "L = N / D", "L = D / N"],
+                a: 2
+            },
+            {
+                q: "If LPD=5, LPM=4, and HPM=10, what is HPD?",
+                options: ["20mm", "2mm", "0.2mm", "8mm"],
+                a: 1
+            },
+            {
+                q: "You estimate 5 cells fit across the 40x field (0.5mm). How big is one cell?",
+                options: ["0.1mm", "2.5mm", "0.01mm", "1.0mm"],
+                a: 0
+            }
+        ];
+
+        function fdSubmitExam() {
+            const container = document.getElementById('fd-quiz-container');
+            if (container.innerHTML === "") {
+                let html = "";
+                fdQuestions.forEach((q, i) => {
+                    html += `<div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid #eee;">
+                        <p><strong>${i + 1}. ${q.q}</strong></p>
+                        ${q.options.map((opt, oi) => `<label style="display:block;"><input type="radio" name="fd-q${i}" value="${oi}"> ${opt}</label>`).join('')}
+                    </div>`;
+                });
+                container.innerHTML = html;
+                return;
+            }
+
+            let score = 0;
+            fdQuestions.forEach((q, i) => {
+                const sel = document.querySelector(`input[name="fd-q${i}"]:checked`);
+                if (sel && parseInt(sel.value) === q.a) score++;
+            });
+
+            const percent = (score / fdQuestions.length) * 100;
+            const fb = document.getElementById('fd-exam-result');
+
+            if (percent === 100) {
+                fb.className = 'fd-feedback-box correct';
+                fb.innerHTML = "<h3>💯 Perfect Score!</h3><p>Generating certificate...</p>";
+                fb.style.display = 'block';
+                fdUpdateProgress(100);
+                setTimeout(() => {
+                    document.getElementById('fd-certificate-area').classList.remove('fd-hidden');
+                    document.getElementById('fd-step-exam').classList.add('fd-hidden');
+                    document.getElementById('fd-print-controls').classList.remove('fd-hidden');
+                    document.getElementById('fd-cert-name-display').innerText = fdState.name;
+                    document.getElementById('fd-cert-section-display').innerText = fdState.section;
+                    document.getElementById('fd-cert-date').innerText = new Date().toLocaleDateString();
+                }, 2000);
+            } else {
+                fb.className = 'fd-feedback-box incorrect';
+                fb.innerHTML = `<h3>Score: ${percent}%</h3><p>You need 100% mastery on these values. Please try again.</p>`;
+                fb.style.display = 'block';
+            }
+        }
+
+        // Initialize default lens for microscope mastery
+        window.onload = function () {
+            if (document.getElementById('objLens')) {
+                setLens(4);
+            }
+
+            // Initialize magnification mastery
+            if (magItemsContainer) {
+                magGenerateSet();
+            }
+        };
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

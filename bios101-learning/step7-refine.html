@@ -1,0 +1,486 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 7 – Refine Your System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .lucide { width: 1em; height: 1em; stroke-width: 2px; }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+        
+        const Icon = ({ name, size = 18, className = "" }) => {
+            const ref = useRef(null);
+            useEffect(() => {
+                if (window.lucide && ref.current) {
+                    window.lucide.createIcons({
+                        attrs: { class: `lucide lucide-${name.toLowerCase()} ${className}`, style: `width: ${size}px; height: ${size}px;` },
+                        nameAttr: 'data-lucide'
+                    });
+                }
+            }, [name, size, className]);
+            return <i ref={ref} data-lucide={name.toLowerCase()} className={className}></i>;
+        };
+
+        const App = () => {
+            const [decision, setDecision] = useState('');
+            const [keeps, setKeeps] = useState({ env: false, dig: false, cog: false, active: false, spacing: false, meta: false });
+            const [changes, setChanges] = useState({ env: false, dig: false, cog: false, active: false, spacing: false, meta: false });
+            const [adjType, setAdjType] = useState([]);
+            const [stability, setStability] = useState('');
+            const [remeasure, setRemeasure] = useState('');
+            const [learning, setLearning] = useState('');
+
+            const keepCnt = Object.values(keeps).filter(v => v).length;
+            const changeCnt = Object.values(changes).filter(v => v).length;
+
+            const toggleAdj = (val) => {
+                setAdjType(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
+            };
+
+            return (
+                <div className="min-h-screen pb-12">
+                    <header className="bg-[#0b3d2e] text-white p-4 sticky top-0 z-10">
+                        <div className="max-w-4xl mx-auto flex justify-between items-center">
+                            <button onClick={() => window.history.back()} className="text-sm">← Back</button>
+                            <h1 className="text-xl font-bold">Step 7 – Refine Your System</h1>
+                            <div className="w-8"></div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+                        <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-xl border-2 border-purple-200">
+                            <div className="flex gap-3">
+                                <Icon name="Settings" className="text-purple-600 mt-1" size={24} />
+                                <div>
+                                    <h2 className="font-bold text-[#0b3d2e] mb-2">Purpose: Evidence-Based Evolution</h2>
+                                    <p className="text-sm leading-relaxed">Refinement is not failure. It is how effective systems evolve. This step adjusts your plan using <strong>evidence</strong> — not emotion.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="bg-white p-5 rounded-xl border shadow-sm">
+                            <div className="flex gap-2 mb-4"><Icon name="GitBranch" className="text-indigo-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">Step 6 Decision Pull-Through</h3></div>
+                            <div className="bg-indigo-50 p-4 rounded border border-indigo-200">
+                                <p className="text-xs font-semibold text-indigo-700 mb-2">YOUR DECISION FROM STEP 6:</p>
+                                <div className="space-y-2">
+                                    {[
+                                        ['continue','CONTINUE - Hypothesis confirmed','Keep plan, extend timeline'],
+                                        ['adjust','ADJUST - Partial success','Make targeted changes below'],
+                                        ['abandon','ABANDON - Hypothesis rejected','Design new approach (return to Step 4)'],
+                                        ['data','INSUFFICIENT DATA','Collect 1 more week, then remeasure']
+                                    ].map(([v,label,action]) => (
+                                        <label key={v} className={`flex items-start gap-2 p-3 rounded border-2 cursor-pointer ${decision===v?'border-indigo-600 bg-white':'border-transparent hover:bg-indigo-100'}`}>
+                                            <input type="radio" name="dec" value={v} checked={decision===v} onChange={e=>setDecision(e.target.value)} className="mt-1 accent-[#0b3d2e]"/>
+                                            <div>
+                                                <p className="font-semibold text-sm">{label}</p>
+                                                <p className="text-xs text-gray-600 mt-1">→ {action}</p>
+                                            </div>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                            {decision === 'abandon' && (
+                                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded">
+                                    <p className="text-sm font-semibold text-red-900 mb-2">⚠️ Abandonment Protocol</p>
+                                    <p className="text-xs text-red-800 mb-3">Before abandoning, confirm you actually executed the plan. Low adherence ≠ hypothesis failure.</p>
+                                    <button onClick={() => window.location.href='step4-design.html'} className="w-full bg-red-700 text-white py-2 rounded font-semibold text-sm hover:bg-red-800">
+                                        Return to Step 4: Design New Strategy
+                                    </button>
+                                </div>
+                            )}
+                            {decision === 'data' && (
+                                <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+                                    <p className="text-sm font-semibold text-yellow-900 mb-2">📊 Data Collection Protocol</p>
+                                    <p className="text-xs text-yellow-800 mb-3">Continue current plan for 1 more week with strict adherence tracking, then return to Step 6.</p>
+                                    <button onClick={() => window.location.href='step5-deploy.html'} className="w-full bg-yellow-700 text-white py-2 rounded font-semibold text-sm hover:bg-yellow-800">
+                                        Review Step 5 Deployment
+                                    </button>
+                                </div>
+                            )}
+                        </section>
+
+                        {(decision === 'continue' || decision === 'adjust') && (
+                            <>
+                                <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                    <div className="flex gap-2 mb-4"><Icon name="Check-Circle-2" className="text-green-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">1. Keep What Works</h3></div>
+                                    <p className="text-sm text-gray-600 mb-3">Select components that showed positive signals in Step 6:</p>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {[
+                                            ['env','Environmental Design','Anchor'],
+                                            ['dig','Digital Discipline','Shield-Check'],
+                                            ['cog','Cognitive Priming','Brain'],
+                                            ['active','Active Learning Methods','Zap'],
+                                            ['spacing','Spacing & Interleaving','Shuffle'],
+                                            ['meta','Metacognitive Monitoring','Eye']
+                                        ].map(([k,label,icon]) => (
+                                            <label key={k} className={`flex items-center gap-2 p-3 rounded border-2 cursor-pointer transition-all ${keeps[k]?'border-green-600 bg-green-50':'border-gray-200 hover:border-green-300'}`}>
+                                                <input type="checkbox" checked={keeps[k]} onChange={e=>setKeeps({...keeps,[k]:e.target.checked})} className="accent-green-600"/>
+                                                <Icon name={icon} className="text-green-600" size={16} />
+                                                <span className="text-sm font-medium">{label}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    {keepCnt > 0 && (
+                                        <div className="mt-3 p-3 bg-green-50 rounded border border-green-200">
+                                            <p className="text-sm"><strong className="text-green-900">{keepCnt} components</strong> confirmed effective — maintain these!</p>
+                                        </div>
+                                    )}
+                                    <div className="mt-4">
+                                        <label className="block text-sm font-semibold mb-2">Why are these working?</label>
+                                        <textarea className="w-full p-3 border rounded text-sm" placeholder="Evidence from Step 6 that shows these are effective..." rows="3"/>
+                                    </div>
+                                </section>
+
+                                {decision === 'adjust' && (
+                                    <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                        <div className="flex gap-2 mb-4"><Icon name="Wrench" className="text-orange-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">2. Change What Didn't</h3></div>
+                                        <p className="text-sm text-gray-600 mb-3">Select components that failed to produce results in Step 6:</p>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {[
+                                                ['env','Environmental Design','Anchor'],
+                                                ['dig','Digital Discipline','Shield-Check'],
+                                                ['cog','Cognitive Priming','Brain'],
+                                                ['active','Active Learning Methods','Zap'],
+                                                ['spacing','Spacing & Interleaving','Shuffle'],
+                                                ['meta','Metacognitive Monitoring','Eye']
+                                            ].map(([k,label,icon]) => (
+                                                <label key={k} className={`flex items-center gap-2 p-3 rounded border-2 cursor-pointer transition-all ${changes[k]?'border-orange-600 bg-orange-50':'border-gray-200 hover:border-orange-300'}`}>
+                                                    <input type="checkbox" checked={changes[k]} onChange={e=>setChanges({...changes,[k]:e.target.checked})} className="accent-orange-600"/>
+                                                    <Icon name={icon} className="text-orange-600" size={16} />
+                                                    <span className="text-sm font-medium">{label}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                        {changeCnt > 0 && (
+                                            <div className="mt-3 p-3 bg-orange-50 rounded border border-orange-200">
+                                                <p className="text-sm"><strong className="text-orange-900">{changeCnt} components</strong> need adjustment</p>
+                                            </div>
+                                        )}
+                                        <div className="mt-4">
+                                            <label className="block text-sm font-semibold mb-2">Why did these fail?</label>
+                                            <textarea className="w-full p-3 border rounded text-sm" placeholder="Evidence from Step 6: Was it execution failure (low adherence) or design failure (high adherence, no results)?" rows="3"/>
+                                        </div>
+                                    </section>
+                                )}
+
+                                {decision === 'adjust' && changeCnt > 0 && (
+                                    <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                        <div className="flex gap-2 mb-4"><Icon name="Settings-2" className="text-blue-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">3. Adjustment Strategy</h3></div>
+                                        <p className="text-sm text-gray-600 mb-3">What type of change is justified by your Step 6 data?</p>
+                                        <div className="space-y-2">
+                                            {[
+                                                {v:'freq',label:'Increase frequency',desc:'Do it more often (e.g., 3x → 5x per week)'},
+                                                {v:'space',label:'Increase spacing',desc:'Spread intervals further apart (e.g., 1 day → 3 days)'},
+                                                {v:'format',label:'Change format',desc:'Different execution method (e.g., written → verbal)'},
+                                                {v:'discrim',label:'Add discrimination practice',desc:'Focus on differentiating similar concepts'},
+                                                {v:'time',label:'Adjust session duration',desc:'Shorter/longer blocks based on fatigue data'},
+                                                {v:'intensity',label:'Increase difficulty',desc:'Make retrieval more challenging'}
+                                            ].map(({v,label,desc}) => (
+                                                <label key={v} className={`flex items-start gap-3 p-3 rounded border-2 cursor-pointer ${adjType.includes(v)?'border-blue-600 bg-blue-50':'border-gray-200 hover:border-blue-300'}`}>
+                                                    <input type="checkbox" checked={adjType.includes(v)} onChange={()=>toggleAdj(v)} className="mt-1 accent-blue-600"/>
+                                                    <div>
+                                                        <p className="font-semibold text-sm">{label}</p>
+                                                        <p className="text-xs text-gray-600">{desc}</p>
+                                                    </div>
+                                                </label>
+                                            ))}
+                                        </div>
+                                        {adjType.length > 0 && (
+                                            <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
+                                                <p className="text-xs font-semibold text-blue-900 mb-2">⚠️ Change Budget</p>
+                                                <p className="text-xs text-blue-800">Change only 1-2 things at once. Too many changes make it impossible to identify what works.</p>
+                                            </div>
+                                        )}
+                                    </section>
+                                )}
+
+                                <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                    <div className="flex gap-2 mb-4"><Icon name="Flask-Conical" className="text-purple-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">4. Revised Hypothesis</h3></div>
+                                    <p className="text-sm text-gray-600 mb-3">Update your if-then statement based on refinements:</p>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <label className="block text-xs font-semibold text-gray-600 mb-1">IF I do this...</label>
+                                            <textarea className="w-full p-3 border rounded text-sm bg-gray-50" placeholder="Describe the refined strategy (what you'll keep + what you'll change)" rows="2"/>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-semibold text-gray-600 mb-1">THEN I predict...</label>
+                                            <textarea className="w-full p-3 border rounded text-sm bg-gray-50" placeholder="What specific outcome change do you expect? Be measurable." rows="2"/>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-semibold text-gray-600 mb-1">BECAUSE...</label>
+                                            <textarea className="w-full p-3 border rounded text-sm bg-gray-50" placeholder="What learning mechanism makes this prediction logical?" rows="2"/>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                    <div className="flex gap-2 mb-4"><Icon name="Shield-Alert" className="text-red-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">5. Risk Management</h3></div>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <label className="block text-sm font-semibold mb-2">What will you monitor to detect problems early?</label>
+                                            <div className="space-y-2 text-sm">
+                                                <label className="flex items-start gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                    <input type="checkbox" className="mt-1 accent-[#0b3d2e]"/>
+                                                    <span>Adherence rate (if drops below 70%, plan is unsustainable)</span>
+                                                </label>
+                                                <label className="flex items-start gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                    <input type="checkbox" className="mt-1 accent-[#0b3d2e]"/>
+                                                    <span>Session quality rating (if consistently &lt;6/10, adjust difficulty)</span>
+                                                </label>
+                                                <label className="flex items-start gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                    <input type="checkbox" className="mt-1 accent-[#0b3d2e]"/>
+                                                    <span>Retrieval accuracy trend (should improve or plateau, not decline)</span>
+                                                </label>
+                                                <label className="flex items-start gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                    <input type="checkbox" className="mt-1 accent-[#0b3d2e]"/>
+                                                    <span>Time spent vs. results ratio (diminishing returns signal)</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-semibold mb-2">What's your "kill switch" criteria?</label>
+                                            <textarea className="w-full p-3 border rounded text-sm" placeholder="Under what conditions will you stop and reassess? (e.g., 'If adherence <50% for 2 weeks' or 'If quiz scores decline')" rows="2"/>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                    <div className="flex gap-2 mb-4"><Icon name="Activity" className="text-teal-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">6. Stability Check</h3></div>
+                                    <p className="text-sm text-gray-600 mb-3">Does this refined plan remain realistic given your actual life constraints?</p>
+                                    <div className="space-y-2">
+                                        {[
+                                            ['yes','Yes — sustainable','I can maintain this for 4+ weeks'],
+                                            ['border','Borderline','Doable but requires perfect conditions'],
+                                            ['no','No — needs simplification','This will break under normal stress']
+                                        ].map(([v,label,desc]) => (
+                                            <label key={v} className={`flex items-start gap-2 p-3 rounded border-2 cursor-pointer ${stability===v?'border-teal-600 bg-teal-50':'border-gray-200 hover:border-teal-300'}`}>
+                                                <input type="radio" name="stab" value={v} checked={stability===v} onChange={e=>setStability(e.target.value)} className="mt-1 accent-[#0b3d2e]"/>
+                                                <div>
+                                                    <p className="font-semibold text-sm">{label}</p>
+                                                    <p className="text-xs text-gray-600">{desc}</p>
+                                                </div>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    {stability === 'border' && (
+                                        <div className="mt-3 p-3 bg-yellow-50 rounded border border-yellow-200 text-xs">
+                                            <p className="font-semibold text-yellow-900">⚠️ Borderline plans usually fail</p>
+                                            <p className="text-yellow-800 mt-1">Consider removing 1-2 components to create buffer capacity.</p>
+                                        </div>
+                                    )}
+                                    {stability === 'no' && (
+                                        <div className="mt-3 p-3 bg-red-50 rounded border border-red-200 text-xs">
+                                            <p className="font-semibold text-red-900">🚨 Unstable plan detected</p>
+                                            <p className="text-red-800 mt-1">Return to Step 4 and design a minimalist version with fewer components.</p>
+                                        </div>
+                                    )}
+                                </section>
+
+                                <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                    <div className="flex gap-2 mb-4"><Icon name="Calendar-Clock" className="text-indigo-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">7. Cycle Reset</h3></div>
+                                    <p className="text-sm text-gray-600 mb-3">Learning systems repeat. When will you re-measure?</p>
+                                    <div className="space-y-2">
+                                        {[
+                                            ['quiz','After next quiz','~1 week timeline'],
+                                            ['practical','After next lab practical','~2 week timeline'],
+                                            ['twoweeks','After two weeks','Standard cycle length'],
+                                            ['exam','After midterm/exam','~4-6 week timeline']
+                                        ].map(([v,label,desc]) => (
+                                            <label key={v} className={`flex items-center justify-between p-3 rounded border-2 cursor-pointer ${remeasure===v?'border-indigo-600 bg-indigo-50':'border-gray-200 hover:border-indigo-300'}`}>
+                                                <div className="flex items-center gap-2">
+                                                    <input type="radio" name="remeasure" value={v} checked={remeasure===v} onChange={e=>setRemeasure(e.target.value)} className="accent-[#0b3d2e]"/>
+                                                    <span className="font-medium text-sm">{label}</span>
+                                                </div>
+                                                <span className="text-xs text-gray-500">{desc}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    {remeasure && (
+                                        <div className="mt-3 p-3 bg-indigo-50 rounded border border-indigo-200">
+                                            <p className="text-xs font-semibold text-indigo-900 mb-1">📅 Next measurement date:</p>
+                                            <input type="date" className="w-full p-2 border rounded text-sm"/>
+                                            <p className="text-xs text-indigo-700 mt-2">Set a calendar reminder to return to Step 6 on this date.</p>
+                                        </div>
+                                    )}
+                                </section>
+
+                                <section className="bg-white p-5 rounded-xl border shadow-sm">
+                                    <div className="flex gap-2 mb-4"><Icon name="Lightbulb" className="text-amber-600" size={20} /><h3 className="font-bold text-[#0b3d2e]">8. Metacognitive Reflection</h3></div>
+                                    <label className="block text-sm font-semibold mb-2">What did this cycle teach you about how YOU learn biology?</label>
+                                    <textarea 
+                                        value={learning} 
+                                        onChange={e=>setLearning(e.target.value)}
+                                        className="w-full p-3 border rounded text-sm" 
+                                        placeholder="Not generic advice, but specific insights about your learning patterns, failure points, optimal conditions, etc." 
+                                        rows="4"
+                                    />
+                                    {learning.length > 50 && (
+                                        <div className="mt-3 p-3 bg-amber-50 rounded border border-amber-200 text-xs">
+                                            <p className="font-semibold text-amber-900">💡 Key insight captured</p>
+                                            <p className="text-amber-800 mt-1">This self-knowledge compounds over time. Reference it in future cycles.</p>
+                                        </div>
+                                    )}
+                                </section>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button onClick={() => window.location.href='step5-deploy.html'} className="w-full bg-gray-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-gray-700 flex items-center justify-center gap-2">
+                                        <Icon name="Repeat" /> Re-Deploy (Step 5)
+                                    </button>
+                                    <button onClick={() => window.location.href='index.html'} className="w-full bg-[#0b3d2e] text-white py-4 rounded-xl font-bold shadow-lg hover:bg-[#165c45] flex items-center justify-center gap-2">
+                                        <Icon name="Home" /> Return to Hub
+                                    </button>
+                                </div>
+                            </>
+                        )}
+
+                        {!decision && (
+                            <div className="text-center py-12">
+                                <Icon name="Arrow-Up" className="text-gray-400 mx-auto mb-4" size={48} />
+                                <p className="text-gray-500">Select your Step 6 decision above to continue</p>
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

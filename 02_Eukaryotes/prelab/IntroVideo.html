@@ -1,0 +1,1094 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eukaryotic Cells Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #16213e;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f3460 0%, #1a5f7a 100%);
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            border-bottom: 5px solid #00adb5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            flex: 1;
+            text-align: left;
+        }
+
+        .header-center {
+            flex: 2;
+            text-align: center;
+        }
+
+        .header-right {
+            flex: 1;
+            text-align: right;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .video-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .quiz-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: #0f3460;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container {
+            position: relative;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        .youtube-link {
+            background-color: #ff0000;
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .youtube-link:hover {
+            background-color: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .video-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .control-btn {
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            min-width: 70px;
+            justify-content: center;
+        }
+
+        #play-pause {
+            background-color: #4CAF50;
+        }
+
+        #play-pause:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        #stop {
+            background-color: #f44336;
+        }
+
+        #stop:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        #back-10,
+        #back-5 {
+            background-color: #2196F3;
+        }
+
+        #back-10:hover,
+        #back-5:hover {
+            background-color: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        #forward-5,
+        #forward-10 {
+            background-color: #FF9800;
+        }
+
+        #forward-5:hover,
+        #forward-10:hover {
+            background-color: #F57C00;
+            transform: translateY(-2px);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #00adb5;
+        }
+
+        .question-counter {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #00adb5;
+        }
+
+        .question-points {
+            background-color: #1a5f7a;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #ffffff;
+        }
+
+        .options-container {
+            margin-bottom: 25px;
+        }
+
+        .option {
+            background-color: #1a1a2e;
+            border: 2px solid #2d4059;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background-color: #2d4059;
+            border-color: #00adb5;
+        }
+
+        .option.selected {
+            background-color: #0f3460;
+            border-color: #00adb5;
+            box-shadow: 0 0 0 2px rgba(0, 173, 181, 0.3);
+        }
+
+        .option.correct {
+            background-color: #2e7d32;
+            border-color: #4caf50;
+        }
+
+        .option.incorrect {
+            background-color: #c62828;
+            border-color: #f44336;
+        }
+
+        .option-label {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: #2d4059;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .fill-in-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #2d4059;
+            border-radius: 8px;
+            background-color: #1a1a2e;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .fill-in-input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+
+        .feedback-container {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            border-left: 5px solid #00adb5;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .feedback-title {
+            color: #00adb5;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .explanation-text {
+            font-style: italic;
+            color: #b0b0b0;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            background-color: #2d4059;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: #00adb5;
+            transform: translateY(-3px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .submit-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: #388e3c;
+            transform: translateY(-3px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #2d4059;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #00adb5;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .question-type {
+            display: inline-block;
+            background-color: #1a5f7a;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: #00adb5;
+            font-weight: 600;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .instructions {
+            background-color: #0f3460;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            border-left: 4px solid #00adb5;
+        }
+
+        .instructions h3 {
+            color: #00adb5;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+        .timestamp-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            z-index: 5;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .control-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+                min-width: 60px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-left,
+            .header-center,
+            .header-right {
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <a href="prelab.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="header-center">
+                <h3>Eukaryotic Cells</h3>
+                <p class="subtitle">From Cell Wall to Nucleus - Interactive Video Quiz</p>
+            </div>
+            <div class="header-right"></div>
+        </header>
+
+        <div class="content-wrapper">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="timestamp-indicator" id="timestamp-indicator">Time: 00:00</div>
+                    <div class="video-overlay">
+                        <a href="https://www.youtube.com/watch?v=URUJD5NEXC8" target="_blank" class="youtube-link">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
+                    </div>
+                    <video id="cell-video" controls>
+                        <source src="../vids/eukaryote.mp4" type="video/mp4">
+                        Your browser does not support the video element.
+                    </video>
+                </div>
+
+                <div class="video-controls">
+                    <button class="control-btn" id="play-pause">
+                        <i class="fas fa-play"></i> Play/Pause
+                    </button>
+                    <button class="control-btn" id="stop">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                    <button class="control-btn" id="back-10">
+                        <i class="fas fa-backward"></i> -10s
+                    </button>
+                    <button class="control-btn" id="back-5">
+                        <i class="fas fa-step-backward"></i> -5s
+                    </button>
+                    <button class="control-btn" id="forward-5">
+                        <i class="fas fa-step-forward"></i> +5s
+                    </button>
+                    <button class="control-btn" id="forward-10">
+                        <i class="fas fa-forward"></i> +10s
+                    </button>
+                </div>
+
+                <div class="instructions">
+                    <h3><i class="fas fa-info-circle"></i> How to Use This Quiz</h3>
+                    <ul>
+                        <li>Watch the video and answer questions as they appear at specific timestamps</li>
+                        <li>The video will automatically pause when a question becomes available</li>
+                        <li>Use the video controls to pause, jump forward/backward, or stop the video</li>
+                        <li>Answer each question on the right side and submit to see the correct answer</li>
+                        <li>Navigate between questions using Previous/Next buttons</li>
+                        <li>Your progress and score are tracked automatically</li>
+                    </ul>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress" id="quiz-progress"></div>
+                </div>
+
+                <div class="score-display" id="score-display">
+                    Score: <span id="score">0</span> / <span id="total-points">32</span>
+                </div>
+            </section>
+
+            <section class="quiz-section">
+                <div class="quiz-header">
+                    <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">32</span></div>
+                    <div class="question-points" id="points-display">1 point</div>
+                </div>
+
+                <div id="question-type" class="question-type">Multiple Choice</div>
+
+                <div class="question-text" id="question-text">Loading question...</div>
+
+                <div class="options-container" id="options-container"></div>
+
+                <div id="fill-in-container" style="display: none;">
+                    <input type="text" class="fill-in-input" id="fill-in-answer" placeholder="Type your answer here...">
+                </div>
+
+                <button class="submit-btn" id="submit-answer">Submit Answer</button>
+
+                <div class="feedback-container" id="feedback-container">
+                    <div class="feedback-title" id="feedback-title"></div>
+                    <div class="explanation-text" id="explanation-text"></div>
+                </div>
+
+                <div class="quiz-navigation">
+                    <button class="nav-btn" id="prev-question" disabled>
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="nav-btn" id="next-question">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {number: 1, timestamp: "00:00:25", type: "Multiple Choice", question: "Which structure separates the inside of the cell from its environment?", options: ["Cell wall", "Cytoplasm", "Cell membrane", "Nucleus"], correctAnswer: "C", points: 1, explanation: "The plasma membrane (cell membrane) separates the inside of the cell from its environment. This is common to all cells.", hasTriggered: false},
+            {number: 2, timestamp: "00:00:34", type: "Multiple Choice", question: "What are the three things ALL cells have in common?", options: ["Nucleus, mitochondria, and cell wall", "Cell membrane, cytoplasm, and DNA", "Ribosomes, chloroplasts, and flagella", "Cell wall, vacuole, and nucleus"], correctAnswer: "B", points: 1, explanation: "All cells have a cell membrane which separates the inside from the environment, cytoplasm (jelly-like fluid), and DNA (genetic material).", hasTriggered: false},
+            {number: 3, timestamp: "00:01:26", type: "Fill in the Blank", question: "What does the word organelles mean? _______ _____.", correctAnswer: "little organ", points: 1, explanation: "Organ- derived from the Latin organum meaning 'instrument' or 'organ of the body'; -elle also from Latin, which indicates something very small.", hasTriggered: false},
+            {number: 4, timestamp: "00:01:38", type: "Multiple Choice", question: "What is the primary function of the nucleus in a cell?", options: ["Store water and nutrients", "Control center containing DNA", "Produce energy for the cell", "Break down cellular debris"], correctAnswer: "B", points: 1, explanation: "The nucleus is the control center of the cell that contains DNA, which dictates what the cell is going to do and how it's going to do it.", hasTriggered: false},
+            {number: 5, timestamp: "00:01:55", type: "True/False", question: "Chromatin is the condensed form of DNA that appears during cell division.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "FALSE. Chromatin is the tangled, spread out form of DNA found inside the nuclear membrane. Chromosomes are the condensed form during division.", hasTriggered: false},
+            {number: 6, timestamp: "00:02:03", type: "Fill in the Blank", question: "When a cell is ready to divide, DNA condenses into structures called _______.", correctAnswer: "chromosomes", points: 1, explanation: "DNA exists as tangled chromatin normally, but when a cell prepares to divide, it condenses into organized structures called chromosomes.", hasTriggered: false},
+            {number: 7, timestamp: "00:02:16", type: "Multiple Choice", question: "Where are ribosomes made before they leave to synthesize proteins?", options: ["Cytoplasm", "Golgi apparatus", "Nucleolus", "Mitochondria"], correctAnswer: "C", points: 1, explanation: "Ribosomes are made in the nucleolus, a structure inside the nucleus, before leaving to perform protein synthesis.", hasTriggered: false},
+            {number: 8, timestamp: "00:02:24", type: "Matching", question: "Match the organelle to its function: Ribosome", options: ["A. Break down waste", "B. Synthesize proteins", "C. Store water", "D. Produce energy"], correctAnswer: "B", points: 1, explanation: "Ribosomes synthesize (make) proteins after leaving the nucleus.", hasTriggered: false},
+            {number: 9, timestamp: "00:02:37", type: "Fill in the Blank", question: "Ribosomes and other organelles float in a jelly-like substance called _______.", correctAnswer: "cytoplasm", points: 1, explanation: "Cytoplasm is the jelly-like substance in which ribosomes and other organelles float outside the nucleus.", hasTriggered: false},
+            {number: 10, timestamp: "00:02:54", type: "True/False", question: "Rough endoplasmic reticulum has ribosomes attached to it, while smooth endoplasmic reticulum does not.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "TRUE. The difference between rough and smooth ER is that rough ER has ribosomes attached, giving it a rough appearance, while smooth ER lacks ribosomes.", hasTriggered: false},
+            {number: 11, timestamp: "00:02:58", type: "True/False", question: "Ribosomes can only be found attached to the rough endoplasmic reticulum.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "FALSE. Ribosomes may wander freely within the cytoplasm OR attach to the endoplasmic reticulum, giving them multiple locations.", hasTriggered: false},
+            {number: 12, timestamp: "00:03:08", type: "Fill in the Blank", question: "The _______ _______ is a membrane-enclosed passageway for transporting materials like proteins.", correctAnswer: "endoplasmic reticulum", points: 1, explanation: "The endoplasmic reticulum (ER) transports materials such as proteins synthesized by ribosomes throughout the cell.", hasTriggered: false},
+            {number: 13, timestamp: "00:03:25", type: "Matching", question: "Match the structure to its function: Vesicles", options: ["A. Contain DNA", "B. Transport materials", "C. Produce energy", "D. Synthesize proteins"], correctAnswer: "B", points: 1, explanation: "Vesicles are small sacs that transport proteins and other materials from the endoplasmic reticulum to the Golgi apparatus.", hasTriggered: false},
+            {number: 14, timestamp: "00:03:34", type: "Multiple Choice", question: "What does the Golgi apparatus do to proteins?", options: ["Breaks them down into amino acids", "Customizes them into usable forms", "Stores them for later use", "Transports them out of the cell only"], correctAnswer: "B", points: 1, explanation: "The Golgi apparatus customizes proteins into forms the cell can use by folding them into usable shapes or adding materials like lipids or carbohydrates.", hasTriggered: false},
+            {number: 15, timestamp: "00:03:48", type: "Fill in the Blank", question: "The Golgi apparatus customizes proteins by adding materials such as _______ or carbohydrates.", correctAnswer: "lipids", points: 1, explanation: "The Golgi body adds lipids or carbohydrates to proteins and folds them into usable shapes to customize them for cellular use.", hasTriggered: false},
+            {number: 16, timestamp: "00:03:54", type: "Matching", question: "Match the organelle to its function: Vacuole", options: ["A. Transport proteins", "B. Store materials", "C. Make ribosomes", "D. Break down debris"], correctAnswer: "B", points: 1, explanation: "Vacuoles are sac-like structures that store different materials. In plant cells, the central vacuole stores water.", hasTriggered: false},
+            {number: 17, timestamp: "00:04:00", type: "True/False", question: "The central vacuole in plant cells stores water.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "TRUE. In plant cells, the central vacuole stores water and helps maintain cell structure through turgor pressure.", hasTriggered: false},
+            {number: 18, timestamp: "00:04:14", type: "Multiple Choice", question: "What are lysosomes often called, and what is their function?", options: ["Powerhouses that produce energy", "Garbage collectors that break down cellular debris", "Control centers with DNA", "Transport systems for proteins"], correctAnswer: "B", points: 1, explanation: "Lysosomes are the garbage collectors that take in damaged or worn out cell parts. They are filled with enzymes that break down this cellular debris.", hasTriggered: false},
+            {number: 19, timestamp: "00:04:20", type: "Multiple Choice", question: "Which organelle is found in animal cells but NOT in plant cells?", options: ["Mitochondria", "Ribosomes", "Lysosomes", "Nucleus"], correctAnswer: "C", points: 1, explanation: "Lysosomes are found in animal cells where they break down cellular debris, but they are not typically found in plant cells.", hasTriggered: false},
+            {number: 20, timestamp: "00:04:27", type: "Fill in the Blank", question: "Mitochondria are called the _______ of the cell because they produce ATP.", correctAnswer: "powerhouse", points: 1, explanation: "Mitochondria are the powerhouse because during cellular respiration they make ATP molecules that provide energy for all the cell's activities.", hasTriggered: false},
+            {number: 21, timestamp: "00:04:38", type: "Fill in the Blank", question: "During _______ _______, mitochondria produce ATP molecules.", correctAnswer: "cellular respiration", points: 1, explanation: "Cellular respiration is the process by which mitochondria make ATP molecules that provide energy for all the cell's activities.", hasTriggered: false},
+            {number: 22, timestamp: "00:04:57", type: "Fill in the Blank", question: "The _______ helps maintain the cell's shape and includes microfilaments and microtubules.", correctAnswer: "cytoskeleton", points: 1, explanation: "The cytoskeleton maintains cell shape through thread-like microfilaments made of protein and thin hollow microtubules.", hasTriggered: false},
+            {number: 23, timestamp: "00:05:24", type: "Multiple Choice", question: "What is the function of chloroplasts in plant cells?", options: ["Store water", "Perform photosynthesis", "Break down waste", "Produce ribosomes"], correctAnswer: "B", points: 1, explanation: "The chloroplast is where photosynthesis happens in photoautotrophic organisms that capture sunlight for energy.", hasTriggered: false},
+            {number: 24, timestamp: "00:05:30", type: "Matching", question: "Match the plastid to its pigment: Chromoplast", options: ["A. Chlorophyll", "B. Carotene", "C. Melanin", "D. Hemoglobin"], correctAnswer: "B", points: 1, explanation: "Chromoplasts contain carotene, which gives plants orange and red colors, unlike chloroplasts which contain green chlorophyll.", hasTriggered: false},
+            {number: 25, timestamp: "00:05:31", type: "Fill in the Blank", question: "Chloroplasts are green because they contain a green pigment called _______.", correctAnswer: "chlorophyll", points: 1, explanation: "Chlorophyll is the green pigment inside chloroplasts that gives them their characteristic green color.", hasTriggered: false},
+            {number: 26, timestamp: "00:05:43", type: "True/False", question: "Both plant cells and animal cells have cell walls.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "FALSE. Plant cells have a cell wall outside their cell membranes for support and protection, but animal cells never have a cell wall.", hasTriggered: false},
+            {number: 27, timestamp: "00:05:43", type: "Matching", question: "Match the cell type to the structure: Cell wall", options: ["A. Found in animal cells only", "B. Found in plant cells only", "C. Found in both", "D. Found in neither"], correctAnswer: "B", points: 1, explanation: "Cell walls are found only in plant cells, where they provide shape, support, and protection. Animal cells never have cell walls.", hasTriggered: false},
+            {number: 28, timestamp: "00:06:01", type: "Fill in the Blank", question: "_______ are microscopic hair-like projections found in the human respiratory tract that move in waves.", correctAnswer: "cilia", points: 1, explanation: "Cilia are hair-like structures that line the respiratory tract and move in waves to trap inhaled particles and expel them when you cough.", hasTriggered: false},
+            {number: 29, timestamp: "00:06:10", type: "Multiple Choice", question: "What is the function of cilia in the respiratory tract?", options: ["Produce mucus", "Trap and expel inhaled particles", "Absorb oxygen", "Filter blood"], correctAnswer: "B", points: 1, explanation: "Cilia can move in waves to trap inhaled particles in the air and expel them when you cough, protecting the respiratory system.", hasTriggered: false},
+            {number: 30, timestamp: "00:06:30", type: "True/False", question: "The only human cell that has a flagellum is a sperm cell.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "TRUE. A flagellum is a tail-like structure for movement. The only human cell that has a flagellum is a sperm cell.", hasTriggered: false},
+            {number: 31, timestamp: "00:06:30", type: "Matching", question: "Match the structure to the cell type: Flagella (in humans)", options: ["A. All human cells", "B. Sperm cells only", "C. Respiratory cells", "D. Muscle cells"], correctAnswer: "B", points: 1, explanation: "In humans, only sperm cells have flagella, which are tail-like structures that help with movement and propulsion.", hasTriggered: false},
+            {number: 32, timestamp: "00:07:04", type: "True/False", question: "Only animal cells have mitochondria; plant cells do not.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "FALSE. Both plant and animal cells have mitochondria for energy production, even though only plant cells have chloroplasts.", hasTriggered: false}
+        ];
+
+        const videoElement = document.getElementById('cell-video');
+        const timestampIndicator = document.getElementById('timestamp-indicator');
+        const currentQuestionElement = document.getElementById('current-question');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const questionTextElement = document.getElementById('question-text');
+        const questionTypeElement = document.getElementById('question-type');
+        const optionsContainer = document.getElementById('options-container');
+        const fillInContainer = document.getElementById('fill-in-container');
+        const fillInAnswerElement = document.getElementById('fill-in-answer');
+        const submitButton = document.getElementById('submit-answer');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackTitleElement = document.getElementById('feedback-title');
+        const explanationTextElement = document.getElementById('explanation-text');
+        const prevButton = document.getElementById('prev-question');
+        const nextButton = document.getElementById('next-question');
+        const playPauseButton = document.getElementById('play-pause');
+        const stopButton = document.getElementById('stop');
+        const back10Button = document.getElementById('back-10');
+        const back5Button = document.getElementById('back-5');
+        const forward5Button = document.getElementById('forward-5');
+        const forward10Button = document.getElementById('forward-10');
+        const quizProgressElement = document.getElementById('quiz-progress');
+        const scoreDisplayElement = document.getElementById('score-display');
+        const scoreElement = document.getElementById('score');
+        const totalPointsElement = document.getElementById('total-points');
+        const pointsDisplayElement = document.getElementById('points-display');
+
+        let currentQuestionIndex = 0;
+        let selectedAnswer = null;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let score = 0;
+        let isPlaying = false;
+
+        function timestampToSeconds(timestamp) {
+            const parts = timestamp.split(':');
+            return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function initQuiz() {
+            totalQuestionsElement.textContent = quizData.length;
+            totalPointsElement.textContent = quizData.length;
+            updateQuestion();
+            updateProgress();
+
+            videoElement.addEventListener('timeupdate', () => {
+                timestampIndicator.textContent = `Time: ${formatTime(videoElement.currentTime)}`;
+            });
+
+            videoElement.addEventListener('play', () => {
+                isPlaying = true;
+                playPauseButton.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            });
+
+            videoElement.addEventListener('pause', () => {
+                isPlaying = false;
+                playPauseButton.innerHTML = '<i class="fas fa-play"></i> Play';
+            });
+
+            videoElement.addEventListener('ended', () => {
+                isPlaying = false;
+                playPauseButton.innerHTML = '<i class="fas fa-play"></i> Play';
+            });
+
+            videoElement.addEventListener('seeking', () => {
+                quizData.forEach(q => {
+                    if (timestampToSeconds(q.timestamp) > videoElement.currentTime) {
+                        q.hasTriggered = false;
+                    }
+                });
+            });
+
+            videoElement.addEventListener('timeupdate', checkForQuestionAtTimestamp);
+        }
+
+        function checkForQuestionAtTimestamp() {
+            const currentTimestamp = videoElement.currentTime;
+
+            for (let i = 0; i < quizData.length; i++) {
+                const questionTime = timestampToSeconds(quizData[i].timestamp);
+
+                if (Math.abs(currentTimestamp - questionTime) < 0.5 &&
+                    !quizData[i].hasTriggered &&
+                    userAnswers[i] === null) {
+
+                    quizData[i].hasTriggered = true;
+                    currentQuestionIndex = i;
+                    updateQuestion();
+
+                    if (isPlaying) {
+                        videoElement.pause();
+                    }
+                    return;
+                }
+            }
+        }
+
+        function updateQuestion() {
+            const question = quizData[currentQuestionIndex];
+
+            currentQuestionElement.textContent = question.number;
+            questionTextElement.textContent = question.question;
+            questionTypeElement.textContent = question.type;
+            pointsDisplayElement.textContent = `${question.points} point${question.points > 1 ? 's' : ''}`;
+
+            selectedAnswer = null;
+            feedbackContainer.classList.remove('show');
+            fillInContainer.style.display = 'none';
+            fillInAnswerElement.value = '';
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit Answer';
+
+            if (currentQuestionIndex > 0 || userAnswers[0] !== null) {
+                scoreDisplayElement.classList.add('show');
+            }
+
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.disabled = currentQuestionIndex === quizData.length - 1;
+
+            if (userAnswers[currentQuestionIndex] !== null) {
+                if (question.type === 'Fill in the Blank') {
+                    fillInAnswerElement.value = userAnswers[currentQuestionIndex];
+                } else {
+                    selectedAnswer = userAnswers[currentQuestionIndex];
+                }
+            }
+
+            if (question.type === 'Fill in the Blank') {
+                fillInContainer.style.display = 'block';
+                optionsContainer.innerHTML = '';
+            } else {
+                renderOptions(question);
+            }
+
+            if (userAnswers[currentQuestionIndex] !== null) {
+                showFeedback();
+            }
+        }
+
+        function renderOptions(question) {
+            optionsContainer.innerHTML = '';
+            const optionLabels = ['A', 'B', 'C', 'D'];
+
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+
+                if (selectedAnswer === optionLabels[index]) {
+                    optionElement.classList.add('selected');
+                }
+
+                optionElement.innerHTML = `
+                    <div class="option-label">${optionLabels[index]}</div>
+                    <div class="option-text">${option}</div>
+                `;
+
+                optionElement.addEventListener('click', () => {
+                    if (userAnswers[currentQuestionIndex] !== null) return;
+
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+
+                    optionElement.classList.add('selected');
+                    selectedAnswer = optionLabels[index];
+                });
+
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+
+        function submitAnswer() {
+            const question = quizData[currentQuestionIndex];
+            let isCorrect = false;
+
+            if (question.type === 'Fill in the Blank') {
+                const userAnswer = fillInAnswerElement.value.trim().toLowerCase();
+                selectedAnswer = userAnswer;
+                const correctAnswerLower = question.correctAnswer.toLowerCase();
+                isCorrect = userAnswer === correctAnswerLower;
+                userAnswers[currentQuestionIndex] = userAnswer;
+            } else {
+                if (!selectedAnswer) {
+                    alert('Please select an answer before submitting.');
+                    return;
+                }
+
+                isCorrect = selectedAnswer === question.correctAnswer;
+                userAnswers[currentQuestionIndex] = selectedAnswer;
+
+                document.querySelectorAll('.option').forEach((option, index) => {
+                    const optionLabel = ['A', 'B', 'C', 'D'][index];
+
+                    if (optionLabel === question.correctAnswer) {
+                        option.classList.add('correct');
+                    } else if (optionLabel === selectedAnswer && selectedAnswer !== question.correctAnswer) {
+                        option.classList.add('incorrect');
+                    }
+                });
+            }
+
+            if (isCorrect) {
+                score += question.points;
+                scoreElement.textContent = score;
+            }
+
+            showFeedback(isCorrect);
+            submitButton.disabled = true;
+            submitButton.textContent = 'Answer Submitted';
+            updateProgress();
+
+            setTimeout(() => {
+                if (!isPlaying && currentQuestionIndex < quizData.length - 1) {
+                    videoElement.play();
+                }
+            }, 2000);
+        }
+
+        function showFeedback(isCorrect) {
+            const question = quizData[currentQuestionIndex];
+
+            if (userAnswers[currentQuestionIndex] === null) return;
+
+            feedbackTitleElement.textContent = isCorrect ?
+                `Correct! (${question.points} point${question.points > 1 ? 's' : ''} earned)` :
+                `Incorrect. The correct answer is: ${getCorrectAnswerText(question)}`;
+
+            explanationTextElement.textContent = question.explanation;
+            feedbackContainer.classList.add('show');
+        }
+
+        function getCorrectAnswerText(question) {
+            if (question.type === 'Fill in the Blank') {
+                return question.correctAnswer;
+            } else {
+                const optionLabels = ['A', 'B', 'C', 'D'];
+                const correctIndex = optionLabels.indexOf(question.correctAnswer);
+                return question.options[correctIndex];
+            }
+        }
+
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            const progressPercent = (answeredCount / quizData.length) * 100;
+            quizProgressElement.style.width = `${progressPercent}%`;
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                updateQuestion();
+                jumpToTimestamp(quizData[currentQuestionIndex].timestamp);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestion();
+                jumpToTimestamp(quizData[currentQuestionIndex].timestamp);
+            }
+        }
+
+        function jumpToTimestamp(timestamp) {
+            const seconds = timestampToSeconds(timestamp);
+            videoElement.currentTime = seconds;
+
+            if (!isPlaying) {
+                videoElement.play();
+            }
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                videoElement.pause();
+            } else {
+                videoElement.play();
+            }
+        }
+
+        function stopVideo() {
+            videoElement.pause();
+            videoElement.currentTime = 0;
+        }
+
+        function seekBackward(seconds) {
+            videoElement.currentTime = Math.max(0, videoElement.currentTime - seconds);
+        }
+
+        function seekForward(seconds) {
+            videoElement.currentTime = Math.min(videoElement.duration, videoElement.currentTime + seconds);
+        }
+
+        submitButton.addEventListener('click', submitAnswer);
+        nextButton.addEventListener('click', nextQuestion);
+        prevButton.addEventListener('click', prevQuestion);
+        playPauseButton.addEventListener('click', togglePlayPause);
+        stopButton.addEventListener('click', stopVideo);
+        back10Button.addEventListener('click', () => seekBackward(10));
+        back5Button.addEventListener('click', () => seekBackward(5));
+        forward5Button.addEventListener('click', () => seekForward(5));
+        forward10Button.addEventListener('click', () => seekForward(10));
+
+        fillInAnswerElement.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitAnswer();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

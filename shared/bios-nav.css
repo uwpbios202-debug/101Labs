@@ -1,0 +1,128 @@
+/* ===== BIOS101 SHARED NAVBAR ===== */
+
+/* Reset only what the navbar touches */
+.bios-nav,
+.bios-nav * {
+  box-sizing: border-box;
+}
+
+/* ===== NAV WRAPPER ===== */
+.bios-nav {
+  position: sticky;
+  top: 0;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+  z-index: 1000;
+}
+
+/* ===== INNER LAYOUT ===== */
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+}
+
+/* ===== HOME LINK ===== */
+.bios-home {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.bios-home:hover {
+  text-decoration: underline;
+}
+
+/* ===== MOBILE TOGGLE ===== */
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* ===== MENU CONTAINER ===== */
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ===== MENU ITEM ===== */
+.bios-menu {
+  position: relative;
+}
+
+/* ===== MENU BUTTON ===== */
+.bios-trigger {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.bios-trigger:hover,
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+
+/* ===== DROPDOWN ===== */
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  min-width: 160px;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.bios-dropdown a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #212721;
+  font-weight: 500;
+}
+
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+
+/* Hover activation (desktop) */
+.bios-menu:hover .bios-dropdown {
+  display: block;
+}
+
+/* ===== MOBILE BEHAVIOR ===== */
+@media (max-width: 768px) {
+  .bios-toggle {
+    display: block;
+  }
+
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .bios-menus.open {
+    display: flex;
+  }
+
+  .bios-dropdown {
+    position: static;
+    border: none;
+    box-shadow: none;
+  }
+}
+

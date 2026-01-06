@@ -1,0 +1,1482 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIOS101 Lab: Seeing & Sizing Anabaena | UW-Parkside</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
+    <style>
+        :root {
+            --uwp-green: #016836;
+            --uwp-black: #000000;
+            --uwp-dark-green: #00502f;
+            --uwp-blue: #105877;
+            --uwp-warm-grey: #54534A;
+            --uwp-cool-grey: #DBD9D6;
+            --uwp-goldenrod: #FABA31;
+            --uwp-white-birch: #EFECE2;
+            --accent-ok: var(--uwp-goldenrod);
+            --text-primary: #222222;
+            --text-secondary: #444444;
+            --border-color: #CCCCCC;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: white;
+            padding-top: 80px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--uwp-dark-green);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--uwp-goldenrod);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            max-width: 80ch;
+        }
+
+        header {
+            background-color: var(--uwp-green);
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px var(--shadow-medium);
+            border-bottom: 4px solid var(--uwp-goldenrod);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content h1 {
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .tagline {
+            font-style: italic;
+            color: var(--uwp-white-birch);
+            font-size: 1.1rem;
+        }
+
+        nav {
+            background-color: var(--uwp-dark-green);
+            padding: 0.75rem 2rem;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            box-shadow: 0 2px 5px var(--shadow-light);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .nav-container a {
+            color: white;
+            font-weight: 500;
+            padding: 0.25rem 0;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .nav-container a:hover {
+            color: var(--uwp-goldenrod);
+        }
+
+        .nav-container a.active {
+            color: var(--uwp-goldenrod);
+            font-weight: 600;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 140px;
+        }
+
+        .card,
+        .panel {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--uwp-green);
+            box-shadow: 0 3px 10px var(--shadow-light);
+        }
+
+        .panel {
+            background-color: var(--uwp-white-birch);
+            border-left-color: var(--uwp-blue);
+        }
+
+        .hero-card {
+            background-color: var(--uwp-white-birch);
+            border-left: 6px solid var(--uwp-green);
+            padding: 2rem;
+        }
+
+        .outcomes-list {
+            background-color: var(--uwp-white-birch);
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .outcomes-list li {
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+        }
+
+        textarea,
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--uwp-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--uwp-dark-green);
+        }
+
+        button.secondary {
+            background-color: var(--uwp-warm-grey);
+        }
+
+        button.check {
+            background-color: var(--uwp-blue);
+        }
+
+        button.check:hover {
+            background-color: #083d52;
+        }
+
+        .locked-section {
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--uwp-warm-grey);
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+        .feedback-box {
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback-box.incorrect {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .feedback-box.partial {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+
+        .equation-box {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 2px dashed var(--uwp-cool-grey);
+            margin: 1.5rem 0;
+        }
+
+        .equation-box h4 {
+            color: var(--uwp-blue);
+            margin-bottom: 1rem;
+        }
+
+        .input-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-field label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: var(--uwp-warm-grey);
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        .emphasis-box {
+            background-color: #fff3cd;
+            border-left: 5px solid var(--uwp-goldenrod);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .emphasis-box strong {
+            color: var(--uwp-dark-green);
+        }
+
+        .image-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid var(--uwp-green);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--uwp-goldenrod);
+            color: var(--uwp-black);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+
+        .progress-indicator {
+            background-color: var(--uwp-white-birch);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--uwp-cool-grey);
+        }
+
+        .progress-bar {
+            background-color: var(--uwp-cool-grey);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            background-color: var(--uwp-green);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .sketch-canvas {
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            border: 2px solid var(--border-color);
+            background-color: white;
+            cursor: crosshair;
+            border-radius: 6px;
+            display: block;
+            margin: 1rem auto;
+        }
+
+        .canvas-controls {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .color-picker {
+            display: inline-flex;
+            gap: 0.5rem;
+            margin: 0 1rem;
+        }
+
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .color-btn.active {
+            border: 3px solid var(--uwp-green);
+            transform: scale(1.1);
+        }
+
+        footer {
+            background-color: var(--uwp-warm-grey);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+
+            header,
+            nav {
+                padding: 1rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .nav-container {
+                gap: 1rem;
+                justify-content: center;
+            }
+        }
+
+        @media print {
+
+            header,
+            nav,
+            footer,
+            button {
+                display: none;
+            }
+
+            body {
+                padding-top: 0;
+            }
+
+            .locked-section {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .locked-overlay {
+                display: none;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <header>
+        <div class="header-content" style="display: flex; align-items: center; justify-content: space-between;">
+            <a href="in-lab.html" style="color: white; text-decoration: none; font-weight: 600; font-size: 1rem;">← Back
+                to Lab</a>
+            <h3 style="color: white; margin: 0; flex-grow: 1; text-align: center;">Seeing & Sizing the Invisible!</h3>
+            <div style="width: 120px;"></div> <!-- Spacer for balance -->
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#goal" class="active">Goal</a>
+            <a href="#reflection">Reflection</a>
+            <a href="#observation">Observation</a>
+            <a href="#measurement">Measurement</a>
+            <a href="#calculation">Calculation</a>
+            <a href="#analysis">Analysis</a>
+            <a href="#wrap-up">Wrap-Up</a>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <div class="progress-indicator">
+            <strong>Your Progress:</strong>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText" style="margin-top: 0.5rem; font-size: 0.9rem;">0% Complete</p>
+        </div>
+
+        <section id="goal">
+            <h2>Lab Goal</h2>
+            <div class="hero-card">
+                <p>You will accurately determine the size of individual <em>Anabaena</em> cells using field-of-view
+                    microscopy methods. You must derive and apply the sizing equation from memory, showing all work with
+                    proper units and abbreviations.</p>
+
+                <h3>Success Criterion</h3>
+                <p>You can independently calculate the size of a single <em>Anabaena</em> cell in both millimeters and
+                    micrometers, demonstrate the equation from memory with proper abbreviations, and evaluate whether
+                    your result is biologically reasonable.</p>
+
+                <h3>Learning Outcomes</h3>
+                <div class="outcomes-list">
+                    <ol>
+                        <li>Prepare a quality wet mount of <em>Anabaena</em> that produces clear images at 40×.</li>
+                        <li>Accurately count the number of cells across the field diameter.</li>
+                        <li>Write the sizing equation from memory using proper abbreviations (L = FD / N).</li>
+                        <li>Calculate cell size with correct units and significant figures.</li>
+                        <li>Evaluate your result against known biological data for prokaryotic cells.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="reflection">
+            <h2>Metacognitive Reflection</h2>
+            <div class="panel">
+                <div class="emphasis-box">
+                    <strong>Before proceeding:</strong> Answer these questions to activate your prior knowledge and
+                    prepare your thinking for the tasks ahead. No answers are provided - you must reason through these
+                    yourself.
+                </div>
+
+                <div class="input-field">
+                    <label for="reflect1">1. What mathematical relationship exists between the field diameter, the
+                        number of cells, and the size of one cell?</label>
+                    <textarea id="reflect1" placeholder="Describe the relationship in your own words..."></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="reflect2">2. Why is it important to use an abbreviation for the equation before
+                        substituting numbers?</label>
+                    <textarea id="reflect2" placeholder="Explain your reasoning..."></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="reflect3">3. What size range would you expect for a prokaryotic cell like
+                        <em>Anabaena</em>? What is your reasoning?</label>
+                    <textarea id="reflect3" placeholder="State your prediction and explain why..."></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="reflect4">4. How will you know if your calculated result is wrong? What checking
+                        strategies will you use?</label>
+                    <textarea id="reflect4" placeholder="List your verification strategies..."></textarea>
+                </div>
+
+                <button id="completeReflection">Mark Reflection Complete</button>
+                <div id="reflectionFeedback" class="feedback-box"></div>
+            </div>
+        </section>
+
+        <section id="observation" class="locked-section">
+            <div class="locked-overlay">Complete Reflection to Unlock</div>
+            <h2>Step 1: Prepare and Observe <em>Anabaena</em></h2>
+
+            <div class="panel">
+                <h3>Preparation Protocol</h3>
+                <ol style="margin-left: 2rem; line-height: 2;">
+                    <li>Obtain a clean slide and coverslip</li>
+                    <li>Locate the <em>Anabaena</em> culture (freshwater, green)</li>
+                    <li>Place 2-3 drops of culture on the slide</li>
+                    <li>Gently place coverslip at 45° angle to avoid bubbles</li>
+                    <li>Blot excess liquid with paper towel</li>
+                </ol>
+
+                <h3>Microscope Setup</h3>
+                <ol style="margin-left: 2rem; line-height: 2;">
+                    <li>Start with 10× objective (scanning power)</li>
+                    <li>Adjust iris diaphragm to reduce light (filaments are pale green)</li>
+                    <li>Locate separated filaments (avoid clumps)</li>
+                    <li>Center your specimen</li>
+                    <li>Switch to 40× objective</li>
+                    <li>Fine-tune focus and light intensity</li>
+                </ol>
+
+                <h3>Visual Documentation</h3>
+                <p><strong>Sketch what you see under 40× magnification.</strong> Include multiple filaments and label
+                    key structures.</p>
+
+                <div class="canvas-controls">
+                    <button id="clearCanvas">Clear Canvas</button>
+                    <div class="color-picker">
+                        <div class="color-btn active" data-color="#016836" style="background-color: #016836;"
+                            title="Green"></div>
+                        <div class="color-btn" data-color="#000000" style="background-color: #000000;" title="Black">
+                        </div>
+                        <div class="color-btn" data-color="#105877" style="background-color: #105877;" title="Blue">
+                        </div>
+                        <div class="color-btn" data-color="#FABA31" style="background-color: #FABA31;" title="Yellow">
+                        </div>
+                    </div>
+                </div>
+
+                <canvas id="sketchCanvas" class="sketch-canvas"></canvas>
+
+                <div class="input-field" style="margin-top: 1.5rem;">
+                    <label for="sketchLabels">Required labels (type each on a new line):</label>
+                    <textarea id="sketchLabels"
+                        placeholder="Example:&#10;- Filament chain&#10;- Individual photosynthetic cell&#10;- Heterocyst (if visible)&#10;- Cell wall boundaries"></textarea>
+                    <p class="help-text">List all structures you can identify in your sketch</p>
+                </div>
+
+                <button id="completeObservation">Confirm Observation Complete</button>
+                <div id="observationFeedback" class="feedback-box"></div>
+            </div>
+        </section>
+
+        <section id="measurement" class="locked-section">
+            <div class="locked-overlay">Complete Observation to Unlock</div>
+            <h2>Step 2: Measurement & Data Collection</h2>
+
+            <div class="panel">
+                <div class="emphasis-box">
+                    <strong>⚠️ Critical Thinking Required:</strong> You must determine and record accurate measurements.
+                    No suggestions are provided. Your measurements form the foundation of your calculation.
+                </div>
+
+                <h3>Field Diameter Measurement</h3>
+                <div class="input-field">
+                    <label for="fieldDiameter">What is the field diameter at 40× magnification? (in mm)</label>
+                    <input type="number" id="fieldDiameter" step="0.01" min="0" placeholder="Enter measurement in mm">
+                    <p class="help-text">Measure using the ruler overlay or use the provided field diameter chart</p>
+                </div>
+
+                <h3>Cell Count Measurement</h3>
+                <div class="image-container">
+                    <img src="https://github.com/harriauwp/101labs/blob/main/01_Science_of_Biology/during_lab/Anabaena.jpg?raw=true"
+                        alt="Anabaena filaments showing heterocysts and photosynthetic cells">
+                    <p style="margin-top: 1rem; font-style: italic; color: var(--uwp-warm-grey);">Reference image:
+                        Anabaena filaments under microscope</p>
+                </div>
+
+                <div class="input-field">
+                    <label for="cellCount">How many <em>Anabaena</em> cells fit across the field diameter?</label>
+                    <input type="number" id="cellCount" step="0.5" min="0" placeholder="Enter your count">
+                    <p class="help-text">Strategy: Find a filament approximately ½ the diameter, count cells, then
+                        multiply by 2</p>
+                </div>
+
+                <div class="input-field">
+                    <label for="countingStrategy">Describe your counting strategy and confidence level:</label>
+                    <textarea id="countingStrategy"
+                        placeholder="How did you count? What challenges did you face? How confident are you in this count?"></textarea>
+                </div>
+
+                <button class="check" id="checkMeasurements">Check My Measurements</button>
+                <div id="measurementFeedback" class="feedback-box"></div>
+
+                <button id="proceedToCalculation" style="display: none;">Proceed to Calculation →</button>
+            </div>
+        </section>
+
+        <section id="calculation" class="locked-section">
+            <div class="locked-overlay">Complete Measurement to Unlock</div>
+            <h2>Step 3: Calculation & Equation Application</h2>
+
+            <div class="panel">
+                <div class="emphasis-box">
+                    <strong>🧮 Metacognitive Challenge:</strong> You must write the equation from memory using proper
+                    abbreviations BEFORE substituting any numbers. This demonstrates conceptual understanding, not just
+                    mechanical calculation.
+                </div>
+
+                <div class="equation-box">
+                    <h4>Step 3A: Write the Equation (Abbreviated Form)</h4>
+                    <p>Write the general equation for calculating cell length using standard abbreviations:</p>
+                    <ul style="margin: 1rem 0 1rem 2rem; line-height: 1.8;">
+                        <li><strong>L</strong> = Cell Length</li>
+                        <li><strong>FD</strong> = Field Diameter</li>
+                        <li><strong>N</strong> = Number of cells</li>
+                    </ul>
+
+                    <div class="input-field">
+                        <label for="equationAbbrev">Write the equation using abbreviations only (no numbers):</label>
+                        <input type="text" id="equationAbbrev" placeholder="Example format: L = FD / N">
+                    </div>
+
+                    <button class="check" id="checkEquation">Check My Equation</button>
+                    <div id="equationFeedback" class="feedback-box"></div>
+                </div>
+
+                <div class="equation-box" id="substitutionBox" style="display: none;">
+                    <h4>Step 3B: Substitute Your Values</h4>
+                    <p>Now substitute your measured values into the equation. Show your work with units.</p>
+
+                    <div class="input-field">
+                        <label for="equationSubstituted">Write the equation with your values substituted (include
+                            units):</label>
+                        <input type="text" id="equationSubstituted" placeholder="Example: L = 0.50 mm / 25 cells">
+                    </div>
+                </div>
+
+                <div class="equation-box" id="calculationBox" style="display: none;">
+                    <h4>Step 3C: Perform the Calculation</h4>
+
+                    <div class="input-field">
+                        <label for="cellSizeMM">Cell size in millimeters (show all decimals):</label>
+                        <input type="text" id="cellSizeMM" placeholder="0.0000 mm">
+                    </div>
+
+                    <div class="input-field">
+                        <label for="cellSizeUM">Cell size converted to micrometers (μm):</label>
+                        <input type="text" id="cellSizeUM" placeholder="0.00 μm">
+                        <p class="help-text">Remember: 1 mm = 1000 μm</p>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="calculationWork">Show your conversion work:</label>
+                        <textarea id="calculationWork"
+                            placeholder="Explain how you converted from mm to μm..."></textarea>
+                    </div>
+
+                    <button class="check" id="checkCalculation">Check My Calculation</button>
+                    <div id="calculationFeedback" class="feedback-box"></div>
+
+                    <button id="proceedToAnalysis" style="display: none;">Proceed to Analysis →</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="locked-section">
+            <div class="locked-overlay">Complete Calculation to Unlock</div>
+            <h2>Step 4: Biological Sense-Making & Analysis</h2>
+
+            <div class="panel">
+                <div class="emphasis-box">
+                    <strong>🔬 Critical Analysis:</strong> Scientists don't just calculate - they evaluate whether
+                    results make biological sense. Use your knowledge of prokaryotic cells to assess your findings.
+                </div>
+
+                <h3>Your Results Summary</h3>
+                <div id="resultsSummary" class="equation-box">
+                    <p><strong>Your calculated <em>Anabaena</em> cell size:</strong></p>
+                    <p id="displayResults" style="font-size: 1.2rem; color: var(--uwp-blue); margin: 1rem 0;">
+                        Awaiting calculation completion...
+                    </p>
+                </div>
+
+                <div class="input-field">
+                    <label for="biologicalSense">Does your result make biological sense for a prokaryotic cell? Explain
+                        your reasoning:</label>
+                    <textarea id="biologicalSense"
+                        placeholder="Consider:&#10;- Typical prokaryotic cell size range&#10;- What you know about Anabaena&#10;- Whether your value seems too large, too small, or reasonable&#10;- What factors might affect your measurement accuracy"></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="errorSources">Identify potential sources of error in your measurement and
+                        calculation:</label>
+                    <textarea id="errorSources" placeholder="List at least 3 potential sources of error..."></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="improvements">If you were to repeat this exercise, what would you do differently to
+                        improve accuracy?</label>
+                    <textarea id="improvements"
+                        placeholder="Describe specific improvements to your technique..."></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="comparison">Research: Look up the actual size range for <em>Anabaena</em> cells. How
+                        does your measurement compare?</label>
+                    <textarea id="comparison"
+                        placeholder="State the accepted size range and compare to your results..."></textarea>
+                </div>
+
+                <button class="check" id="checkAnalysis">Submit Analysis</button>
+                <div id="analysisFeedback" class="feedback-box"></div>
+
+                <button id="proceedToWrapup" style="display: none;">Complete Lab →</button>
+            </div>
+        </section>
+
+        <section id="wrap-up" class="locked-section">
+            <div class="locked-overlay">Complete Analysis to Unlock</div>
+            <h2>Wrap-Up & Metacognitive Reflection</h2>
+
+            <div class="panel">
+                <h3>Final Reflection</h3>
+
+                <div class="input-field">
+                    <label for="whatLearned">What did you learn about the process of scientific measurement that you
+                        didn't know before?</label>
+                    <textarea id="whatLearned"></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="challenges">What was the most challenging part of this exercise? Why?</label>
+                    <textarea id="challenges"></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="equation Importance">Why is it important to write equations with abbreviations before
+                        substituting numbers?</label>
+                    <textarea id="equationImportance"></textarea>
+                </div>
+
+                <div class="input-field">
+                    <label for="futureApplication">How will you apply what you learned today to future microscopy
+                        work?</label>
+                    <textarea id="futureApplication"></textarea>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button id="exportData">📥 Export My Work (JSON)</button>
+                    <button id="printLab" class="secondary">🖨️ Print for Submission</button>
+                    <button onclick="window.location.href='in-lab.html'" class="secondary">← Back to Lab</button>
+                    <button onclick="window.location.href='02_Anabaena_Size.html'">Next Exercise: Anabaena Size
+                        →</button>
+                </div>
+
+                <div id="completionBadge" style="display: none; text-align: center; margin-top: 2rem;">
+                    <div class="badge" style="font-size: 1.2rem; padding: 1rem 2rem;">
+                        ✓ Lab Complete!
+                    </div>
+                    <p style="margin-top: 1rem; color: var(--uwp-green); font-weight: 600;">
+                        Excellent work on completing this metacognitive lab exercise!
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>BIOS101 Lab: Seeing & Sizing Anabaena | University of Wisconsin-Parkside</p>
+            <p>Metacognitive Learning Framework | Accessibility Compliant (WCAG 2.2 AA)</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== STATE MANAGEMENT ==========
+        let appState = {
+            reflectionComplete: false,
+            observationComplete: false,
+            measurementValid: false,
+            equationCorrect: false,
+            calculationCorrect: false,
+            analysisComplete: false,
+            labComplete: false,
+            fieldDiameter: null,
+            cellCount: null,
+            cellSizeMM: null,
+            cellSizeUM: null
+        };
+
+        let drawingColor = '#016836';
+        let isDrawing = false;
+        let canvas, ctx;
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeCanvas();
+            setupEventListeners();
+            loadSavedState();
+            updateProgress();
+        });
+
+        function initializeCanvas() {
+            canvas = document.getElementById('sketchCanvas');
+            ctx = canvas.getContext('2d');
+
+            // Set canvas size
+            canvas.width = 600;
+            canvas.height = 300;
+
+            // Fill white background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Drawing setup
+            ctx.strokeStyle = drawingColor;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        function setupEventListeners() {
+            // Reflection
+            document.getElementById('completeReflection').addEventListener('click', completeReflection);
+
+            // Observation
+            document.getElementById('clearCanvas').addEventListener('click', clearCanvas);
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawingColor = this.getAttribute('data-color');
+                    ctx.strokeStyle = drawingColor;
+                });
+            });
+            document.getElementById('completeObservation').addEventListener('click', completeObservation);
+
+            // Canvas drawing
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            // Touch support
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+
+            // Measurement
+            document.getElementById('checkMeasurements').addEventListener('click', checkMeasurements);
+            document.getElementById('proceedToCalculation').addEventListener('click', () => unlockSection('calculation'));
+
+            // Calculation
+            document.getElementById('checkEquation').addEventListener('click', checkEquation);
+            document.getElementById('checkCalculation').addEventListener('click', checkCalculation);
+            document.getElementById('proceedToAnalysis').addEventListener('click', () => unlockSection('analysis'));
+
+            // Analysis
+            document.getElementById('checkAnalysis').addEventListener('click', checkAnalysis);
+            document.getElementById('proceedToWrapup').addEventListener('click', () => unlockSection('wrap-up'));
+
+            // Wrap-up
+            document.getElementById('exportData').addEventListener('click', exportData);
+            document.getElementById('printLab').addEventListener('click', () => window.print());
+
+            // Auto-save
+            document.querySelectorAll('input, textarea').forEach(el => {
+                el.addEventListener('input', saveState);
+                el.addEventListener('change', saveState);
+            });
+
+            // Navigation
+            setupNavigation();
+        }
+
+        // ========== DRAWING FUNCTIONS ==========
+        function startDrawing(e) {
+            isDrawing = true;
+            const pos = getMousePos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getMousePos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            saveState();
+        }
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            saveState();
+        }
+
+        // ========== SECTION COMPLETION FUNCTIONS ==========
+        function completeReflection() {
+            const fields = ['reflect1', 'reflect2', 'reflect3', 'reflect4'];
+            const allFilled = fields.every(id => document.getElementById(id).value.trim().length > 20);
+
+            const feedback = document.getElementById('reflectionFeedback');
+
+            if (!allFilled) {
+                feedback.className = 'feedback-box incorrect';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Incomplete Reflection</strong><br>Each reflection question requires a thoughtful response (at least 20 characters). Take your time to think deeply about each question.';
+                return;
+            }
+
+            appState.reflectionComplete = true;
+            feedback.className = 'feedback-box correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '<strong>✓ Reflection Complete!</strong><br>Your thoughtful responses show you\'re ready to begin. The observation section is now unlocked.';
+
+            unlockSection('observation');
+            updateProgress();
+            saveState();
+        }
+
+        function completeObservation() {
+            const labels = document.getElementById('sketchLabels').value.trim();
+            const feedback = document.getElementById('observationFeedback');
+
+            if (labels.length < 30) {
+                feedback.className = 'feedback-box incorrect';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Incomplete Documentation</strong><br>Please provide detailed labels for your sketch. List at least 3-4 structures you can identify.';
+                return;
+            }
+
+            appState.observationComplete = true;
+            feedback.className = 'feedback-box correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '<strong>✓ Observation Complete!</strong><br>Your sketch and labels demonstrate careful observation. The measurement section is now unlocked.';
+
+            unlockSection('measurement');
+            updateProgress();
+            saveState();
+        }
+
+        function checkMeasurements() {
+            const fieldDiameter = parseFloat(document.getElementById('fieldDiameter').value);
+            const cellCount = parseFloat(document.getElementById('cellCount').value);
+            const strategy = document.getElementById('countingStrategy').value.trim();
+            const feedback = document.getElementById('measurementFeedback');
+
+            if (!fieldDiameter || !cellCount || strategy.length < 20) {
+                feedback.className = 'feedback-box incorrect';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Incomplete Measurements</strong><br>Please provide both measurements and describe your counting strategy in detail.';
+                return;
+            }
+
+            // Reasonable range checks (not exact answers)
+            const fdReasonable = fieldDiameter > 0.1 && fieldDiameter < 2.0;
+            const countReasonable = cellCount > 5 && cellCount < 200;
+
+            if (!fdReasonable || !countReasonable) {
+                feedback.className = 'feedback-box partial';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Check Your Measurements</strong><br>Your values seem unusual. Typical field diameter at 40× is between 0.4-0.5 mm, and cell counts typically range from 10-100. Double-check your measurements.';
+                return;
+            }
+
+            appState.measurementValid = true;
+            appState.fieldDiameter = fieldDiameter;
+            appState.cellCount = cellCount;
+
+            feedback.className = 'feedback-box correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '<strong>✓ Measurements Recorded!</strong><br>Your values are in a reasonable range. You may now proceed to calculation.';
+
+            document.getElementById('proceedToCalculation').style.display = 'inline-block';
+            updateProgress();
+            saveState();
+        }
+
+        function checkEquation() {
+            const equation = document.getElementById('equationAbbrev').value.trim().replace(/\s+/g, '');
+            const feedback = document.getElementById('equationFeedback');
+
+            // Accept various correct formats
+            const correctFormats = ['L=FD/N', 'l=fd/n', 'L=FD÷N', 'CellLength=FieldDiameter/NumberofCells'];
+            const isCorrect = correctFormats.some(format => equation.toUpperCase().replace(/[^A-Z=/÷]/g, '') === format.toUpperCase().replace(/[^A-Z=/÷]/g, ''));
+
+            if (!isCorrect) {
+                feedback.className = 'feedback-box incorrect';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Equation Incorrect</strong><br>The standard form is: <strong>L = FD / N</strong><br>Where L = Cell Length, FD = Field Diameter, N = Number of cells<br>Try again using only abbreviations (no numbers).';
+                return;
+            }
+
+            appState.equationCorrect = true;
+            feedback.className = 'feedback-box correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '<strong>✓ Equation Correct!</strong><br>You\'ve correctly written the sizing equation. Now substitute your measured values.';
+
+            document.getElementById('substitutionBox').style.display = 'block';
+            document.getElementById('calculationBox').style.display = 'block';
+            updateProgress();
+            saveState();
+        }
+
+        function checkCalculation() {
+            const cellSizeMM = document.getElementById('cellSizeMM').value.trim();
+            const cellSizeUM = document.getElementById('cellSizeUM').value.trim();
+            const work = document.getElementById('calculationWork').value.trim();
+            const feedback = document.getElementById('calculationFeedback');
+
+            if (!cellSizeMM || !cellSizeUM || work.length < 20) {
+                feedback.className = 'feedback-box incorrect';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Incomplete Calculation</strong><br>Please provide both values (mm and μm) and show your conversion work.';
+                return;
+            }
+
+            // Parse the values
+            const mmValue = parseFloat(cellSizeMM.replace(/[^\d.]/g, ''));
+            const umValue = parseFloat(cellSizeUM.replace(/[^\d.]/g, ''));
+
+            // Check if conversion is correct
+            const expectedUM = mmValue * 1000;
+            const conversionCorrect = Math.abs(umValue - expectedUM) < 1;
+
+            if (!conversionCorrect) {
+                feedback.className = 'feedback-box incorrect';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Conversion Error</strong><br>Check your mm to μm conversion. Remember: 1 mm = 1000 μm<br>Your mm value × 1000 should equal your μm value.';
+                return;
+            }
+
+            // Check if calculation makes sense based on measurements
+            if (appState.fieldDiameter && appState.cellCount) {
+                const expectedSize = appState.fieldDiameter / appState.cellCount;
+                const calculatedSize = mmValue;
+                const reasonableMatch = Math.abs(expectedSize - calculatedSize) / expectedSize < 0.1;
+
+                if (!reasonableMatch) {
+                    feedback.className = 'feedback-box partial';
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = '<strong>⚠️ Calculation Mismatch</strong><br>Your calculated value doesn\'t match your field diameter ÷ cell count. Please recheck your arithmetic.';
+                    return;
+                }
+            }
+
+            // Biological reasonableness check
+            if (umValue < 1 || umValue > 15) {
+                feedback.className = 'feedback-box partial';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Biological Sense Check</strong><br>Anabaena cells typically range from 2-10 μm. Your value of ' + umValue.toFixed(2) + ' μm seems outside this range. Double-check your measurements and calculation.';
+                return;
+            }
+
+            appState.calculationCorrect = true;
+            appState.cellSizeMM = mmValue;
+            appState.cellSizeUM = umValue;
+
+            feedback.className = 'feedback-box correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '<strong>✓ Calculation Complete!</strong><br>Your values are mathematically correct and biologically reasonable. Proceed to analysis to evaluate your results.';
+
+            // Update results summary in analysis section
+            document.getElementById('displayResults').innerHTML = `
+                <strong>${mmValue.toFixed(4)} mm</strong> = <strong>${umValue.toFixed(2)} μm</strong>
+            `;
+
+            document.getElementById('proceedToAnalysis').style.display = 'inline-block';
+            updateProgress();
+            saveState();
+        }
+
+        function checkAnalysis() {
+            const fields = ['biologicalSense', 'errorSources', 'improvements', 'comparison'];
+            const allFilled = fields.every(id => document.getElementById(id).value.trim().length > 30);
+            const feedback = document.getElementById('analysisFeedback');
+
+            if (!allFilled) {
+                feedback.className = 'feedback-box incorrect';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠️ Incomplete Analysis</strong><br>Each analysis question requires a detailed, thoughtful response. Demonstrate your critical thinking about the biological significance of your results.';
+                return;
+            }
+
+            appState.analysisComplete = true;
+            feedback.className = 'feedback-box correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '<strong>✓ Analysis Complete!</strong><br>Your critical evaluation shows excellent scientific thinking. Complete the wrap-up reflection to finish the lab.';
+
+            document.getElementById('proceedToWrapup').style.display = 'inline-block';
+            updateProgress();
+            saveState();
+
+            // Final check for lab completion
+            if (appState.analysisComplete) {
+                appState.labComplete = true;
+                document.getElementById('completionBadge').style.display = 'block';
+            }
+        }
+
+        // ========== NAVIGATION & UI ==========
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-container a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Update active nav on scroll
+            window.addEventListener('scroll', () => {
+                const sections = document.querySelectorAll('section');
+                let currentSection = '';
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    const sectionHeight = section.clientHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        function unlockSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.classList.remove('locked-section');
+            setTimeout(() => {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+
+        function updateProgress() {
+            const stages = [
+                appState.reflectionComplete,
+                appState.observationComplete,
+                appState.measurementValid,
+                appState.equationCorrect,
+                appState.calculationCorrect,
+                appState.analysisComplete
+            ];
+
+            const completed = stages.filter(Boolean).length;
+            const percentage = (completed / stages.length) * 100;
+
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = Math.round(percentage) + '% Complete - ' + completed + ' of ' + stages.length + ' stages';
+        }
+
+        // ========== DATA PERSISTENCE ==========
+        function saveState() {
+            const state = {
+                appState: appState,
+                inputs: {},
+                canvasData: canvas.toDataURL()
+            };
+
+            document.querySelectorAll('input, textarea').forEach(input => {
+                if (input.value) {
+                    state.inputs[input.id] = input.value;
+                }
+            });
+
+            localStorage.setItem('anabaenaSizingLab', JSON.stringify(state));
+        }
+
+        function loadSavedState() {
+            const saved = localStorage.getItem('anabaenaSizingLab');
+            if (!saved) return;
+
+            try {
+                const state = JSON.parse(saved);
+
+                if (state.appState) {
+                    appState = { ...appState, ...state.appState };
+                }
+
+                if (state.inputs) {
+                    for (const [id, value] of Object.entries(state.inputs)) {
+                        const element = document.getElementById(id);
+                        if (element) element.value = value;
+                    }
+                }
+
+                if (state.canvasData) {
+                    const img = new Image();
+                    img.onload = () => ctx.drawImage(img, 0, 0);
+                    img.src = state.canvasData;
+                }
+
+                updateProgress();
+                updateUIBasedOnState();
+            } catch (error) {
+                console.error('Error loading saved state:', error);
+            }
+        }
+
+        function updateUIBasedOnState() {
+            if (appState.reflectionComplete) unlockSection('observation');
+            if (appState.observationComplete) unlockSection('measurement');
+            if (appState.measurementValid) {
+                document.getElementById('proceedToCalculation').style.display = 'inline-block';
+                unlockSection('calculation');
+            }
+            if (appState.equationCorrect) {
+                document.getElementById('substitutionBox').style.display = 'block';
+                document.getElementById('calculationBox').style.display = 'block';
+            }
+            if (appState.calculationCorrect) {
+                document.getElementById('proceedToAnalysis').style.display = 'inline-block';
+                unlockSection('analysis');
+                if (appState.cellSizeMM && appState.cellSizeUM) {
+                    document.getElementById('displayResults').innerHTML = `
+                        <strong>${appState.cellSizeMM.toFixed(4)} mm</strong> = <strong>${appState.cellSizeUM.toFixed(2)} μm</strong>
+                    `;
+                }
+            }
+            if (appState.analysisComplete) {
+                document.getElementById('proceedToWrapup').style.display = 'inline-block';
+                unlockSection('wrap-up');
+            }
+            if (appState.labComplete) {
+                document.getElementById('completionBadge').style.display = 'block';
+            }
+        }
+
+        function exportData() {
+            const exportObj = {
+                lab: 'BIOS101: Seeing & Sizing Anabaena',
+                date: new Date().toISOString(),
+                student: 'Your Name',
+                measurements: {
+                    fieldDiameter: appState.fieldDiameter,
+                    cellCount: appState.cellCount,
+                    cellSizeMM: appState.cellSizeMM,
+                    cellSizeUM: appState.cellSizeUM
+                },
+                responses: {}
+            };
+
+            document.querySelectorAll('input, textarea').forEach(input => {
+                if (input.value && input.id) {
+                    exportObj.responses[input.id] = input.value;
+                }
+            });
+
+            const dataStr = JSON.stringify(exportObj, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            const fileName = `Anabaena-Sizing-Lab-${new Date().toISOString().slice(0, 10)}.json`;
+
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', fileName);
+            link.click();
+        }
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

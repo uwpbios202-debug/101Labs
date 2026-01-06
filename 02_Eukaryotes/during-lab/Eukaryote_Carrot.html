@@ -1,0 +1,1161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Cells (Carrot) Laboratory Investigation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #fef9f3 0%, #fff8e1 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #e65100 0%, #d84315 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(230, 81, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: white;
+            border: 2px solid #e65100;
+            color: #e65100;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #ffecb3;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #e65100;
+            color: white;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: white;
+            border-left: 4px solid #e65100;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(230, 81, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(230, 81, 0, 0.12);
+        }
+
+        .card h2 {
+            color: #e65100;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card h3 {
+            color: #d84315;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .card h4 {
+            color: #e65100;
+            font-size: 16px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card p {
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .btn {
+            background: #e65100;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #d84315;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(216, 67, 21, 0.15);
+        }
+
+        .btn-secondary {
+            background: #ffe0b2;
+            color: #e65100;
+        }
+
+        .btn-secondary:hover {
+            background: #ffcc80;
+        }
+
+        .key-concept {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .key-concept strong {
+            color: #e65100;
+        }
+
+        .learning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .learning-card {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 2px solid #e65100;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .learning-card h4 {
+            color: #d84315;
+            margin-bottom: 10px;
+        }
+
+        .learning-card p {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 0;
+        }
+
+        .materials-list {
+            background: #fff3e0;
+            border: 2px solid #ffcc80;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .materials-list h4 {
+            color: #d84315;
+            margin-bottom: 15px;
+        }
+
+        .materials-list ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .materials-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .materials-list li:last-child {
+            border-bottom: none;
+        }
+
+        .materials-list li:before {
+            content: "✓ ";
+            color: #e65100;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .observation-box {
+            background: white;
+            border: 2px solid #e65100;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .observation-box h4 {
+            color: #d84315;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffcc80;
+            padding-bottom: 10px;
+        }
+
+        .sketch-area {
+            background: #f9f9f9;
+            border: 2px dashed #ffcc80;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-style: italic;
+            margin: 15px 0;
+        }
+
+        .reflection-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffcc80 100%);
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .reflection-box strong {
+            color: #e65100;
+        }
+
+        .challenge-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffcc80 100%);
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .challenge-box strong {
+            color: #e65100;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .comparison-table th {
+            background: #e65100;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .success-box {
+            background: #ffecb3;
+            border: 1px solid #ffcc80;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #e65100;
+        }
+
+        .warning-box {
+            background: #ffecb3;
+            border: 1px solid #ffcc80;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #e65100;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 22px;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+                text-align: left;
+            }
+
+            .learning-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div class="container">
+        <header>
+            <h1>🔬 Carrot Root Cell Laboratory Investigation</h1>
+            <p><strong>Domain</strong> Eukaryote | <strong>Kingdom</strong> Plantae | <strong>Tissue</strong> Parenchyma | <strong>Cell</strong> Carrot Root</p>
+            <p>This investigation focuses on plant storage cells containing chromoplasts. Students will observe carrot parenchyma cells, identify pigment-containing organelles, and understand how specialized plastids contribute to plant function.</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="nav-btn active" onclick="switchTab('alignment')">Curriculum Alignment</button>
+            <button class="nav-btn" onclick="switchTab('background')">Background</button>
+            <button class="nav-btn" onclick="switchTab('preparation')">Preparation</button>
+            <button class="nav-btn" onclick="switchTab('method')">Method & Activity</button>
+            <button class="nav-btn" onclick="switchTab('observation')">Observation & Results</button>
+            <button class="nav-btn" onclick="switchTab('challenge')">Challenge Question</button>
+        </div>
+
+        <!-- SECTION 1: CURRICULUM ALIGNMENT -->
+        <div id="alignment" class="section active">
+            <div class="card">
+                <h2>📚 Curriculum Alignment</h2>
+                
+                <h3>Learning Outcomes</h3>
+                <p>Upon completion of this investigation, students will be able to:</p>
+                <ul>
+                    <li><strong>Identify</strong> parenchyma cell structures including cell wall, plasma membrane, and chromoplasts</li>
+                    <li><strong>Distinguish</strong> between different types of plastids (chloroplasts vs. chromoplasts)</li>
+                    <li><strong>Explain</strong> the relationship between chromoplast pigments and biological function</li>
+                    <li><strong>Apply</strong> microscopy techniques for observing thin plant tissue sections</li>
+                    <li><strong>Estimate</strong> chromoplast size and distribution within carrot cells</li>
+                    <li><strong>Compare</strong> storage parenchyma cells with photosynthetic parenchyma cells</li>
+                </ul>
+
+                <h3>MCAT Alignment: Biological and Biochemical Foundations</h3>
+                <ul>
+                    <li><strong>Foundational Concept 2:</strong> Structure and Function of Eukaryotic Cells
+                        <ul>
+                            <li><strong>2A: Assembly of Molecules and Organelles</strong>
+                                <ul>
+                                    <li><strong>Plastid Diversity:</strong> Identification of chromoplasts as specialized plastids for pigment storage and their evolutionary relationship to chloroplasts.</li>
+                                    <li><strong>Organelle Specialization:</strong> Understanding how cell structure relates to function in storage tissues.</li>
+                                </ul>
+                            </li>
+                            <li><strong>2B: Structure and Function of Systems</strong>
+                                <ul>
+                                    <li><strong>Plant Tissue Systems:</strong> Understanding parenchyma tissue role in storage and metabolism.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Foundational Concept 3:</strong> Genetics and Information Transfer
+                        <ul>
+                            <li><strong>Gene Expression:</strong> Understanding how environmental and genetic factors influence plastid development and pigment production.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Scientific Inquiry and Reasoning Skills (SIRS)</strong>
+                        <ul>
+                            <li><strong>Skill 1: Knowledge of Scientific Concepts and Principles</strong>
+                                <ul>
+                                    <li>Identifying chromoplast structures under magnification to understand their role in plant biology.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Skill 2: Scientific Reasoning and Problem Solving</strong>
+                                <ul>
+                                    <li>Analyzing why carrot roots develop chromoplasts while leaves develop chloroplasts.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>Chapter Context</h3>
+                <p><strong>Building on Previous Learning:</strong> This investigation builds upon the onion cell template by introducing:</p>
+                <ul>
+                    <li><strong>Plastid diversity</strong> beyond the nucleus-focused observations</li>
+                    <li><strong>Specialized plant cells</strong> adapted for storage rather than protection</li>
+                    <li><strong>Pigment biology</strong> and its connection to cellular function</li>
+                    <li>The concept that <strong>not all plant cells are photosynthetic</strong></li>
+                </ul>
+                <p>These concepts prepare students for understanding cell specialization across different plant tissues.</p>
+
+                <div class="button-group">
+                    <button class="btn" onclick="switchTab('background')">Next: Background →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: BACKGROUND -->
+        <div id="background" class="section">
+            <div class="card">
+                <h2>🧬 Background Information</h2>
+
+                <h3>What are Parenchyma Cells?</h3>
+                <p>Parenchyma cells are the most common and least specialized plant cells, forming the bulk of most plant tissues. They are often depicted as the "typical" plant cell because they retain the ability to divide and differentiate into other cell types. These cells perform essential functions including photosynthesis, storage, secretion, and tissue repair.</p>
+
+                <h3>Carrot Root Parenchyma: Specialized for Storage</h3>
+                <p>Unlike the onion epidermal cells you observed previously (which function in protection), carrot root parenchyma cells are specialized for <strong>storage</strong>. The fleshy part of a carrot root is composed primarily of parenchyma cells that store carbohydrates (starch) and pigments (carotenoids) for the plant.</p>
+
+                <h3>Chromoplasts: The Pigment Factories</h3>
+                <p>Chromoplasts are a type of <strong>plastid</strong> (membrane-bound organelles in plant cells) that synthesize and store pigments other than chlorophyll. While chloroplasts contain green chlorophyll for photosynthesis, chromoplasts contain yellow, orange, or red pigments called carotenoids.</p>
+
+                <div class="learning-grid">
+                    <div class="learning-card">
+                        <h4>Chromoplasts in Carrots</h4>
+                        <p>Carrot root chromoplasts contain high concentrations of <strong>carotene</strong> (specifically beta-carotene), an orange pigment that the human body converts to Vitamin A.</p>
+                    </div>
+                    <div class="learning-card">
+                        <h4>Carotene Pigments</h4>
+                        <p>Carotenes are carotenoid pigments that appear orange because they absorb blue and green light while reflecting orange and red wavelengths.</p>
+                    </div>
+                    <div class="learning-card">
+                        <h4>Biological Function</h4>
+                        <p>In carrots, chromoplasts and their pigments may help attract animals for seed dispersal or protect stored nutrients from light damage.</p>
+                    </div>
+                </div>
+
+                <h3>Why Study Carrot Root Cells?</h3>
+                <p>Carrot root parenchyma cells are ideal for this investigation because:</p>
+                <ul>
+                    <li>They clearly demonstrate <strong>plastid diversity</strong> beyond chloroplasts</li>
+                    <li>The <strong>orange chromoplasts</strong> are easily visible under light microscopy</li>
+                    <li>They show how plant cells <strong>specialize for different functions</strong> (storage vs. photosynthesis)</li>
+                    <li>They provide a clear example of <strong>structure-function relationships</strong> in biology</li>
+                    <li>They connect cellular biology to <strong>human nutrition</strong> (Vitamin A synthesis)</li>
+                </ul>
+
+                <div class="key-concept">
+                    <strong>🎯 Key Principle:</strong> The presence of chromoplasts instead of chloroplasts in carrot root cells demonstrates cellular specialization. All plant cells contain plastids, but the type of plastid reflects the cell's specific function within the plant.
+                </div>
+
+                <h3>Continuity with Previous Learning</h3>
+                <p>Like the onion cells you observed, carrot parenchyma cells have:
+                <ul>
+                    <li>A <strong>cell wall</strong> for structure and support</li>
+                    <li>A <strong>plasma membrane</strong> for regulating material movement</li>
+                    <li>A <strong>nucleus</strong> containing genetic material</li>
+                    <li><strong>Cytoplasm</strong> with various organelles</li>
+                </ul>
+                However, they differ in their specialized plastids, showing how basic eukaryotic structures adapt to different functions.</p>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="switchTab('alignment')">← Back</button>
+                    <button class="btn" onclick="switchTab('preparation')">Next: Preparation →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: PREPARATION -->
+        <div id="preparation" class="section">
+            <div class="card">
+                <h2>⚙️ Preparation</h2>
+
+                <h3>Learning Objectives for Preparation</h3>
+                <p>Before beginning the investigation, you should understand:</p>
+                <ul>
+                    <li>The difference between chloroplasts and chromoplasts</li>
+                    <li>Why carrot roots contain chromoplasts instead of chloroplasts</li>
+                    <li>The importance of extremely thin sections for observing internal cell structures</li>
+                    <li>How to adjust microscope lighting for optimal viewing of colored structures</li>
+                </ul>
+
+                <h3>Materials & Equipment</h3>
+                <div class="materials-list">
+                    <h4>🥕 For Specimen Preparation</h4>
+                    <ul>
+                        <li>Fresh carrot root (prepared in extremely thin sections by instructor)</li>
+                        <li>Glass microscope slides (clean and dry)</li>
+                        <li>Glass cover slips</li>
+                        <li>Distilled water in dropper bottle</li>
+                        <li>Paper towels</li>
+                        <li>Container for cleaned slides</li>
+                        <li>Container for used coverslips</li>
+                    </ul>
+                </div>
+
+                <div class="materials-list">
+                    <h4>🔬 For Microscopy</h4>
+                    <ul>
+                        <li>Light microscope with 10X and 40X objectives</li>
+                        <li>Lens paper (for cleaning lenses)</li>
+                        <li>Iris diaphragm for light control</li>
+                        <li>Prepared demonstration slides (instructor-prepared)</li>
+                    </ul>
+                </div>
+
+                <div class="materials-list">
+                    <h4>📝 For Documentation</h4>
+                    <ul>
+                        <li>Pencils or sketch pad (for sketches)</li>
+                        <li>Colored pencils (orange, yellow recommended)</li>
+                        <li>Blank paper or observation sheets</li>
+                     </ul>
+                </div>
+
+                <h3>Preparing Your Workstation</h3>
+
+                <h4>Step 1: Understand the Challenge</h4>
+                <ul>
+                    <li>Carrot tissue must be cut <strong>extremely thin</strong> (1-2 cell layers thick) for light to pass through</li>
+                    <li>This preparation is difficult, so <strong>instructor-prepared slides</strong> will be used</li>
+                    <li>You will observe these slides on <strong>demonstration microscopes</strong> set up around the lab</li>
+                </ul>
+
+                <h4>Step 2: Microscope Setup for Chromoplast Observation</h4>
+                <ul>
+                    <li>Use lens paper to clean all objective lenses</li>
+                    <li>Start with the <strong>10X objective</strong> for initial observation</li>
+                    <li>Adjust the iris diaphragm to <strong>medium light intensity</strong> - too much light will wash out the orange pigments</li>
+                    <li>Be prepared to <strong>reduce light</strong> when switching to 40X for better contrast</li>
+                </ul>
+
+                <h4>Step 3: Pre-Lab Conceptual Preparation</h4>
+                <ul>
+                    <li>Review the difference between chloroplasts and chromoplasts</li>
+                    <li>Understand that carotene is a <strong>carotenoid pigment</strong>, not chlorophyll</li>
+                    <li>Consider why roots (underground) would have pigment while leaves (above ground) have chlorophyll</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ Important Note:</strong> Because carrot sections must be extremely thin for proper observation, you will use <strong>instructor-prepared slides</strong> on demonstration microscopes rather than preparing your own slides. This ensures optimal viewing conditions for observing chromoplasts.
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="switchTab('background')">← Back</button>
+                    <button class="btn" onclick="switchTab('method')">Next: Method & Activity →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: METHOD & STUDENT ACTIVITY -->
+        <div id="method" class="section">
+            <div class="card">
+                <h2>🧪 Method - Student Activity</h2>
+
+                <h3>Observation Procedure</h3>
+
+                <h4>Step 1: Initial Observation at 10X Magnification</h4>
+                <ol>
+                    <li>Go to one of the demonstration microscopes prepared by the instructor</li>
+                    <li>Start with the <strong>10X objective lens</strong> (low power)</li>
+                    <li>Use the coarse focus knob to bring the tissue into view</li>
+                    <li>Adjust the iris diaphragm to find the optimal light level</li>
+                    <li>Scan the slide to find a region with <strong>clear, intact cells</strong></li>
+                    <li>Identify the overall tissue structure and cell arrangement</li>
+                </ol>
+
+                <div class="observation-box">
+                    <h4>10X Magnification Initial Observations</h4>
+                    <p><strong>Describe what you see:</strong></p>
+                    <ul>
+                        <li>Overall tissue appearance: 
+                            <input type="text" style="width: 300px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="Describe tissue structure">
+                        </li>
+                        <li>Cell shape and arrangement: 
+                            <input type="text" style="width: 300px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="Describe cell arrangement">
+                        </li>
+                        <li>Visible pigmentation: 
+                            <input type="text" style="width: 300px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="Note any color patterns">
+                        </li>
+                    </ul>
+                </div>
+
+                <h4>Step 2: Detailed Observation at 40X Magnification</h4>
+                <ol>
+                    <li>Carefully rotate the nosepiece to the <strong>40X objective lens</strong></li>
+                    <li>Use ONLY the <strong>fine focus knob</strong> to sharpen the image</li>
+                    <li>Reduce light intensity using the iris diaphragm to increase contrast</li>
+                    <li>Find a single, clearly defined cell to examine in detail</li>
+                    <li>Identify and observe:
+                        <ul>
+                            <li><strong>Cell wall:</strong> The outer boundary of the cell</li>
+                            <li><strong>Plasma membrane:</strong> Inside the cell wall (may be difficult to distinguish)</li>
+                            <li><strong>Chromoplasts:</strong> Orange organelles within the cytoplasm</li>
+                        </ul>
+                    </li>
+                    <li><strong>Make a detailed sketch</strong> of a single cell showing these structures</li>
+                </ol>
+
+                <div class="observation-box">
+                    <h4>40X Magnification Sketch</h4>
+                    <p><strong>Sketch a single carrot parenchyma cell and label:</strong> Cell wall (outline shape), Plasma membrane (inside the wall), Chromoplasts (indicate color)</p>
+                    <div class="sketch-area">
+                        Your detailed sketch of carrot root parenchyma cell at 40X
+                    </div>
+                </div>
+
+                <h3>Answering Key Questions</h3>
+
+                <h4>Question 1: Chromoplast Shapes</h4>
+                <p><strong>The chromoplast organelles are not all perfectly round in shape; what chromoplast shapes do you see?</strong></p>
+                <p>Observe several chromoplasts in different cells and describe their shapes:</p>
+                <ul>
+                    <li>Shape 1: 
+                        <input type="text" style="width: 200px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="e.g., spherical, rod-shaped">
+                    </li>
+                    <li>Shape 2: 
+                        <input type="text" style="width: 200px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="another shape observed">
+                    </li>
+                    <li>Shape 3: 
+                        <input type="text" style="width: 200px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="additional shape">
+                    </li>
+                </ul>
+
+                <h4>Question 2: Chromoplast Color</h4>
+                <p><strong>What color are these carrot root chromoplasts?</strong></p>
+                <p>Color observed: 
+                    <input type="text" style="width: 150px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="e.g., orange, yellow-orange">
+                </p>
+
+                <h4>Question 3: Pigment Identification</h4>
+                <p><strong>What specific type of pigment molecules (present within these chromoplasts) are responsible for the color?</strong></p>
+                <p>Select the correct pigment: 
+                    <select style="border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;">
+                        <option value="">Choose one</option>
+                        <option value="chlorophyll">Chlorophyll</option>
+                        <option value="carotene">Carotene</option>
+                    </select>
+                </p>
+
+                <h3>Measuring Cell and Chromoplast Dimensions</h3>
+
+                <h4>Estimating Cell Size</h4>
+                <ol>
+                    <li>Select a clearly visible cell from your 40X observation.</li>
+                    
+                    <li>How many cells fit across the diameter of your field of view at 40X?
+                        <input type="text" style="width: 60px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="count">
+                    </li>
+
+                    <li>The field diameter at 40X is approximately 0.45 mm. Calculate cell width:</li>
+                    
+                    <li>Cell width = Field diameter ÷ Number of cells across</li>
+                    
+                    <li>Cell width = 0.45 mm ÷ 
+                        <input type="text" style="width: 40px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="?">
+                        = 
+                        <input type="text" style="width: 60px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="result"> mm
+                    </li>
+
+                    <li>Convert to micrometers: 
+                        <input type="text" style="width: 80px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="value"> μm
+                    </li>
+                </ol>
+
+                <h4>Estimating Chromoplast Size</h4>
+                <ol>
+                    <li>Select a typical chromoplast within your cell.</li>
+                    
+                    <li>Approximately how many chromoplasts would fit across the width of your cell?
+                        <input type="text" style="width: 60px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="count">
+                    </li>
+
+                    <li>Chromoplast diameter = Cell width ÷ Number of chromoplasts across</li>
+                    
+                    <li>Chromoplast diameter = 
+                        <input type="text" style="width: 60px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="cell width μm">
+                         ÷ 
+                        <input type="text" style="width: 40px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="?">
+                        = 
+                        <input type="text" style="width: 80px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" placeholder="result"> μm
+                    </li>
+                </ol>
+
+                <div class="reflection-box">
+                    <strong>📌 Reflection:</strong> Why do you think chromoplasts in carrot cells have different shapes rather than being uniformly spherical? Consider how shape might relate to pigment storage efficiency or light interaction.
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="switchTab('preparation')">← Back</button>
+                    <button class="btn" onclick="switchTab('observation')">Next: Observation & Results →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: OBSERVATION & RESULTS -->
+        <div id="observation" class="section">
+            <div class="card">
+                <h2>👁️ Observation & Results</h2>
+
+                <h3>What Students Should Observe</h3>
+
+                <h4>At 10X Magnification</h4>
+                <ul>
+                    <li><strong>Tissue structure:</strong> Relatively uniform parenchyma tissue</li>
+                    <li><strong>Cell arrangement:</strong> Cells packed together with minimal intercellular space</li>
+                    <li><strong>Overall color:</strong> Orange hue throughout the tissue section</li>
+                    <li><strong>Cell walls:</strong> Visible as grid-like patterns defining cell boundaries</li>
+                    <li><strong>Chromoplast distribution:</strong> May appear as orange granules within cells</li>
+                </ul>
+
+                <h4>At 40X Magnification</h4>
+                <ul>
+                    <li><strong>Cell walls:</strong> Clear boundaries between adjacent cells</li>
+                    <li><strong>Chromoplasts:</strong> Distinct orange organelles distributed throughout cytoplasm</li>
+                    <li><strong>Chromoplast shapes:</strong> Variable - may include spheres, rods, crystals, or irregular forms</li>
+                    <li><strong>Plasma membrane:</strong> May be visible just inside cell wall (difficult to distinguish)</li>
+                    <li><strong>Cytoplasm:</strong> Occupies space between chromoplasts and cell membrane</li>
+                    <li><strong>Nucleus:</strong> May be visible as a clearer area, often pushed to periphery by chromoplasts</li>
+                </ul>
+
+                <h3>Expected Results</h3>
+
+                <div class="success-box">
+                    <strong>✓ If your observation was successful, you should observe:</strong>
+                    <ul>
+                        <li>Clear cell boundaries forming polygonal shapes</li>
+                        <li>Distinct orange chromoplasts within each cell</li>
+                        <li>Variation in chromoplast shapes and sizes</li>
+                        <li>Good optical clarity with the thin tissue section</li>
+                        <li>Visible cell structures at both 10X and 40X magnification</li>
+                    </ul>
+                </div>
+
+                <h3>Troubleshooting</h3>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Problem</th>
+                            <th>Likely Cause</th>
+                            <th>Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chromoplasts not clearly visible</td>
+                            <td>Too much light washing out color or tissue too thick</td>
+                            <td>Reduce light with iris diaphragm; ensure using thin section</td>
+                        </tr>
+                        <tr>
+                            <td>Cells appear distorted or crushed</td>
+                            <td>Section cut too thick or damaged during preparation</td>
+                            <td>Try a different area of slide; use another demo scope</td>
+                        </tr>
+                        <tr>
+                            <td>Image blurry at 40X</td>
+                            <td>Incorrect focus or dirty lens</td>
+                            <td>Use ONLY fine focus; clean lens with lens paper</td>
+                        </tr>
+                        <tr>
+                            <td>Can't distinguish individual chromoplasts</td>
+                            <td>Poor contrast or chromoplasts too dense</td>
+                            <td>Reduce light significantly; look at cell edges</td>
+                        </tr>
+                        <tr>
+                            <td>All cells look uniformly orange</td>
+                            <td>Low magnification or poor resolution</td>
+                            <td>Switch to 40X; adjust fine focus carefully</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Data Recording</h3>
+
+                <div class="observation-box">
+                    <h4>Record Your Quantitative Observations</h4>
+                    
+                    <p><strong>Cell Measurements:</strong></p>
+                    <ul>
+                        <li>Estimated cell width: 
+                            <input type="text" style="width: 80px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;">
+                            μm
+                        </li>
+                        <li>Estimated cell length: 
+                            <input type="text" style="width: 80px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;">
+                            μm
+                        </li>
+                        <li>Cell shape: 
+                            <select style="border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;">
+                                <option value="">Select...</option>
+                                <option value="rectangular">Rectangular</option>
+                                <option value="polygonal">Polygonal</option>
+                                <option value="irregular">Irregular</option>
+                            </select>
+                        </li>
+                    </ul>
+
+                    <p><strong>Chromoplast Observations:</strong></p>
+                    <ul>
+                        <li>Predominant chromoplast color: 
+                            <input type="text" style="width: 120px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;">
+                        </li>
+                        <li>Number of chromoplast shapes observed: 
+                            <input type="number" style="width: 60px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;" min="1" max="5">
+                        </li>
+                        <li>Estimated chromoplast diameter: 
+                            <input type="text" style="width: 80px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;">
+                            μm
+                        </li>
+                        <li>Chromoplast distribution: 
+                            <select style="border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px;">
+                                <option value="">Select...</option>
+                                <option value="uniform">Uniform throughout cell</option>
+                                <option value="clustered">Clustered in regions</option>
+                                <option value="peripheral">Near cell edges</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>Answering Analysis Questions</h3>
+
+                <h4>Question 1: Chromoplast Shapes</h4>
+                <p>Chromoplasts in carrot cells commonly appear as <strong>spherical granules, rod-shaped crystals, or irregular masses</strong>. The shape variation reflects different forms of carotene storage within the plastid.</p>
+
+                <h4>Question 2: Chromoplast Color</h4>
+                <p>Carrot chromoplasts typically appear <strong>orange to yellow-orange</strong>. The exact shade can vary based on carrot variety, maturity, and storage conditions.</p>
+
+                <h4>Question 3: Pigment Molecules</h4>
+                <p>The pigment responsible for the orange color is <strong>carotene</strong> (specifically beta-carotene), not chlorophyll. Carotene is a carotenoid pigment that absorbs blue and green light, reflecting orange wavelengths.</p>
+
+                <h4>Question 4: Cell Size Context</h4>
+                <p>Typical carrot parenchyma cells range from <strong>50-150 μm in width</strong>. Your estimate: 
+                    <input type="text" style="width: 100px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px; text-align: center;" placeholder="0">
+                    μm
+                </p>
+                <p>Typical chromoplast diameter: <strong>2-10 μm</strong>. Your estimate: 
+                    <input type="text" style="width: 80px; border: none; border-bottom: 2px solid #e65100; background: #f9f9f9; padding: 2px 5px; text-align: center;" placeholder="0">
+                    μm
+                </p>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="switchTab('method')">← Back</button>
+                    <button class="btn" onclick="switchTab('challenge')">Next: Challenge Question →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: CHALLENGE QUESTION -->
+        <div id="challenge" class="section">
+            <div class="card">
+                <h2>🎯 Challenge Question: Specialization and Adaptation</h2>
+
+                <h3>The Grand Challenge</h3>
+
+                <div class="challenge-box">
+                    <strong>🧩 Challenge Prompt:</strong>
+                    <p style="margin-top: 10px;">Based on your observations of carrot root cells, <strong>explain why these cells contain chromoplasts (with carotene) instead of chloroplasts (with chlorophyll).</strong></p>
+                    <p>Your explanation should consider:</p>
+                    <ul>
+                        <li>The <strong>function</strong> of carrot roots versus leaves</li>
+                        <li>The <strong>biological role</strong> of carotene in plants</li>
+                        <li>The <strong>environmental conditions</strong> roots experience</li>
+                        <li>How this demonstrates <strong>cellular specialization</strong></li>
+                        <li>Evidence from your observations AND biological principles</li>
+                    </ul>
+                </div>
+
+                <h3>Guided Reflection Questions</h3>
+
+                <h4>Question 1: What is the primary function of carrot roots?</h4>
+                <p><strong>Consider:</strong> Storage, absorption, anchorage</p>
+                <p>Your answer: 
+                    <textarea style="width: 100%; margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 4px; min-height: 50px; border-left: 4px solid #e65100; border-right: none; border-top: none; border-bottom: none; font-family: inherit; font-size: inherit;" placeholder="Describe root function..."></textarea>
+                </p>
+
+                <h4>Question 2: What is the primary function of plant leaves?</h4>
+                <p><strong>Consider:</strong> Energy capture, gas exchange</p>
+                <p>Your answer: 
+                    <textarea style="width: 100%; margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 4px; min-height: 50px; border-left: 4px solid #e65100; border-right: none; border-top: none; border-bottom: none; font-family: inherit; font-size: inherit;" placeholder="Describe leaf function..."></textarea>
+                </p>
+
+                <h4>Question 3: Why would carotene be advantageous in roots but chlorophyll be disadvantageous?</h4>
+                <p><strong>Consider:</strong> Light availability, energy requirements, pigment stability</p>
+                <p>Your answer: 
+                    <textarea style="width: 100%; margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 4px; min-height: 80px; border-left: 4px solid #e65100; border-right: none; border-top: none; border-bottom: none; font-family: inherit; font-size: inherit;" placeholder="Explain pigment advantages..."></textarea>
+                </p>
+
+                <h3>Your Challenge Response</h3>
+
+                <div class="observation-box">
+                    <h4>Write Your Comprehensive Answer Below</h4>
+                    
+                    <p><strong>Why carrot root cells contain chromoplasts instead of chloroplasts:</strong></p>
+                    <textarea style="width: 100%; margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 4px; min-height: 100px; border-left: 4px solid #e65100; border-right: none; border-top: none; border-bottom: none; font-family: inherit; font-size: inherit;" placeholder="Type your explanation here..."></textarea>
+
+                    <p><strong>Evidence from your carrot cell observations:</strong></p>
+                    <textarea style="width: 100%; margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 4px; min-height: 100px; border-left: 4px solid #e65100; border-right: none; border-top: none; border-bottom: none; font-family: inherit; font-size: inherit;" placeholder="Describe your observational evidence..."></textarea>
+
+                    <p><strong>How this demonstrates cellular specialization in plants:</strong></p>
+                    <textarea style="width: 100%; margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 4px; min-height: 100px; border-left: 4px solid #e65100; border-right: none; border-top: none; border-bottom: none; font-family: inherit; font-size: inherit;" placeholder="Explain specialization significance..."></textarea>
+                </div>
+
+                <h3>Exemplary Responses</h3>
+
+                <div class="key-concept">
+                    <strong>Example Answer 1 - Functional Adaptation:</strong> <br>
+                    "Carrot root cells contain chromoplasts with carotene instead of chloroplasts because roots and leaves have different functions. Leaves perform photosynthesis, requiring chlorophyll to capture light energy. Roots primarily store nutrients and anchor the plant underground, where little light penetrates. Chlorophyll would be useless in darkness and might even be harmful if it produced reactive molecules without light energy dissipation. Carotene, however, may protect stored nutrients from oxidative damage or help regulate plant growth. My observation of abundant orange chromoplasts in every carrot cell confirms they're specialized for storage, not photosynthesis, showing how cell structure adapts to function."
+                </div>
+
+                <div class="key-concept">
+                    <strong>Example Answer 2 - Evolutionary Advantage:</strong> <br>
+                    "The presence of chromoplasts in carrot roots represents an evolutionary adaptation to the root environment. Chloroplasts require light for photosynthesis, but roots grow in darkness where chlorophyll would have no function and might degrade wastefully. Carotene in chromoplasts serves different purposes: it may act as an antioxidant to protect stored starches and sugars, or its breakdown products might regulate root growth. In my observation, chromoplasts were distributed throughout the cytoplasm of every cell, indicating they're essential for root cell function. This specialization allows plants to optimize different organs for different roles—leaves for energy capture, roots for storage and anchorage."
+                </div>
+
+                <div class="key-concept">
+                    <strong>Example Answer 3 - Environmental Response:</strong> <br>
+                    "Carrot root cells contain chromoplasts because environmental conditions determine plastid development. Plastids can differentiate into different types based on cellular needs and signals. In light-exposed tissues like leaves, proplastids develop into chloroplasts for photosynthesis. In storage tissues like roots, they develop into chromoplasts or amyloplasts. Carotene in chromoplasts might attract beneficial soil organisms, protect against pathogens, or regulate physiological processes. Observing that every carrot parenchyma cell contained numerous chromoplasts shows this is not a random occurrence but a consistent adaptation. This demonstrates how the same basic eukaryotic cell components can specialize for dramatically different functions within an organism."
+                </div>
+
+                <h3>Connecting to Broader Concepts</h3>
+
+                <div class="key-concept">
+                    <strong>📌 Concept Integration:</strong> Your analysis of carrot cell specialization connects to several key biological principles:
+                    <ul>
+                        <li><strong>Structure-Function Relationship:</strong> Cell organelles adapt to the cell's role within the organism</li>
+                        <li><strong>Environmental Adaptation:</strong> Cells develop differently based on their physical environment</li>
+                        <li><strong>Resource Allocation:</strong> Plants invest resources differently in different tissues</li>
+                        <li><strong>Developmental Plasticity:</strong> Plastids can differentiate into different forms based on cellular signals</li>
+                        <li><strong>Evolutionary Optimization:</strong> Specialized cells increase organismal efficiency and survival</li>
+                    </ul>
+                    This understanding prepares you for analyzing other specialized cells in subsequent investigations.
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="switchTab('observation')">← Back</button>
+                    <button class="btn btn-secondary" onclick="switchTab('alignment')">Return to Overview</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>University of Wisconsin-Parkside | Eukaryotic Cells Laboratory Investigation</p>
+        <p><strong>Carrot Root Cell Investigation: Specialization in Plant Storage Tissues</strong></p>
+        <p>This investigation explores how plant cells specialize for storage functions through chromoplast development.</p>
+    </footer>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

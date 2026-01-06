@@ -1,0 +1,1047 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eukaryotic Cells – Enhanced Metacognitive Learning System</title>
+  <style>
+    :root {
+      --uwp-red: #C5050C;
+      --dark: #53565A;
+      --light: #D0D0CE;
+      --white: #fff;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff;
+      color: var(--dark);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6
+    }
+
+    header {
+      background: var(--uwp-red);
+      color: #fff;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 30px
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto
+    }
+
+    .section {
+      border: 2px solid var(--light);
+      padding: 25px;
+      margin-bottom: 30px;
+      display: none
+    }
+
+    .section.active {
+      display: block
+    }
+
+    .section h2 {
+      color: var(--uwp-red);
+      border-bottom: 3px solid var(--uwp-red);
+      padding-bottom: 10px
+    }
+
+    .metacog {
+      background: #f9f9f9;
+      border-left: 5px solid var(--uwp-red);
+      padding: 20px;
+      margin-bottom: 30px
+    }
+
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px
+    }
+
+    .word-card {
+      border: 2px solid var(--light);
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px
+    }
+
+    .word-card strong {
+      color: var(--uwp-red);
+      font-size: 1.2em;
+      display: block;
+      margin-bottom: 10px
+    }
+
+    .note {
+      font-style: italic;
+      background: #fff3cd;
+      padding: 10px;
+      margin-top: 10px;
+      border-left: 4px solid #ffc107
+    }
+
+    .passage {
+      background: #f9f9f9;
+      padding: 25px;
+      border-left: 5px solid var(--uwp-red);
+      font-size: 1.1em;
+      line-height: 2
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 15px;
+      border: 2px solid var(--light);
+      border-radius: 5px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1em
+    }
+
+    .table-like {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 15px
+    }
+
+    .cell {
+      border: 1px solid var(--light);
+      padding: 10px;
+      background: #fff
+    }
+
+    img {
+      max-width: 100%;
+      border: 3px solid var(--uwp-red);
+      margin: 20px 0
+    }
+
+    .interactive-word {
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 2px 5px;
+      border-radius: 3px
+    }
+
+    .interactive-word:hover {
+      background-color: var(--light)
+    }
+
+    .interactive-word.highlighted {
+      background-color: #ffeb3b;
+      font-weight: bold;
+      text-decoration: underline
+    }
+
+    .btn-primary {
+      background-color: var(--uwp-red);
+      color: var(--white);
+      border: none;
+      padding: 15px 30px;
+      margin: 20px 10px 20px 0;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1em;
+      font-weight: bold
+    }
+
+    .btn-primary:hover {
+      background-color: #a00408
+    }
+
+    .btn-secondary {
+      background-color: var(--dark);
+      color: var(--white);
+      border: none;
+      padding: 15px 30px;
+      margin: 20px 10px 20px 0;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1em
+    }
+
+    .btn-secondary:hover {
+      background-color: #3a3c3f
+    }
+
+    .pronounce-btn {
+      background-color: var(--uwp-red);
+      color: var(--white);
+      border: none;
+      padding: 10px 20px;
+      margin: 10px 5px 10px 0;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1em
+    }
+
+    .pronounce-btn:hover {
+      background-color: #a00408
+    }
+
+    .morpheme {
+      color: var(--dark);
+      font-style: italic;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-left: 3px solid var(--uwp-red)
+    }
+
+    .progress-bar {
+      background-color: var(--light);
+      height: 10px;
+      border-radius: 5px;
+      margin: 20px 0 30px 0;
+      overflow: hidden
+    }
+
+    .progress-fill {
+      background-color: var(--uwp-red);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s
+    }
+
+    .feedback {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      display: none
+    }
+
+    .feedback.success {
+      background-color: #d4edda;
+      border: 2px solid #28a745;
+      color: #155724
+    }
+
+    .feedback.error {
+      background-color: #f8d7da;
+      border: 2px solid #dc3545;
+      color: #721c24
+    }
+
+    @media(max-width:800px) {
+
+      .compare-grid,
+      .table-like {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+  <div class="container">
+
+    <header>
+      <h1>Eukaryotic Cells</h1>
+      <p>An Enhanced Metacognitive Learning System</p>
+    </header>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Step 1: Enhanced Word Study with Morphemes -->
+    <section class="section active" id="step1">
+      <div class="metacog">
+        <h2>🧠 Experts don't skip unfamiliar terms — they interrogate them.</h2>
+        <p>"Sound it out, lock it in." - "Master biology—one word at a time."</p>
+        <p>If you can pronounce the word, you're already halfway to understanding it.</p>
+        <hr>
+        <ul>
+          <li><strong>Listen:</strong> Click the button to hear the pronunciation.</li>
+          <li><strong>Deconstruct:</strong> Break the word into its morphemes.</li>
+          <li><strong>Synthesize:</strong> Rebuild the word with its meaning in mind.</li>
+          <li><strong>Speak:</strong> Say it aloud until fluent while <strong>visualizing</strong> the concept.</li>
+        </ul>
+      </div>
+      <h2>Step 1 – Listen&rarr;Deconstruct&rarr;Synthesize&rarr;Speak</h2>
+      <div class="metacog">
+        <p>One word at a time, you've got this!</p>
+      </div>
+
+      <label style="margin: 20px 0; display: block;">
+        <input type="checkbox" id="slowSpeech"> Slow speech mode for pronunciation
+      </label>
+
+      <div class="word-grid">
+        <div class="word-card">
+          <strong>Eukaryotic</strong>
+          <button class="pronounce-btn" onclick="pronounce('Eukaryotic')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Eu- (true) + karyo- (nucleus) + -tic (relating to)
+          </div>
+          <p>Cells with a true, membrane-bound nucleus and membrane-bound organelles.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Prokaryotic</strong>
+          <button class="pronounce-btn" onclick="pronounce('Prokaryotic')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Pro- (before) + karyo- (nucleus) + -tic (relating to)
+          </div>
+          <p>Cells that lack a membrane-bound nucleus (before nucleus). DNA floats freely in the cytoplasm.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Organelle</strong>
+          <button class="pronounce-btn" onclick="pronounce('Organelle')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Organ (functional structure) + -elle (small/diminutive)
+          </div>
+          <p>Specialized structure with a specific function within a cell (little organ).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Chloroplast</strong>
+          <button class="pronounce-btn" onclick="pronounce('Chloroplast')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Chloro- (green) + -plast (formed, molded)
+          </div>
+          <p>Photosynthetic organelle containing chlorophyll (green pigment).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Chromoplast</strong>
+          <button class="pronounce-btn" onclick="pronounce('Chromoplast')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Chromo- (color) + -plast (formed, molded)
+          </div>
+          <p>Pigment-storing plastid responsible for colors in fruits and flowers.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Leucoplast</strong>
+          <button class="pronounce-btn" onclick="pronounce('Leucoplast')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Leuco- (white, colorless) + -plast (formed, molded)
+          </div>
+          <p>Colorless storage plastid for starch, lipids, or proteins.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Mitochondrion</strong>
+          <button class="pronounce-btn" onclick="pronounce('Mitochondrion')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Mito- (thread) + chondrion (granule)
+          </div>
+          <p>ATP-producing organelle, the "powerhouse" of the cell.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Endoplasmic Reticulum</strong>
+          <button class="pronounce-btn" onclick="pronounce('Endoplasmic Reticulum')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Endo- (inside) + plasm (formed substance) + reticulum (network)
+          </div>
+          <p>Network of membranes inside the cytoplasm for protein and lipid synthesis.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Cytoskeleton</strong>
+          <button class="pronounce-btn" onclick="pronounce('Cytoskeleton')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Cyto- (cell) + skeleton (framework)
+          </div>
+          <p>Structural protein network that maintains cell shape and enables movement.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Flagellum</strong>
+          <button class="pronounce-btn" onclick="pronounce('Flagellum')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> From Latin "flagellum" meaning whip
+          </div>
+          <p>Long, whip-like locomotor structure for cell propulsion.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Photosynthesis</strong>
+          <button class="pronounce-btn" onclick="pronounce('Photosynthesis')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Photo- (light) + synthesis (putting together)
+          </div>
+          <p>Process of converting light energy into chemical energy (sugars).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Nucleus</strong>
+          <button class="pronounce-btn" onclick="pronounce('Nucleus')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Nucle- (kernel, nut) + -us (noun ending)
+          </div>
+          <p>The central organelle containing genetic material; the "core" of the cell.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Chromatin</strong>
+          <button class="pronounce-btn" onclick="pronounce('Chromatin')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Chromat- (color) + -in (chemical substance)
+          </div>
+          <p>The material of which chromosomes are composed (DNA and proteins); named because it stains easily with
+            dyes.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Nucleolus</strong>
+          <button class="pronounce-btn" onclick="pronounce('Nucleolus')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Nucle- (kernel) + -olus (diminutive/little)
+          </div>
+          <p>A small, dense structure within the nucleus (the "little nucleus") where ribosomes are made.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Plasma membrane</strong>
+          <button class="pronounce-btn" onclick="pronounce('Plasma membrane')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Plasma (something molded/formed) + Membrana (skin, film)
+          </div>
+          <p>The outer boundary of the cell that molds the cell's contents and acts as a skin.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Cytoplasm</strong>
+          <button class="pronounce-btn" onclick="pronounce('Cytoplasm')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Cyto- (cell) + -plasm (something molded/formed)
+          </div>
+          <p>The jelly-like material within a cell that holds the organelles.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Plastid</strong>
+          <button class="pronounce-btn" onclick="pronounce('Plastid')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Plast- (molded, formed) + -id (small structure/particle)
+          </div>
+          <p>A major organelle found in plants and algae, responsible for manufacturing and storing food.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Amyloplast</strong>
+          <button class="pronounce-btn" onclick="pronounce('Amyloplast')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Amylo- (starch) + -plast (molded/formed)
+          </div>
+          <p>A type of plastid specifically responsible for storing starch.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Nitroplast</strong>
+          <button class="pronounce-btn" onclick="pronounce('Nitroplast')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Nitro- (nitrogen) + -plast (molded/formed)
+          </div>
+          <p>A recently discovered organelle (evolved from a bacterium) that fixes nitrogen within a cell.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Pigment</strong>
+          <button class="pronounce-btn" onclick="pronounce('Pigment')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Pingere (to paint) + -ment (result of action)
+          </div>
+          <p>A substance that gives color to plant or animal tissues.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Chlorophyll</strong>
+          <button class="pronounce-btn" onclick="pronounce('Chlorophyll')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Chloro- (green) + -phyll (leaf)
+          </div>
+          <p>The green pigment found in the leaves of plants.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Carotene</strong>
+          <button class="pronounce-btn" onclick="pronounce('Carotene')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Carota (carrot) + -ene (chemical suffix)
+          </div>
+          <p>An orange or red pigment (first isolated from carrots).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Cilia</strong>
+          <button class="pronounce-btn" onclick="pronounce('Cilia')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Cilia (eyelash)
+          </div>
+          <p>Short, microscopic, hairlike vibrating structures (resembling eyelashes) that provide propulsion.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Pseudopodia</strong>
+          <button class="pronounce-btn" onclick="pronounce('Pseudopodia')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Pseudo- (false) + -podia (feet)
+          </div>
+          <p>Temporary protrusions of the surface of an amoeboid cell for movement and feeding ("false feet").</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Vacuole</strong>
+          <button class="pronounce-btn" onclick="pronounce('Vacuole')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Vacu- (empty) + -ole (diminutive/small)
+          </div>
+          <p>A space or vesicle within the cytoplasm, often containing fluid (appearing "empty" under early
+            microscopes).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Osmoregulation</strong>
+          <button class="pronounce-btn" onclick="pronounce('Osmoregulation')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Osmo- (pushing, impulse) + -regulation (rule, order)
+          </div>
+          <p>The maintenance of constant osmotic pressure (water balance) in the fluids of an organism.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Phagocytosis</strong>
+          <button class="pronounce-btn" onclick="pronounce('Phagocytosis')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Phago- (eat) + -cyt- (cell) + -osis (process/condition)
+          </div>
+          <p>The process by which a cell engulfs or "eats" a solid particle.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Ribosome</strong>
+          <button class="pronounce-btn" onclick="pronounce('Ribosome')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Ribo- (from Ribose/RNA) + -soma (body)
+          </div>
+          <p>A minute particle ("body") consisting of RNA and associated proteins, functioning to synthesize proteins.
+          </p>
+        </div>
+
+        <div class="word-card">
+          <strong>Lysosome</strong>
+          <button class="pronounce-btn" onclick="pronounce('Lysosome')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Lyso- (loosen, dissolve) + -soma (body)
+          </div>
+          <p>An organelle containing digestive enzymes causing the "dissolution" or breakdown of waste.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Tonoplast</strong>
+          <button class="pronounce-btn" onclick="pronounce('Tonoplast')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Tono- (tension, stretching) + -plast (molded/formed)
+          </div>
+          <p>The membrane surrounding the central vacuole, maintaining turgor pressure (tension) in plant cells.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Macronucleus</strong>
+          <button class="pronounce-btn" onclick="pronounce('Macronucleus')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Macro- (large) + -nucleus (kernel)
+          </div>
+          <p>The larger type of nucleus in ciliates (protists), which controls non-reproductive cell functions.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Protist</strong>
+          <button class="pronounce-btn" onclick="pronounce('Protist')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Protist- (the very first)
+          </div>
+          <p>A eukaryotic organism that is not an animal, plant, or fungus (often considered the first eukaryotes).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Epithelium</strong>
+          <button class="pronounce-btn" onclick="pronounce('Epithelium')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Epi- (upon) + -thele (nipple) + -ium (tissue structure)
+          </div>
+          <p>Tissue forming the outer layer of a body's surface.</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Neutrophil</strong>
+          <button class="pronounce-btn" onclick="pronounce('Neutrophil')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Neutro- (neither/neutral) + -phil (loving)
+          </div>
+          <p>A type of white blood cell that stains easily with neutral dyes (loving neither acid nor base exclusively).
+          </p>
+        </div>
+
+        <div class="word-card">
+          <strong>Leukocyte</strong>
+          <button class="pronounce-btn" onclick="pronounce('Leukocyte')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Leuko- (white) + -cyte (cell)
+          </div>
+          <p>A colorless cell that circulates in the blood (White Blood Cell).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Parenchyma</strong>
+          <button class="pronounce-btn" onclick="pronounce('Parenchyma')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Para- (beside) + -en- (in) + -chyma (something poured)
+          </div>
+          <p>The functional tissue of an organ ("poured in beside" the structural framework).</p>
+        </div>
+
+        <div class="word-card">
+          <strong>Homeostasis</strong>
+          <button class="pronounce-btn" onclick="pronounce('Homeostasis')">🔊 Pronounce</button>
+          <div class="morpheme">
+            <strong>Morpheme breakdown:</strong> Homeo- (same, similar) + stasis (standing still)
+          </div>
+          <p>Maintenance of stable internal conditions despite external changes.</p>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="nextStep(2)">Continue to Plain Text Reading →</button>
+    </section>
+
+    <!-- Step 2: Plain Text Reading -->
+    <section class="section" id="step2">
+      <h2>Step 2 – First Exposure - Plain Reading - Big Picture</h2>
+      <p><strong>1st, Is this hierarchy familiar to you?</strong></p>
+      <p> Eukarya &rarr; Kingdom (Protista, Plantae, Animalia) &rarr; Tissue &rarr; Cell &rarr; Organelle &rarr;
+        Molecules
+      </p>
+
+      <form class="yes-no">
+        <label>
+          <input type="radio" name="hierarchy_familiarity" value="yes">
+          Yes
+        </label>
+        <label style="margin-left: 1rem;">
+          <input type="radio" name="hierarchy_familiarity" value="no">
+          No
+        </label>
+      </form>
+      <p> Please casually read </p>
+
+      <div class="passage">
+        In Lab 1 you learned that eukaryotic DNA is contained within a membrane-bound nucleus. This nuclear organization
+        is just the beginning of eukaryotic complexity. In Lab 2 you'll explore the diverse organelles and structures
+        that different eukaryotic cells possess. You'll examine plant cells with specialized plastids—chloroplasts
+        containing chlorophyll in Elodea leaf cells and chromoplasts containing carotene in carrot root cells. You'll
+        observe unicellular protists that use different structures for movement: Euglena with its whip-like flagellum,
+        Paramecium covered with thousands of beating cilia, and Amoeba extending flowing pseudopodia to crawl and
+        capture food. Remarkably, these same structures appear in multicellular organisms—flagella propel sperm cells,
+        cilia line ciliated pseudostratified columnar epithelium in your respiratory tract moving mucus upward, and
+        pseudopodia extend from neutrophil white blood cells to engulf bacteria. Despite their diversity, eukaryotic
+        cells across protists, plants, and animals use the same fundamental structures, revealing the underlying unity
+        of life.
+      </div>
+
+      <button class="btn-primary" onclick="nextStep(3)">Continue to Interactive Reading →</button>
+      <button class="btn-secondary" onclick="nextStep(1)">← Back to Word Study</button>
+    </section>
+
+    <!-- Step 3: Interactive Reading -->
+    <section class="section" id="step3">
+      <h2>Step 3 – Interactive Reading (Active Engagement)</h2>
+      <p>Click on each key term in the passage below. Watch as they become highlighted, underlined, and bolded. This
+        active engagement helps your brain encode the information more deeply.</p>
+
+      <div class="passage" id="interactivePassage">
+        In Lab 1 you learned that <span class="interactive-word" data-word="eukaryotic">eukaryotic</span> DNA is
+        contained within a membrane-bound <span class="interactive-word" data-word="nucleus">nucleus</span>. This
+        nuclear organization is just the beginning of <span class="interactive-word"
+          data-word="eukaryotic">eukaryotic</span> complexity. In Lab 2 you'll explore the diverse <span
+          class="interactive-word" data-word="organelles">organelles</span> and structures that different <span
+          class="interactive-word" data-word="eukaryotic cells">eukaryotic cells</span> possess. You'll examine <span
+          class="interactive-word" data-word="plant cells">plant cells</span> with specialized <span
+          class="interactive-word" data-word="plastids">plastids</span>—<span class="interactive-word"
+          data-word="chloroplasts">chloroplasts</span> containing <span class="interactive-word"
+          data-word="chlorophyll">chlorophyll</span> in <span class="interactive-word"
+          data-word="Elodea leaf cells">Elodea leaf cells</span> and <span class="interactive-word"
+          data-word="chromoplasts">chromoplasts</span> containing <span class="interactive-word"
+          data-word="carotene">carotene</span> in <span class="interactive-word" data-word="carrot root cells">carrot
+          root cells</span>. You'll observe unicellular <span class="interactive-word"
+          data-word="protists">protists</span> that use different structures for movement: <span
+          class="interactive-word" data-word="Euglena">Euglena</span> with its whip-like <span class="interactive-word"
+          data-word="flagellum">flagellum</span>, <span class="interactive-word"
+          data-word="Paramecium">Paramecium</span> covered with thousands of beating <span class="interactive-word"
+          data-word="cilia">cilia</span>, and <span class="interactive-word" data-word="Amoeba">Amoeba</span> extending
+        flowing <span class="interactive-word" data-word="pseudopodia">pseudopodia</span> to crawl and capture food.
+        Remarkably, these same structures appear in multicellular organisms—<span class="interactive-word"
+          data-word="flagella">flagella</span> propel <span class="interactive-word" data-word="sperm cells">sperm
+          cells</span>, <span class="interactive-word" data-word="cilia">cilia</span> line <span
+          class="interactive-word" data-word="ciliated pseudostratified columnar epithelium">ciliated pseudostratified
+          columnar epithelium</span> in your respiratory tract moving mucus upward, and <span class="interactive-word"
+          data-word="pseudopodia">pseudopodia</span> extend from <span class="interactive-word"
+          data-word="neutrophil white blood cells">neutrophil white blood cells</span> to engulf bacteria. Despite their
+        diversity, <span class="interactive-word" data-word="eukaryotic cells">eukaryotic cells</span> across protists,
+        plants, and animals use the same fundamental structures, revealing the underlying unity of life.
+      </div>
+
+      <button class="btn-primary" onclick="nextStep(4)">Continue to Fully Annotated Text →</button>
+      <button class="btn-secondary" onclick="nextStep(2)">← Back to Plain Reading</button>
+    </section>
+
+    <!-- Step 4: Fully Annotated Re-read -->
+    <section class="section" id="step4">
+      <h2>Step 4 – Re-read with Full Annotations</h2>
+      <p>Now read the passage again with all key terms emphasized. Notice how the highlighted terms create a visual map
+        of the important concepts.</p>
+
+      <div class="passage" id="annotatedPassage"></div>
+
+      <button class="btn-primary" onclick="nextStep(5)">Continue to Big Picture Framing →</button>
+      <button class="btn-secondary" onclick="nextStep(3)">← Back to Interactive Reading</button>
+    </section>
+
+    <!-- Step 5: Original Big Picture Framing -->
+    <section class="section" id="step5">
+      <h2>Step 5 – Big Picture Framing</h2>
+      <div class="passage">
+        "In Lab 1 you learned that eukaryotic DNA is contained within a membrane-bound nucleus. This nuclear
+        organization is just the beginning of eukaryotic complexity. In Lab 2 you'll explore the diverse organelles and
+        structures that different eukaryotic cells possess. You'll examine plant cells with specialized
+        plastids—chloroplasts containing chlorophyll in Elodea leaf cells and chromoplasts containing carotene in carrot
+        root cells. You'll observe unicellular protists that use different structures for movement: Euglena with its
+        whip-like flagellum, Paramecium covered with thousands of beating cilia, and Amoeba extending flowing
+        pseudopodia to crawl and capture food. Remarkably, these same structures appear in multicellular
+        organisms—flagella propel sperm cells, cilia line ciliated pseudostratified columnar epithelium in your
+        respiratory tract moving mucus upward, and pseudopodia extend from neutrophil white blood cells to engulf
+        bacteria. Despite their diversity, eukaryotic cells across protists, plants, and animals use the same
+        fundamental structures, revealing the underlying unity of life."
+      </div>
+      <p><strong>Metacognitive pause:</strong> Which two themes keep repeating? (Answer: <em>photosynthesis</em> and
+        <em>movement</em>.)
+      </p>
+
+      <button class="btn-primary" onclick="nextStep(6)">Continue to Visual Anchor →</button>
+      <button class="btn-secondary" onclick="nextStep(4)">← Back to Annotated Reading</button>
+    </section>
+
+    <!-- Step 6: Visual Anchor -->
+    <section class="section" id="step6">
+      <h2>Step 6 – Visual Anchor (Encoding Support)</h2>
+      <img src="../images/animal.png" alt="Anabaena filament with heterocysts">
+      <p>Use this image as a contrast anchor. Ask yourself: <em>What are the structures that define eukaryotic
+          cells?</em></p>
+
+      <button class="btn-primary" onclick="nextStep(7)">Continue to Compare & Contrast →</button>
+      <button class="btn-secondary" onclick="nextStep(5)">← Back to Big Picture</button>
+    </section>
+
+    <!-- Step 7: Compare & Contrast -->
+    <section class="section" id="step7">
+      <h2>Step 7 – Compare & Contrast Encoding System</h2>
+      <p>Instead of memorizing lists, encode by <strong>function-based categories</strong>.</p>
+
+      <div class="compare-grid">
+        <div>
+          <h3 style="color:var(--uwp-red)">Chunk 2: Plant Cell Specialization</h3>
+          <textarea placeholder=""></textarea>
+        </div>
+
+        <div>
+          <h3 style="color:var(--uwp-red)">Chunk 3: Movement - Flagella</h3>
+          <textarea placeholder=""></textarea>
+        </div>
+
+        <div>
+          <h3 style="color:var(--uwp-red)">Chunk 4: Movement - Cilia</h3>
+          <textarea placeholder=""></textarea>
+        </div>
+
+        <div>
+          <h3 style="color:var(--uwp-red)">Chunk 5: Movement - Pseudopodia</h3>
+          <textarea placeholder=""></textarea>
+        </div>
+
+        <div>
+          <h3 style="color:var(--uwp-red)">Chunk 6: Freshwater Protist Adaptations</h3>
+          <textarea placeholder=""></textarea>
+        </div>
+
+        <div>
+          <h3 style="color:var(--uwp-red)">Chunk 7: Unity & Diversity Theme</h3>
+          <textarea placeholder=""></textarea>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="nextStep(8)">Continue to Free Recall →</button>
+      <button class="btn-secondary" onclick="nextStep(6)">← Back to Visual Anchor</button>
+    </section>
+
+    <!-- Step 8: Table-like Free Recall -->
+    <section class="section" id="step8">
+      <h2>Step 8 – Table-like Free Recall (High-Yield Encoding)</h2>
+      <p>Fill this in from memory. Do NOT look back yet.</p>
+      <div class="table-like">
+        <div class="cell"><strong>Cell</strong></div>
+        <div class="cell"><strong>Plastid?</strong></div>
+        <div class="cell"><strong>Movement Structure</strong></div>
+        <div class="cell"><strong>Primary Function</strong></div>
+        <div class="cell"><strong>Key Adaptation</strong></div>
+
+        <div class="cell">Leaf Parenchyma</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell">Carrot Root Parenchyma</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell">Euglena</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell">Paramecium</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell">Amoeba</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell">Human Neutrophil</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+      </div>
+
+      <button class="btn-primary" onclick="nextStep(9)">Continue to Mastery Check →</button>
+      <button class="btn-secondary" onclick="nextStep(7)">← Back to Compare & Contrast</button>
+    </section>
+
+    <!-- Step 9: Mastery Check -->
+    <section class="section" id="step9">
+      <h2>Step 9 – Mastery Check (Metacognitive Reflection)</h2>
+      <ul>
+        <li>Can I predict which structures a cell has based on its function?</li>
+        <li>Can I explain <em>why</em> chloroplasts are absent in root cells?</li>
+        <li>Can I compare amoeboid motion in amoeba vs neutrophils?</li>
+        <li>Can I explain how structure reveals evolutionary history?</li>
+      </ul>
+      <p><strong>If yes:</strong> mastery is emerging. <strong>If no:</strong> revisit Step 7.</p>
+
+      <button class="btn-primary" onclick="nextStep(1)">Start Over</button>
+      <button class="btn-secondary" onclick="nextStep(8)">← Back to Free Recall</button>
+    </section>
+
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 9;
+
+    // Update progress bar
+    function updateProgress() {
+      const progress = (currentStep / totalSteps) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+    }
+
+    // Navigation function
+    function nextStep(step) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      // Show target section
+      document.getElementById('step' + step).classList.add('active');
+      currentStep = step;
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Generate annotated passage when step 4 is loaded
+      if (step === 4) {
+        generateAnnotatedPassage();
+      }
+    }
+
+    // Text-to-Speech function
+    function pronounce(word) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        // Check if slow speech mode is enabled
+        const slowMode = document.getElementById('slowSpeech');
+        utterance.rate = slowMode && slowMode.checked ? 0.7 : 1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert('Text-to-speech is not supported in your browser.');
+      }
+    }
+
+    // Interactive reading functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      const interactiveWords = document.querySelectorAll('.interactive-word');
+      interactiveWords.forEach(word => {
+        word.addEventListener('click', function () {
+          this.classList.toggle('highlighted');
+        });
+      });
+    });
+
+    // Generate fully annotated passage for step 4
+    function generateAnnotatedPassage() {
+      const passage = `In Lab 1 you learned that <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">eukaryotic</span> DNA is contained within a membrane-bound <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">nucleus</span>. This nuclear organization is just the beginning of <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">eukaryotic</span> complexity. In Lab 2 you'll explore the diverse <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">organelles</span> and structures that different <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">eukaryotic cells</span> possess. You'll examine <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">plant cells</span> with specialized <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">plastids</span>—<span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">chloroplasts</span> containing <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">chlorophyll</span> in <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">Elodea leaf cells</span> and <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">chromoplasts</span> containing <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">carotene</span> in <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">carrot root cells</span>. You'll observe unicellular <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">protists</span> that use different structures for movement: <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">Euglena</span> with its whip-like <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">flagellum</span>, <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">Paramecium</span> covered with thousands of beating <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">cilia</span>, and <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">Amoeba</span> extending flowing <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">pseudopodia</span> to crawl and capture food. Remarkably, these same structures appear in multicellular organisms—<span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">flagella</span> propel <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">sperm cells</span>, <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">cilia</span> line <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">ciliated pseudostratified columnar epithelium</span> in your respiratory tract moving mucus upward, and <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">pseudopodia</span> extend from <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">neutrophil white blood cells</span> to engulf bacteria. Despite their diversity, <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">eukaryotic cells</span> across protists, plants, and animals use the same fundamental structures, revealing the underlying unity of life.`;
+      document.getElementById('annotatedPassage').innerHTML = passage;
+    }
+
+    // Initialize progress bar
+    updateProgress();
+  </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

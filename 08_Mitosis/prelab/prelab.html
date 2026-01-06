@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Lab: Plan & Prime</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Anton&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --parkside-green: #016836;
+            --near-black: rgb(33, 39, 33);
+            --warm-grey: #54534A;
+            --cool-grey: #DBD9D6;
+            --goldenrod: #FABA31;
+            --white-birch: #EFECE2;
+            --white: #FFFFFF;
+            --bg-primary: var(--white);
+            --bg-secondary: var(--white-birch);
+            --text-primary: var(--near-black);
+            --text-secondary: var(--warm-grey);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1d1a;
+            --bg-secondary: #2a2d2a;
+            --cool-grey: #3a3d3a;
+            --white-birch: #2a2d2a;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--parkside-green);
+            color: var(--white);
+            padding: 15px 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 20px;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-family: 'Anton', sans-serif;
+            color: var(--parkside-green);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--goldenrod);
+            padding-bottom: 10px;
+        }
+
+        .section {
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--cool-grey);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--parkside-green);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--cool-grey);
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        a {
+            color: var(--parkside-green);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <header>
+        <div class="header-container">
+            <a href="../index.html" class="back-button">← Back to Dashboard</a>
+            <span>Week 1</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Pre-Lab: Plan & Prime</h1>
+
+        <!-- Week 1 Big Picture + Instructions (UWP-styled) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --parkside-green: #026937; /* Pantone 349 */
+    --black-7:        #54534A; /* Pantone Black 7 */
+    --cool-gray-1:    #DBD9D6; /* Pantone Cool Gray 1 */
+    --goldenrod:      #FABA31; /* Accent: use sparingly */
+  }
+  .wk-hero{
+    font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--parkside-green);
+    color:#fff;
+    padding: 20px 16px;
+    margin: 16px 0;
+  }
+  .wk-hero h2{
+    margin:0 0 6px 0; font-weight:700; letter-spacing:.2px;
+  }
+  .wk-hero p{ margin:0; opacity:.95;}
+  .wk-wrap{
+    font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    color: var(--black-7);
+  }
+  .wk-section{
+    border-left: 6px solid var(--parkside-green);
+    padding-left: 12px;
+    margin: 18px 0 12px 0;
+    font-weight:700; color: var(--parkside-green);
+  }
+  .wk-grid{
+    display:grid; gap:10px; grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  }
+  .wk-card{
+    border:1px solid var(--cool-gray-1);
+    padding:12px; background:#fff;
+  }
+  .wk-card h4{ margin:0 0 6px 0; font-weight:700; color: var(--black-7); }
+  .wk-card ul{ margin:0 0 0 18px; }
+  .wk-note{
+    background:#EFECE2; /* Warm Gray feel */
+    border-left:4px solid var(--goldenrod);
+    padding:10px 12px; margin-top:12px;
+  }
+  .btn-row{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;
+  }
+  .btn{
+    display:inline-block; background:#fff; color:var(--parkside-green);
+    border:1px solid var(--parkside-green); padding:8px 12px; text-decoration:none;
+    font-weight:700;
+  }
+</style>
+
+<section class="wk-hero" aria-label="Week overview">
+  <h2>Week 1: Science as a Way of Knowing</h2>
+  <p>Big picture: learn how scientists think, measure, and see. Build the skills you’ll use all semester.</p>
+</section>
+
+<div class="wk-wrap">
+  <h3 class="wk-section">Your Objectives This Week</h3>
+  <div class="wk-grid">
+    <div class="wk-card">
+      <h4>Understand</h4>
+      <ul>
+        <li>Differentiate science, pseudoscience, and testable claims.</li>
+        <li>Define hypothesis, theory, law; identify variables (independent, dependent, controls).</li>
+      </ul>
+    </div>
+    <div class="wk-card">
+      <h4>Measure</h4>
+      <ul>
+        <li>Use metric prefixes fluently; convert units in exponential form.</li>
+        <li>Compute microscope field diameters for (4×, 10×, & 40×) lenses and estimate specimen size.</li>
+      </ul>
+    </div>
+    <div class="wk-card">
+      <h4>Observe</h4>
+      <ul>
+        <li>Operate a compound LM safely; adjust light and focus appropriately.</li>
+        <li>Recognize size differences between prokaryotic and eukaryotic cells.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="wk-section">Instructions</h3>
+  <ol class="wk-card">
+    <li>Open <strong>Scientific Method Terms</strong> and study the terms related to the scientific method, then do the <strong>Science Detective</strong> activity to practice hypotheses and variables. (25–35 min)</li>
+    <li>Read <strong>Pseudoscience &amp; Claims</strong> for three (3) examples of everyday non‑testable claims. (30 min)</li>
+    <li>Work through <strong>Metrics</strong>: prefixes, conversions, & exponential form (e.g., <code>6.3 × 10<sup>-6</sup></code>). (20–25 min)</li>
+    <li>Go to <strong>Microscope Mastery</strong>: Without the microscope, biology would be blind to the cellular world that drives health, disease, and life itself. Every biology student must master microscope skills because accurate observation and measurement at the cellular level are the foundation for valid experiments and meaningful biological insights (35-45 minutes).</li>
+    <li>Open <strong>Retrieval &amp; Regulate</strong> to complete the self‑check and flag any item you’re unsure about—these notes will guide focused questions and discussions with your peers and instructor during lab. (5–10 min)</li>
+  </ol>
+
+  <div class="wk-note">
+    <strong>Deliverables before lab:</strong>
+    <ul>
+      <li>Completed scientific process questions.</li>
+      <li>Completed conversions set (all items in exponential form).</li>
+      <li>Microscope care and use.</li>      
+    </ul>
+    <p><strong>Tip:</strong> If any concept felt unclear during your pre‑lab, write it down and bring it to lab. Clarifying those concepts with peers and your instructor will deepen your understanding and move you toward higher‑level thinking—an essential step in mastering biology</p>
+  </div>
+
+  <h3 class="wk-section">How This Connects to Next Week</h3>
+  <div class="wk-card">
+    <p>All future labs depend on accurate measurement and reproducible observation. This week’s metrics and microscopy skills will be used to size cells, quantify change, and evaluate evidence—so nail the fundamentals now.</p>
+  </div>
+</div>
+        <div class="section">
+            <h2>Foundations</h2>
+            <ul>
+                <li><a href="Overview.html">Scientific Method Terms</a></li>
+                <li><a href="ScienceDetective.html">Scientific Method Activity</a></li>
+                <li><a href="Pseudoscience.html">Pseudoscience & Claims</a></li>                
+            </ul>
+        </div>        
+
+        <div class="section">
+            <h2>Skills</h2>
+            <ul>
+                <li><a href="Metric.html">Metrics Prefix</a></li>
+                <li><a href="MetricGames.html">Metrics Games</a></li>
+                <li><a href="traintrack.html">Conversions</a></li>
+                <li><a href="../microscpy/MicroscopeMastery.html">Microscopy</a></li>
+                <li><a href="retrieval.html">Retrieval & Regulate</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Apply theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

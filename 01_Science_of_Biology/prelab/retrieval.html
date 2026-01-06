@@ -1,0 +1,879 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Biology Lab Exam (Part 2) — UW‑Parkside</title>
+
+  <!-- Open Sans (approved alternative to Proxima Nova) -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* UW‑Parkside palette */
+      --parkside-green: #026937;     /* Pantone 349 */
+      --black-7:        #54534A;     /* Pantone Black 7 */
+      --cool-gray-1:    #DBD9D6;     /* Pantone Cool Gray 1 */
+      --white-birch:    #EFECE2;     /* Warm Gray 1 U (site usage) */
+      --goldenrod:      #FABA31;     /* Accent: use sparingly */
+      --uw-blue:        #105877;     /* Secondary option */
+    }
+
+    /* Base */
+    html, body {
+      height: 100%;
+      background: #fff;
+      color: var(--black-7);
+      font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Header bar */
+    .brand-bar {
+      background: var(--parkside-green);
+      color: #fff;
+      padding: 20px 24px;
+      border-radius: 0;
+      margin-bottom: 24px;
+    }
+    .brand-bar h1{
+      margin: 0 0 4px 0;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .brand-bar p{
+      margin: 0;
+      opacity: 0.95;
+    }
+
+    /* Section headings */
+    .section-title{
+      border-left: 8px solid var(--parkside-green);
+      padding-left: 12px;
+      margin: 32px 0 16px 0;
+      font-weight: 700;
+      color: var(--parkside-green);
+    }
+
+    /* Grouping and inputs */
+    fieldset{
+      border: 1px solid var(--cool-gray-1);
+      padding: 16px;
+      margin: 16px 0;
+      background: #fff;
+    }
+    legend{
+      font-weight: 700;
+      color: var(--black-7);
+      padding: 0 6px;
+    }
+
+    .q{
+      margin: 12px 0 18px 0;
+    }
+    .q label{
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .q small{
+      color: #666;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    textarea,
+    select{
+      width: 100%;
+      max-width: 800px;
+      border: 1px solid var(--cool-gray-1);
+      border-radius: 2px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    textarea{
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .grid-2{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .grid-3{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .options{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+    }
+    .options label{
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .note{
+      background: var(--white-birch);
+      border-left: 4px solid var(--goldenrod);
+      padding: 8px 12px;
+      margin: 12px 0 24px 0;
+    }
+
+    /* Footer */
+    footer{
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--cool-gray-1);
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    /* Print-friendly */
+    @media print{
+      .brand-bar{ margin-bottom: 12px; }
+      .note{ border-left-color: var(--parkside-green); }
+    }
+  </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+  <header class="brand-bar">
+    <h1>Biology Lab Exam (Part 2)</h1>
+    <p>University of Wisconsin–Parkside • Department Exam Form</p>
+  </header>
+
+  <main class="page" role="main">
+    <div class="note" role="note">
+      Please answer each item. Where you are asked to “show your equation,” provide your calculation steps in the space provided.
+    </div>
+
+    <!-- 1) Science vs. Non‑science -->
+    <h2 class="section-title">Science vs. Non‑science</h2>
+    <fieldset>
+      <legend>Foundations</legend>
+      <div class="q" data-question-id="1">
+        <label>1) Describe several characteristics that all sciences have in common. What makes science unique?</label>
+        <textarea name="q1"></textarea>
+      </div>
+
+      <div class="q" data-question-id="2">
+        <label>2) List three examples of different sciences that are taught at UW Parkside.</label>
+        <div class="grid-3">
+          <input type="text" name="q2a" placeholder="1)" />
+          <input type="text" name="q2b" placeholder="2)" />
+          <input type="text" name="q2c" placeholder="3)" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="3">
+        <label>3) List three examples of non‑science.</label>
+        <div class="grid-3">
+          <input type="text" name="q3a" placeholder="1)" />
+          <input type="text" name="q3b" placeholder="2)" />
+          <input type="text" name="q3c" placeholder="3)" />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 2) The Scientific Method — Sample Controlled Experiment -->
+    <h2 class="section-title">The Scientific Method</h2>
+    <fieldset>
+      <legend>A researcher wants to investigate whether the addition of nitrogen to the water would stimulate Coleus plants to grow thicker stems.</legend>
+
+      <div class="q" data-question-id="4">
+        <label>4) State the hypothesis to be tested.</label>
+        <textarea name="q4"></textarea>
+      </div>
+
+      <div class="q" data-question-id="5">
+        <label>5) State a prediction from this hypothesis (write in “if–then” form).</label>
+        <textarea name="q5"></textarea>
+      </div>
+
+      <div class="q grid-2" data-question-id="6">
+        <div>
+          <label>6) Independent variable</label>
+          <input type="text" name="q6" />
+        </div>
+        <div>
+          <label>7) Dependent variable</label>
+          <input type="text" name="q7" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="8">
+        <label>8) Name some control variables that must remain constant.</label>
+        <textarea name="q8"></textarea>
+      </div>
+
+      <div class="q" data-question-id="9">
+        <label>9) Why is it important that all conditions (except nitrogen) be exactly the same for both groups?</label>
+        <textarea name="q9"></textarea>
+      </div>
+
+      <div class="q grid-2" data-question-id="10">
+        <div>
+          <label>10) Expected results if the hypothesis is <strong>accepted</strong> (control vs. experimental)</label>
+          <textarea name="q10"></textarea>
+        </div>
+        <div>
+          <label>11) Expected results if the hypothesis is <strong>rejected</strong> (control vs. experimental)</label>
+          <textarea name="q11"></textarea>
+        </div>
+      </div>
+
+      <div class="q" data-question-id="12">
+        <label>12) If the hypothesis is accepted, has it been <em>proven</em> correct? Explain why or why not.</label>
+        <textarea name="q12"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- 3) Qualitative vs Quantitative -->
+    <fieldset>
+      <legend>Qualitative vs. Quantitative Observations</legend>
+      <div class="q grid-2" data-question-id="13">
+        <div>
+          <label>13) Give one example of a qualitative observation.</label>
+          <input type="text" name="q13" />
+        </div>
+        <div>
+          <label>14) Give one example of a quantitative observation.</label>
+          <input type="text" name="q14" />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 4) Cinnamon study -->
+    <fieldset>
+      <legend>Background Information:
+In type 2 diabetes, high blood-sugar levels eventually cause complications of the vascular system, kidneys, and other organs.  Researchers at the Beltsville Human Nutrition Research Center in Maryland conducted an experiment to test if taking cinnamon every day had any effect on the blood glucose, fat, and cholesterol of patients with type 2 diabetes.
+Experimental Design:
+At the beginning of the experiment, the levels of blood glucose, fat, and cholesterol were measured for every patient.  The researchers gave a total of 60 people with type 2 diabetes various amounts of cinnamon every day for 40 days.  One group of 20 patients were given 
+1 g (1/4 tsp) of cinnamon; another group of 20 patients were given 3 g of cinnamon; and a third group of 20 patients were given 6 g of cinnamon.
+A second set of 60 people with type 2 diabetes were selected for the control group.  These patients were given a placebo (wheat-flour) in amounts equivalent to the groups that received the cinnamon (1g, 3g, 6g).  The placebo was also taken every day for 40 days.
+After the 40 days, researchers again measured the levels of blood glucose, fat, and cholesterol for every patient.  The patients in the control group experienced no change in these three levels.  The patients receiving the various amounts of cinnamon experience a drop in their blood glucose, fat, and cholesterol levels ranging from 18-29%.
+</legend>
+
+      <div class="q" data-question-id="15">
+        <label>15) State the hypothesis to be tested.</label>
+        <textarea name="q15"></textarea>
+      </div>
+
+      <div class="q" data-question-id="16">
+        <label>16) State a prediction (write in “if–then” form).</label>
+        <textarea name="q16"></textarea>
+      </div>
+
+      <div class="q grid-3" data-question-id="17">
+        <div>
+          <label>17) Independent variable</label>
+          <input type="text" name="q17" />
+        </div>
+        <div>
+          <label>18) Dependent variable(s)</label>
+          <input type="text" name="q18" />
+        </div>
+        <div>
+          <label>19) Name two control variables mentioned in the study</label>
+          <input type="text" name="q19" placeholder="e.g., duration, placebo matching…" />
+        </div>
+      </div>
+
+      <div class="q grid-2" data-question-id="20">
+        <div>
+          <label>20) What is the experimental group?</label>
+          <textarea name="q20"></textarea>
+        </div>
+        <div>
+          <label>21) What is the control group? Why is it important to have one?</label>
+          <textarea name="q21"></textarea>
+        </div>
+      </div>
+
+      <div class="q" data-question-id="22">
+        <label>22) Can this hypothesis be <em>proven</em> from this experiment? Explain.</label>
+        <textarea name="q22"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- 5) Questions (Scientific Method) -->
+    <fieldset>
+      <legend>Review Questions</legend>
+
+      <div class="q" data-question-id="23">
+        <label>23) What is a <strong>hypothesis</strong>?</label>
+        <textarea name="q23"></textarea>
+      </div>
+
+      <div class="q" data-question-id="24">
+        <label>24) How does a <strong>scientific theory</strong> differ from a hypothesis, and why is a theory more widely accepted?</label>
+        <textarea name="q24"></textarea>
+      </div>
+
+      <div class="q" data-question-id="25">
+        <label>25) What is a <strong>law of nature</strong>?</label>
+        <textarea name="q25"></textarea>
+      </div>
+
+      <div class="q" data-question-id="26">
+        <label>26) Define the variables in a controlled experiment:</label>
+        <div class="grid-3">
+          <div>
+            <label>26a) Independent variable</label>
+            <input type="text" name="q26a" />
+          </div>
+          <div>
+            <label>26b) Dependent variable</label>
+            <input type="text" name="q26b" />
+          </div>
+          <div>
+            <label>26c) Control variables</label>
+            <input type="text" name="q26c" />
+          </div>
+        </div>
+      </div>
+
+      <div class="q" data-question-id="27">
+        <label>27) Explain the difference between the <strong>experimental group</strong> and the <strong>control group</strong>, and why the control group is necessary.</label>
+        <textarea name="q27"></textarea>
+      </div>
+
+      <div class="q" data-question-id="28">
+        <label>28) What features of the scientific method help ensure fraudulent claims are eventually discovered?</label>
+        <textarea name="q28"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- 6) Metric Measurements (Conversions) -->
+    <h2 class="section-title">Metric Measurements</h2>
+    <fieldset>
+      <legend>Metric Conversions (express answers in exponential form)</legend>
+
+      <div class="q grid-3" data-question-id="29">
+        <div>
+          <label>29) 4.8 m = ______ km</label>
+          <input type="text" name="q29" />
+        </div>
+        <div>
+          <label>30) 709 cm = ______ mm</label>
+          <input type="text" name="q30" />
+        </div>
+        <div>
+          <label>31) 21.2 L = ______ mL</label>
+          <input type="text" name="q31" />
+        </div>
+        <div>
+          <label>32) 55 µg = ______ g</label>
+          <input type="text" name="q32" />
+        </div>
+        <div>
+          <label>33) 334 nm = ______ m</label>
+          <input type="text" name="q33" />
+        </div>
+        <div>
+          <label>34) 0.0076 km = ______ mm</label>
+          <input type="text" name="q34" />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 7) Microscopy Review -->
+    <h2 class="section-title">Microscopy Review Questions</h2>
+    <fieldset>
+      <legend>Light vs. Electron Microscopy</legend>
+
+      <div class="q grid-2" data-question-id="35">
+        <div>
+          <label>35) In what year was the light microscope (LM) invented?</label>
+          <input type="text" name="q35" />
+        </div>
+        <div>
+          <label>36) In what year was the electron microscope (EM) introduced to biology?</label>
+          <input type="text" name="q36" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="37">
+        <label>37) A LM uses glass lenses to focus light, while an EM uses electromagnets to focus a beam of ______ (instead of light).</label>
+        <input type="text" name="q37" />
+      </div>
+
+      <div class="q" data-question-id="38">
+        <label>38) Which has better resolution, LM or EM? Why?</label>
+        <div class="options">
+          <label><input type="radio" name="q38a" value="LM"> LM</label>
+          <label><input type="radio" name="q38a" value="EM"> EM</label>
+        </div>
+        <div class="options" style="margin-top:8px;">
+          <label><input type="radio" name="q38b" value="longer"> Electrons have <strong>longer</strong> wavelengths</label>
+          <label><input type="radio" name="q38b" value="shorter"> Electrons have <strong>shorter</strong> wavelengths</label>
+        </div>
+      </div>
+
+      <div class="q grid-3" data-question-id="39">
+        <div>
+          <label>39a) How small can LM resolve detail? (nm)</label>
+          <input type="number" name="q39a" step="0.01" />
+        </div>
+        <div>
+          <label>39b) How small can EM resolve detail? (nm)</label>
+          <input type="number" name="q39b" step="0.01" />
+        </div>
+        <div>
+          <label>39c) How large is the improvement in resolution from a light microscope to an EM?</label>
+          <input type="text" name="q39c" placeholder="e.g., ~100×" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="40">
+        <label>40) Which microscope (LM or EM) is better for studying living cells, and why?</label>
+        <textarea name="q40"></textarea>
+      </div>
+
+      <div class="q grid-2" data-question-id="41">
+        <div>
+          <label>41a) TEM — type of image produced</label>
+          <textarea name="q41a"></textarea>
+        </div>
+        <div>
+          <label>41b) SEM — type of image produced</label>
+          <textarea name="q41b"></textarea>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 8) Introduction to the LM: Parts/Use -->
+    <h2 class="section-title">Introduction to the Light Microscope (LM)</h2>
+    <fieldset>
+      <legend>Parts, Functions, and Magnification</legend>
+
+      <div class="q" data-question-id="42">
+        <label>42) List three (3) abbreviations you may find on a prepared slide?</label>
+        <input type="text" name="q42" />
+      </div>
+
+      <div class="q" data-question-id="43">
+        <label>43) Total magnification (initial, using the 4× objective)</label>
+        <input type="text" name="q43" placeholder="ocular x objective = " />
+      </div>
+
+      <div class="q" data-question-id="44">
+        <label>44) Total magnification when viewing with the 10× objective</label>
+        <input type="text" name="q44" placeholder="ocular x objective = " />
+      </div>
+
+      <div class="q" data-question-id="45">
+        <label>45) Total magnification when viewing with the 40× objective</label>
+        <input type="text" name="q45" placeholder="ocular x objective =  />
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>D. Working Distance</legend>
+      <div class="q" data-question-id="46">
+        <label>46) The working distance (space between slide and objective) ______ as objective magnification increases.</label>
+        <div class="options">
+          <label><input type="radio" name="q46" value="increases"> increases</label>
+          <label><input type="radio" name="q46" value="decreases"> decreases</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>E. Measuring Field Diameter</legend>
+
+      <div class="q" data-question-id="47">
+        <label>47) Diameter of the field of view for the 4× lens (LPD), in mm</label>
+        <input type="number" name="q47" step="0.01" />
+      </div>
+
+      <div class="q grid-2" data-question-id="48">
+        <div>
+          <label>48) Calculate the HPD (mm) for the <strong>10× </strong>lens. Show your equation here.</label>
+          <textarea name="q48eq" placeholder="write the equation here"></textarea>
+          <input type="number" name="q48" step="0.001" placeholder="HPD (10×)" />
+        </div>
+        <div>
+          <label>49) Calculate the HPD (mm) for the <strong>40× </strong>lens. Show your equation here.</label>
+          <textarea name="q49eq" placeholder="write the equation here)"></textarea>
+          <input type="number" name="q49" step="0.001" placeholder="HPD (40×)" />
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Estimating the Length of <em>Hydra</em> (l.s.)</legend>
+
+      <div class="q grid-2" data-question-id="50">
+        <div>
+          <label>50) Objective lens magnification chosen (largest that still fits the organism in the field)</label>
+          <input type="text" name="q50" />
+        </div>
+        <div>
+          <label>51) Diameter of the field of view for that objective (mm)</label>
+          <input type="number" name="q51" step="0.01" />
+        </div>
+      </div>
+
+      <div class="q grid-2" data-question-id="52">
+        <div>
+          <label>52) Approximate number of <em>Hydra</em> (length, excluding tentacles) that fit across the field diameter</label>
+          <input type="number" name="q52" step="0.01" />
+        </div>
+        <div>
+          <label>53) Show your equation</label>
+          <textarea name="q53"></textarea>
+        </div>
+      </div>
+
+      <div class="q" data-question-id="54">
+        <label>54) Estimated <em>Hydra</em> length (include units)</label>
+        <input type="text" name="q54" placeholder="e.g., 1.8 mm" />
+      </div>
+    </fieldset>
+
+    <!-- 9) Prokaryotic vs Eukaryotic -->
+    <h2 class="section-title">Prokaryotic Cells vs. Eukaryotic Cells</h2>
+    <fieldset>
+      <legend>Comparative Description</legend>
+      <div class="q" data-question-id="55">
+        <label>55) In your own words, describe two (2) major differences between prokaryotic and eukaryotic cells.</label>
+        <textarea name="q55"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- 10) Prokaryotic Cells (Anabaena) -->
+    <fieldset>
+      <legend>I. Prokaryotic Cells — Estimating a Single <em>Anabaena</em> Cell</legend>
+
+      <div class="q grid-3" data-question-id="56">
+        <div>
+          <label>56) Diameter of the field of view for the 40× lens (mm)</label>
+          <input type="number" name="q56" step="0.001" />
+        </div>
+        <div>
+          <label>57) Approximate number of cells across the field diameter</label>
+          <input type="number" name="q57" step="1" />
+        </div>
+        <div>
+          <label>58) Show your equation</label>
+          <textarea name="q58"></textarea>
+        </div>
+      </div>
+
+      <div class="q grid-2" data-question-id="59">
+        <div>
+          <label>59) Estimated size of a single <em>Anabaena</em> cell (mm)</label>
+          <input type="text" name="q59" />
+        </div>
+        <div>
+          <label>60) Convert that size to micrometers (µm)</label>
+          <input type="text" name="q60" />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 11) Eukaryotic Cells (Cheek epithelium) -->
+    <fieldset>
+      <legend>II. Eukaryotic Cells — Estimating a Single Cheek Epithelial Cell</legend>
+
+      <div class="q grid-3" data-question-id="61">
+        <div>
+          <label>61) Diameter of the field of view for the 40× lens (mm)</label>
+          <input type="number" name="q61" step="0.001" />
+        </div>
+        <div>
+          <label>62) Approximate number of cells across the field diameter</label>
+          <input type="number" name="q62" step="1" />
+        </div>
+        <div>
+          <label>63) Show your equation</label>
+          <textarea name="q63"></textarea>
+        </div>
+      </div>
+
+      <div class="q grid-2" data-question-id="64">
+        <div>
+          <label>64) Estimated size of a single epithelial cell (mm)</label>
+          <input type="text" name="q64" />
+        </div>
+        <div>
+          <label>65) Convert that size to micrometers (µm)</label>
+          <input type="text" name="q65" />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 12) Questions (Microscope Use, Metrics) -->
+    <h2 class="section-title">Questions (Microscope Use &amp; Metrics)</h2>
+    <fieldset>
+      <legend>Applied Practice</legend>
+
+      <div class="q" data-question-id="66">
+        <label>66) Using a meter stick, measure the diameter of the lab table: ______ meters. Convert to: km, nm, µm, mm, cm (exponential form).</label>
+        <div class="grid-3">
+          <input type="text" name="q66m" placeholder="meters (m)" />
+          <input type="text" name="q66km" placeholder="kilometers (km)" />
+          <input type="text" name="q66nm" placeholder="nanometers (nm)" />
+          <input type="text" name="q66um" placeholder="micrometers (µm)" />
+          <input type="text" name="q66mm" placeholder="millimeters (mm)" />
+          <input type="text" name="q66cm" placeholder="centimeters (cm)" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="67">
+        <label>67) Using a ruler, measure the side of a plastic coverslip: ______ cm. Convert to: m, nm, µm, mm, km (exponential form).</label>
+        <div class="grid-3">
+          <input type="text" name="q67cm" placeholder="centimeters (cm)" />
+          <input type="text" name="q67m" placeholder="meters (m)" />
+          <input type="text" name="q67nm" placeholder="nanometers (nm)" />
+          <input type="text" name="q67um" placeholder="micrometers (µm)" />
+          <input type="text" name="q67mm" placeholder="millimeters (mm)" />
+          <input type="text" name="q67km" placeholder="kilometers (km)" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="68">
+        <label>68) Other than the illumination dial, which microscope part directly under the stage should be adjusted if the field of view is too dark?</label>
+        <input type="text" name="q68" />
+      </div>
+
+      <div class="q" data-question-id="69">
+        <label>69) As magnification increased to the 40× lens, you usually needed to ______ the amount of light allowed to reach the slide.</label>
+        <div class="options">
+          <label><input type="radio" name="q69" value="increase"> increase</label>
+          <label><input type="radio" name="q69" value="decrease"> decrease</label>
+        </div>
+      </div>
+
+      <div class="q" data-question-id="70">
+        <label>70) Explain why you should <strong>not</strong> move the coarse focus adjustment when using the 40× lens.</label>
+        <textarea name="q70"></textarea>
+      </div>
+
+      <div class="q" data-question-id="71">
+        <label>71) The diameter of the field of view is the largest for which objective lens?</label>
+        <input type="text" name="q71" />
+      </div>
+
+      <div class="q grid-2" data-question-id="72">
+        <div>
+          <label>72a) What is a “wet mount” slide?</label>
+          <textarea name="q72a"></textarea>
+        </div>
+        <div>
+          <label>72b) What does “w.m.” indicate on a label, and how is it different?</label>
+          <textarea name="q72b"></textarea>
+        </div>
+      </div>
+
+      <div class="q" data-question-id="73">
+        <label>73) What is the specific function of a heterocyst cell in an <em>Anabaena</em> filament?</label>
+        <textarea name="q73"></textarea>
+      </div>
+
+      <div class="q grid-2" data-question-id="74">
+        <div>
+          <label>74a) Your earlier estimate: <em>Anabaena</em> cell size</label>
+          <input type="text" name="q74a" placeholder="mm; µm" />
+        </div>
+        <div>
+          <label>74b) Your earlier estimate: epithelial cell size</label>
+          <input type="text" name="q74b" placeholder="mm; µm" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="75">
+        <label>75) About how many times larger is the eukaryotic cell than the prokaryotic cell?</label>
+        <input type="text" name="q75" />
+      </div>
+
+      <div class="q grid-3" data-question-id="76">
+        <div>
+          <label>76a) Field diameter values (mm): 4×</label>
+          <input type="text" name="q76a" />
+        </div>
+        <div>
+          <label>76b) 10×</label>
+          <input type="text" name="q76b" />
+        </div>
+        <div>
+          <label>76c) 40×</label>
+          <input type="text" name="q76c" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="77">
+        <label>77) If 10 organisms fit across the field diameter with the 40× lens, estimate the length in mm and convert to µm. Show your equation.</label>
+        <textarea name="q77eq"></textarea>
+        <div class="grid-2">
+          <input type="text" name="q77mm" placeholder="mm" />
+          <input type="text" name="q77um" placeholder="µm" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="78">
+        <label>78) If 4 organisms fit across the field diameter with the 10× lens, estimate the length in mm and convert to µm. Show your equation.</label>
+        <textarea name="q78eq"></textarea>
+        <div class="grid-2">
+          <input type="text" name="q78mm" placeholder="mm" />
+          <input type="text" name="q78um" placeholder="µm" />
+        </div>
+      </div>
+
+      <div class="q" data-question-id="79">
+        <label>79) If 2 organisms fit across the field diameter with the 4× lens, estimate the length in mm and convert to µm. Show your equation.</label>
+        <textarea name="q79eq"></textarea>
+        <div class="grid-2">
+          <input type="text" name="q79mm" placeholder="mm" />
+          <input type="text" name="q79um" placeholder="µm" />
+        </div>
+      </div>
+    </fieldset>
+
+    <footer>
+      <p><strong>Submission:</strong> Save this page as PDF for records, or submit digitally per your instructor’s directions.</p>
+    </footer>
+  </main>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>
+

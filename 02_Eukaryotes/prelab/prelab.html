@@ -1,0 +1,736 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Week 2 In-Lab: Perform & Encode</title>
+    <style>
+        :root {
+            --uwp-green: #016836;
+            --uwp-light-green: #e8f5ec;
+            --accent-yellow: #FABA31;
+            --accent-light: #fef5e0;
+            --gray-50: #f9f9f9;
+            --gray-100: #f0f0f0;
+            --gray-200: #e5e5e5;
+            --gray-500: #777;
+            --gray-700: #444;
+            --gray-900: #111;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.8rem 1.2rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .back-btn:hover {
+            background: var(--gray-200);
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--uwp-green);
+        }
+
+        .header-spacer {
+            width: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.2rem;
+        }
+
+        .self-check {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--accent-yellow);
+        }
+
+        .self-check h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--uwp-green);
+            margin-bottom: 0.8rem;
+        }
+
+        .self-check-list {
+            list-style: none;
+        }
+
+        .self-check-item {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .self-check-item:last-child {
+            border-bottom: none;
+        }
+
+        .self-check-question {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .radio-group {
+            display: inline-flex;
+            gap: 1rem;
+            align-items: center;
+            margin-left: 0.5rem;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .radio-label input[type="radio"] {
+            accent-color: var(--uwp-green);
+            cursor: pointer;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: var(--uwp-light-green);
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--uwp-green);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .card-content {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--gray-700);
+            margin-bottom: 0.8rem;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--uwp-green);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        .observation-card {
+            border-left: 4px solid var(--uwp-green);
+        }
+
+        .observation-card .card-header {
+            background: var(--uwp-green);
+        }
+
+        .observation-card .card-title {
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.2rem;
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                gap: 0.5rem;
+            }
+
+            .header-title {
+                font-size: 1.2rem;
+            }
+
+            .header-spacer {
+                display: none;
+            }
+
+            .self-check-question {
+                line-height: 1.8;
+            }
+
+            .radio-group {
+                display: flex;
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            @media (max-width: 768px) {
+                .cards-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .header-content {
+                    gap: 0.5rem;
+                }
+
+                .header-title {
+                    font-size: 1.2rem;
+                }
+
+                .header-spacer {
+                    display: none;
+                }
+
+                .self-check-question {
+                    line-height: 1.8;
+                }
+
+                .radio-group {
+                    display: flex;
+                    margin-left: 0;
+                    margin-top: 0.5rem;
+                }
+            }
+
+            /* ADD THE NEW CSS HERE */
+            .optional-links {
+                list-style: none;
+                padding: 0;
+                margin: 0.8rem 0 0 0;
+            }
+
+            .optional-links li {
+                margin-bottom: 0.5rem;
+            }
+
+            .optional-links li:last-child {
+                margin-bottom: 0;
+            }
+
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <header>
+        <div class="header-content">
+            <a href="../index.html" class="back-btn" aria-label="Back to main page">
+                <span>←</span>
+                <span>Back</span>
+            </a>
+            <h1 class="header-title">Week 2 In-Lab: Perform & Encode</h1>
+            <div class="header-spacer"></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="self-check">
+            <h2>Pre-Lab Self-Check - Place a checkmark beside the ones you know and a stop symbol beside the ones you
+                need to study</h2>
+            <div id="terms-container" style="font-size: 0.9rem; line-height: 1.8;"></div>
+        </section>
+
+        <script>
+            const termsRaw = "cell wall ; plasma membrane; mitochondrion; plastid; chloroplast; chromoplast; amyloplast; nitroplast; tonoplast; contractile vacuole; food vacuole; central vacuole; lysosome; Golgi apparatus; endoplasmic reticulum; ribosome; nuclear membrane; macronucleus; chromatin; nucleolus; flagella; cilia; pseudopodia; homeostasis; chlorophyll; carotene";
+
+            const termsArray = termsRaw.split(';').map(t => t.trim());
+
+            function slugify(text) {
+                return 'term-' + text.toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+            }
+
+            const container = document.getElementById('terms-container');
+            const termStates = {};
+
+            const style = document.createElement('style');
+            style.textContent = `
+    .term-group {
+        display: inline;
+    }
+    
+    .term {
+        color: black;
+        transition: color 0.2s;
+    }
+    
+    .term.known {
+        color: green;
+    }
+    
+    .term.unknown {
+        color: red;
+    }
+    
+    .control-btn {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0 2px;
+        margin: 0 1px;
+        font-size: 14px;
+        transition: transform 0.1s;
+    }
+    
+    .control-btn:hover {
+        transform: scale(1.2);
+    }
+    
+    .control-btn:focus {
+        outline: 2px solid #016836;
+        outline-offset: 2px;
+    }
+    
+    .control-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .check-btn {
+        color: green;
+    }
+    
+    .cross-btn {
+        color: red;
+    }
+    
+    .separator {
+        color: black;
+    }
+`;
+            document.head.appendChild(style);
+
+            termsArray.forEach((term, index) => {
+                const termId = slugify(term);
+                termStates[termId] = 'none';
+
+                const group = document.createElement('span');
+                group.className = 'term-group';
+                group.setAttribute('role', 'group');
+                group.setAttribute('aria-label', `Term: ${term}`);
+
+                const termSpan = document.createElement('span');
+                termSpan.className = 'term';
+                termSpan.id = termId;
+                termSpan.textContent = term;
+
+                const checkBtn = document.createElement('button');
+                checkBtn.className = 'control-btn check-btn';
+                checkBtn.textContent = '✓';
+                checkBtn.setAttribute('aria-label', `I know: ${term}`);
+                checkBtn.onclick = () => toggleState(termId, 'known');
+
+                const crossBtn = document.createElement('button');
+                crossBtn.className = 'control-btn cross-btn';
+                crossBtn.textContent = '✗';
+                crossBtn.setAttribute('aria-label', `I do not know: ${term}`);
+                crossBtn.onclick = () => toggleState(termId, 'unknown');
+
+                group.appendChild(termSpan);
+                group.appendChild(checkBtn);
+                group.appendChild(crossBtn);
+
+                container.appendChild(group);
+
+                if (index < termsArray.length - 1) {
+                    const separator = document.createElement('span');
+                    separator.className = 'separator';
+                    separator.textContent = '; ';
+                    container.appendChild(separator);
+                }
+            });
+
+            function toggleState(termId, newState) {
+                const termSpan = document.getElementById(termId);
+                const currentState = termStates[termId];
+
+                if (currentState === newState) {
+                    termStates[termId] = 'none';
+                    termSpan.className = 'term';
+                } else {
+                    termStates[termId] = newState;
+                    termSpan.className = 'term ' + newState;
+                }
+            }
+        </script>
+
+        <section class="cards-grid">
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">First Look: Inside Eukaryotic Cells</h2>
+                </div>
+
+
+                <!-- First Look: Inside Eukaryotic Cells -->
+                <div class="card-content">
+                    <p class="card-description">
+                        Watch an introductory video exploring the fascinating world of
+                        eukaryotic cells and their diverse structures.
+                    </p>
+                    <a href="IntroVideo.html" class="card-link" target="_blank" rel="noopener noreferrer">
+                        <span>Watch Video - required</span>
+                        <span>→</span>
+                    </a>
+                    <p><a href="https://www.youtube.com/watch?v=XOaiWl-nW1k" class="card-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <span>Watch Video</span>
+                            <span>→</span>
+                        </a></p>
+
+                    <p><a href="https://www.youtube.com/watch?v=Dn3eNoxQdL0" class="card-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <span>Watch Video</span>
+                            <span>→</span>
+                        </a></p>
+
+                    <p><a href="https://www.youtube.com/watch?v=aUtPUuNWCuA" class="card-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <span>Watch Video</span>
+                            <span>→</span>
+                        </a></p>
+
+                    <p><a href="https://www.youtube.com/watch?v=zwA96STHLW8" class="card-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <span>Watch Video</span>
+                            <span>→</span>
+                        </a></p>
+
+                    <p><a href="https://www.youtube.com/watch?v=XOaiWl-nW1k&list=PL-K1lgeTlTGtWhXNCiQ_zJORKAbkrVFPM&index=6"
+                            class="card-link" target="_blank" rel="noopener noreferrer">
+                            <span>Watch Video</span>
+                            <span>→</span>
+                        </a></p>
+
+                    <p><a href="https://www.youtube.com/watch?v=2YCgro6BV8U" class="card-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <span>Watch Video</span>
+                            <span>→</span>
+                        </a></p>
+
+                    <p><a href="https://www.youtube.com/watch?v=KOZDAyWZ8Wg" class="card-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <span>Chloroplast</span>
+                            <span>→</span>
+                        </a></p>
+                </div>
+
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Interactive Learning</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">Practice pronouncing biological terms related to Eukaryotes with
+                        interactive exercises.</p>
+                    <p><a href="Eukaryote2.html" class="card-link" target="_blank">
+                            <span>View Resource - required</span>
+                            <span>↗</span>
+                        </a></p>
+                    <a href="InteractivePreLab.html" class="card-link" target="_blank">
+                        <span>View Resource - optional</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Plastid Organelles</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">Learn about eukaryotic cells that contain plastid organelles like
+                        chloroplasts and chromoplasts.</p>
+                    <a href="plastids.html" class="card-link" target="_blank">
+                        <span>View Resource</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Cilia</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">Study eukaryotic cell examples that possess cilia and their functions.
+                    </p>
+                    <a href="cilia.html" class="card-link" target="_blank">
+                        <span>View Resource</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Flagella</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">Explore eukaryotic cell examples that possess flagella for locomotion.
+                    </p>
+                    <a href="flagella.html" class="card-link" target="_blank">
+                        <span>View Resource</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Pseudopodia</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">Investigate eukaryotic cell examples that possess pseudopodia for
+                        movement and feeding.</p>
+                    <a href="pseudopodia.html" class="card-link" target="_blank">
+                        <span>View Resource</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Lab Quiz</h2>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">Test your understanding of eukaryotic cell structures and functions with
+                        this short assessment based on your lab observations.</p>
+                    <a href="#" class="card-link">
+                        <span>Take Quiz</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>UW-Parkside • Biology 101 Lab • Week 2 In-Lab Activities</p>
+        <p>Complete all activities during your scheduled lab session</p>
+    </footer>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

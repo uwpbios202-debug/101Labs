@@ -1,0 +1,978 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Weekly Mastery Flow - UW Parkside</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Anton&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --parkside-green: #016836;
+            --parkside-dark-green: #00502f;
+            --near-black: rgb(33, 39, 33);
+            --warm-grey: #54534A;
+            --cool-grey: #DBD9D6;
+            --goldenrod: #FABA31;
+            --white-birch: #EFECE2;
+            --prairie-fire: #FF4500;
+            --white: #FFFFFF;
+
+            --bg-primary: var(--white);
+            --bg-secondary: var(--white-birch);
+            --text-primary: var(--near-black);
+            --text-secondary: var(--warm-grey);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1d1a;
+            --bg-secondary: #2a2d2a;
+            --cool-grey: #3a3d3a;
+            --white-birch: #2a2d2a;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--parkside-green);
+            color: var(--white);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .back-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .back-button:focus {
+            outline: 2px solid var(--goldenrod);
+            outline-offset: 2px;
+        }
+
+        .header-center {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header-center h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .header-center h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle-header {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .theme-toggle-header:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-toggle-header:focus {
+            outline: 2px solid var(--goldenrod);
+            outline-offset: 2px;
+        }
+
+        .config-panel {
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--cool-grey);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .config-panel h3 {
+            color: var(--parkside-green);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .config-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 8px 12px;
+            border: 2px solid var(--cool-grey);
+            background-color: var(--white);
+            color: var(--near-black);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.95rem;
+            width: 200px;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: 3px solid var(--parkside-green);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background-color: var(--parkside-green);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--parkside-dark-green);
+        }
+
+        .btn-primary:focus {
+            outline: 3px solid var(--goldenrod);
+            outline-offset: 2px;
+        }
+
+        .btn-secondary {
+            background-color: var(--warm-grey);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--text-secondary);
+        }
+
+        .saved-indicator {
+            color: var(--parkside-green);
+            font-weight: 600;
+            display: none;
+        }
+
+        .saved-indicator.show {
+            display: inline;
+        }
+
+        .debug-toggle {
+            background-color: var(--warm-grey);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .instructions {
+            background-color: var(--white-birch);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--parkside-green);
+        }
+
+        .instructions h3 {
+            color: var(--parkside-green);
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .instructions ul {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .mastery-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: var(--bg-secondary);
+        }
+
+        .mastery-table thead {
+            background-color: var(--parkside-green);
+            color: var(--white);
+        }
+
+        .mastery-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .mastery-table td {
+            padding: 20px 15px;
+            border-bottom: 2px solid var(--cool-grey);
+        }
+
+        .mastery-table tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .mastery-table tbody tr:hover {
+            background-color: var(--cool-grey);
+        }
+
+        .mastery-table tbody tr:focus {
+            outline: 3px solid var(--goldenrod);
+            outline-offset: -3px;
+        }
+
+        .status-chip {
+            display: inline-block;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-right: 10px;
+        }
+
+        .status-chip.completed {
+            background-color: var(--parkside-green);
+        }
+
+        .status-chip.inprogress {
+            background-color: var(--goldenrod);
+        }
+
+        .status-chip.late {
+            background-color: var(--prairie-fire);
+        }
+
+        .status-chip.neutral {
+            background-color: var(--cool-grey);
+            color: var(--near-black);
+        }
+
+        .stage-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stage-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--parkside-green);
+        }
+
+        .countdown-badge {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+        }
+
+        .checkbox-cell input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--parkside-green);
+        }
+
+        .debug-panel {
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--warm-grey);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .debug-panel.active {
+            display: block;
+        }
+
+        .debug-panel h3 {
+            color: var(--warm-grey);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .debug-panel pre {
+            background-color: var(--cool-grey);
+            padding: 15px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            color: var(--near-black);
+        }
+
+        footer {
+            background-color: var(--parkside-dark-green);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        footer small {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-center h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-center h2 {
+                font-size: 0.85rem;
+            }
+
+            .mastery-table {
+                font-size: 0.9rem;
+            }
+
+            .mastery-table th,
+            .mastery-table td {
+                padding: 12px 8px;
+            }
+
+            .config-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .input-group input,
+            .input-group select {
+                width: 100%;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <header>
+        <div class="header-container">
+            <a href="https://harriauwp.github.io/101Labs/index.html" class="back-button">← Back</a>
+            <div class="header-center">
+                <h1>My Weekly Lab Roadmap</h1>
+                <h2>Learn → Do → Reflect → Master → Retrieve</h2>
+            </div>
+            <button class="theme-toggle-header" id="themeToggle" aria-label="Toggle dark mode">Toggle Dark Mode</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="config-panel">
+            <h3>⚙️ Lab Configuration</h3>
+            <div class="config-row">
+                <div class="input-group">
+                    <label for="labStart">Lab Start Time</label>
+                    <input type="datetime-local" id="labStart" aria-label="Lab start time">
+                </div>
+                <div class="input-group">
+                    <label for="labDuration">Lab Duration</label>
+                    <select id="labDuration" aria-label="Lab duration">
+                        <option value="120">2 hours</option>
+                        <option value="150">2:30 hours</option>
+                        <option value="170">2:50 hours</option>
+                        <option value="180">3 hours</option>
+                    </select>
+                </div>
+                <button class="btn-primary" id="saveConfig">Save</button>
+                <button class="btn-secondary" id="resetConfig">Reset</button>
+                <button class="debug-toggle" id="debugToggle" aria-label="Toggle status panel">Status Panel</button>
+                <span class="saved-indicator" id="savedIndicator">✓ Saved</span>
+            </div>
+        </div>
+
+        <div class="debug-panel" id="debugPanel">
+            <h3>Status Information</h3>
+            <pre id="debugOutput"></pre>
+        </div>
+
+        <div class="instructions">
+            <h3>Student Instructions</h3>
+            <ul>
+                <li>Work top to bottom each week.</li>
+                <li><strong>Status Colors:</strong> <span
+                        style="color:var(--parkside-green); font-weight:bold">Green</span>
+                    = Completed; <span style="color:var(--goldenrod); font-weight:bold">Goldenrod</span> = In
+                    Progress; <span style="color:var(--prairie-fire); font-weight:bold">Prairie Fire</span> = Past
+                    Deadline.</li>
+                <li>Click a row to open its assignment hub.</li>
+                <li>Optional: Completing it can help you practice, review, or earn extra credit (if applicable).</li>
+                <li>Retrieval Hub = weekly mastery check.</li>
+                <li>Check the box to mark a stage complete.</li>
+            </ul>
+        </div>
+
+        <table class="mastery-table" role="table" aria-label="Weekly Mastery Flow">
+            <thead>
+                <tr>
+                    <th scope="col">Stage</th>
+                    <th scope="col">Cognitive Focus</th>
+                    <th scope="col">Metacognitive Role</th>
+                    <th scope="col">Mark Complete</th>
+                </tr>
+            </thead>
+            <tbody id="masteryTableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p><strong>UW–Parkside Biological Sciences – Week 1</strong></p>
+        <small>Links synced to your Lab Configuration. Progress is stored locally on your device.</small>
+    </footer>
+
+    <script>
+        // Stage definitions with Direct URLs
+        const stages = [
+            {
+                key: 'pre',
+                name: 'Pre-Lab: Plan & Prime',
+                cognitive: 'Self-study to master key concepts before lab',
+                metacognitive: 'Planning – Prepare for hands-on learning',
+                url: 'prelab/prelab.html'
+            },
+            {
+                key: 'inlab',
+                name: 'In-Lab: Perform & Encode',
+                cognitive: 'Hands-on execution → observation → reasoning',
+                metacognitive: 'Encoding – Engage senses, apply reasoning',
+                url: 'during_lab/in-lab.html'
+            },
+            {
+                key: 'post',
+                name: 'Post-Lab: Reflect & Integrate',
+                cognitive: 'Connect lab experience to theory for deeper mastery',
+                metacognitive: 'Evaluating – Reflect, retrieve, and connect concepts',
+                url: 'postlab/postlab.html'
+            },
+            {
+                key: 'optional',
+                name: 'Optional: Regulate & Advance',
+                cognitive: 'Extra tasks for skill strengthening',
+                metacognitive: 'Regulating – Modify approaches for future mastery',
+                url: 'advanced/optional.html'
+            },
+            {
+                key: 'retrieval',
+                name: 'Retrieval Hub: Retrieve & Regulate',
+                cognitive: 'Weekly quiz + mock quiz → apply and recall concepts',
+                metacognitive: 'Retrieval & Self-Regulation – Practice recall, identify gaps, and adjust strategies',
+                url: 'retrieval/retrieval.html'
+            }
+        ];
+
+        // Load configuration
+        function loadConfig() {
+            const labStartISO = localStorage.getItem('labStartISO');
+            const labDurationMinutes = localStorage.getItem('labDurationMinutes') || '120';
+
+            if (labStartISO) {
+                document.getElementById('labStart').value = labStartISO.slice(0, 16);
+            }
+            document.getElementById('labDuration').value = labDurationMinutes;
+
+            return { labStartISO, labDurationMinutes: parseInt(labDurationMinutes) };
+        }
+
+        // Save configuration
+        function saveConfig() {
+            const labStartInput = document.getElementById('labStart').value;
+            const labDurationMinutes = document.getElementById('labDuration').value;
+
+            if (!labStartInput) {
+                alert('Please select a Lab Start Time');
+                return;
+            }
+
+            const labStartISO = new Date(labStartInput).toISOString();
+            localStorage.setItem('labStartISO', labStartISO);
+            localStorage.setItem('labDurationMinutes', labDurationMinutes);
+
+            const indicator = document.getElementById('savedIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => indicator.classList.remove('show'), 2000);
+
+            updateTable();
+        }
+
+        // Reset configuration
+        function resetConfig() {
+            if (confirm('Reset all configuration and progress data?')) {
+                localStorage.clear();
+                document.getElementById('labStart').value = '';
+                document.getElementById('labDuration').value = '120';
+                updateTable();
+            }
+        }
+
+        // Load completion status
+        function loadCompletion(key) {
+            return localStorage.getItem(`completed_${key}`) === 'true';
+        }
+
+        // Save completion status
+        function saveCompletion(key, value) {
+            localStorage.setItem(`completed_${key}`, value.toString());
+            updateTable();
+        }
+
+        // Get Sunday 11:59 PM of the same week
+        function getWeekEndSunday1159(startDate) {
+            const date = new Date(startDate);
+            const dayOfWeek = date.getDay();
+            const daysUntilSunday = dayOfWeek === 0 ? 7 : 7 - dayOfWeek;
+            const sunday = new Date(date);
+            sunday.setDate(date.getDate() + daysUntilSunday);
+            sunday.setHours(23, 59, 59, 999);
+            return sunday;
+        }
+
+        // Compute deadlines
+        function computeDeadlines(config) {
+            if (!config.labStartISO) return null;
+
+            const labStart = new Date(config.labStartISO);
+            const labEnd = new Date(labStart.getTime() + config.labDurationMinutes * 60000);
+            const inLabQuizDue = new Date(labStart.getTime() + 10 * 60000);
+            const postLabDue = new Date(labEnd.getTime() + 24 * 60 * 60000);
+            const retrievalDue = getWeekEndSunday1159(labStart);
+
+            return {
+                preLabDue: labStart,
+                inLabStart: labStart,
+                inLabEnd: labEnd,
+                inLabQuizDue: inLabQuizDue,
+                postLabDue: postLabDue,
+                retrievalDue: retrievalDue
+            };
+        }
+
+        // Get status
+        function getStatus(now, completed, key, deadlines) {
+            if (completed) return 'completed';
+            if (!deadlines) return 'neutral';
+
+            switch (key) {
+                case 'pre':
+                    if (now < deadlines.preLabDue) return 'inprogress';
+                    if (now >= deadlines.preLabDue) return 'late';
+                    break;
+                case 'inlab':
+                    if (now >= deadlines.inLabStart && now <= deadlines.inLabEnd) return 'inprogress';
+                    if (now > deadlines.inLabEnd) return 'late';
+                    if (now < deadlines.inLabStart) return 'neutral';
+                    break;
+                case 'post':
+                    if (now < deadlines.postLabDue) return 'inprogress';
+                    if (now >= deadlines.postLabDue) return 'late';
+                    break;
+                case 'optional':
+                    return 'neutral';
+                case 'retrieval':
+                    if (now < deadlines.retrievalDue) return 'inprogress';
+                    if (now >= deadlines.retrievalDue) return 'late';
+                    break;
+            }
+            return 'neutral';
+        }
+
+        // Format countdown
+        function formatCountdown(targetDate, isLate) {
+            if (!targetDate) return '';
+
+            const now = new Date();
+            const diff = targetDate - now;
+            const absDiff = Math.abs(diff);
+
+            const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((absDiff % (1000 * 60 * 60 * 24)) / (1 * 60 * 60));
+            const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+            let result = '';
+            if (days > 0) result += `${days}d `;
+            if (hours > 0) result += `${hours}h `;
+            if (days === 0 && minutes > 0) result += `${minutes}m`;
+
+            if (isLate) {
+                return `Closed ${result.trim()} ago`;
+            } else {
+                return `Due in ${result.trim()}`;
+            }
+        }
+
+        // Get countdown for stage
+        function getCountdown(key, deadlines, status) {
+            if (!deadlines || status === 'completed' || status === 'neutral') return '';
+
+            switch (key) {
+                case 'pre':
+                    return formatCountdown(deadlines.preLabDue, status === 'late');
+                case 'inlab':
+                    if (status === 'inprogress') {
+                        return formatCountdown(deadlines.inLabQuizDue, false);
+                    }
+                    return formatCountdown(deadlines.inLabEnd, status === 'late');
+                case 'post':
+                    return formatCountdown(deadlines.postLabDue, status === 'late');
+                case 'retrieval':
+                    return formatCountdown(deadlines.retrievalDue, status === 'late');
+                default:
+                    return '';
+            }
+        }
+
+        // Update table
+        function updateTable() {
+            const config = loadConfig();
+            const deadlines = computeDeadlines(config);
+            const now = new Date();
+            const tbody = document.getElementById('masteryTableBody');
+
+            tbody.innerHTML = '';
+
+            stages.forEach(stage => {
+                const completed = loadCompletion(stage.key);
+                const status = getStatus(now, completed, stage.key, deadlines);
+                const countdown = getCountdown(stage.key, deadlines, status);
+
+                const row = document.createElement('tr');
+                row.setAttribute('tabindex', '0');
+                row.setAttribute('role', 'link');
+                row.setAttribute('aria-label', `Open ${stage.name}`);
+
+                // Stage cell with status chip
+                const stageCell = document.createElement('td');
+                stageCell.innerHTML = `
+                    <div class="stage-cell">
+                        <span class="status-chip ${status}">${status.toUpperCase()}</span>
+                        <div>
+                            <div class="stage-name">${stage.name}</div>
+                            ${countdown ? `<div class="countdown-badge">${countdown}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                // Cognitive focus cell
+                const cognitiveCell = document.createElement('td');
+                cognitiveCell.textContent = stage.cognitive;
+
+                // Metacognitive role cell
+                const metacognitiveCell = document.createElement('td');
+                metacognitiveCell.textContent = stage.metacognitive;
+
+                // Checkbox cell
+                const checkboxCell = document.createElement('td');
+                checkboxCell.className = 'checkbox-cell';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = completed;
+                checkbox.setAttribute('aria-label', `Mark ${stage.name} as complete`);
+                checkbox.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    saveCompletion(stage.key, checkbox.checked);
+                });
+                checkboxCell.appendChild(checkbox);
+
+                // Add navigation handler to row
+                const navigate = () => window.location.href = stage.url;
+                row.addEventListener('click', navigate);
+                row.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigate();
+                    }
+                });
+
+                row.appendChild(stageCell);
+                row.appendChild(cognitiveCell);
+                row.appendChild(metacognitiveCell);
+                row.appendChild(checkboxCell);
+
+                tbody.appendChild(row);
+            });
+
+            updateDebugPanel(config, deadlines);
+        }
+
+        // Update debug panel
+        function updateDebugPanel(config, deadlines) {
+            const debugOutput = document.getElementById('debugOutput');
+            const now = new Date();
+
+            let output = `Current Time: ${now.toLocaleString()}\n\n`;
+            output += `Configuration:\n`;
+            output += `  Lab Start: ${config.labStartISO ? new Date(config.labStartISO).toLocaleString() : 'Not set'}\n`;
+            output += `  Lab Duration: ${config.labDurationMinutes} minutes\n\n`;
+
+            if (deadlines) {
+                output += `Computed Deadlines:\n`;
+                output += `  Pre-Lab Due: ${deadlines.preLabDue.toLocaleString()}\n`;
+                output += `  In-Lab Window: ${deadlines.inLabStart.toLocaleString()} - ${deadlines.inLabEnd.toLocaleString()}\n`;
+                output += `  In-Lab Quiz Due: ${deadlines.inLabQuizDue.toLocaleString()}\n`;
+                output += `  Post-Lab Due: ${deadlines.postLabDue.toLocaleString()}\n`;
+                output += `  Retrieval Due: ${deadlines.retrievalDue.toLocaleString()}\n\n`;
+            }
+
+            output += `Stage Statuses:\n`;
+            stages.forEach(stage => {
+                const completed = loadCompletion(stage.key);
+                const status = getStatus(now, completed, stage.key, deadlines);
+                output += `  ${stage.key}: ${status} (completed: ${completed})\n`;
+            });
+
+            debugOutput.textContent = output;
+        }
+
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Debug toggle
+        document.getElementById('debugToggle').addEventListener('click', () => {
+            const panel = document.getElementById('debugPanel');
+            panel.classList.toggle('active');
+        });
+
+        // Config buttons
+        document.getElementById('saveConfig').addEventListener('click', saveConfig);
+        document.getElementById('resetConfig').addEventListener('click', resetConfig);
+
+        // Initialize
+        function init() {
+            // Load theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+
+            // Load config and update table
+            loadConfig();
+            updateTable();
+
+            // Update table every minute
+            setInterval(updateTable, 60000);
+        }
+
+        init();
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>

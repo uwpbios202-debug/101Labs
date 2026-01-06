@@ -1,0 +1,3353 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeing & Sizing the Invisible: Metric Train-Tracks | UWP</title>
+    <style>
+        /* === UWP COLOR SYSTEM === */
+        :root {
+            --uwp-green: #016836;
+            /* PMS 349 */
+            --uwp-black: #000000;
+            --uwp-dark-green: #00502f;
+            --uwp-blue: #105877;
+            --uwp-warm-grey: #54534A;
+            --uwp-cool-grey: #DBD9D6;
+            --uwp-goldenrod: #FABA31;
+            --uwp-white-birch: #EFECE2;
+            --uwp-white: #ffffff;
+            --uwp-red: #c0392b;
+            --uwp-green-light: #27ae60;
+            --uwp-amber: #FFBF00;
+        }
+
+        /* === BASE STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--uwp-black);
+            background-color: var(--uwp-white-birch);
+            padding-bottom: 40px;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 10px;
+            background: var(--uwp-green);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1001;
+        }
+
+        .skip-link:focus {
+            top: 10px;
+        }
+
+        /* === TYPOGRAPHY === */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            color: var(--uwp-dark-green);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--uwp-dark-green);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--uwp-goldenrod);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--uwp-warm-grey);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--uwp-blue);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom 0.2s;
+        }
+
+        a:hover,
+        a:focus {
+            border-bottom: 1px solid var(--uwp-blue);
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        /* === LAYOUT === */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+            scroll-margin-top: 80px;
+        }
+
+        .section-content {
+            background-color: var(--uwp-white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--uwp-green);
+        }
+
+        /* === HEADER === */
+        header {
+            background-color: var(--uwp-green);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: var(--uwp-cool-grey);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .brand-bar {
+            height: 4px;
+            width: 100%;
+            background-color: var(--uwp-goldenrod);
+            margin-top: 0.5rem;
+        }
+
+        nav {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-bottom: none;
+        }
+
+        /* === CARDS === */
+        .card {
+            background-color: var(--uwp-white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--uwp-cool-grey);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--uwp-cool-grey);
+        }
+
+        /* === GOAL SECTION === */
+        .goal-statement {
+            font-size: 1.2rem;
+            color: var(--uwp-dark-green);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .success-criteria {
+            background-color: var(--uwp-white-birch);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--uwp-goldenrod);
+        }
+
+        /* === REFLECTION === */
+        .reflection-area {
+            margin-bottom: 1.5rem;
+        }
+
+        .reflection-prompt {
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid var(--uwp-cool-grey);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: 2px solid var(--uwp-green);
+            border-color: var(--uwp-green);
+        }
+
+        .reflection-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: var(--uwp-white-birch);
+            border-radius: 6px;
+        }
+
+        .lock-message {
+            padding: 1rem;
+            background-color: var(--uwp-cool-grey);
+            border-radius: 6px;
+            text-align: center;
+            color: var(--uwp-warm-grey);
+            margin-top: 1rem;
+        }
+
+        /* === ACTIVITIES === */
+        .activity-input {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--uwp-white-birch);
+            border-radius: 6px;
+        }
+
+        .measurement-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+
+        .conversion-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .calculator-card {
+            border: 1px solid var(--uwp-cool-grey);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .calculator-title {
+            background-color: var(--uwp-blue);
+            color: white;
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .calculator-body {
+            padding: 1rem;
+        }
+
+        /* === TRAIN TRACK UI === */
+        .train-track-container {
+            margin: 1rem 0;
+        }
+
+        .track-label {
+            font-size: 0.9rem;
+            color: var(--uwp-warm-grey);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .train-track {
+            display: flex;
+            align-items: center;
+            background-color: var(--uwp-white-birch);
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            position: relative;
+            min-height: 70px;
+        }
+
+        .track-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .track-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 80%;
+            background-color: var(--uwp-warm-grey);
+            opacity: 0.3;
+        }
+
+        .track-line {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            right: 10px;
+            height: 2px;
+            background-color: var(--uwp-green);
+            z-index: 0;
+        }
+
+        .fraction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .numerator,
+        .denominator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            width: 100%;
+        }
+
+        .denominator {
+            border-top: 1px solid var(--uwp-black);
+        }
+
+        .fraction-input {
+            width: 70px;
+            padding: 5px;
+            border: 1px solid var(--uwp-cool-grey);
+            border-radius: 3px;
+            text-align: center;
+            margin: 0 3px;
+        }
+
+        .fraction-input:focus {
+            outline: 2px solid var(--uwp-green);
+            border-color: var(--uwp-green);
+        }
+
+        .power-of-ten {
+            display: flex;
+            align-items: baseline;
+            margin: 0 5px;
+        }
+
+        .exponent-input {
+            width: 40px;
+            padding: 5px;
+            border: 1px solid var(--uwp-cool-grey);
+            border-radius: 3px;
+            text-align: center;
+            margin-left: 2px;
+        }
+
+        .track-connector {
+            text-align: center;
+            margin: 5px 0;
+            color: var(--uwp-warm-grey);
+            font-size: 1.2rem;
+        }
+
+        /* === UNIT CANCELLATION STYLES === */
+        .unit-symbol {
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 3px;
+            transition: all 0.2s;
+            position: relative;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .unit-symbol:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .unit-symbol.selected-amber {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unit-symbol.selected-amber::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                transparent 45%,
+                var(--uwp-amber) 45%,
+                var(--uwp-amber) 55%,
+                transparent 55%
+            );
+            pointer-events: none;
+        }
+
+        .unit-symbol.cancelled-green {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unit-symbol.cancelled-green::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                transparent 45%,
+                var(--uwp-green-light) 45%,
+                var(--uwp-green-light) 55%,
+                transparent 55%
+            );
+            pointer-events: none;
+        }
+
+        /* === RESULTS === */
+        .result-display {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--uwp-white-birch);
+            border-radius: 4px;
+        }
+
+        .result-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-label {
+            width: 160px;
+            font-size: 0.9rem;
+            color: var(--uwp-warm-grey);
+        }
+
+        .result-value {
+            flex: 1;
+            font-family: monospace;
+            padding: 5px 10px;
+            background-color: white;
+            border-radius: 3px;
+            border: 1px solid var(--uwp-cool-grey);
+        }
+
+        .student-input {
+            flex: 1;
+            padding: 5px 10px;
+            border: 1px solid var(--uwp-cool-grey);
+            border-radius: 3px;
+            font-family: inherit;
+        }
+
+        .student-input.correct {
+            border-color: var(--uwp-green-light);
+            background-color: rgba(39, 174, 96, 0.1);
+        }
+
+        .student-input.incorrect {
+            border-color: var(--uwp-red);
+            background-color: rgba(192, 57, 43, 0.1);
+        }
+
+        .sense-check {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--uwp-cool-grey);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .instructor-check {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--uwp-cool-grey);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructor-input {
+            flex: 1;
+            max-width: 200px;
+            padding: 5px;
+            border: 1px solid var(--uwp-cool-grey);
+            border-radius: 3px;
+        }
+
+        /* === REFERENCE TABLE === */
+        .prefix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .prefix-table th {
+            background-color: var(--uwp-green);
+            color: white;
+            text-align: left;
+            padding: 10px;
+            font-weight: 600;
+        }
+
+        .prefix-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--uwp-cool-grey);
+        }
+
+        .prefix-table tr:nth-child(even) {
+            background-color: var(--uwp-white-birch);
+        }
+
+        /* === BUTTONS === */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:focus {
+            outline: 3px solid var(--uwp-goldenrod);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background-color: var(--uwp-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--uwp-dark-green);
+        }
+
+        .btn-secondary {
+            background-color: var(--uwp-blue);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0a4660;
+        }
+
+        .btn-highlight {
+            background-color: var(--uwp-goldenrod);
+            color: var(--uwp-black);
+        }
+
+        .btn-highlight:hover {
+            background-color: #e0a71f;
+        }
+
+        .btn-danger {
+            background-color: var(--uwp-red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #a33226;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        /* === FEEDBACK === */
+        .feedback {
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .feedback-success {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--uwp-green-light);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .feedback-error {
+            background-color: rgba(192, 57, 43, 0.1);
+            color: var(--uwp-red);
+            border: 1px solid rgba(192, 57, 43, 0.3);
+        }
+
+        .saved-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--uwp-green);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .saved-indicator.show {
+            opacity: 1;
+        }
+
+        .input-hint {
+            font-size: 0.85rem;
+            color: var(--uwp-warm-grey);
+            margin-top: 3px;
+        }
+
+        /* === UTILITIES === */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .status-message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .conversion-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .train-track {
+                flex-direction: column;
+                align-items: flex-start;
+                min-height: auto;
+            }
+
+            .track-step {
+                min-width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .track-step:not(:last-child)::after {
+                display: none;
+            }
+
+            .track-line {
+                display: none;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .conversion-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1 class="header-title">🚆 Seeing & Sizing the Invisible: Metric Train‑Tracks</h1>
+                <p class="header-subtitle">Set the units. Move the powers. Check the sense.</p>
+                <div class="brand-bar"></div>
+
+                <nav aria-label="Main navigation">
+                    <ul class="nav-links">
+                        <li><a href="#goal">Goal</a></li>
+                        <li><a href="#reflection">Reflection</a></li>
+                        <li><a href="#activity-1">Activity 1: Table in meters</a></li>
+                        <li><a href="#activity-2">Activity 2: Coverslip in cm</a></li>
+                        <li><a href="#reference">Reference</a></li>
+                        <li><a href="#wrap-up">Wrap‑Up</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="container">
+        <!-- Goal Section -->
+        <section id="goal">
+            <h2>Goal</h2>
+            <div class="section-content">
+                <p class="goal-statement">
+                    Accurately convert real‑world microscope‑related measurements across SI prefixes using a structured
+                    'train‑track' method, and explain your reasoning.
+                </p>
+
+                <div class="success-criteria">
+                    <h3>Success Criteria</h3>
+                    <ul>
+                        <li>You enter your own measured value (m or cm).</li>
+                        <li>You complete conversions to km, m, cm, mm, µm, nm using exponential notation.</li>
+                        <li>You verify unit cancellation and exponent sign flips, and pass all checks.</li>
+                        <li>You explain your reasoning through reflection questions.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reflection Section -->
+        <section id="reflection">
+            <h2>Metacognitive Reflection</h2>
+            <div class="section-content">
+                <p>Complete these reflection questions before starting the activities. This will unlock the conversion
+                    calculators.</p>
+
+                <div class="reflection-area">
+                    <div class="reflection-prompt">
+                        <h4>1. What steps will you follow to set up units so they cancel correctly?</h4>
+                        <textarea id="reflection-1" placeholder="Type your answer here..."></textarea>
+                    </div>
+
+                    <div class="reflection-prompt">
+                        <h4>2. How will you keep exponent signs consistent when moving powers between
+                            numerator/denominator?</h4>
+                        <textarea id="reflection-2" placeholder="Type your answer here..."></textarea>
+                    </div>
+
+                    <div class="reflection-prompt">
+                        <h4>3. What quick 'biological sense checks' help you catch unrealistic results?</h4>
+                        <textarea id="reflection-3" placeholder="Type your answer here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="reflection-toggle">
+                    <input type="checkbox" id="reflection-complete" aria-describedby="reflection-desc">
+                    <label for="reflection-complete"><strong>Reflection Complete</strong> (check to unlock
+                        activities)</label>
+                </div>
+                <p id="reflection-desc" class="input-hint">Checking this box will unlock the activity calculators below.
+                </p>
+
+                <div id="activities-locked" class="lock-message">
+                    <p>Complete the reflection questions above and check the box to unlock the activities.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity 1: Table Diameter -->
+        <section id="activity-1">
+            <h2>Activity 1: Table Diameter (Measured in meters)</h2>
+            <div class="section-content">
+                <p>Using a meter stick, measure the diameter of the lab table.</p>
+
+                <div class="activity-input">
+                    <h4>Your measured table diameter:</h4>
+                    <div class="measurement-input">
+                        <input type="number" id="table-diameter" step="0.001" min="0" placeholder="e.g., 1.5">
+                        <span><strong>meters</strong></span>
+                    </div>
+                    <p class="input-hint">Enter the diameter you measured in the lab. This value will be used for all
+                        conversions below.</p>
+                </div>
+
+                <div id="activity-1-calculators" style="display: none;">
+                    <p>Convert your table diameter measurement to the following units using the train‑track method:</p>
+
+                    <div
+                        style="background-color: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 2px solid #e9ecef; margin: 1.5rem 0;">
+                        <h4 style="color: #016836; margin-bottom: 1rem;">✏️ Student Instructions:</h4>
+                        <p><strong>For each conversion below, follow these steps:</strong></p>
+                        <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                            <li><strong>Type the target unit in the numerator</strong> (top row, last column) - this is the unit you're converting TO</li>
+                            <li><strong>Type the starting unit in the denominator</strong> (bottom row, last column) - this should be the unit you're converting FROM</li>
+                            <li><strong>Fill in the conversion factor in the denominator</strong> (bottom row, third column) - this is the power of 10 that relates the units</li>
+                            <li><strong>Click the units to cancel them</strong> - first click a unit (gets amber line), then click its match (both turn green when correct)</li>
+                            <li>Calculate the final exponent by moving the denominator power up and flipping its sign</li>
+                        </ol>
+                    </div>
+
+                    <div class="conversion-cards">
+                        <!-- m → km -->
+                        <div class="calculator-card" data-conversion="m-km">
+                            <div class="calculator-title">m → km</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="m">m</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?" aria-label="Exponent for kilometer conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 1.5e3">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="m-km">Check
+                                            Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 0.0015">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="m-km">Check
+                                            Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-km-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-km-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="m-km-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="m-km"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- m → nm -->
+                        <div class="calculator-card" data-conversion="m-nm">
+                            <div class="calculator-title">m → nm</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="m">m</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?" aria-label="Exponent for nanometer conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 1.5e9">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="m-nm">Check
+                                            Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 1500000000">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="m-nm">Check
+                                            Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-nm-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-nm-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="m-nm-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="m-nm"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- m → µm -->
+                        <div class="calculator-card" data-conversion="m-µm">
+                            <div class="calculator-title">m → µm</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="m">m</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?" aria-label="Exponent for micrometer conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 1.5e6">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="m-µm">Check
+                                            Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 1500000">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="m-µm">Check
+                                            Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-µm-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-µm-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="m-µm-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="m-µm"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- m → mm -->
+                        <div class="calculator-card" data-conversion="m-mm">
+                            <div class="calculator-title">m → mm</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="m">m</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?" aria-label="Exponent for millimeter conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 1.5e3">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="m-mm">Check
+                                            Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 1500">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="m-mm">Check
+                                            Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-mm-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-mm-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="m-mm-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="m-mm"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- m → cm -->
+                        <div class="calculator-card" data-conversion="m-cm">
+                            <div class="calculator-title">m → cm</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="m">m</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?" aria-label="Exponent for centimeter conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value="" readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 1.5e2">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="m-cm">Check
+                                            Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 150">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="m-cm">Check
+                                            Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-cm-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="m-cm-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="m-cm-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="m-cm"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instructor-check">
+                        <span>Instructor check & initials:</span>
+                        <input type="text" class="instructor-input" id="activity-1-initials" placeholder="Initials"
+                            maxlength="3">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity 2: Coverslip Side -->
+        <section id="activity-2">
+            <h2>Activity 2: Coverslip Side (Measured in centimeters)</h2>
+            <div class="section-content">
+                <p>Using a ruler, measure the size of a side of a plastic coverslip.</p>
+
+                <div class="activity-input">
+                    <h4>Your measured coverslip side length:</h4>
+                    <div class="measurement-input">
+                        <input type="number" id="coverslip-length" step="0.01" min="0" placeholder="e.g., 2.2">
+                        <span><strong>centimeters</strong></span>
+                    </div>
+                    <p class="input-hint">Enter the side length you measured in the lab. This value will be used for all
+                        conversions below.</p>
+                </div>
+
+                <div id="activity-2-calculators" style="display: none;">
+                    <p>Convert your coverslip side length measurement to the following units using the train‑track
+                        method:</p>
+
+                    <div class="conversion-cards">
+                        <!-- cm → m -->
+                        <div class="calculator-card" data-conversion="cm-m">
+                            <div class="calculator-title">cm → m</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="cm">cm</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?" aria-label="Exponent for meter conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 2.2e-2">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="cm-m">Check Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 0.022">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="cm-m">Check Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-m-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-m-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="cm-m-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="cm-m"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- cm → nm -->
+                        <div class="calculator-card" data-conversion="cm-nm">
+                            <div class="calculator-title">cm → nm</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="cm">cm</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?"
+                                                            aria-label="Exponent for nanometer conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 2.2e7">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="cm-nm">Check Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 22000000">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="cm-nm">Check Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-nm-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-nm-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="cm-nm-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="cm-nm"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- cm → µm -->
+                        <div class="calculator-card" data-conversion="cm-µm">
+                            <div class="calculator-title">cm → µm</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="cm">cm</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?"
+                                                            aria-label="Exponent for micrometer conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 2.2e4">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="cm-µm">Check Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 22000">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="cm-µm">Check Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-µm-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-µm-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="cm-µm-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="cm-µm"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- cm → mm -->
+                        <div class="calculator-card" data-conversion="cm-mm">
+                            <div class="calculator-title">cm → mm</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="cm">cm</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?"
+                                                            aria-label="Exponent for millimeter conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 2.2e1">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="cm-mm">Check Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 22">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="cm-mm">Check Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-mm-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-mm-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="cm-mm-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="cm-mm"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- cm → km -->
+                        <div class="calculator-card" data-conversion="cm-km">
+                            <div class="calculator-title">cm → km</div>
+                            <div class="calculator-body">
+                                <div class="train-track-container">
+                                    <div class="track-label">Step 1: Set up Units & Powers</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                    <span class="unit-symbol start-unit" data-unit="cm">cm</span>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <span>1</span>
+                                                    <input type="text" class="fraction-input target-unit-input" placeholder="unit" value="">
+                                                </div>
+                                                <div class="denominator">
+                                                    <div class="power-of-ten">
+                                                        <span>10</span>
+                                                        <input type="number" class="exponent-input setup-exponent"
+                                                            placeholder="?"
+                                                            aria-label="Exponent for kilometer conversion">
+                                                    </div>
+                                                    <input type="text" class="fraction-input cancel-unit-input" placeholder="unit" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                                    <div class="track-label">Step 2: Rewrite</div>
+                                    <div class="train-track">
+                                        <div class="track-line"></div>
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <input type="text" class="fraction-input start-value" value=""
+                                                        readonly>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="track-step">
+                                            <div class="fraction">
+                                                <div class="numerator">
+                                                    <div class="power-of-ten">
+                                                        <span>× 10</span>
+                                                        <input type="number" class="exponent-input flipped-exponent"
+                                                            placeholder="?" aria-label="Flipped exponent">
+                                                    </div>
+                                                </div>
+                                                <div class="denominator">1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-display">
+                                    <div class="result-row">
+                                        <span class="result-label">Scientific notation:</span>
+                                        <input type="text" class="student-input sci-input" placeholder="e.g., 2.2e-5">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-sci-btn"
+                                            data-conversion="cm-km">Check Scientific</button>
+                                    </div>
+
+                                    <div class="result-row" style="margin-top: 10px;">
+                                        <span class="result-label">Decimal form:</span>
+                                        <input type="text" class="student-input dec-input" placeholder="e.g., 0.000022">
+                                    </div>
+                                    <div class="btn-container">
+                                        <button class="btn btn-secondary btn-small check-dec-btn"
+                                            data-conversion="cm-km">Check Decimal</button>
+                                    </div>
+
+                                    <div class="sense-check">
+                                        <span class="result-label">Sense check:</span>
+                                        <div class="radio-group">
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-km-sense" value="reasonable">
+                                                <span>Looks reasonable</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="cm-km-sense" value="not-sure">
+                                                <span>Not sure</span>
+                                            </label>
+                                        </div>
+                                        <textarea class="sense-note" placeholder="Brief note about your sense check..."
+                                            rows="2"></textarea>
+                                    </div>
+
+                                    <div class="feedback" id="cm-km-feedback"></div>
+
+                                    <button class="btn btn-primary calculate-btn" data-conversion="cm-km"
+                                        style="margin-top: 10px;">Verify Setup & Calculate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instructor-check">
+                        <span>Instructor check & initials:</span>
+                        <input type="text" class="instructor-input" id="activity-2-initials" placeholder="Initials"
+                            maxlength="3">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reference Panel -->
+        <section id="reference">
+            <h2>SI Prefix Reference Table</h2>
+            <div class="section-content">
+                <p>Use this reference table for metric prefix conversions. Remember: moving from a smaller to larger
+                    prefix means a negative exponent, and from larger to smaller means a positive exponent.</p>
+
+                <table class="prefix-table" aria-label="SI Metric Prefixes">
+                    <thead>
+                        <tr>
+                            <th scope="col">Prefix</th>
+                            <th scope="col">Symbol</th>
+                            <th scope="col">Power of 10</th>
+                            <th scope="col">Decimal Equivalent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>giga</td>
+                            <td>G</td>
+                            <td>10<sup>9</sup></td>
+                            <td>1,000,000,000</td>
+                        </tr>
+                        <tr>
+                            <td>mega</td>
+                            <td>M</td>
+                            <td>10<sup>6</sup></td>
+                            <td>1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td>kilo</td>
+                            <td>k</td>
+                            <td>10<sup>3</sup></td>
+                            <td>1,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Base</strong> (meter, gram, liter)</td>
+                            <td>(m, g, L)</td>
+                            <td>10<sup>0</sup></td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>deci</td>
+                            <td>d</td>
+                            <td>10<sup>-1</sup></td>
+                            <td>0.1</td>
+                        </tr>
+                        <tr>
+                            <td>centi</td>
+                            <td>c</td>
+                            <td>10<sup>-2</sup></td>
+                            <td>0.01</td>
+                        </tr>
+                        <tr>
+                            <td>milli</td>
+                            <td>m</td>
+                            <td>10<sup>-3</sup></td>
+                            <td>0.001</td>
+                        </tr>
+                        <tr>
+                            <td>micro</td>
+                            <td>µ</td>
+                            <td>10<sup>-6</sup></td>
+                            <td>0.000001</td>
+                        </tr>
+                        <tr>
+                            <td>nano</td>
+                            <td>n</td>
+                            <td>10<sup>-9</sup></td>
+                            <td>0.000000001</td>
+                        </tr>
+                        <tr>
+                            <td>pico</td>
+                            <td>p</td>
+                            <td>10<sup>-12</sup></td>
+                            <td>0.000000000001</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="input-hint" style="margin-top: 1rem;">
+                    <p><strong>Tip:</strong> When moving a power from denominator to numerator (or vice versa), flip the
+                        sign of the exponent.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wrap-Up Section -->
+        <section id="wrap-up">
+            <h2>Wrap‑Up</h2>
+            <div class="section-content">
+                <div class="reflection-prompt">
+                    <h4>What I know now about metric conversions:</h4>
+                    <textarea id="wrapup-reflection-1"
+                        placeholder="Reflect on what you've learned about the train-track method and metric conversions..."></textarea>
+                </div>
+
+                <div class="reflection-prompt">
+                    <h4>One thing I'll do differently next time:</h4>
+                    <textarea id="wrapup-reflection-2"
+                        placeholder="What would you change in your approach for future conversions?"></textarea>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn btn-primary" id="export-json">
+                        📥 Export Notes (JSON)
+                    </button>
+                    <button class="btn btn-secondary" id="print-pdf">
+                        🖨️ Print PDF
+                    </button>
+                    <button class="btn btn-danger" id="reset-all">
+                        🔄 Reset All
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="saved-indicator" id="saved-indicator">✓ Data saved</div>
+
+    <script>
+        // === APPLICATION STATE AND CONFIGURATION ===
+        const AppState = {
+            // Expected exponents for each conversion
+            conversionExponents: {
+                // Activity 1: m to...
+                'm-km': 3,    // 1 km = 10^3 m
+                'm-nm': -9,   // 1 nm = 10^-9 m
+                'm-µm': -6,   // 1 µm = 10^-6 m
+                'm-mm': -3,   // 1 mm = 10^-3 m
+                'm-cm': -2,   // 1 cm = 10^-2 m
+
+                // Activity 2: cm to...
+                'cm-m': 2,    // 1 m = 10^2 cm
+                'cm-nm': -7,  // 1 nm = 10^-7 cm
+                'cm-µm': -4,  // 1 µm = 10^-4 cm
+                'cm-mm': -1,  // 1 mm = 10^-1 cm
+                'cm-km': 5    // 1 km = 10^5 cm
+            },
+
+            // Expected units for each conversion
+            conversionUnits: {
+                // Activity 1: m to...
+                'm-km': { startUnit: 'm', targetUnit: 'km', cancelUnit: 'm' },
+                'm-nm': { startUnit: 'm', targetUnit: 'nm', cancelUnit: 'm' },
+                'm-µm': { startUnit: 'm', targetUnit: 'µm', cancelUnit: 'm' },
+                'm-mm': { startUnit: 'm', targetUnit: 'mm', cancelUnit: 'm' },
+                'm-cm': { startUnit: 'm', targetUnit: 'cm', cancelUnit: 'm' },
+
+                // Activity 2: cm to...
+                'cm-m': { startUnit: 'cm', targetUnit: 'm', cancelUnit: 'cm' },
+                'cm-nm': { startUnit: 'cm', targetUnit: 'nm', cancelUnit: 'cm' },
+                'cm-µm': { startUnit: 'cm', targetUnit: 'µm', cancelUnit: 'cm' },
+                'cm-mm': { startUnit: 'cm', targetUnit: 'mm', cancelUnit: 'cm' },
+                'cm-km': { startUnit: 'cm', targetUnit: 'km', cancelUnit: 'cm' }
+            },
+
+            // Unit cancellation state
+            cancellationState: {},
+            
+            // Current application state
+            isReflectionComplete: false,
+            measurements: {
+                tableDiameter: null,
+                coverslipLength: null
+            },
+
+            // Local storage key
+            storageKey: 'uwp_metric_train_tracks'
+        };
+
+        // === DOM ELEMENTS ===
+        const elements = {
+            reflectionComplete: document.getElementById('reflection-complete'),
+            activitiesLocked: document.getElementById('activities-locked'),
+            activity1Calculators: document.getElementById('activity-1-calculators'),
+            activity2Calculators: document.getElementById('activity-2-calculators'),
+            tableDiameterInput: document.getElementById('table-diameter'),
+            coverslipLengthInput: document.getElementById('coverslip-length'),
+            savedIndicator: document.getElementById('saved-indicator'),
+            exportJsonBtn: document.getElementById('export-json'),
+            printPdfBtn: document.getElementById('print-pdf'),
+            resetAllBtn: document.getElementById('reset-all')
+        };
+
+        // === UNIT CANCELLATION LOGIC ===
+        let selectedUnit = null;
+
+        function handleUnitClick(unitElement, conversionId) {
+            if (!AppState.isReflectionComplete) return;
+
+            const unitType = unitElement.classList.contains('start-unit') ? 'start' : 'cancel';
+            
+            // If no unit is currently selected
+            if (!selectedUnit) {
+                // Mark this unit as selected with amber line
+                unitElement.classList.add('selected-amber');
+                selectedUnit = {
+                    element: unitElement,
+                    conversionId: conversionId,
+                    type: unitType
+                };
+            } else {
+                // A unit is already selected, check if this is a match
+                if (selectedUnit.conversionId === conversionId && 
+                    selectedUnit.type !== unitType) {
+                    
+                    // Get the unit values
+                    let startUnitValue, cancelUnitValue;
+                    
+                    if (selectedUnit.type === 'start') {
+                        startUnitValue = selectedUnit.element.textContent.toLowerCase().trim();
+                        cancelUnitValue = unitElement.value ? unitElement.value.toLowerCase().trim() : 
+                                         (unitElement.textContent ? unitElement.textContent.toLowerCase().trim() : '');
+                    } else {
+                        startUnitValue = unitElement.textContent ? unitElement.textContent.toLowerCase().trim() : '';
+                        cancelUnitValue = selectedUnit.element.value ? selectedUnit.element.value.toLowerCase().trim() : 
+                                         (selectedUnit.element.textContent ? selectedUnit.element.textContent.toLowerCase().trim() : '');
+                    }
+                    
+                    // Check if units match
+                    if (startUnitValue === cancelUnitValue && startUnitValue !== '') {
+                        // Success! Change both to green
+                        selectedUnit.element.classList.remove('selected-amber');
+                        selectedUnit.element.classList.add('cancelled-green');
+                        
+                        unitElement.classList.remove('selected-amber');
+                        unitElement.classList.add('cancelled-green');
+                        
+                        // Store cancellation state
+                        AppState.cancellationState[conversionId] = true;
+                        
+                        // Show success feedback
+                        const feedbackEl = document.getElementById(`${conversionId}-feedback`);
+                        if (feedbackEl) {
+                            feedbackEl.textContent = '✓ Units cancelled successfully!';
+                            feedbackEl.className = 'feedback feedback-success';
+                        }
+                    } else {
+                        // Failure - units don't match
+                        selectedUnit.element.classList.remove('selected-amber');
+                        
+                        // Show error feedback
+                        const feedbackEl = document.getElementById(`${conversionId}-feedback`);
+                        if (feedbackEl) {
+                            feedbackEl.textContent = 'Units do not match. Try again.';
+                            feedbackEl.className = 'feedback feedback-error';
+                        }
+                    }
+                    
+                    // Reset selection
+                    selectedUnit = null;
+                } else {
+                    // Clicked on same card but wrong type or different card
+                    selectedUnit.element.classList.remove('selected-amber');
+                    selectedUnit = null;
+                    
+                    // Start new selection with this unit
+                    unitElement.classList.add('selected-amber');
+                    selectedUnit = {
+                        element: unitElement,
+                        conversionId: conversionId,
+                        type: unitType
+                    };
+                }
+            }
+            
+            saveToLocalStorage();
+        }
+
+        // === INITIALIZATION ===
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load saved data from localStorage
+            loadSavedData();
+
+            // Set up event listeners
+            initializeEventListeners();
+
+            // Update all calculator start values
+            updateAllStartValues();
+
+            // Set up tooltips for exponent inputs
+            setupTooltips();
+            
+            // Initialize cancellation state
+            initializeCancellationState();
+        });
+
+        function initializeCancellationState() {
+            // Initialize cancellation state for all conversions
+            Object.keys(AppState.conversionUnits).forEach(conversionId => {
+                if (!AppState.cancellationState[conversionId]) {
+                    AppState.cancellationState[conversionId] = false;
+                }
+            });
+        }
+
+        // === EVENT LISTENERS ===
+        function initializeEventListeners() {
+            // Reflection completion toggle
+            elements.reflectionComplete.addEventListener('change', function () {
+                AppState.isReflectionComplete = this.checked;
+                toggleActivitiesLock();
+                saveToLocalStorage();
+            });
+
+            // Measurement inputs
+            elements.tableDiameterInput.addEventListener('input', function () {
+                AppState.measurements.tableDiameter = parseFloat(this.value) || null;
+                updateAllStartValues();
+                saveToLocalStorage();
+            });
+
+            elements.coverslipLengthInput.addEventListener('input', function () {
+                AppState.measurements.coverslipLength = parseFloat(this.value) || null;
+                updateAllStartValues();
+                saveToLocalStorage();
+            });
+
+            // Unit click events
+            document.querySelectorAll('.unit-symbol').forEach(unit => {
+                unit.addEventListener('click', function() {
+                    const card = this.closest('.calculator-card');
+                    const conversionId = card.getAttribute('data-conversion');
+                    handleUnitClick(this, conversionId);
+                });
+            });
+
+            // Unit input events (for cancel units)
+            document.querySelectorAll('.cancel-unit-input').forEach(input => {
+                input.addEventListener('click', function() {
+                    const card = this.closest('.calculator-card');
+                    const conversionId = card.getAttribute('data-conversion');
+                    handleUnitClick(this, conversionId);
+                });
+                
+                // Also validate on blur
+                input.addEventListener('blur', function() {
+                    validateUnitInput(this);
+                });
+            });
+
+            // Target unit input validation
+            document.querySelectorAll('.target-unit-input').forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateUnitInput(this);
+                });
+            });
+
+            // Check scientific notation buttons
+            document.querySelectorAll('.check-sci-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const conversion = this.getAttribute('data-conversion');
+                    checkScientificNotation(conversion);
+                });
+            });
+
+            // Check decimal buttons
+            document.querySelectorAll('.check-dec-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const conversion = this.getAttribute('data-conversion');
+                    checkDecimalForm(conversion);
+                });
+            });
+
+            // Verify setup & calculate buttons
+            document.querySelectorAll('.calculate-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const conversion = this.getAttribute('data-conversion');
+                    verifySetupAndCalculate(conversion);
+                });
+            });
+
+            // Exponent inputs - validate on blur
+            document.querySelectorAll('.exponent-input').forEach(input => {
+                input.addEventListener('blur', function () {
+                    validateExponentInput(this);
+                });
+            });
+
+            // Export buttons
+            elements.exportJsonBtn.addEventListener('click', exportDataAsJson);
+            elements.printPdfBtn.addEventListener('click', printAsPdf);
+            elements.resetAllBtn.addEventListener('click', resetAllData);
+
+            // Auto-save for text areas
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.addEventListener('input', debounce(saveToLocalStorage, 1000));
+            });
+
+            // Auto-save for radio buttons
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', debounce(saveToLocalStorage, 500));
+            });
+
+            // Auto-save for instructor initials
+            document.querySelectorAll('.instructor-input').forEach(input => {
+                input.addEventListener('input', debounce(saveToLocalStorage, 1000));
+            });
+
+            // Auto-save for student input fields
+            document.querySelectorAll('.student-input').forEach(input => {
+                input.addEventListener('input', debounce(saveToLocalStorage, 1000));
+            });
+            
+            // Auto-save for unit inputs
+            document.querySelectorAll('.target-unit-input, .cancel-unit-input').forEach(input => {
+                input.addEventListener('input', debounce(saveToLocalStorage, 1000));
+            });
+        }
+
+        // === VALIDATION FUNCTIONS ===
+        function validateUnitInput(inputElement) {
+            const value = inputElement.value.trim().toLowerCase();
+            const card = inputElement.closest('.calculator-card');
+            const conversionId = card.getAttribute('data-conversion');
+            const expectedUnits = AppState.conversionUnits[conversionId];
+            
+            if (!expectedUnits) return;
+            
+            let expectedUnit = '';
+            if (inputElement.classList.contains('target-unit-input')) {
+                expectedUnit = expectedUnits.targetUnit.toLowerCase();
+            } else if (inputElement.classList.contains('cancel-unit-input')) {
+                expectedUnit = expectedUnits.cancelUnit.toLowerCase();
+            }
+            
+            if (value === expectedUnit) {
+                inputElement.style.borderColor = 'var(--uwp-green-light)';
+                inputElement.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+            } else if (value === '') {
+                inputElement.style.borderColor = '';
+                inputElement.style.backgroundColor = '';
+            } else {
+                inputElement.style.borderColor = 'var(--uwp-red)';
+                inputElement.style.backgroundColor = 'rgba(192, 57, 43, 0.1)';
+            }
+        }
+
+        // === ACTIVITY LOCK/UNLOCK ===
+        function toggleActivitiesLock() {
+            if (AppState.isReflectionComplete) {
+                elements.activitiesLocked.style.display = 'none';
+                elements.activity1Calculators.style.display = 'block';
+                elements.activity2Calculators.style.display = 'block';
+            } else {
+                elements.activitiesLocked.style.display = 'block';
+                elements.activity1Calculators.style.display = 'none';
+                elements.activity2Calculators.style.display = 'none';
+            }
+        }
+
+        // === UPDATE START VALUES ===
+        function updateAllStartValues() {
+            // Update Activity 1 calculators (m → ...)
+            const tableDiameter = AppState.measurements.tableDiameter;
+            if (tableDiameter !== null) {
+                document.querySelectorAll('[data-conversion^="m-"] .start-value').forEach(input => {
+                    input.value = tableDiameter;
+                });
+            }
+
+            // Update Activity 2 calculators (cm → ...)
+            const coverslipLength = AppState.measurements.coverslipLength;
+            if (coverslipLength !== null) {
+                document.querySelectorAll('[data-conversion^="cm-"] .start-value').forEach(input => {
+                    input.value = coverslipLength;
+                });
+            }
+        }
+
+        // === VALIDATION FUNCTIONS ===
+        function checkScientificNotation(conversionId) {
+            const card = document.querySelector(`[data-conversion="${conversionId}"]`);
+            if (!card) return;
+
+            // Get the start value
+            const startValueInput = card.querySelector('.start-value');
+            const startValue = parseFloat(startValueInput.value);
+
+            if (isNaN(startValue) || startValue <= 0) {
+                showFeedback(conversionId, 'Please enter a valid starting measurement in the activity section above.', 'error');
+                return;
+            }
+
+            // Get student's input
+            const sciInput = card.querySelector('.sci-input');
+            const studentSci = sciInput.value.trim();
+
+            if (!studentSci) {
+                showFeedback(conversionId, 'Please enter a scientific notation answer.', 'error');
+                sciInput.classList.remove('correct', 'incorrect');
+                return;
+            }
+
+            // Parse scientific notation (accepts 1.5e3, 1.5E3, 1.5e+3, etc.)
+            let studentValue;
+            try {
+                studentValue = parseFloat(studentSci);
+                if (isNaN(studentValue)) {
+                    throw new Error('Invalid number');
+                }
+            } catch (e) {
+                showFeedback(conversionId, 'Invalid scientific notation format. Use format like: 1.5e3 or 1.5E3', 'error');
+                sciInput.classList.add('incorrect');
+                sciInput.classList.remove('correct');
+                return;
+            }
+
+            // Calculate expected value
+            const expectedExponent = AppState.conversionExponents[conversionId];
+            const expectedValue = startValue * Math.pow(10, -expectedExponent); // Note: flipped exponent
+
+            // Compare with tolerance
+            const tolerance = 0.001 * Math.abs(expectedValue); // 0.1% tolerance
+            const diff = Math.abs(studentValue - expectedValue);
+
+            if (diff <= tolerance) {
+                showFeedback(conversionId, '✓ Scientific notation correct!', 'success');
+                sciInput.classList.add('correct');
+                sciInput.classList.remove('incorrect');
+            } else {
+                showFeedback(conversionId, `Scientific notation incorrect. Expected approximately ${expectedValue.toExponential(3)}`, 'error');
+                sciInput.classList.add('incorrect');
+                sciInput.classList.remove('correct');
+            }
+
+            saveToLocalStorage();
+        }
+
+        function checkDecimalForm(conversionId) {
+            const card = document.querySelector(`[data-conversion="${conversionId}"]`);
+            if (!card) return;
+
+            // Get the start value
+            const startValueInput = card.querySelector('.start-value');
+            const startValue = parseFloat(startValueInput.value);
+
+            if (isNaN(startValue) || startValue <= 0) {
+                showFeedback(conversionId, 'Please enter a valid starting measurement in the activity section above.', 'error');
+                return;
+            }
+
+            // Get student's input
+            const decInput = card.querySelector('.dec-input');
+            let studentDec = decInput.value.trim();
+
+            // Remove commas for parsing
+            studentDec = studentDec.replace(/,/g, '');
+
+            if (!studentDec) {
+                showFeedback(conversionId, 'Please enter a decimal answer.', 'error');
+                decInput.classList.remove('correct', 'incorrect');
+                return;
+            }
+
+            // Parse decimal value
+            let studentValue;
+            try {
+                studentValue = parseFloat(studentDec);
+                if (isNaN(studentValue)) {
+                    throw new Error('Invalid number');
+                }
+            } catch (e) {
+                showFeedback(conversionId, 'Invalid decimal format. Enter a number like: 1500 or 0.0015', 'error');
+                decInput.classList.add('incorrect');
+                decInput.classList.remove('correct');
+                return;
+            }
+
+            // Calculate expected value
+            const expectedExponent = AppState.conversionExponents[conversionId];
+            const expectedValue = startValue * Math.pow(10, -expectedExponent); // Note: flipped exponent
+
+            // Compare with tolerance
+            const tolerance = 0.001 * Math.abs(expectedValue); // 0.1% tolerance
+            const diff = Math.abs(studentValue - expectedValue);
+
+            if (diff <= tolerance) {
+                showFeedback(conversionId, '✓ Decimal form correct!', 'success');
+                decInput.classList.add('correct');
+                decInput.classList.remove('incorrect');
+            } else {
+                // Format expected value without commas for comparison message
+                const formattedExpected = expectedValue.toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 10
+                });
+                showFeedback(conversionId, `Decimal form incorrect. Expected approximately ${formattedExpected}`, 'error');
+                decInput.classList.add('incorrect');
+                decInput.classList.remove('correct');
+            }
+
+            saveToLocalStorage();
+        }
+
+        function verifySetupAndCalculate(conversionId) {
+            const card = document.querySelector(`[data-conversion="${conversionId}"]`);
+            if (!card) return;
+
+            // Get the start value
+            const startValueInput = card.querySelector('.start-value');
+            const startValue = parseFloat(startValueInput.value);
+
+            if (isNaN(startValue) || startValue <= 0) {
+                showFeedback(conversionId, 'Please enter a valid starting measurement in the activity section above.', 'error');
+                return;
+            }
+
+            // Check if units are entered and correct
+            const targetUnitInput = card.querySelector('.target-unit-input');
+            const cancelUnitInput = card.querySelector('.cancel-unit-input');
+            const expectedUnits = AppState.conversionUnits[conversionId];
+            
+            if (!targetUnitInput.value.trim()) {
+                showFeedback(conversionId, 'Please enter the target unit in the numerator.', 'error');
+                return;
+            }
+            
+            if (!cancelUnitInput.value.trim()) {
+                showFeedback(conversionId, 'Please enter the starting unit in the denominator.', 'error');
+                return;
+            }
+            
+            // Check if units are correct
+            const targetUnit = targetUnitInput.value.trim().toLowerCase();
+            const cancelUnit = cancelUnitInput.value.trim().toLowerCase();
+            const expectedTarget = expectedUnits.targetUnit.toLowerCase();
+            const expectedCancel = expectedUnits.cancelUnit.toLowerCase();
+            
+            if (targetUnit !== expectedTarget) {
+                showFeedback(conversionId, `Target unit should be "${expectedUnits.targetUnit}".`, 'error');
+                return;
+            }
+            
+            if (cancelUnit !== expectedCancel) {
+                showFeedback(conversionId, `Cancel unit should be "${expectedUnits.cancelUnit}".`, 'error');
+                return;
+            }
+            
+            // Check if units have been cancelled
+            if (!AppState.cancellationState[conversionId]) {
+                showFeedback(conversionId, 'Please cancel the units by clicking them (first click one unit, then click its match).', 'error');
+                return;
+            }
+
+            // Get the exponent entered by student
+            const exponentInput = card.querySelector('.setup-exponent');
+            const exponent = parseInt(exponentInput.value);
+
+            if (isNaN(exponent)) {
+                showFeedback(conversionId, 'Please enter an exponent in the setup step.', 'error');
+                return;
+            }
+
+            // Get the flipped exponent
+            const flippedInput = card.querySelector('.flipped-exponent');
+            const flippedExponent = parseInt(flippedInput.value);
+
+            if (isNaN(flippedExponent)) {
+                showFeedback(conversionId, 'Please enter the flipped exponent in the rewrite step.', 'error');
+                return;
+            }
+
+            // Check if exponent sign was flipped correctly
+            const expectedExponent = AppState.conversionExponents[conversionId];
+            const expectedFlipped = -1 * expectedExponent;
+
+            // Validate the setup exponent
+            if (exponent !== expectedExponent) {
+                showFeedback(conversionId, `Check your setup exponent. For ${conversionId}, the exponent should be ${expectedExponent}.`, 'error');
+                return;
+            }
+
+            // Validate the flipped exponent
+            if (flippedExponent !== expectedFlipped) {
+                showFeedback(conversionId, `Remember to flip the sign when moving the exponent up. Expected: ${expectedFlipped}`, 'error');
+                return;
+            }
+
+            // All validations passed
+            showFeedback(conversionId, '✓ Setup & Rewrite verified! Now enter and check your scientific notation and decimal answers above.', 'success');
+
+            saveToLocalStorage();
+        }
+
+        function showFeedback(conversionId, message, type) {
+            const feedbackEl = document.getElementById(`${conversionId}-feedback`);
+            feedbackEl.textContent = message;
+            feedbackEl.className = 'feedback';
+
+            if (type === 'success') {
+                feedbackEl.classList.add('feedback-success');
+            } else if (type === 'error') {
+                feedbackEl.classList.add('feedback-error');
+            }
+        }
+
+        // === VALIDATION ===
+        function validateExponentInput(inputElement) {
+            const value = inputElement.value.trim();
+            if (value === '') return;
+
+            const numValue = parseInt(value);
+            if (isNaN(numValue)) {
+                inputElement.style.borderColor = 'var(--uwp-red)';
+                return false;
+            }
+
+            inputElement.style.borderColor = '';
+            return true;
+        }
+
+        // === LOCAL STORAGE ===
+        function saveToLocalStorage() {
+            const state = {
+                reflectionComplete: AppState.isReflectionComplete,
+                measurements: AppState.measurements,
+                cancellationState: AppState.cancellationState,
+                reflections: {
+                    reflection1: document.getElementById('reflection-1').value,
+                    reflection2: document.getElementById('reflection-2').value,
+                    reflection3: document.getElementById('reflection-3').value,
+                    wrapup1: document.getElementById('wrapup-reflection-1').value,
+                    wrapup2: document.getElementById('wrapup-reflection-2').value
+                },
+                exponents: {},
+                flippedExponents: {},
+                studentAnswers: {},
+                senseChecks: {},
+                instructorInitials: {
+                    activity1: document.getElementById('activity-1-initials').value,
+                    activity2: document.getElementById('activity-2-initials').value
+                },
+                unitInputs: {}
+            };
+
+            // Save exponent inputs
+            document.querySelectorAll('.setup-exponent').forEach(input => {
+                const card = input.closest('.calculator-card');
+                if (card) {
+                    const conversion = card.getAttribute('data-conversion');
+                    state.exponents[conversion] = input.value;
+                }
+            });
+
+            // Save flipped exponents
+            document.querySelectorAll('.flipped-exponent').forEach(input => {
+                const card = input.closest('.calculator-card');
+                if (card) {
+                    const conversion = card.getAttribute('data-conversion');
+                    state.flippedExponents[conversion] = input.value;
+                }
+            });
+
+            // Save student answers
+            document.querySelectorAll('.sci-input').forEach(input => {
+                const card = input.closest('.calculator-card');
+                if (card) {
+                    const conversion = card.getAttribute('data-conversion');
+                    state.studentAnswers[`${conversion}-sci`] = input.value;
+                    state.studentAnswers[`${conversion}-sci-class`] = input.className;
+                }
+            });
+
+            document.querySelectorAll('.dec-input').forEach(input => {
+                const card = input.closest('.calculator-card');
+                if (card) {
+                    const conversion = card.getAttribute('data-conversion');
+                    state.studentAnswers[`${conversion}-dec`] = input.value;
+                    state.studentAnswers[`${conversion}-dec-class`] = input.className;
+                }
+            });
+
+            // Save unit inputs
+            document.querySelectorAll('.target-unit-input').forEach(input => {
+                const card = input.closest('.calculator-card');
+                if (card) {
+                    const conversion = card.getAttribute('data-conversion');
+                    state.unitInputs[`${conversion}-target`] = input.value;
+                }
+            });
+
+            document.querySelectorAll('.cancel-unit-input').forEach(input => {
+                const card = input.closest('.calculator-card');
+                if (card) {
+                    const conversion = card.getAttribute('data-conversion');
+                    state.unitInputs[`${conversion}-cancel`] = input.value;
+                }
+            });
+
+            // Save sense check radios
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                const name = radio.getAttribute('name');
+                state.senseChecks[name] = radio.value;
+            });
+
+            // Save sense check notes
+            document.querySelectorAll('.sense-note').forEach(textarea => {
+                const card = textarea.closest('.calculator-card');
+                if (card) {
+                    const conversion = card.getAttribute('data-conversion');
+                    state.senseChecks[`${conversion}-note`] = textarea.value;
+                }
+            });
+
+            // Save to localStorage
+            try {
+                localStorage.setItem(AppState.storageKey, JSON.stringify(state));
+                showSavedIndicator();
+            } catch (e) {
+                console.error('Failed to save to localStorage:', e);
+            }
+        }
+
+        function loadSavedData() {
+            try {
+                const saved = localStorage.getItem(AppState.storageKey);
+                if (!saved) return;
+
+                const state = JSON.parse(saved);
+
+                // Restore reflection completion
+                AppState.isReflectionComplete = state.reflectionComplete || false;
+                elements.reflectionComplete.checked = AppState.isReflectionComplete;
+                toggleActivitiesLock();
+
+                // Restore measurements
+                AppState.measurements = state.measurements || { tableDiameter: null, coverslipLength: null };
+                if (AppState.measurements.tableDiameter !== null) {
+                    elements.tableDiameterInput.value = AppState.measurements.tableDiameter;
+                }
+                if (AppState.measurements.coverslipLength !== null) {
+                    elements.coverslipLengthInput.value = AppState.measurements.coverslipLength;
+                }
+
+                // Restore cancellation state
+                AppState.cancellationState = state.cancellationState || {};
+
+                // Restore reflection textareas
+                if (state.reflections) {
+                    document.getElementById('reflection-1').value = state.reflections.reflection1 || '';
+                    document.getElementById('reflection-2').value = state.reflections.reflection2 || '';
+                    document.getElementById('reflection-3').value = state.reflections.reflection3 || '';
+                    document.getElementById('wrapup-reflection-1').value = state.reflections.wrapup1 || '';
+                    document.getElementById('wrapup-reflection-2').value = state.reflections.wrapup2 || '';
+                }
+
+                // Restore exponent inputs
+                if (state.exponents) {
+                    Object.keys(state.exponents).forEach(conversion => {
+                        const input = document.querySelector(`[data-conversion="${conversion}"] .setup-exponent`);
+                        if (input) input.value = state.exponents[conversion];
+                    });
+                }
+
+                // Restore flipped exponents
+                if (state.flippedExponents) {
+                    Object.keys(state.flippedExponents).forEach(conversion => {
+                        const input = document.querySelector(`[data-conversion="${conversion}"] .flipped-exponent`);
+                        if (input) input.value = state.flippedExponents[conversion];
+                    });
+                }
+
+                // Restore student answers
+                if (state.studentAnswers) {
+                    Object.keys(state.studentAnswers).forEach(key => {
+                        if (key.endsWith('-sci') && !key.endsWith('-sci-class')) {
+                            const conversion = key.replace('-sci', '');
+                            const input = document.querySelector(`[data-conversion="${conversion}"] .sci-input`);
+                            if (input) {
+                                input.value = state.studentAnswers[key];
+                                const className = state.studentAnswers[`${conversion}-sci-class`];
+                                if (className) input.className = className;
+                            }
+                        }
+                        if (key.endsWith('-dec') && !key.endsWith('-dec-class')) {
+                            const conversion = key.replace('-dec', '');
+                            const input = document.querySelector(`[data-conversion="${conversion}"] .dec-input`);
+                            if (input) {
+                                input.value = state.studentAnswers[key];
+                                const className = state.studentAnswers[`${conversion}-dec-class`];
+                                if (className) input.className = className;
+                            }
+                        }
+                    });
+                }
+
+                // Restore unit inputs
+                if (state.unitInputs) {
+                    Object.keys(state.unitInputs).forEach(key => {
+                        if (key.endsWith('-target')) {
+                            const conversion = key.replace('-target', '');
+                            const input = document.querySelector(`[data-conversion="${conversion}"] .target-unit-input`);
+                            if (input) {
+                                input.value = state.unitInputs[key];
+                                validateUnitInput(input);
+                            }
+                        }
+                        if (key.endsWith('-cancel')) {
+                            const conversion = key.replace('-cancel', '');
+                            const input = document.querySelector(`[data-conversion="${conversion}"] .cancel-unit-input`);
+                            if (input) {
+                                input.value = state.unitInputs[key];
+                                validateUnitInput(input);
+                            }
+                        }
+                    });
+                }
+
+                // Restore sense checks
+                if (state.senseChecks) {
+                    Object.keys(state.senseChecks).forEach(key => {
+                        if (key.endsWith('-note')) {
+                            const conversion = key.replace('-note', '');
+                            const textarea = document.querySelector(`[data-conversion="${conversion}"] .sense-note`);
+                            if (textarea) textarea.value = state.senseChecks[key];
+                        } else {
+                            const radio = document.querySelector(`input[name="${key}"][value="${state.senseChecks[key]}"]`);
+                            if (radio) radio.checked = true;
+                        }
+                    });
+                }
+
+                // Restore instructor initials
+                if (state.instructorInitials) {
+                    document.getElementById('activity-1-initials').value = state.instructorInitials.activity1 || '';
+                    document.getElementById('activity-2-initials').value = state.instructorInitials.activity2 || '';
+                }
+
+                // Update start values
+                updateAllStartValues();
+
+                // Restore cancellation visual state
+                Object.keys(AppState.cancellationState).forEach(conversionId => {
+                    if (AppState.cancellationState[conversionId]) {
+                        const card = document.querySelector(`[data-conversion="${conversionId}"]`);
+                        if (card) {
+                            const startUnit = card.querySelector('.start-unit');
+                            const cancelUnit = card.querySelector('.cancel-unit-input');
+                            if (startUnit && cancelUnit) {
+                                startUnit.classList.add('cancelled-green');
+                                cancelUnit.classList.add('cancelled-green');
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.error('Failed to load from localStorage:', e);
+            }
+        }
+
+        function showSavedIndicator() {
+            elements.savedIndicator.classList.add('show');
+            setTimeout(() => {
+                elements.savedIndicator.classList.remove('show');
+            }, 2000);
+        }
+
+        // === EXPORT AND PRINT ===
+        function exportDataAsJson() {
+            // Gather all data
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                title: 'Metric Train-Tracks Lab Data',
+                reflectionComplete: AppState.isReflectionComplete,
+                measurements: AppState.measurements,
+                reflections: {
+                    reflection1: document.getElementById('reflection-1').value,
+                    reflection2: document.getElementById('reflection-2').value,
+                    reflection3: document.getElementById('reflection-3').value,
+                    wrapup1: document.getElementById('wrapup-reflection-1').value,
+                    wrapup2: document.getElementById('wrapup-reflection-2').value
+                },
+                conversions: {},
+                instructorInitials: {
+                    activity1: document.getElementById('activity-1-initials').value,
+                    activity2: document.getElementById('activity-2-initials').value
+                }
+            };
+
+            // Add conversion data
+            document.querySelectorAll('.calculator-card').forEach(card => {
+                const conversion = card.getAttribute('data-conversion');
+                const sciInput = card.querySelector('.sci-input');
+                const decInput = card.querySelector('.dec-input');
+                const targetUnit = card.querySelector('.target-unit-input');
+                const cancelUnit = card.querySelector('.cancel-unit-input');
+
+                exportData.conversions[conversion] = {
+                    setupExponent: card.querySelector('.setup-exponent').value,
+                    flippedExponent: card.querySelector('.flipped-exponent').value,
+                    targetUnit: targetUnit ? targetUnit.value : '',
+                    cancelUnit: cancelUnit ? cancelUnit.value : '',
+                    unitsCancelled: AppState.cancellationState[conversion] || false,
+                    scientific: sciInput.value,
+                    scientificCorrect: sciInput.classList.contains('correct'),
+                    decimal: decInput.value,
+                    decimalCorrect: decInput.classList.contains('correct'),
+                    senseCheck: card.querySelector('input[type="radio"]:checked')?.value || '',
+                    senseNote: card.querySelector('.sense-note').value
+                };
+            });
+
+            // Create and download JSON file
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+            const exportFileDefaultName = `metric_train_tracks_${new Date().toISOString().slice(0, 10)}.json`;
+
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function printAsPdf() {
+            // Show a print-friendly version
+            const originalTitle = document.title;
+            document.title = 'Metric Train-Tracks Lab - ' + new Date().toLocaleDateString();
+
+            // Trigger browser print dialog
+            window.print();
+
+            // Restore original title
+            document.title = originalTitle;
+        }
+
+        function resetAllData() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                // Clear localStorage
+                localStorage.removeItem(AppState.storageKey);
+
+                // Reset form fields
+                document.querySelectorAll('textarea').forEach(el => el.value = '');
+                document.querySelectorAll('input[type="number"]').forEach(el => el.value = '');
+                document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+                document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+                document.querySelectorAll('.student-input').forEach(el => {
+                    el.value = '';
+                    el.classList.remove('correct', 'incorrect');
+                });
+                document.querySelectorAll('.feedback').forEach(el => {
+                    el.textContent = '';
+                    el.className = 'feedback';
+                });
+                document.querySelectorAll('.unit-symbol').forEach(el => {
+                    el.classList.remove('selected-amber', 'cancelled-green');
+                });
+                document.querySelectorAll('.target-unit-input, .cancel-unit-input').forEach(el => {
+                    el.value = '';
+                    el.style.borderColor = '';
+                    el.style.backgroundColor = '';
+                    el.classList.remove('selected-amber', 'cancelled-green');
+                });
+
+                // Reset application state
+                AppState.isReflectionComplete = false;
+                AppState.measurements = { tableDiameter: null, coverslipLength: null };
+                AppState.cancellationState = {};
+                selectedUnit = null;
+
+                // Update UI
+                elements.reflectionComplete.checked = false;
+                toggleActivitiesLock();
+
+                // Show confirmation
+                alert('All data has been reset. The page will now reload.');
+                location.reload();
+            }
+        }
+
+        // === UTILITY FUNCTIONS ===
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function setupTooltips() {
+            // Add title attributes to exponent inputs as reminders
+            document.querySelectorAll('.setup-exponent').forEach(input => {
+                input.title = 'Enter the exponent from the reference table. Example: kilo = 3, milli = -3';
+            });
+
+            document.querySelectorAll('.flipped-exponent').forEach(input => {
+                input.title = 'Flip the sign! If setup exponent was 3, enter -3 here.';
+            });
+
+            // Add tooltips for unit inputs
+            document.querySelectorAll('.target-unit-input').forEach(input => {
+                input.title = 'Type the unit you are converting TO (e.g., km, m, cm)';
+            });
+
+            document.querySelectorAll('.cancel-unit-input').forEach(input => {
+                input.title = 'Type the unit you are converting FROM (should match the starting unit)';
+            });
+
+            // Add tooltips for unit symbols
+            document.querySelectorAll('.unit-symbol').forEach(span => {
+                span.title = 'Click to select for cancellation, then click the matching unit';
+            });
+        }
+
+        // Add print styles
+        const printStyles = document.createElement('style');
+        printStyles.textContent = `
+            @media print {
+                header, .btn-container, .skip-link, .saved-indicator {
+                    display: none !important;
+                }
+                
+                body {
+                    background-color: white !important;
+                    font-size: 12pt;
+                }
+                
+                .container {
+                    max-width: 100% !important;
+                    padding: 0 !important;
+                }
+                
+                .section-content {
+                    box-shadow: none !important;
+                    border: 1px solid #ddd !important;
+                    page-break-inside: avoid;
+                }
+                
+                .conversion-cards {
+                    grid-template-columns: repeat(2, 1fr) !important;
+                }
+                
+                .calculator-card {
+                    page-break-inside: avoid;
+                    border: 1px solid #ccc !important;
+                }
+                
+                .train-track {
+                    flex-direction: row !important;
+                }
+                
+                a {
+                    text-decoration: none !important;
+                    color: black !important;
+                }
+                
+                h2 {
+                    page-break-before: always;
+                }
+                
+                h2:first-of-type {
+                    page-break-before: avoid;
+                }
+                
+                .student-input {
+                    border: 1px solid #999 !important;
+                    background-color: white !important;
+                }
+                
+                .unit-symbol.selected-amber::after,
+                .unit-symbol.cancelled-green::after {
+                    display: none !important;
+                }
+            }
+        `;
+        document.head.appendChild(printStyles);
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1150 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anabaena vs Eukaryotic Cells - Metacognition Study System</title>
+    <style>
+        /* UW-Parkside Color Palette */
+        :root {
+            --uwp-red: #C5050C;
+            --uwp-dark-gray: #53565A;
+            --uwp-light-gray: #D0D0CE;
+            --uwp-white: #FFFFFF;
+            --uwp-black: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: var(--uwp-dark-gray);
+            background-color: var(--uwp-white);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--uwp-red);
+            color: var(--uwp-white);
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .guided-cognition {
+            background-color: var(--uwp-light-gray);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--uwp-red);
+        }
+
+        .guided-cognition h2 {
+            color: var(--uwp-red);
+            margin-bottom: 10px;
+        }
+
+        .step-section {
+            background-color: var(--uwp-white);
+            border: 2px solid var(--uwp-light-gray);
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .step-section.active {
+            display: block;
+        }
+
+        .step-section h2 {
+            color: var(--uwp-red);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--uwp-red);
+        }
+
+        .word-study-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .word-card {
+            background-color: var(--uwp-white);
+            border: 2px solid var(--uwp-light-gray);
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .word-card strong {
+            color: var(--uwp-red);
+            font-size: 1.3em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .morpheme {
+            color: var(--uwp-dark-gray);
+            font-style: italic;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 3px solid var(--uwp-red);
+        }
+
+        .pronounce-btn {
+            background-color: var(--uwp-red);
+            color: var(--uwp-white);
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .pronounce-btn:hover {
+            background-color: #a00408;
+        }
+
+        .speed-toggle {
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+
+        .meaning {
+            margin-top: 10px;
+            line-height: 1.8;
+        }
+
+        .passage-text {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-left: 5px solid var(--uwp-red);
+            line-height: 2;
+            font-size: 1.1em;
+            margin: 20px 0;
+        }
+
+        .interactive-word {
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .interactive-word:hover {
+            background-color: var(--uwp-light-gray);
+        }
+
+        .interactive-word.highlighted {
+            background-color: #ffeb3b;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            background-color: var(--uwp-red);
+            color: var(--uwp-white);
+            border: none;
+            padding: 15px 30px;
+            margin: 20px 10px 20px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #a00408;
+        }
+
+        .btn-secondary {
+            background-color: var(--uwp-dark-gray);
+            color: var(--uwp-white);
+            border: none;
+            padding: 15px 30px;
+            margin: 20px 10px 20px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3a3c3f;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .concept-box {
+            border: 2px solid var(--uwp-light-gray);
+            padding: 20px;
+            background-color: var(--uwp-white);
+        }
+
+        .concept-box h3 {
+            color: var(--uwp-red);
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--uwp-light-gray);
+            border-radius: 5px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1em;
+            min-height: 150px;
+            margin: 10px 0;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--uwp-red);
+        }
+
+        .feedback {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .feedback.success {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback.error {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .scn-map {
+            background-color: var(--uwp-white);
+            padding: 30px;
+            border: 3px solid var(--uwp-red);
+            margin: 20px 0;
+        }
+
+        .scn-map h3 {
+            text-align: center;
+            color: var(--uwp-red);
+            margin-bottom: 30px;
+        }
+
+        .scn-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        .scn-category {
+            font-weight: bold;
+            color: var(--uwp-red);
+            padding: 10px 20px;
+            background-color: var(--uwp-light-gray);
+            border-radius: 5px;
+        }
+
+        .scn-value {
+            padding: 10px 20px;
+            background-color: #f9f9f9;
+            border: 2px solid var(--uwp-light-gray);
+            border-radius: 5px;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .misconception-trap {
+            background-color: #fff3cd;
+            border: 3px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .misconception-trap h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .size-comparison {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid var(--uwp-light-gray);
+        }
+
+        .image-analysis {
+            margin: 30px 0;
+        }
+
+        .image-analysis img {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid var(--uwp-red);
+            margin: 20px 0;
+        }
+
+        .ai-prompt-box {
+            background-color: var(--uwp-dark-gray);
+            color: var(--uwp-white);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .ai-prompt-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--uwp-red);
+            color: var(--uwp-white);
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .quiz-paste-area {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            background-color: var(--uwp-light-gray);
+            height: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background-color: var(--uwp-red);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scn-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div class="container">
+        <header>
+            <div
+                style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
+                <a href="in-lab.html"
+                    style="color: var(--uwp-white); text-decoration: none; font-weight: bold; font-size: 1rem;">← Back
+                    to Lab</a>
+                <div style="flex-grow: 1; text-align: center;">
+                    <h3 style="margin: 0;">Anabaena vs Eukaryotic Cells</h3>
+                    <p style="margin: 5px 0 0 0;">A Metacognitive Learning System</p>
+                </div>
+                <div style="width: 120px;"></div> <!-- Spacer for balance -->
+            </div>
+        </header>
+
+        <div class="guided-cognition">
+            <h2>🧠 Understanding Guided Cognition</h2>
+            <p>This exercise is designed to help you learn through <strong>metacognition</strong> – thinking about
+                your
+                own
+                thinking. Instead of passively reading, you'll actively engage with the material through vocabulary
+                study,
+                interactive reading, concept mapping, and self-testing. This approach strengthens memory encoding
+                and
+                retrieval,
+                helping you truly understand cellular biology rather than simply memorize facts. Pay attention to
+                how
+                you're
+                learning as you move through each step.</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Step 1: Word Study -->
+        <div class="step-section active" id="step1">
+            <h2>Step 1: Word Study</h2>
+            <p style="background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin-bottom: 20px;">
+                <strong>⚠️ Experts don't skip unfamiliar terms — they <em>interrogate</em> them.</strong><br>
+                Understand these words before reading the background paragraphs.
+            </p>
+
+            <label style="margin: 20px 0; display: block;">
+                <input type="checkbox" id="slowSpeech"> Slow speech mode
+            </label>
+
+            <div class="word-study-grid">
+                <div class="word-card">
+                    <strong>Anabaena</strong>
+                    <button class="pronounce-btn" onclick="pronounce('Anabaena')">🔊 Pronounce</button>
+                    <div class="morpheme">
+                        <strong>Morpheme breakdown:</strong> Ana- (Greek ἀνά) means up, back, or again, and -baena
+                        (from
+                        Greek
+                        βαίνω, baínein) means to go, to walk, or to move.
+                    </div>
+                    <div class="meaning">
+                        The name reflects the organism’s visible movement and filamentous growth—not true
+                        locomotion,
+                        but the
+                        characteristic shifting observed under the microscope, especially in living wet mounts.
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <strong>Prokaryotic</strong>
+                    <button class="pronounce-btn" onclick="pronounce('prokaryotic')">🔊 Pronounce</button>
+                    <div class="morpheme">
+                        <strong>Morpheme breakdown:</strong> Pro- (before) + karyo- (nucleus) + -tic (relating to)
+                    </div>
+                    <div class="meaning">
+                        Cells that lack a membrane-bound nucleus and organelles. DNA floats freely in the cytoplasm.
+                        Includes
+                        bacteria and archaea.
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <strong>Cyanobacterium</strong>
+                    <button class="pronounce-btn" onclick="pronounce('cyanobacterium')">🔊 Pronounce</button>
+                    <div class="morpheme">
+                        <strong>Morpheme breakdown:</strong> Cyano- (blue-green) + bacterium (single-celled
+                        microorganism)
+                    </div>
+                    <div class="meaning">
+                        Photosynthetic bacteria that obtain energy through photosynthesis. Often called "blue-green
+                        algae" but are
+                        actually bacteria, not algae.
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <strong>Photosynthesis</strong>
+                    <button class="pronounce-btn" onclick="pronounce('photosynthesis')">🔊 Pronounce</button>
+                    <div class="morpheme">
+                        <strong>Morpheme breakdown:</strong> Photo- (light) + synthesis (putting together)
+                    </div>
+                    <div class="meaning">
+                        The process by which organisms convert light energy (usually from the sun) into chemical
+                        energy
+                        stored in
+                        glucose, releasing oxygen as a byproduct.
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <strong>Eukaryotic</strong>
+                    <button class="pronounce-btn" onclick="pronounce('eukaryotic')">🔊 Pronounce</button>
+                    <div class="morpheme">
+                        <strong>Morpheme breakdown:</strong> Eu- (true) + karyo- (nucleus) + -tic (relating to)
+                    </div>
+                    <div class="meaning">
+                        Cells that contain a true, membrane-bound nucleus and other membrane-bound organelles.
+                        Includes
+                        animals,
+                        plants, fungi, and protists.
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <strong>Organelles</strong>
+                    <button class="pronounce-btn" onclick="pronounce('organelles')">🔊 Pronounce</button>
+                    <div class="morpheme">
+                        <strong>Morpheme breakdown:</strong> Organ (functional structure) + -elle (small/diminutive)
+                    </div>
+                    <div class="meaning">
+                        Specialized structures within a cell that perform specific functions, such as mitochondria
+                        (energy
+                        production), nucleus (genetic control), and chloroplasts (photosynthesis in plants).
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(2)">Continue to Background Reading →</button>
+        </div>
+
+        <!-- Step 2: Plain Text Reading -->
+        <div class="step-section" id="step2">
+            <h2>Step 2: Background Reading (Plain Text)</h2>
+            <p>Read the following passage carefully. Just read - no interaction yet.</p>
+
+            <div class="passage-text">
+                Anabaena (~2–10 µm) is a small, prokaryotic, filamentous cyanobacterium that performs
+                photosynthesis,
+                with some
+                cells specialized for nitrogen fixation, and has no nucleus or organelles. In contrast, typical
+                eukaryotic cells
+                (~10–100 µm) are larger, have a true nucleus and organelles, and support more complex metabolism.
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(3)">Continue to Interactive Reading →</button>
+            <button class="btn-secondary" onclick="nextStep(1)">← Back to Word Study</button>
+        </div>
+
+        <!-- Step 3: Interactive Reading -->
+        <div class="step-section" id="step3">
+            <h2>Step 3: Interactive Reading</h2>
+            <p>Click on each key term in the passage below. Watch as they become highlighted, underlined, and
+                bolded.
+                This
+                active engagement helps your brain encode the information more deeply.</p>
+
+            <div class="passage-text" id="interactivePassage">
+                <span class="interactive-word" data-word="Anabaena">Anabaena</span>
+                (~2–10 µm) is a small,
+                <span class="interactive-word" data-word="prokaryotic">prokaryotic</span>,
+                <span class="interactive-word" data-word="filamentous">filamentous</span>
+                <span class="interactive-word" data-word="cyanobacterium">cyanobacterium</span>
+                that performs
+                <span class="interactive-word" data-word="photosynthesis">photosynthesis</span>,
+                with some cells specialized for
+                <span class="interactive-word" data-word="nitrogen fixation">nitrogen fixation</span>,
+                and has no
+                <span class="interactive-word" data-word="nucleus">nucleus</span>
+                or
+                <span class="interactive-word" data-word="organelles">organelles</span>.
+                In contrast, typical
+                <span class="interactive-word" data-word="eukaryotic">eukaryotic</span>
+                cells (~10–100 µm) are larger, have a true
+                <span class="interactive-word" data-word="nucleus">nucleus</span>
+                and
+                <span class="interactive-word" data-word="organelles">organelles</span>,
+                and support more complex
+                <span class="interactive-word" data-word="metabolism">metabolism</span>.
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(4)">Continue to Fully Annotated Text →</button>
+            <button class="btn-secondary" onclick="nextStep(2)">← Back to Plain Reading</button>
+        </div>
+
+        <!-- Step 4: Fully Annotated Re-read -->
+        <div class="step-section" id="step4">
+            <h2>Step 4: Re-read with Full Annotations</h2>
+            <p>Now read the passage again with all key terms emphasized. Notice how the highlighted terms create a
+                visual map
+                of the important concepts.</p>
+
+            <div class="passage-text" id="annotatedPassage"></div>
+
+            <button class="btn-primary" onclick="nextStep(5)">Continue to Concept Identification →</button>
+            <button class="btn-secondary" onclick="nextStep(3)">← Back to Interactive Reading</button>
+        </div>
+
+        <!-- Step 5: Identify Core Concepts -->
+        <div class="step-section" id="step5">
+            <h2>Step 5: Identify Core Concepts</h2>
+            <p>Fill in the key characteristics for each organism. Think deeply about what makes each unique.</p>
+
+            <div class="comparison-grid">
+                <div class="concept-box">
+                    <h3>Anabaena Concepts</h3>
+                    <textarea id="anabaenaConcepts"
+                        placeholder="List key concepts about Anabaena (e.g., size, cell type, structure, functions...)"></textarea>
+                </div>
+                <div class="concept-box">
+                    <h3>Eukaryotic Cell Concepts</h3>
+                    <textarea id="eukaryoticConcepts"
+                        placeholder="List key concepts about eukaryotic cells (e.g., size, cell type, structure, functions...)"></textarea>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="checkConcepts()">Check My Concepts</button>
+            <div class="feedback" id="conceptFeedback"></div>
+
+            <button class="btn-primary" onclick="nextStep(6)">Continue to Concept Grouping →</button>
+            <button class="btn-secondary" onclick="nextStep(4)">← Back to Annotated Reading</button>
+        </div>
+
+        <!-- Step 6: Group Concepts -->
+        <div class="step-section" id="step6">
+            <h2>Step 6: Group Concepts by Categories</h2>
+            <p>Organize the concepts you identified into three categories: Size, Classification, and Nutrition. This
+                helps you
+                see patterns and relationships.</p>
+
+            <div style="margin: 20px 0;">
+                <h3 style="color: var(--uwp-red);">Size</h3>
+                <textarea id="sizeGroup" placeholder="How do Anabaena and eukaryotic cells differ in size?"></textarea>
+
+                <h3 style="color: var(--uwp-red); margin-top: 20px;">Classification</h3>
+                <textarea id="classificationGroup"
+                    placeholder="How are they classified differently (prokaryotic vs eukaryotic)?"></textarea>
+
+                <h3 style="color: var(--uwp-red); margin-top: 20px;">Nutrition</h3>
+                <textarea id="nutritionGroup" placeholder="How do they obtain and process energy?"></textarea>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(7)">Continue to Reasoning →</button>
+            <button class="btn-secondary" onclick="nextStep(5)">← Back to Concept Identification</button>
+        </div>
+
+        <!-- Step 7: Explain Reasoning -->
+        <div class="step-section" id="step7">
+            <h2>Step 7: Explain Your Reasoning</h2>
+            <p>Why did you group the concepts this way? Explaining your thinking solidifies your understanding and
+                reveals any
+                gaps in your knowledge.</p>
+
+            <textarea id="reasoningExplanation"
+                placeholder="Explain why you grouped concepts into Size, Classification, and Nutrition. What patterns did you notice? How are these categories connected?"
+                style="min-height: 200px;"></textarea>
+
+            <button class="btn-primary" onclick="nextStep(8)">Continue to Visual Map →</button>
+            <button class="btn-secondary" onclick="nextStep(6)">← Back to Grouping</button>
+        </div>
+
+        <!-- Step 8: SCN Map -->
+        <div class="step-section" id="step8">
+            <h2>Step 8: Size-Classification-Nutrition (SCN) Map</h2>
+            <p>Compare your groupings with this expert SCN map. Does your thinking align? What did you miss?</p>
+
+            <div class="scn-map">
+                <h3>Comparative Analysis</h3>
+
+                <div class="scn-row">
+                    <div class="scn-category">SIZE</div>
+                    <div class="scn-value"><strong>Anabaena:</strong> ~2–10 µm (microscopic, smaller)</div>
+                    <div class="scn-value"><strong>Eukaryotic:</strong> ~10–100 µm (larger, more visible)</div>
+                </div>
+
+                <div class="scn-row">
+                    <div class="scn-category">CLASSIFICATION</div>
+                    <div class="scn-value"><strong>Anabaena:</strong> Prokaryotic (no nucleus, no organelles,
+                        simpler)
+                    </div>
+                    <div class="scn-value"><strong>Eukaryotic:</strong> Eukaryotic (true nucleus, membrane-bound
+                        organelles,
+                        complex)</div>
+                </div>
+
+                <div class="scn-row">
+                    <div class="scn-category">NUTRITION</div>
+                    <div class="scn-value"><strong>Anabaena:</strong> Photosynthesis + nitrogen fixation
+                        (autotrophic,
+                        self-sufficient)</div>
+                    <div class="scn-value"><strong>Eukaryotic:</strong> Complex metabolism (varies: photosynthesis
+                        in
+                        plants,
+                        cellular respiration in animals)</div>
+                </div>
+            </div>
+
+            <div class="misconception-trap">
+                <h3>⚠️ Common Misconception Alert!</h3>
+                <p><strong>Filament ≠ Tissue</strong></p>
+                <p>Anabaena forms a <em>filament</em> (a chain of individual cells), but this is NOT the same as
+                    <em>tissue</em>. Tissue is an organized group of cells working together in multicellular
+                    organisms
+                    (eukaryotes). Anabaena cells are connected but remain independent prokaryotic cells. Don't
+                    confuse
+                    structural
+                    connection with true multicellular organization!
+                </p>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(9)">Continue to Size Comparison →</button>
+            <button class="btn-secondary" onclick="nextStep(7)">← Back to Reasoning</button>
+        </div>
+
+        <!-- Step 9: Size Comparison Drawing -->
+        <div class="step-section" id="step9">
+            <h2>Step 9: Visualize Size Comparison</h2>
+
+            <div class="size-comparison">
+                <h3>10× Size Comparison</h3>
+                <p>Draw a generic diagram showing the 10× size difference between Anabaena (~2-10 µm) and a typical
+                    eukaryotic
+                    cell (~10-100 µm).</p>
+
+                <div
+                    style="background-color: white; border: 2px solid var(--uwp-dark-gray); padding: 40px; margin: 20px 0; min-height: 300px; position: relative;">
+                    <div style="position: absolute; left: 20%; top: 50%; transform: translate(-50%, -50%);">
+                        <div
+                            style="width: 30px; height: 30px; background-color: var(--uwp-red); border-radius: 50%; margin: 0 auto;">
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Anabaena<br>(~5 µm)</p>
+                    </div>
+
+                    <div style="position: absolute; right: 20%; top: 50%; transform: translate(50%, -50%);">
+                        <div
+                            style="width: 150px; height: 150px; background-color: var(--uwp-dark-gray); opacity: 0.3; border-radius: 10px; margin: 0 auto;">
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Eukaryotic Cell<br>(~50 µm)</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 20px;"><strong>On paper or in a document:</strong> Draw your own version
+                    showing
+                    this size
+                    relationship. Include labels and scale indicators.</p>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(10)">Continue to Image Analysis →</button>
+            <button class="btn-secondary" onclick="nextStep(8)">← Back to SCN Map</button>
+        </div>
+
+        <!-- Step 10: Image Analysis -->
+        <div class="step-section" id="step10">
+            <h2>Step 10: Apply Your Knowledge - Image Analysis</h2>
+            <p>Examine this microscope image. Based on what you've learned, write your observations.</p>
+
+            <div class="image-analysis">
+                <img src="https://github.com/harriauwp/101labs/blob/main/01_Science_of_Biology/during_lab/Anabaena.jpg?raw=true"
+                    alt="Anabaena microscope image showing filamentous structure with heterocysts and photosynthetic cells">
+
+                <h3 style="color: var(--uwp-red); margin-top: 20px;">What do you observe?</h3>
+                <textarea id="imageObservations"
+                    placeholder="Describe what you see in this image. Connect your observations to what you learned about Anabaena's structure, size, and characteristics. What specific features can you identify? Look for: filamentous chains, heterocysts (specialized cells), photosynthetic cells, cell connections, and overall structure."
+                    style="min-height: 150px;"></textarea>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(11)">Continue to Free Recall →</button>
+            <button class="btn-secondary" onclick="nextStep(9)">← Back to Size Comparison</button>
+        </div>
+
+        <!-- Step 11: Brainstorm/Free Recall -->
+        <div class="step-section" id="step11">
+            <h2>Step 11: Free-Form Retrieval (Brainstorm)</h2>
+            <p><strong>On a blank sheet of paper or in a new Word document:</strong></p>
+            <p>Without looking back at the materials, write down everything you remember about Anabaena and
+                eukaryotic
+                cells.
+                Don't worry about organization - just retrieve the information freely. This strengthens your memory
+                pathways.
+            </p>
+
+            <div style="background-color: var(--uwp-light-gray); padding: 30px; margin: 20px 0; text-align: center;">
+                <h3>📝 Write freely for 5-10 minutes</h3>
+                <p>Include: sizes, structures, functions, differences, similarities, special features</p>
+                <p style="margin-top: 15px;"><em>When you're done, check back through the materials and add anything
+                        you
+                        forgot
+                        in a different color.</em></p>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(12)">Continue to AI Quiz Generator →</button>
+            <button class="btn-secondary" onclick="nextStep(10)">← Back to Image Analysis</button>
+        </div>
+
+        <!-- Step 12: AI Quiz Generation -->
+        <div class="step-section" id="step12">
+            <h2>Step 12: Generate Retrieval Practice Quiz</h2>
+            <p>Copy the prompt below and paste it into Claude or ChatGPT to generate 10 varied questions that
+                maximize
+                retrieval practice. Then take the quiz yourself and share with your study group!</p>
+
+            <div class="ai-prompt-box">
+                <button class="copy-btn" onclick="copyPrompt()">📋 Copy Prompt</button>
+                <pre id="aiPrompt">Create 10 retrieval practice questions about Anabaena and eukaryotic cells using the following passage:
+
+"Anabaena (~2–10 µm) is a small, prokaryotic, filamentous cyanobacterium that performs photosynthesis, with some cells specialized for nitrogen fixation, and has no nucleus or organelles. In contrast, typical eukaryotic cells (~10–100 µm) are larger, have a true nucleus and organelles, and support more complex metabolism."
+
+REQUIREMENTS:
+- Use varied question formats: multiple choice, true/false, fill-in-blank, short answer, comparison, application, and analysis questions
+- Progress from recall to higher-order thinking
+- Include at least one misconception question (e.g., about filaments vs tissues)
+- Include at least one size comparison question
+- DO NOT provide answers - questions only
+- Format each question clearly with proper numbering
+
+FORMAT YOUR RESPONSE EXACTLY LIKE THIS (with no additional text or answers):
+
+RETRIEVAL PRACTICE QUIZ: Anabaena vs Eukaryotic Cells
+================================================
+
+1. [Question text here]
+
+2. [Question text here]
+
+3. [Question text here]
+
+[Continue through question 10]
+
+================================================
+END OF QUIZ
+
+This format allows the quiz to be easily copied, pasted into an email, and shared with study groups.</pre>
+            </div>
+
+            <div id="copyFeedback" class="feedback" style="display: none;"></div>
+
+            <h3 style="color: var(--uwp-red); margin-top: 30px;">Paste Your Generated Quiz Here:</h3>
+            <p>After getting your quiz from AI, paste it below. You can then email it to your study group.</p>
+
+            <div class="quiz-paste-area">
+                <textarea id="quizPaste" placeholder="Paste your AI-generated quiz here..."
+                    style="min-height: 300px; font-family: monospace;"></textarea>
+
+                <div style="margin-top: 20px;">
+                    <label for="groupEmail" style="display: block; margin-bottom: 10px; font-weight: bold;">Study
+                        Group
+                        Email:</label>
+                    <input type="email" id="groupEmail" placeholder="Enter your study group's email address"
+                        style="width: 100%; padding: 12px; border: 2px solid var(--uwp-light-gray); border-radius: 5px; font-size: 1em;">
+                </div>
+
+                <button class="btn-primary" onclick="emailQuiz()" style="margin-top: 20px;">📧 Email Quiz to Study
+                    Group</button>
+                <div id="emailFeedback" class="feedback" style="margin-top: 10px;"></div>
+
+                <div
+                    style="background-color: #e7f3ff; padding: 20px; margin-top: 30px; border-left: 5px solid var(--uwp-red);">
+                    <h4 style="color: var(--uwp-red);">📚 Study Group Protocol:</h4>
+                    <ol style="line-height: 2; margin-left: 20px;">
+                        <li>Each member completes the quiz individually first</li>
+                        <li>Meet as a group to discuss answers</li>
+                        <li>Debate any disagreements - this is where deep learning happens!</li>
+                        <li>Reference the original passage only after discussing</li>
+                        <li>Explain WHY answers are correct, not just WHAT the answers are</li>
+                    </ol>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(13)">Complete the Exercise →</button>
+            <button class="btn-secondary" onclick="nextStep(11)">← Back to Free Recall</button>
+        </div>
+
+        <!-- Step 13: Completion -->
+        <div class="step-section" id="step13">
+            <h2>🎉 Congratulations!</h2>
+            <p style="font-size: 1.2em; line-height: 1.8;">You've completed the metacognitive learning system for
+                Anabaena and
+                eukaryotic cells. You've:</p>
+
+            <ul style="line-height: 2; margin: 20px 0 20px 40px; font-size: 1.1em;">
+                <li>Mastered key vocabulary through pronunciation and morpheme analysis</li>
+                <li>Engaged actively with the text through interactive reading</li>
+                <li>Identified and organized core concepts</li>
+                <li>Visualized relationships through the SCN map</li>
+                <li>Avoided common misconceptions</li>
+                <li>Applied your knowledge to image analysis</li>
+                <li>Retrieved information freely to strengthen memory</li>
+                <li>Generated personalized retrieval practice questions</li>
+            </ul>
+
+            <div
+                style="background-color: var(--uwp-red); color: white; padding: 30px; margin: 30px 0; text-align: center; border-radius: 5px;">
+                <h3>🧠 Metacognitive Reflection</h3>
+                <p style="font-size: 1.1em; margin-top: 15px;">Take a moment to reflect: Which step was most
+                    challenging? Which
+                    helped you learn best? How can you apply this systematic approach to other topics?</p>
+            </div>
+
+            <button class="btn-primary" onclick="nextStep(1)">Start Over</button>
+            <button class="btn-secondary" onclick="window.location.href='in-lab.html'">← Back to Lab</button>
+            <button class="btn-primary" onclick="window.location.href='02_Anabaena_Size.html'">Next Exercise:
+                Anabaena Size →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 13;
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Navigation
+        function nextStep(step) {
+            document.querySelectorAll('.step-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('step' + step).classList.add('active');
+            currentStep = step;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Text-to-Speech
+        function pronounce(word) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = document.getElementById('slowSpeech').checked ? 0.7 : 1;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('Text-to-speech is not supported in your browser.');
+            }
+        }
+
+        // Interactive Reading
+        document.addEventListener('DOMContentLoaded', function () {
+            const interactiveWords = document.querySelectorAll('.interactive-word');
+            interactiveWords.forEach(word => {
+                word.addEventListener('click', function () {
+                    this.classList.toggle('highlighted');
+                });
+            });
+        });
+
+        // Generate fully annotated passage
+        function generateAnnotatedPassage() {
+            const passage = `<span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">Anabaena</span> (~2–10 µm) is a small, <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">prokaryotic</span>, <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">filamentous</span> <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">cyanobacterium</span> that performs <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">photosynthesis</span>, with some cells specialized for <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">nitrogen fixation</span>, and has no <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">nucleus</span> or <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">organelles</span>. In contrast, typical <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">eukaryotic</span> cells (~10–100 µm) are larger, have a true <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">nucleus</span> and <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">organelles</span>, and support more complex <span style="background-color: #ffeb3b; font-weight: bold; text-decoration: underline;">metabolism</span>.`;
+            document.getElementById('annotatedPassage').innerHTML = passage;
+        }
+
+        // Ensure annotated passage is generated when step 4 is loaded
+        const originalNextStep = nextStep;
+        nextStep = function (step) {
+            originalNextStep(step);
+            if (step === 4) {
+                generateAnnotatedPassage();
+            }
+        };
+
+        // Check concepts
+        function checkConcepts() {
+            const anabaenaConcepts = document.getElementById('anabaenaConcepts').value.toLowerCase();
+            const eukaryoticConcepts = document.getElementById('eukaryoticConcepts').value.toLowerCase();
+            const feedback = document.getElementById('conceptFeedback');
+
+            const anabaenaKeywords = ['small', 'prokaryotic', 'filament', 'photosynthesis', 'nitrogen', 'no nucleus', 'no organelle'];
+            const eukaryoticKeywords = ['large', 'eukaryotic', 'nucleus', 'organelle', 'complex', 'metabolism'];
+
+            const anabaenaCount = anabaenaKeywords.filter(keyword => anabaenaConcepts.includes(keyword)).length;
+            const eukaryoticCount = eukaryoticKeywords.filter(keyword => eukaryoticConcepts.includes(keyword)).length;
+
+            if (anabaenaCount >= 4 && eukaryoticCount >= 3) {
+                feedback.className = 'feedback success';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>✓ Excellent work!</strong> You\'ve identified the core concepts. Key points include: Anabaena is small, prokaryotic, filamentous, photosynthetic, fixes nitrogen, and lacks nucleus/organelles. Eukaryotic cells are larger, have a true nucleus and organelles, and support complex metabolism.';
+            } else {
+                feedback.className = 'feedback error';
+                feedback.style.display = 'block';
+                feedback.innerHTML = '<strong>⚠ Keep thinking!</strong> Make sure you\'ve identified: For Anabaena - size (~2-10µm), prokaryotic nature, filamentous structure, photosynthesis, nitrogen fixation, lack of nucleus/organelles. For eukaryotic cells - larger size (~10-100µm), true nucleus, organelles, complex metabolism.';
+            }
+        }
+
+        // Copy AI prompt
+        function copyPrompt() {
+            const promptText = document.getElementById('aiPrompt').textContent;
+            navigator.clipboard.writeText(promptText).then(() => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.className = 'feedback success';
+                feedback.style.display = 'block';
+                feedback.textContent = '✓ Prompt copied! Paste it into Claude or ChatGPT.';
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 3000);
+            }).catch(err => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.className = 'feedback error';
+                feedback.style.display = 'block';
+                feedback.textContent = '✗ Failed to copy. Please select and copy manually.';
+            });
+        }
+
+        // Email quiz
+        function emailQuiz() {
+            const quizContent = document.getElementById('quizPaste').value;
+            const email = document.getElementById('groupEmail').value;
+            const feedback = document.getElementById('emailFeedback');
+
+            if (!quizContent.trim()) {
+                feedback.className = 'feedback error';
+                feedback.style.display = 'block';
+                feedback.textContent = '✗ Please paste your quiz content first.';
+                return;
+            }
+
+            if (!email) {
+                feedback.className = 'feedback error';
+                feedback.style.display = 'block';
+                feedback.textContent = '✗ Please enter an email address.';
+                return;
+            }
+
+            const subject = encodeURIComponent('Anabaena vs Eukaryotic Cells - Retrieval Practice Quiz');
+            const body = encodeURIComponent('Hi team,\n\nHere\'s our retrieval practice quiz on Anabaena vs Eukaryotic Cells. Complete it individually, then let\'s meet to discuss our answers!\n\n' + quizContent + '\n\nLet\'s aim to discuss by [insert date/time].\n\nThanks!');
+
+            const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+
+            // Note: mailto has length limitations. For longer quizzes, this might not work.
+            window.location.href = mailtoLink;
+
+            feedback.className = 'feedback success';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '<strong>✓ Email client opened!</strong> Your quiz is ready to send. If the email didn\'t open automatically, copy the quiz text and paste it into your email client manually.';
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

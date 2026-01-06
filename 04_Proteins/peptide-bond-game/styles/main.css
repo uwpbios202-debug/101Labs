@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+}
+
+.lab {
+  max-width: 1200px;
+  margin: auto;
+  background: white;
+  height: 98vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 3px solid #016836;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  flex: 1;
+}
+
+aside {
+  padding: 10px;
+  background: #fafafa;
+  border-right: 1px solid #ccc;
+}
+
+aside button {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 8px;
+  font-weight: bold;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+.waters {
+  background: #e3f2fd;
+  padding: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.water {
+  border: 2px solid #1976d2;
+  color: #1976d2;
+  padding: 4px 8px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.aa {
+  margin: 0 8px;
+}
+
+svg {
+  width: 240px;
+  height: 260px;
+}
+
+.atom {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.bond {
+  stroke: #333;
+  stroke-width: 2;
+}
+
+.peptide {
+  stroke: #c62828;
+  stroke-width: 4;
+}
+
+.clickable {
+  fill: #c62828;
+  cursor: pointer;
+}
+
+.selected {
+  fill: orange;
+}
+
+#rxnBtn {
+  display: none;
+}

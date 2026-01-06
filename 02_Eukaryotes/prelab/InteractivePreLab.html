@@ -1,0 +1,979 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Eukaryotic Cell Explorer</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f7ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 100, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a6fc4 0%, #0d4d8c 100%);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            padding: 25px;
+        }
+
+        .section {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #1a6fc4;
+        }
+
+        h2 {
+            color: #1a6fc4;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #e0ecff;
+            padding-bottom: 8px;
+        }
+
+        .visual-anchor-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .anchor-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .anchor-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .anchor-content {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .anchor-content p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .question-box {
+            background-color: #e6f0ff;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #1a6fc4;
+        }
+
+        .question-box em {
+            color: #1a6fc4;
+            font-style: italic;
+        }
+
+        .models-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .model-viewer {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .model-header {
+            background-color: #1a6fc4;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 400px;
+            background-color: #f0f7ff;
+            --poster-color: transparent;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background-color: #f9fbff;
+            border-top: 1px solid #e0ecff;
+        }
+
+        button {
+            background-color: #1a6fc4;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #0d4d8c;
+            transform: translateY(-2px);
+        }
+
+        .structure-highlight {
+            background-color: #ffeb3b !important;
+            color: #333 !important;
+            box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background-color: #1a6fc4;
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+
+        .comparison-table td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0ecff;
+            transition: background-color 0.2s;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f9fbff;
+        }
+
+        .cell-structure {
+            font-weight: 600;
+            color: #1a6fc4;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .cell-structure:hover {
+            background-color: #e6f0ff;
+            transform: translateX(5px);
+        }
+
+        .cell-structure.clicked {
+            background-color: #ffeb3b;
+            color: #333;
+            box-shadow: 0 0 8px rgba(255, 235, 59, 0.5);
+        }
+
+        .present {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .absent {
+            color: #f44336;
+            font-weight: 600;
+        }
+
+        .structure-info-panel {
+            background-color: #e6f0ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border-left: 4px solid #1a6fc4;
+            display: none;
+        }
+
+        .structure-info-panel.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .structure-title {
+            color: #1a6fc4;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .structure-description {
+            margin-bottom: 15px;
+        }
+
+        .structure-presence {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .presence-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .presence-present {
+            background-color: rgba(76, 175, 80, 0.15);
+            color: #2e7d32;
+        }
+
+        .presence-absent {
+            background-color: rgba(244, 67, 54, 0.15);
+            color: #c62828;
+        }
+
+        .key {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6f0ff;
+            border-radius: 10px;
+        }
+
+        .key-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .plant-color {
+            background-color: #4caf50;
+        }
+
+        .animal-color {
+            background-color: #ff9800;
+        }
+
+        .highlight-color {
+            background-color: #ffeb3b;
+        }
+
+        .annotation {
+            position: absolute;
+            background-color: rgba(26, 111, 196, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 10;
+            max-width: 200px;
+            transform: translate(-50%, -100%);
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0ecff;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .visual-anchor-container {
+                flex-direction: column;
+            }
+
+            .models-container {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="../index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+    <div class="container">
+        <header>
+            <h1>Interactive Eukaryotic Cell Explorer</h1>
+            <p class="subtitle">Click on any cell structure in the table below to view it in the 3D models and learn
+                about its presence in plant and animal cells.</p>
+        </header>
+
+        <section class="section" id="interactive-models">
+            <h2>Interactive 3D Cell Models</h2>
+            <p>Click on any structure in the table below to view it here. The model will rotate to show the selected
+                structure. Click and drag to rotate, scroll to zoom.</p>
+
+            <div class="structure-info-panel" id="structure-info">
+                <div class="structure-title" id="structure-title">Select a Cell Structure</div>
+                <div class="structure-description" id="structure-description">Click on any cell structure in the
+                    comparison table to see details here and view it in the 3D models.</div>
+                <div class="structure-presence">
+                    <div class="presence-item presence-present" id="plant-presence">Present in Plant Cells</div>
+                    <div class="presence-item presence-absent" id="animal-presence">Absent in Animal Cells</div>
+                </div>
+            </div>
+
+            <div class="models-container">
+                <div class="model-viewer">
+                    <div class="model-header">Plant Cell</div>
+                    <model-viewer id="plant-cell" src="../images/plantbest.glb"
+                        alt="3D model of a plant cell with organelles" auto-rotate camera-controls shadow-intensity="1"
+                        exposure="0.8" ar ar-modes="webxr scene-viewer quick-look">
+                    </model-viewer>
+                    <div class="controls">
+                        <button onclick="toggleAutoRotate('plant')" id="plant-rotate-btn">⏸ Stop Rotation</button>
+                        <button onclick="resetView('plant')">⟲ Reset View</button>
+                        <button onclick="showAllStructures('plant')">👁 Show All</button>
+                    </div>
+                </div>
+
+                <div class="model-viewer">
+                    <div class="model-header">Animal Cell</div>
+                    <model-viewer id="animal-cell" src="../images/animalbest.glb"
+                        alt="3D model of an animal cell with organelles" auto-rotate camera-controls
+                        shadow-intensity="1" exposure="0.8" ar ar-modes="webxr scene-viewer quick-look">
+                    </model-viewer>
+                    <div class="controls">
+                        <button onclick="toggleAutoRotate('animal')" id="animal-rotate-btn">⏸ Stop Rotation</button>
+                        <button onclick="resetView('animal')">⟲ Reset View</button>
+                        <button onclick="showAllStructures('animal')">👁 Show All</button>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Tip:</strong> Click on the AR button in the bottom right of each model to view in augmented
+                reality on supported devices.</p>
+        </section>
+
+        <section class="section" id="comparison">
+            <h2>Click on Any Cell Structure to Explore</h2>
+            <p>Click on any cell structure name below to highlight it in the 3D models above and learn about its
+                presence in plant vs. animal cells.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Cell Structure</th>
+                        <th>Plant Cell</th>
+                        <th>Animal Cell</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-structure="cell-wall" data-plant-present="true" data-animal-present="false">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('cell-wall', 'Cell Wall', 'Rigid outer layer made of cellulose that provides structural support and protection.', true, false)">Cell
+                                Wall</span></td>
+                        <td><span class="present">Present</span> - Rigid outer layer made of cellulose</td>
+                        <td><span class="absent">Absent</span> - Only has a flexible cell membrane</td>
+                    </tr>
+                    <tr data-structure="cell-membrane" data-plant-present="true" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('cell-membrane', 'Cell Membrane', 'Semi-permeable membrane that controls what enters and leaves the cell.', true, true)">Cell
+                                Membrane</span></td>
+                        <td><span class="present">Present</span> - Inside the cell wall</td>
+                        <td><span class="present">Present</span> - Outer boundary of the cell</td>
+                    </tr>
+                    <tr data-structure="nucleus" data-plant-present="true" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('nucleus', 'Nucleus', 'Control center of the cell that contains DNA and directs cellular activities.', true, true)">Nucleus</span>
+                        </td>
+                        <td><span class="present">Present</span> - Contains genetic material</td>
+                        <td><span class="present">Present</span> - Contains genetic material</td>
+                    </tr>
+                    <tr data-structure="chloroplasts" data-plant-present="true" data-animal-present="false">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('chloroplasts', 'Chloroplasts', 'Organelles that conduct photosynthesis, converting light energy into chemical energy.', true, false)">Chloroplasts</span>
+                        </td>
+                        <td><span class="present">Present</span> - Site of photosynthesis</td>
+                        <td><span class="absent">Absent</span> - Cannot perform photosynthesis</td>
+                    </tr>
+                    <tr data-structure="mitochondria" data-plant-present="true" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('mitochondria', 'Mitochondria', 'Powerhouse of the cell that produces ATP through cellular respiration.', true, true)">Mitochondria</span>
+                        </td>
+                        <td><span class="present">Present</span> - Produces energy</td>
+                        <td><span class="present">Present</span> - Produces energy</td>
+                    </tr>
+                    <tr data-structure="vacuole" data-plant-present="true" data-animal-present="false">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('vacuole', 'Vacuole', 'Large, fluid-filled organelle that stores water, nutrients, and waste products.', true, false)">Vacuole</span>
+                        </td>
+                        <td><span class="present">Present</span> - Large central vacuole for storage</td>
+                        <td><span class="absent">Absent</span> - May have small vacuoles</td>
+                    </tr>
+                    <tr data-structure="lysosomes" data-plant-present="false" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('lysosomes', 'Lysosomes', 'Organelles containing digestive enzymes that break down waste materials.', false, true)">Lysosomes</span>
+                        </td>
+                        <td><span class="absent">Rare</span> - Enzymes usually in vacuole</td>
+                        <td><span class="present">Present</span> - Contain digestive enzymes</td>
+                    </tr>
+                    <tr data-structure="centrioles" data-plant-present="false" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('centrioles', 'Centrioles', 'Paired cylindrical organelles that help organize microtubules during cell division.', false, true)">Centrioles</span>
+                        </td>
+                        <td><span class="absent">Absent</span> in higher plants</td>
+                        <td><span class="present">Present</span> - Involved in cell division</td>
+                    </tr>
+                    <tr data-structure="golgi-apparatus" data-plant-present="true" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('golgi-apparatus', 'Golgi Apparatus', 'Processes, sorts, and packages proteins and lipids for transport.', true, true)">Golgi
+                                Apparatus</span></td>
+                        <td><span class="present">Present</span> - Modifies and packages proteins</td>
+                        <td><span class="present">Present</span> - Modifies and packages proteins</td>
+                    </tr>
+                    <tr data-structure="endoplasmic-reticulum" data-plant-present="true" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('endoplasmic-reticulum', 'Endoplasmic Reticulum', 'Network of membranes involved in protein and lipid synthesis.', true, true)">Endoplasmic
+                                Reticulum</span></td>
+                        <td><span class="present">Present</span> - Rough and smooth types</td>
+                        <td><span class="present">Present</span> - Rough and smooth types</td>
+                    </tr>
+                    <tr data-structure="ribosomes" data-plant-present="true" data-animal-present="true">
+                        <td><span class="cell-structure"
+                                onclick="highlightStructure('ribosomes', 'Ribosomes', 'Cellular structures that synthesize proteins by translating mRNA.', true, true)">Ribosomes</span>
+                        </td>
+                        <td><span class="present">Present</span> - Site of protein synthesis</td>
+                        <td><span class="present">Present</span> - Site of protein synthesis</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="question-box" style="margin-top: 25px;">
+                <p><strong>Critical Thinking:</strong> <em>How do these structural differences relate to the different
+                        functions of plant and animal cells in organisms?</em></p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Interactive Eukaryotic Cell Explorer | Click on any cell structure to view it in 3D</p>
+        <p>Note: The 3D models require the .glb files to be placed in the /images/ directory as specified: plantbest.glb
+            and animalbest.glb</p>
+    </footer>
+    </div>
+
+    <script>
+        // Current highlighted structure
+        let currentHighlightedStructure = null;
+        let autoRotatePlant = true; // Start with auto-rotate ON
+        let autoRotateAnimal = true; // Start with auto-rotate ON
+
+        // Structure information data with camera orbits
+        const structureData = {
+            'cell-wall': {
+                name: 'Cell Wall',
+                description: 'Rigid outer layer made of cellulose that provides structural support and protection.',
+                plantPresent: true,
+                animalPresent: false,
+                plantOrbit: '180deg 65deg 2m',
+                animalOrbit: '0deg 75deg 2.5m'
+            },
+            'cell-membrane': {
+                name: 'Cell Membrane',
+                description: 'Semi-permeable membrane that controls what enters and leaves the cell.',
+                plantPresent: true,
+                animalPresent: true,
+                plantOrbit: '150deg 70deg 1.8m',
+                animalOrbit: '30deg 70deg 1.8m'
+            },
+            'nucleus': {
+                name: 'Nucleus',
+                description: 'Control center of the cell that contains DNA and directs cellular activities.',
+                plantPresent: true,
+                animalPresent: true,
+                plantOrbit: '120deg 75deg 1.5m',
+                animalOrbit: '60deg 75deg 1.5m'
+            },
+            'chloroplasts': {
+                name: 'Chloroplasts',
+                description: 'Organelles that conduct photosynthesis, converting light energy into chemical energy.',
+                plantPresent: true,
+                animalPresent: false,
+                plantOrbit: '90deg 80deg 2m',
+                animalOrbit: '0deg 75deg 2.5m'
+            },
+            'mitochondria': {
+                name: 'Mitochondria',
+                description: 'Powerhouse of the cell that produces ATP through cellular respiration.',
+                plantPresent: true,
+                animalPresent: true,
+                plantOrbit: '60deg 70deg 2.2m',
+                animalOrbit: '120deg 70deg 2.2m'
+            },
+            'vacuole': {
+                name: 'Vacuole',
+                description: 'Large, fluid-filled organelle that stores water, nutrients, and waste products.',
+                plantPresent: true,
+                animalPresent: false,
+                plantOrbit: '30deg 65deg 1.6m',
+                animalOrbit: '0deg 75deg 2.5m'
+            },
+            'lysosomes': {
+                name: 'Lysosomes',
+                description: 'Organelles containing digestive enzymes that break down waste materials.',
+                plantPresent: false,
+                animalPresent: true,
+                plantOrbit: '0deg 75deg 2.5m',
+                animalOrbit: '90deg 70deg 2.4m'
+            },
+            'centrioles': {
+                name: 'Centrioles',
+                description: 'Paired cylindrical organelles that help organize microtubules during cell division.',
+                plantPresent: false,
+                animalPresent: true,
+                plantOrbit: '0deg 75deg 2.5m',
+                animalOrbit: '150deg 65deg 2.6m'
+            },
+            'golgi-apparatus': {
+                name: 'Golgi Apparatus',
+                description: 'Processes, sorts, and packages proteins and lipids for transport.',
+                plantPresent: true,
+                animalPresent: true,
+                plantOrbit: '210deg 75deg 2.3m',
+                animalOrbit: '240deg 75deg 2.3m'
+            },
+            'endoplasmic-reticulum': {
+                name: 'Endoplasmic Reticulum',
+                description: 'Network of membranes involved in protein and lipid synthesis.',
+                plantPresent: true,
+                animalPresent: true,
+                plantOrbit: '180deg 70deg 2.5m',
+                animalOrbit: '180deg 70deg 2.5m'
+            },
+            'ribosomes': {
+                name: 'Ribosomes',
+                description: 'Cellular structures that synthesize proteins by translating mRNA.',
+                plantPresent: true,
+                animalPresent: true,
+                plantOrbit: '270deg 80deg 2.8m',
+                animalOrbit: '270deg 80deg 2.8m'
+            }
+        };
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize models
+            const plantViewer = document.getElementById('plant-cell');
+            const animalViewer = document.getElementById('animal-cell');
+
+            // Add load event listeners to handle when models are ready
+            plantViewer.addEventListener('load', () => {
+                console.log('Plant cell model loaded');
+                // Set initial camera position
+                plantViewer.cameraOrbit = '0deg 75deg 2.5m';
+            });
+
+            animalViewer.addEventListener('load', () => {
+                console.log('Animal cell model loaded');
+                // Set initial camera position
+                animalViewer.cameraOrbit = '0deg 75deg 2.5m';
+            });
+
+            // Handle model loading errors
+            plantViewer.addEventListener('error', (event) => {
+                console.error('Plant cell model failed to load:', event);
+                showModelError('plant');
+            });
+
+            animalViewer.addEventListener('error', (event) => {
+                console.error('Animal cell model failed to load:', event);
+                showModelError('animal');
+            });
+
+            // Initialize with a sample structure after models have loaded
+            setTimeout(() => {
+                highlightStructure('nucleus', 'Nucleus', 'Control center of the cell that contains DNA and directs cellular activities.', true, true);
+            }, 1500);
+        });
+
+        // Highlight a structure when clicked
+        function highlightStructure(structureId, structureName, description, plantPresent, animalPresent) {
+            // Remove previous highlight
+            if (currentHighlightedStructure) {
+                const prevElements = document.querySelectorAll(`.cell-structure.clicked, [data-structure="${currentHighlightedStructure}"]`);
+                prevElements.forEach(el => {
+                    if (el.classList) el.classList.remove('clicked');
+                });
+            }
+
+            // Highlight the clicked structure
+            const clickedElements = document.querySelectorAll(`[data-structure="${structureId}"], .cell-structure[onclick*="${structureId}"]`);
+            clickedElements.forEach(el => {
+                if (el.classList) el.classList.add('clicked');
+            });
+
+            currentHighlightedStructure = structureId;
+
+            // Update the info panel
+            const infoPanel = document.getElementById('structure-info');
+            const titleElement = document.getElementById('structure-title');
+            const descElement = document.getElementById('structure-description');
+            const plantPresenceElement = document.getElementById('plant-presence');
+            const animalPresenceElement = document.getElementById('animal-presence');
+
+            titleElement.textContent = structureName;
+            descElement.textContent = description;
+
+            if (plantPresent) {
+                plantPresenceElement.textContent = 'Present in Plant Cells';
+                plantPresenceElement.className = 'presence-item presence-present';
+            } else {
+                plantPresenceElement.textContent = 'Absent in Plant Cells';
+                plantPresenceElement.className = 'presence-item presence-absent';
+            }
+
+            if (animalPresent) {
+                animalPresenceElement.textContent = 'Present in Animal Cells';
+                animalPresenceElement.className = 'presence-item presence-present';
+            } else {
+                animalPresenceElement.textContent = 'Absent in Animal Cells';
+                animalPresenceElement.className = 'presence-item presence-absent';
+            }
+
+            infoPanel.classList.add('active');
+
+            // Update 3D model views based on structure
+            const plantViewer = document.getElementById('plant-cell');
+            const animalViewer = document.getElementById('animal-cell');
+
+            if (structureData[structureId]) {
+                // Turn off auto-rotate when a structure is selected
+                if (autoRotatePlant) {
+                    toggleAutoRotate('plant');
+                }
+                if (autoRotateAnimal) {
+                    toggleAutoRotate('animal');
+                }
+
+                // Position camera for plant cell
+                if (plantPresent) {
+                    plantViewer.cameraOrbit = structureData[structureId].plantOrbit;
+                } else {
+                    // If not present, show a message and keep default view
+                    plantViewer.cameraOrbit = '0deg 75deg 2.5m';
+                }
+
+                // Position camera for animal cell
+                if (animalPresent) {
+                    animalViewer.cameraOrbit = structureData[structureId].animalOrbit;
+                } else {
+                    // If not present, show a message and keep default view
+                    animalViewer.cameraOrbit = '0deg 75deg 2.5m';
+                }
+            }
+        }
+
+        // Toggle auto-rotate for a model
+        function toggleAutoRotate(modelType) {
+            const viewer = document.getElementById(`${modelType}-cell`);
+            const button = document.getElementById(`${modelType}-rotate-btn`);
+
+            if (modelType === 'plant') {
+                autoRotatePlant = !autoRotatePlant;
+                if (autoRotatePlant) {
+                    viewer.setAttribute('auto-rotate', '');
+                    button.textContent = '⏸ Stop Rotation';
+                    button.classList.add('structure-highlight');
+                } else {
+                    viewer.removeAttribute('auto-rotate');
+                    button.textContent = '▶ Auto-rotate';
+                    button.classList.remove('structure-highlight');
+                }
+            } else {
+                autoRotateAnimal = !autoRotateAnimal;
+                if (autoRotateAnimal) {
+                    viewer.setAttribute('auto-rotate', '');
+                    button.textContent = '⏸ Stop Rotation';
+                    button.classList.add('structure-highlight');
+                } else {
+                    viewer.removeAttribute('auto-rotate');
+                    button.textContent = '▶ Auto-rotate';
+                    button.classList.remove('structure-highlight');
+                }
+            }
+        }
+
+        // Reset view for a model
+        function resetView(modelType) {
+            const viewer = document.getElementById(`${modelType}-cell`);
+            viewer.cameraOrbit = '0deg 75deg 2.5m';
+
+            // Clear any highlighted structure
+            if (currentHighlightedStructure) {
+                const prevElements = document.querySelectorAll(`.cell-structure.clicked, [data-structure="${currentHighlightedStructure}"]`);
+                prevElements.forEach(el => {
+                    if (el.classList) el.classList.remove('clicked');
+                });
+                currentHighlightedStructure = null;
+            }
+
+            // Hide info panel
+            document.getElementById('structure-info').classList.remove('active');
+
+            // Turn auto-rotate back on
+            if (modelType === 'plant' && !autoRotatePlant) {
+                toggleAutoRotate('plant');
+            }
+            if (modelType === 'animal' && !autoRotateAnimal) {
+                toggleAutoRotate('animal');
+            }
+        }
+
+        // Show all structures (reset view)
+        function showAllStructures(modelType) {
+            resetView(modelType);
+        }
+
+        // Show error message when model fails to load
+        function showModelError(modelType) {
+            const container = document.querySelector(`#${modelType}-cell`).parentElement;
+
+            // Create error message
+            const errorDiv = document.createElement('div');
+            errorDiv.innerHTML = `
+                <div style="padding: 20px; text-align: center; background: #ffe6e6; color: #b30000; border-radius: 8px; margin: 10px;">
+                    <p><strong>3D Model Failed to Load</strong></p>
+                    <p>Please ensure the .glb file is placed in the correct location:</p>
+                    <p style="font-family: monospace; background: #fff; padding: 10px; border-radius: 4px;">
+                        /images/${modelType === 'plant' ? 'plantbest.glb' : 'animalbest.glb'}
+                    </p>
+                    <p>Using placeholder diagram instead.</p>
+                </div>
+                <img src="${modelType === 'plant' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Plant_cell_structure.png/800px-Plant_cell_structure.png' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Animal_cell_structure.png/800px-Animal_cell_structure.png'}" 
+                     alt="${modelType === 'plant' ? 'Plant cell diagram' : 'Animal cell diagram'}" 
+                     style="width:100%; max-height:400px; object-fit:contain; background:#f0f7ff; border-radius: 8px;">
+            `;
+
+            // Replace the model-viewer with error message
+            const modelViewer = document.getElementById(`${modelType}-cell`);
+            container.insertBefore(errorDiv, modelViewer);
+            modelViewer.style.display = 'none';
+        }
+    </script>
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+
+</html>

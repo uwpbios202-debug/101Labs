@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 4 — Design Your BIOS101 Strategy</title>
+    <style>
+        :root {
+            --primary: #0b3d2e;
+            --primary-light: #165c45;
+            --accent: #eab308;
+            --bg: #f7f9fb;
+            --card: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding-bottom: 4rem;
+        }
+
+        /* Header */
+        header {
+            ground: var(--primary);
+            color: #016836;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h2 { font-size: 1.25rem; font-weight: 600; }
+        header a {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #016836;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        header a:hover { color: #016836; }
+
+        /* Layout */
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            ground: var(--card);
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        p { font-size: 0.95rem; color: #4b5563; margin-bottom: 1rem; }
+
+        /* Table Styles */
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+        th { ground: #374151; color: white; text-align: left; padding: 0.75rem; font-weight: 500; }
+        td { border: 1px solid var(--border); padding: 0.75rem; vertical-align: top; }
+        tr:nth-child(even) { ground: #f9fafb; }
+
+        /* Strategy Checklist */
+        .strategy-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        .strategy-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .strategy-item:last-child { border-bottom: none; }
+        .strategy-item input { margin-right: 0.75rem; accent-color: var(--primary); width: 18px; height: 18px; }
+
+        /* --- THE LOGICAL CHAIN (Steps 2-4) --- */
+        .logic-chain {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+        }
+
+        .logic-chain::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .chain-step {
+            position: relative;
+            z-index: 1;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            margin-left: 3rem;
+        }
+
+        .chain-step::after {
+            content: attr(data-step);
+            position: absolute;
+            left: -3rem;
+            top: 1.5rem;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 4px solid var(--bg);
+        }
+        
+        .chain-step.stress-test::after {
+            background: #b91c1c;
+        }
+
+        .chain-label {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+        textarea:focus { outline: none; border-color: var(--primary); ring: 2px solid var(--primary-light); }
+
+        /* --- COMMITMENT CHECK UI --- */
+        .commitment-container {
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .scale-options {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .scale-option {
+            position: relative;
+            flex: 1;
+        }
+
+        .scale-option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .scale-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            background: #f3f4f6;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .scale-option input:checked + .scale-label {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(11, 61, 46, 0.2);
+        }
+
+        .scale-option:nth-child(1) input:checked + .scale-label { background: #ef4444; }
+        .scale-option:nth-child(2) input:checked + .scale-label { background: #f97316; }
+        .scale-option:nth-child(3) input:checked + .scale-label { background: #eab308; color: white; }
+        .scale-option:nth-child(4) input:checked + .scale-label { background: #84cc16; }
+        .scale-option:nth-child(5) input:checked + .scale-label { background: #0b3d2e; }
+
+        .scale-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-main:hover { background: var(--primary-light); }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .checkbox-group label:hover { background: #f3f4f6; }
+        .checkbox-group input { margin-right: 0.75rem; accent-color: var(--primary); width: 16px; height: 16px;}
+
+    </style>
+<style>
+.bios-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #016836;
+  border-bottom: 2px solid #FFD100;
+}
+.bios-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px;
+}
+.bios-home {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: .5px;
+}
+.bios-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.bios-menus {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bios-menu { position: relative; }
+.bios-trigger {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.bios-trigger.active {
+  border-bottom: 2px solid #FFD100;
+}
+.bios-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  z-index: 1001;
+}
+.bios-dropdown a {
+  display: block;
+  padding: 6px 10px;
+  color: #212721;
+  text-decoration: none;
+}
+.bios-dropdown a:hover {
+  background: #EFECE2;
+}
+.bios-menu:hover .bios-dropdown,
+.bios-menu:focus-within .bios-dropdown {
+  display: block;
+}
+@media (max-width: 768px) {
+  .bios-toggle { display: block; }
+  .bios-menus {
+    display: none;
+    flex-direction: column;
+    background: #016836;
+    width: 100%;
+  }
+  .bios-menus.open { display: flex; }
+  .bios-dropdown {
+    position: static;
+    border: none;
+  }
+}
+</style>
+</head>
+<body>
+<nav class="bios-nav">
+  <div class="bios-nav-inner">
+    <a href="index.html" class="bios-home">BIOS101</a>
+    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+    <div class="bios-menus" id="biosMenus"></div>
+  </div>
+</nav>
+
+    <header>
+        <a href="index.html">← Back</a>
+        <h2>Step 4 — Strategy Design</h2>
+    </header>
+
+    <main>
+        
+        <!-- Context / Mapping -->
+        <section>
+            <h3><span style="font-size:1.5rem">🎯</span> Strategy Alignment</h3>
+            <p>Review the skills required for BIOS101. If your strategy doesn't practice these specific skills, it won't work.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>BIOS101 Demand</th>
+                        <th>Skill Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>High vocabulary load</td><td>Rapid retrieval & precise use</td></tr>
+                    <tr><td>Experimental design</td><td>Reconstructing variables logic</td></tr>
+                    <tr><td>Microscopy & units</td><td>Estimation under pressure</td></tr>
+                    <tr><td>Similar biological terms</td><td>Active compare–contrast</td></tr>
+                    <tr><td>Biological processes</td><td>Step-by-step explanation</td></tr>
+                    <tr><td>Structure–function</td><td>Inferring function from form</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Scientifically Proven Strategies -->
+        <section>
+            <h3><span style="font-size:1.5rem">🧬</span> Evidence-Based Tools</h3>
+            <p>Select which proven strategies you will integrate into your plan:</p>
+            <div class="strategy-list">
+                <label class="strategy-item"><input type="checkbox"> Retrieval practice (active recall)</label>
+                <label class="strategy-item"><input type="checkbox"> Spaced repetition</label>
+                <label class="strategy-item"><input type="checkbox"> Interleaving similar concepts</label>
+                <label class="strategy-item"><input type="checkbox"> Verbal explanation of processes</label>
+                <label class="strategy-item"><input type="checkbox"> Error analysis and correction</label>
+            </div>
+        </section>
+
+        <!-- Step 1: Constraints -->
+        <section>
+            <h3><span style="font-size:1.5rem">🚧</span> Step 1: Reality Calibration</h3>
+            <p>Check all constraints that currently apply to your situation.</p>
+            <div class="checkbox-group">
+                <label><input type="checkbox"> Limited daily study time (< 1hr)</label>
+                <label><input type="checkbox"> Irregular / Unpredictable schedule</label>
+                <label><input type="checkbox"> Heavy load in other STEM courses</label>
+                <label><input type="checkbox"> High test anxiety</label>
+                <label><input type="checkbox"> Reliance on group study (passive)</label>
+            </div>
+        </section>
+
+        <!-- THE CORE LOGIC CHAIN (Steps 2, 3, 4) -->
+        <div class="logic-chain">
+            
+            <!-- Step 2 -->
+            <div class="chain-step" data-step="2">
+                <label class="chain-label">Hypothesis (The Mechanism)</label>
+                <p>State <em>why</em> this strategy works using "Because...".</p>
+                <textarea placeholder="e.g., Because retrieval practice forces me to recall info without hints, I will stop relying on the illusion of competence from re-reading notes."></textarea>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="chain-step" data-step="3">
+                <label class="chain-label">Predicted Evidence (The Result)</label>
+                <p>If your hypothesis is true, what will change in your next study session?</p>
+                <textarea placeholder="e.g., I will be able to draw the Krebs cycle from memory in under 3 minutes without looking at the book."></textarea>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="chain-step stress-test" data-step="4">
+                <label class="chain-label" style="color:#b91c1c;">Plan Stress Test (The failure point)</label>
+                <p>Be honest: Where will this plan break? (e.g., "When I'm tired on Thursday night").</p>
+                <textarea placeholder="The plan is most likely to fail when..."></textarea>
+            </div>
+
+        </div>
+
+        <!-- Commitment Check -->
+        <section style="margin-top: 2rem; border: 2px solid var(--primary);">
+            <h3><span style="font-size:1.5rem">🤝</span> Commitment Check</h3>
+            <p style="text-align: center;">Given the stress test above, how realistic is this plan <strong>really</strong>?</p>
+            
+            <div class="commitment-container">
+                <div class="scale-options">
+                    <label class="scale-option">
+                        <input type="radio" name="commitment" value="1">
+                        <div class="scale-label">1</div>
+                    </label>
+                    <label class="scale-option">
+                        <input type="radio" name="commitment" value="2">
+                        <div class="scale-label">2</div>
+                    </label>
+                    <label class="scale-option">
+                        <input type="radio" name="commitment" value="3">
+                        <div class="scale-label">3</div>
+                    </label>
+                    <label class="scale-option">
+                        <input type="radio" name="commitment" value="4">
+                        <div class="scale-label">4</div>
+                    </label>
+                    <label class="scale-option">
+                        <input type="radio" name="commitment" value="5">
+                        <div class="scale-label">5</div>
+                    </label>
+                </div>
+                <div class="scale-text">
+                    <span>Fantasy</span>
+                    <span>Doable</span>
+                    <span>Solid</span>
+                </div>
+            </div>
+
+            <textarea placeholder="What one adjustment would move your score up by 1 point (if below a 5)?" style="margin-top:1rem; border: 1px dashed #9ca3af;"></textarea>
+        </section>
+
+        <button onclick="location.href='step5-deploy.html'">Proceed to Deployment →</button>
+
+    </main>
+
+<script>
+(function() {
+  function initNav() {
+    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+    var menus = document.getElementById('biosMenus');
+    var path = location.pathname;
+    if (!menus) return;
+    labs.forEach(function(lab) {
+      var m = document.createElement('div');
+      m.className = 'bios-menu';
+      var b = document.createElement('button');
+      b.className = 'bios-trigger';
+      b.textContent = lab.title;
+      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+      var d = document.createElement('div');
+      d.className = 'bios-dropdown';
+      var bp = '../' + lab.folder;
+      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+      m.appendChild(b);
+      m.appendChild(d);
+      menus.appendChild(m);
+    });
+    var t = document.querySelector('.bios-toggle');
+    if (t) t.onclick = function() { menus.classList.toggle('open'); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+})();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
