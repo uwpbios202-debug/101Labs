@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microscope and Measurement Lab Assessment</title>
+    <style>
+        /* UWP Color Palette - Updated to official colors */
+        :root {
+            --uwp-green: #016836;
+            /* PMS 349 - Primary Green */
+            --uwp-dark-green: #00502f;
+            /* Darker Green */
+            --uwp-blue: #105877;
+            /* Blue */
+            --uwp-warm-grey: #54534A;
+            /* Warm Grey */
+            --uwp-cool-grey: #DBD9D6;
+            /* Cool Grey */
+            --uwp-goldenrod: #FABA31;
+            /* Goldenrod */
+            --uwp-white-birch: #EFECE2;
+            /* White Birch */
+            --uwp-white: #ffffff;
+            /* White */
+            --uwp-red: #c0392b;
+            /* Red for incorrect */
+            --uwp-green-light: #27ae60;
+            /* Green for correct */
+            --uwp-primary: #016836;
+            /* Alias for green */
+            --uwp-secondary: #105877;
+            /* Alias for blue */
+            --uwp-accent: #FABA31;
+            /* Alias for goldenrod */
+            --uwp-light-bg: #EFECE2;
+            /* Alias for white birch */
+            --uwp-border: #DBD9D6;
+            /* Alias for cool grey */
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background-color: var(--uwp-white-birch);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--uwp-white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--uwp-border);
+        }
+
+        .header {
+            background: var(--uwp-green);
+            color: var(--uwp-white);
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--uwp-border);
+        }
+
+        .section-title {
+            color: var(--uwp-dark-green);
+            border-left: 4px solid var(--uwp-goldenrod);
+            padding-left: 15px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: var(--uwp-light-bg);
+            border-radius: 6px;
+            border: 1px solid var(--uwp-border);
+            position: relative;
+        }
+
+        .question-title {
+            font-weight: 600;
+            color: var(--uwp-dark-green);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--uwp-warm-grey);
+        }
+
+        .text-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 15px;
+            border: 2px solid var(--uwp-border);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .text-input:focus {
+            border-color: var(--uwp-green);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(1, 104, 54, 0.1);
+        }
+
+        .answer-feedback {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .answer-correct {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left: 4px solid var(--uwp-green-light);
+            color: #2e7d32;
+        }
+
+        .answer-incorrect {
+            background-color: rgba(192, 57, 43, 0.1);
+            border-left: 4px solid var(--uwp-red);
+            color: #c62828;
+        }
+
+        /* New Train Track Design - Matching CoverSlip.html */
+        .train-track-container {
+            margin: 20px 0;
+        }
+
+        .track-label {
+            font-size: 0.9rem;
+            color: var(--uwp-warm-grey);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .train-track {
+            display: flex;
+            align-items: center;
+            background-color: var(--uwp-white);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            position: relative;
+            min-height: 70px;
+            border: 1px solid var(--uwp-border);
+        }
+
+        .track-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .track-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 80%;
+            background-color: var(--uwp-border);
+            opacity: 0.3;
+        }
+
+        .track-line {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            right: 10px;
+            height: 2px;
+            background-color: var(--uwp-green);
+            z-index: 0;
+        }
+
+        .fraction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .numerator,
+        .denominator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            width: 100%;
+        }
+
+        .denominator {
+            border-top: 1px solid var(--uwp-border);
+        }
+
+        .fraction-input {
+            width: 70px;
+            padding: 8px;
+            border: 1px solid var(--uwp-border);
+            border-radius: 3px;
+            text-align: center;
+            margin: 0 5px;
+        }
+
+        .fraction-input:focus {
+            outline: 2px solid var(--uwp-green);
+            border-color: var(--uwp-green);
+        }
+
+        .power-of-ten {
+            display: flex;
+            align-items: baseline;
+            margin: 0 5px;
+        }
+
+        .exponent-input {
+            width: 40px;
+            padding: 5px;
+            border: 1px solid var(--uwp-border);
+            border-radius: 3px;
+            text-align: center;
+            margin-left: 2px;
+        }
+
+        .track-connector {
+            text-align: center;
+            margin: 5px 0;
+            color: var(--uwp-warm-grey);
+            font-size: 1.2rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-option input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .calculation-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .calculation-part {
+            padding: 8px 15px;
+            border: 1px solid var(--uwp-border);
+            border-radius: 4px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .calculation-input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid var(--uwp-border);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .dropdown {
+            padding: 8px 15px;
+            border: 2px solid var(--uwp-border);
+            border-radius: 4px;
+            background: var(--uwp-white);
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Check Button Styles - FIXED DISABLED STATE */
+        .check-btn {
+            background-color: var(--uwp-blue);
+            color: var(--uwp-white);
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .check-btn:hover {
+            background-color: #0a4660;
+        }
+
+        .check-btn:disabled {
+            background-color: var(--uwp-cool-grey);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--uwp-border);
+        }
+
+        .submit-btn {
+            background-color: var(--uwp-green);
+            color: var(--uwp-white);
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--uwp-dark-green);
+        }
+
+        .submit-btn:disabled {
+            background-color: var(--uwp-cool-grey);
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            background-color: var(--uwp-warm-grey);
+            color: var(--uwp-white);
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .reset-btn:hover {
+            background-color: #3d3c35;
+        }
+
+        .results {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background-color: rgba(1, 104, 54, 0.05);
+            border-radius: 6px;
+            border-left: 4px solid var(--uwp-goldenrod);
+        }
+
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--uwp-dark-green);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .results-table th {
+            background-color: var(--uwp-green);
+            color: var(--uwp-white);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--uwp-border);
+        }
+
+        .results-table tr:nth-child(even) {
+            background-color: rgba(1, 104, 54, 0.03);
+        }
+
+        .correct-answer {
+            color: var(--uwp-green-light);
+            font-weight: 600;
+        }
+
+        .incorrect-answer {
+            color: var(--uwp-red);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            .train-track {
+                flex-direction: column;
+                align-items: flex-start;
+                min-height: auto;
+            }
+
+            .track-step {
+                min-width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .track-step:not(:last-child)::after {
+                display: none;
+            }
+
+            .track-line {
+                display: none;
+            }
+
+            .calculation-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .submit-btn,
+            .reset-btn {
+                width: 100%;
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mind Mirror: Retrieval Practice</h1>
+            <p>Let's flex your Hippocampus and strengthen those neural pathways.</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">Part I: Microscope Anatomy</h2>
+                <p>Identify the labeled parts of the microscope shown below:</p>
+
+                <div class="question">
+                    <h3 class="question-title">1. Name the microscope part labeled A:</h3>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer1" placeholder="Enter the name of part A">
+                        <button class="check-btn" data-question="1">Check Answer</button>
+                        <div class="answer-feedback" id="feedback1"></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">2. Name the microscope part labeled B:</h3>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer2" placeholder="Enter the name of part B">
+                        <button class="check-btn" data-question="2">Check Answer</button>
+                        <div class="answer-feedback" id="feedback2"></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">3. Name the microscope part labeled C:</h3>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer3" placeholder="Enter the name of part C">
+                        <button class="check-btn" data-question="3">Check Answer</button>
+                        <div class="answer-feedback" id="feedback3"></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">4. Name the microscope part labeled D:</h3>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer4" placeholder="Enter the name of part D">
+                        <button class="check-btn" data-question="4">Check Answer</button>
+                        <div class="answer-feedback" id="feedback4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Part II: Microscope Calculations</h2>
+
+                <div class="question">
+                    <h3 class="question-title">5. Write the equation for Total Magnification:</h3>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer5" placeholder="Total magnification = ? × ?">
+                        <button class="check-btn" data-question="5">Check Answer</button>
+                        <div class="answer-feedback" id="feedback5"></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">6. Calculate the total magnification when parts D and B are used:</h3>
+                    <div class="calculation-box">
+                        <span>Total magnification =</span>
+                        <input type="text" class="calculation-input" id="answer6a" value="10×" readonly>
+                        <span>×</span>
+                        <input type="text" class="calculation-input" id="answer6b" value="10×" readonly>
+                        <span>=</span>
+                        <input type="text" class="calculation-input" id="answer6c" placeholder="?">
+                    </div>
+                    <button class="check-btn" data-question="6">Check Answer</button>
+                    <div class="answer-feedback" id="feedback6"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Part III: True/False Questions</h2>
+
+                <div class="question">
+                    <h3 class="question-title">7. Coarse Adjustment Knob: Larger knob for precise adjustments to achieve
+                        sharp focus.</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="answer7" value="true">
+                            <span>True</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="answer7" value="false">
+                            <span>False</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-question="7">Check Answer</button>
+                    <div class="answer-feedback" id="feedback7"></div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">8. The prefix "nano" means one billion.</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="answer8" value="true">
+                            <span>True</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="answer8" value="false">
+                            <span>False</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" data-question="8">Check Answer</button>
+                    <div class="answer-feedback" id="feedback8"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Part IV: Unit Conversions (Train Track Method)</h2>
+                <p>Set up the train track conversions below. Fill in the exponents with the correct conversion factors.
+                </p>
+
+                <div class="question">
+                    <h3 class="question-title">9a. Convert 0.013 m to µm:</h3>
+                    <div class="train-track-container">
+                        <div class="track-label">Step 1: Set up Units & Powers</div>
+                        <div class="train-track">
+                            <div class="track-line"></div>
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <input type="text" class="fraction-input start-value" value="0.013" readonly>
+                                        <span>m</span>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <span>1</span>
+                                        <input type="text" class="fraction-input target-unit" value="µm" readonly>
+                                    </div>
+                                    <div class="denominator">
+                                        <div class="power-of-ten">
+                                            <span>10</span>
+                                            <input type="number" class="exponent-input" id="answer9a-setup"
+                                                placeholder="?">
+                                        </div>
+                                        <span>m</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                        <div class="track-label">Step 2: Rewrite</div>
+                        <div class="train-track">
+                            <div class="track-line"></div>
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <input type="text" class="fraction-input start-value" value="0.013" readonly>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <div class="power-of-ten">
+                                            <span>× 10</span>
+                                            <input type="number" class="exponent-input" id="answer9a-flipped"
+                                                placeholder="?">
+                                        </div>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Final answer:</label>
+                        <input type="text" class="text-input" id="answer9a-final" placeholder="? µm">
+                    </div>
+                    <button class="check-btn" data-question="9a">Check Answer</button>
+                    <div class="answer-feedback" id="feedback9a"></div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">9b. Convert 134 µm to cm:</h3>
+                    <div class="train-track-container">
+                        <div class="track-label">Step 1: Set up Units & Powers (µm → m)</div>
+                        <div class="train-track">
+                            <div class="track-line"></div>
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <input type="text" class="fraction-input start-value" value="134" readonly>
+                                        <span>µm</span>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <span>1</span>
+                                        <input type="text" class="fraction-input target-unit" value="m" readonly>
+                                    </div>
+                                    <div class="denominator">
+                                        <div class="power-of-ten">
+                                            <span>10</span>
+                                            <input type="number" class="exponent-input" id="answer9b-setup1"
+                                                placeholder="?">
+                                        </div>
+                                        <span>µm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                        <div class="track-label">Step 2: Rewrite (µm → m)</div>
+                        <div class="train-track">
+                            <div class="track-line"></div>
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <input type="text" class="fraction-input start-value" value="134" readonly>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <div class="power-of-ten">
+                                            <span>× 10</span>
+                                            <input type="number" class="exponent-input" id="answer9b-flipped1"
+                                                placeholder="?">
+                                        </div>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="track-label">Step 3: Set up Units & Powers (m → cm)</div>
+                        <div class="train-track">
+                            <div class="track-line"></div>
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <input type="text" class="fraction-input start-value" id="answer9b-middle"
+                                            value="134×10^?" readonly>
+                                        <span>m</span>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <span>1</span>
+                                        <input type="text" class="fraction-input target-unit" value="cm" readonly>
+                                    </div>
+                                    <div class="denominator">
+                                        <div class="power-of-ten">
+                                            <span>10</span>
+                                            <input type="number" class="exponent-input" id="answer9b-setup2"
+                                                placeholder="?">
+                                        </div>
+                                        <span>m</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="track-connector">⬇ Move denominator up & flip sign</div>
+
+                        <div class="track-label">Step 4: Rewrite (m → cm)</div>
+                        <div class="train-track">
+                            <div class="track-line"></div>
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <input type="text" class="fraction-input start-value" id="answer9b-middle2"
+                                            value="134×10^?" readonly>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+
+                            <div class="track-step">
+                                <div class="fraction">
+                                    <div class="numerator">
+                                        <div class="power-of-ten">
+                                            <span>× 10</span>
+                                            <input type="number" class="exponent-input" id="answer9b-flipped2"
+                                                placeholder="?">
+                                        </div>
+                                    </div>
+                                    <div class="denominator">1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Final answer:</label>
+                        <input type="text" class="text-input" id="answer9b-final" placeholder="? cm">
+                    </div>
+                    <button class="check-btn" data-question="9b">Check Answer</button>
+                    <div class="answer-feedback" id="feedback9b"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Part V: Microscope Properties and Experiments</h2>
+
+                <div class="question">
+                    <h3 class="question-title">10. As the magnification of a microscope increases, the amount of light:
+                    </h3>
+                    <div class="input-group">
+                        <select class="dropdown" id="answer10">
+                            <option value="">Select an option</option>
+                            <option value="increases">Increases</option>
+                            <option value="decreases">Decreases</option>
+                            <option value="stays the same">Stays the same</option>
+                            <option value="doubles">Doubles</option>
+                        </select>
+                        <button class="check-btn" data-question="10">Check Answer</button>
+                        <div class="answer-feedback" id="feedback10"></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">11. Experiment Analysis:</h3>
+                    <p>An experiment was conducted using corn plants of the same variety. They were divided into five
+                        groups of 30 plants each. All plants were grown under the same lighting conditions for 60 days
+                        at 24°C, but each group received a different amount of fertilizer. One group received no
+                        fertilizer. At the end of the 60 days, the width of each plant was measured, and an average
+                        width was calculated for each group.</p>
+
+                    <div class="input-group">
+                        <label class="input-label">Dependent variable:</label>
+                        <input type="text" class="text-input" id="answer11a" placeholder="?">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Independent variable:</label>
+                        <input type="text" class="text-input" id="answer11b" placeholder="?">
+                    </div>
+                    <button class="check-btn" data-question="11">Check Answer</button>
+                    <div class="answer-feedback" id="feedback11"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Part VI: Biological Calculations</h2>
+
+                <div class="question">
+                    <h3 class="question-title">12. 106 Anabaena vegetative cells fit across the field of view at 400X
+                        total magnification, what is the size of the Anabaena vegetative cell?</h3>
+                    <p>First, write the abbreviated form of the equation:</p>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer12a"
+                            placeholder="write the abbreviated form only">
+                    </div>
+
+                    <p>Now calculate the size (you <strong>must</strong> include the unit of measure):</p>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer12b"
+                            placeholder="Enter calculation and answer with units">
+                    </div>
+                    <button class="check-btn" data-question="12">Check Answer</button>
+                    <div class="answer-feedback" id="feedback12"></div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">13. 87 Anabaena heterocyst cells fit across the field of view at 400X
+                        total magnification, what is the size of the Anabaena heterocyst cell?</h3>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer13"
+                            placeholder="Enter calculation and answer with units">
+                    </div>
+                    <button class="check-btn" data-question="13">Check Answer</button>
+                    <div class="answer-feedback" id="feedback13"></div>
+                </div>
+
+                <div class="question">
+                    <h3 class="question-title">14. What is the function of the Anabaena heterocyst cell?</h3>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="answer14" placeholder="Describe the function">
+                    </div>
+                    <button class="check-btn" data-question="14">Check Answer</button>
+                    <div class="answer-feedback" id="feedback14"></div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button class="submit-btn" id="submitBtn">Submit Assessment</button>
+                <button class="reset-btn" id="resetBtn">Reset Form</button>
+
+                <div class="results" id="resultsContainer">
+                    <div class="score-display" id="scoreDisplay">Score: 0/14</div>
+
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Question</th>
+                                <th>Your Answer</th>
+                                <th>Correct Answer</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTable">
+                            <!-- Results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Levenshtein Distance Helper Functions
+        function levenshteinDistance(str1, str2) {
+            const matrix = [];
+
+            // Initialize matrix with dimensions (str1.length + 1) x (str2.length + 1)
+            for (let i = 0; i <= str1.length; i++) {
+                matrix[i] = [i];
+            }
+            for (let j = 0; j <= str2.length; j++) {
+                matrix[0][j] = j;
+            }
+
+            // Fill the matrix
+            for (let i = 1; i <= str1.length; i++) {
+                for (let j = 1; j <= str2.length; j++) {
+                    const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j] + 1,      // Deletion
+                        matrix[i][j - 1] + 1,      // Insertion
+                        matrix[i - 1][j - 1] + cost // Substitution
+                    );
+                }
+            }
+
+            return matrix[str1.length][str2.length];
+        }
+
+        function calculateSimilarity(str1, str2) {
+            if (!str1 || !str2) return 0;
+
+            const maxLength = Math.max(str1.length, str2.length);
+            if (maxLength === 0) return 1.0;
+
+            const distance = levenshteinDistance(str1, str2);
+            return 1.0 - (distance / maxLength);
+        }
+
+        // Fuzzy match function with Levenshtein distance
+        function fuzzyMatch(input, correct, variations) {
+            if (!input) return false;
+
+            // Clean the input
+            let cleanInput = input.toString().toLowerCase().trim();
+            cleanInput = cleanInput.replace(/\s+/g, ' '); // Normalize spaces
+            cleanInput = cleanInput.replace(/[^a-z0-9\s×÷=+\-*/^().,]/g, ''); // Keep basic math symbols
+
+            const cleanCorrect = correct.toLowerCase();
+
+            // Step 1: Exact case-insensitive match
+            if (cleanInput === cleanCorrect) return true;
+
+            // Step 2: Exact match with variations
+            if (variations) {
+                for (let variation of variations) {
+                    const cleanVariation = variation.toLowerCase();
+                    if (cleanInput === cleanVariation) return true;
+
+                    // Also check if input contains the variation (for partial matches)
+                    if (cleanInput.includes(cleanVariation) && cleanVariation.length > 3) {
+                        return true;
+                    }
+                }
+            }
+
+            // Step 3: Levenshtein fuzzy matching
+            const threshold = 0.75; // 75% similarity required
+
+            // Check against correct answer
+            const similarityToCorrect = calculateSimilarity(cleanInput, cleanCorrect);
+            if (similarityToCorrect >= threshold) return true;
+
+            // Check against variations
+            if (variations) {
+                for (let variation of variations) {
+                    const cleanVariation = variation.toLowerCase();
+                    const similarityToVariation = calculateSimilarity(cleanInput, cleanVariation);
+                    if (similarityToVariation >= threshold) return true;
+                }
+            }
+
+            // Special handling for question 5 (equation)
+            if (correct.includes("=") && correct.includes("×")) {
+                const hasEquals = cleanInput.includes("=");
+                const hasMultiply = cleanInput.includes("×") || cleanInput.includes("*") || cleanInput.includes("x");
+                const hasOcular = cleanInput.includes("ocular") || cleanInput.includes("eyepiece");
+                const hasObjective = cleanInput.includes("objective");
+                const hasMagnification = cleanInput.includes("magnification") || cleanInput.includes("mag");
+
+                if (hasEquals && hasMultiply && hasOcular && hasObjective && hasMagnification) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Correct answers with variations for fuzzy matching
+        const correctAnswers = {
+            // Numeric questions
+            1: {
+                correct: "iris diaphragm",
+                variations: ["iris", "diaphragm", "iris diaphram", "irisdiaphragm", "iris-diaphragm", "diaphragm iris", "iris diaphgram", "irris diaphragm"]
+            },
+            2: {
+                correct: "10x objective lens",
+                variations: ["10x objective", "objective lens 10x", "10x lens", "10 objective", "10 objective lens", "ten x objective lens", "10x objective lense", "objective 10x"]
+            },
+            3: {
+                correct: "stage",
+                variations: ["microscope stage", "specimen stage", "slide stage", "platorm", "stäge"]
+            },
+            4: {
+                correct: "ocular lens",
+                variations: ["eyepiece", "ocular", "eyepiece lens", "ocular lens eyepiece", "ocular lense", "eye piece", "occular lens"]
+            },
+            5: {
+                correct: "total magnification = ocular magnification × objective magnification",
+                variations: [
+                    "total mag = ocular mag × objective mag",
+                    "total magnification = ocular × objective",
+                    "tm = om × obm",
+                    "total magnification = eyepiece magnification × objective magnification",
+                    "magnification total = magnification ocular × magnification objective",
+                    "total mag = ocular × objective",
+                    "magnification = ocular × objective"
+                ]
+            },
+            6: {
+                correct: "100",
+                variations: ["100x", "100×", "100 x", "one hundred", "100.0"]
+            },
+            7: {
+                correct: "false",
+                explanation: "The coarse adjustment knob is for coarse (large) focusing, not precise adjustments. Fine adjustment knob is for precise focusing."
+            },
+            8: {
+                correct: "false",
+                explanation: "The prefix 'nano' means one billionth (10⁻⁹), not one billion."
+            },
+            // String questions (train tracks)
+            "9a": {
+                setupExponent: -6,
+                flippedExponent: 6,
+                finalAnswer: "13000"
+            },
+            "9b": {
+                setupExponent1: 6,
+                flippedExponent1: -6,
+                setupExponent2: -2,
+                flippedExponent2: 2,
+                finalAnswer: "0.0134"
+            },
+            10: {
+                correct: "decreases",
+                variations: ["decrease", "gets less", "reduces", "diminishes", "lessens", "goes down"]
+            },
+            11: {
+                dependent: {
+                    correct: "plant width",
+                    variations: [
+                        "width of plant", "plant size", "plant growth",
+                        "average width", "plant width measurement", "plant width (mm)",
+                        "plant diameter", "width", "width of each plant",
+                        "width of corn plants", "plant width measurement in mm",
+                        "width of the plant", "the width", "plant's width"
+                    ]
+                },
+                independent: {
+                    correct: "amount of fertilizer",
+                    variations: [
+                        "fertilizer amount", "fertilizer", "fertilizer concentration",
+                        "nutrient amount", "fertilizer level", "fertilizer quantity",
+                        "different amount of fertilizer", "fertilizer applied",
+                        "level of fertilizer", "quantity of fertilizer", "fertilizer dose",
+                        "dose of fertilizer", "the fertilizer", "how much fertilizer", "fertilizer quantity", "fertilizer treatment"
+                    ]
+                }
+            },
+            // Updated field diameter
+            const fieldDiameter = 0.5; // mm
+
+            // Helper function to parse numerical value from string
+            function parseValueFromInput(input) {
+                if (!input) return null;
+
+        // Extract number from string (handles various formats)
+        const match = input.match(/(\d+\.?\d*|\d*\.?\d+)/);
+        if (!match) return null;
+
+        let value = parseFloat(match[1]);
+
+        // Check if input is in micrometers (µm, um, micrometer, etc.)
+        if (input.toLowerCase().includes('µm') ||
+            input.toLowerCase().includes('um') ||
+            input.toLowerCase().includes('micron') ||
+            input.toLowerCase().includes('micrometer')) {
+            return value / 1000; // Convert µm to mm
+        }
+
+        // Check if input is in millimeters (default)
+        return value;
+}
+
+        // Helper function to check if value is within acceptable range
+        function isValueClose(studentValue, expectedValue, tolerance = 0.0001) {
+            if (studentValue === null || isNaN(studentValue)) return false;
+
+            // Calculate absolute difference
+            const diff = Math.abs(studentValue - expectedValue);
+
+            // Accept if within tolerance or if relative error is small
+            return diff < tolerance || diff / expectedValue < 0.02; // 2% relative error
+        }
+
+        // Updated correctAnswers for Q12 and Q13 with exact values
+        const correctAnswers = {
+            // ... other questions ...
+            12: {
+                equation: {
+                    correct: "L = FD/N",
+                    variations: ["length = field diameter / number", "l = fd/n", "size = field diameter / number of cells", "cell size = field of view / cell count", "size = fd/n", "cell size = fd/n"]
+                },
+                exactValue: 0.5 / 106, // Exact calculator value: ~0.0047169811320754715
+                expectedValues: {
+                    mm: 0.5 / 106, // ~0.00471698
+                    um: (0.5 / 106) * 1000 // ~4.71698
+                },
+                // Keep string variations for display
+                stringVariations: [
+                    "0.5 mm / 106 = 0.00472 mm or 4.72 µm",
+                    "0.5/106 = 0.00472 mm",
+                    "0.5 mm ÷ 106 = 0.00472 mm",
+                    "4.72 µm",
+                    "4.72 micrometers",
+                    "0.00472 mm",
+                    "4.72 um",
+                    "0.00472mm"
+                ]
+            },
+            13: {
+                exactValue: 0.5 / 87, // Exact calculator value: ~0.005747126436781609
+                expectedValues: {
+                    mm: 0.5 / 87, // ~0.00574713
+                    um: (0.5 / 87) * 1000 // ~5.74713
+                },
+                // Keep string variations for display
+                stringVariations: [
+                    "0.5 mm / 87 = 0.00575 mm or 5.75 µm",
+                    "0.5/87 = 0.00575 mm",
+                    "0.5 mm ÷ 87 = 0.00575 mm",
+                    "5.75 µm",
+                    "5.75 micrometers",
+                    "0.00575 mm",
+                    "5.75 um",
+                    "0.00575mm"
+                ]
+            }
+            // ... other questions ...
+        };
+
+        // Updated checkAnswer function for Q12 and Q13
+        function checkAnswer(questionNumber) {
+            const feedbackEl = document.getElementById(`feedback${questionNumber}`);
+            let isCorrect = false;
+            let message = "";
+
+            // Convert questionNumber to string for consistent handling
+            const qNum = questionNumber.toString();
+
+            // ... other question cases ...
+
+            switch (parseInt(qNum)) {
+                // ... other cases ...
+
+                case 12:
+                    const answer12a = document.getElementById('answer12a').value;
+                    const answer12b = document.getElementById('answer12b').value;
+
+                    // Check equation part
+                    const correct12a = fuzzyMatch(answer12a, correctAnswers[12].equation.correct, correctAnswers[12].equation.variations);
+
+                    // Check calculation part numerically
+                    const studentValue12 = parseValueFromInput(answer12b);
+                    const expected12mm = correctAnswers[12].expectedValues.mm;
+                    const expected12um = correctAnswers[12].expectedValues.um;
+
+                    let correct12b = false;
+                    if (studentValue12 !== null) {
+                        // Check if value is close to expected in mm OR µm
+                        correct12b = isValueClose(studentValue12, expected12mm) ||
+                            isValueClose(studentValue12, expected12um / 1000) || // Student might have entered µm but we parsed as mm
+                            isValueClose(studentValue12 * 1000, expected12um); // Student might have entered mm but we need to check µm
+                    }
+
+                    isCorrect = correct12a && correct12b;
+                    message = isCorrect ? "✓ Correct!" : "✗ Remember: Cell size = Field diameter ÷ Number of cells (0.5 mm / 106 = ~0.00472 mm or 4.72 µm)";
+                    break;
+
+                case 13:
+                    const answer13 = document.getElementById('answer13').value;
+                    const studentValue13 = parseValueFromInput(answer13);
+                    const expected13mm = correctAnswers[13].expectedValues.mm;
+                    const expected13um = correctAnswers[13].expectedValues.um;
+
+                    if (studentValue13 !== null) {
+                        // Check if value is close to expected in mm OR µm
+                        isCorrect = isValueClose(studentValue13, expected13mm) ||
+                            isValueClose(studentValue13, expected13um / 1000) ||
+                            isValueClose(studentValue13 * 1000, expected13um);
+                    }
+
+                    message = isCorrect ? "✓ Correct!" : "✗ Remember: Cell size = Field diameter ÷ Number of cells (0.5 mm / 87 = ~0.00575 mm or 5.75 µm)";
+                    break;
+
+                // ... other cases ...
+            }
+
+            // Show feedback
+            feedbackEl.textContent = message;
+            feedbackEl.className = 'answer-feedback ' + (isCorrect ? 'answer-correct' : 'answer-incorrect');
+            feedbackEl.style.display = 'block';
+
+            // Scroll to feedback
+            feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            return isCorrect;
+        }
+
+        // Updated submitAssessment function for Q12 and Q13
+        function submitAssessment() {
+            let score = 0;
+            const totalQuestions = 14;
+            const results = [];
+
+            // Check all questions
+            for (let i = 1; i <= totalQuestions; i++) {
+                // ... other question handling ...
+
+                switch (i) {
+                    // ... other cases ...
+
+                    case 12:
+                        const answer12a = document.getElementById('answer12a').value;
+                        const answer12b = document.getElementById('answer12b').value;
+
+                        // Check equation part
+                        const correct12a = fuzzyMatch(answer12a, correctAnswers[12].equation.correct, correctAnswers[12].equation.variations);
+
+                        // Check calculation part numerically
+                        const studentValue12 = parseValueFromInput(answer12b);
+                        const expected12mm = correctAnswers[12].expectedValues.mm;
+                        const expected12um = correctAnswers[12].expectedValues.um;
+
+                        let correct12b = false;
+                        if (studentValue12 !== null) {
+                            correct12b = isValueClose(studentValue12, expected12mm) ||
+                                isValueClose(studentValue12, expected12um / 1000) ||
+                                isValueClose(studentValue12 * 1000, expected12um);
+                        }
+
+                        isCorrect = correct12a && correct12b;
+                        userAnswer = `Eq: ${answer12a || "?"}, Calc: ${answer12b || "?"}`;
+
+                        // Format correct answer for display
+                        const correct12mm = expected12mm.toFixed(8);
+                        const correct12um = expected12um.toFixed(5);
+                        correctAnswer = `Eq: ${correctAnswers[12].equation.correct}, Calc: ${correct12mm} mm or ${correct12um} µm`;
+                        questionText = "12. Vegetative cell size";
+                        break;
+
+                    case 13:
+                        const answer13 = document.getElementById('answer13').value;
+                        const studentValue13 = parseValueFromInput(answer13);
+                        const expected13mm = correctAnswers[13].expectedValues.mm;
+                        const expected13um = correctAnswers[13].expectedValues.um;
+
+                        if (studentValue13 !== null) {
+                            isCorrect = isValueClose(studentValue13, expected13mm) ||
+                                isValueClose(studentValue13, expected13um / 1000) ||
+                                isValueClose(studentValue13 * 1000, expected13um);
+                        }
+
+                        userAnswer = answer13 || "(No answer)";
+
+                        // Format correct answer for display
+                        const correct13mm = expected13mm.toFixed(8);
+                        const correct13um = expected13um.toFixed(5);
+                        correctAnswer = `${correct13mm} mm or ${correct13um} µm`;
+                        questionText = "13. Heterocyst cell size";
+                        break;
+
+                    // ... other cases ...
+                }
+
+                if (isCorrect) score++;
+                results.push({
+                    question: questionText,
+                    userAnswer: userAnswer,
+                    correctAnswer: correctAnswer,
+                    correct: isCorrect
+                });
+            }
+
+            // ... rest of submitAssessment function ...
+        }
+        };
+
+        // Field diameter at 400X (for calculations)
+        const fieldDiameter = 0.45; // mm
+
+        // Special function to check train track answers
+        function checkTrainTrackAnswer(questionNum) {
+            if (questionNum === "9a") {
+                const setupExp = parseInt(document.getElementById('answer9a-setup').value);
+                const flippedExp = parseInt(document.getElementById('answer9a-flipped').value);
+                const finalAnswer = document.getElementById('answer9a-final').value.trim();
+
+                // Check if exponents are correct
+                const correctSetup = setupExp === correctAnswers["9a"].setupExponent;
+                const correctFlipped = flippedExp === correctAnswers["9a"].flippedExponent;
+
+                // Check final answer (allow some tolerance)
+                let correctFinal = false;
+                if (finalAnswer) {
+                    const numValue = parseFloat(finalAnswer);
+                    if (!isNaN(numValue)) {
+                        const expected = parseFloat(correctAnswers["9a"].finalAnswer);
+                        const diff = Math.abs(numValue - expected);
+                        correctFinal = diff < 0.001; // Allow small rounding differences
+                    }
+                }
+
+                return correctSetup && correctFlipped && correctFinal;
+            }
+            else if (questionNum === "9b") {
+                const setupExp1 = parseInt(document.getElementById('answer9b-setup1').value);
+                const flippedExp1 = parseInt(document.getElementById('answer9b-flipped1').value);
+                const setupExp2 = parseInt(document.getElementById('answer9b-setup2').value);
+                const flippedExp2 = parseInt(document.getElementById('answer9b-flipped2').value);
+                const finalAnswer = document.getElementById('answer9b-final').value.trim();
+
+                // Check if exponents are correct
+                const correctSetup1 = setupExp1 === correctAnswers["9b"].setupExponent1;
+                const correctFlipped1 = flippedExp1 === correctAnswers["9b"].flippedExponent1;
+                const correctSetup2 = setupExp2 === correctAnswers["9b"].setupExponent2;
+                const correctFlipped2 = flippedExp2 === correctAnswers["9b"].flippedExponent2;
+
+                // Check final answer (allow some tolerance)
+                let correctFinal = false;
+                if (finalAnswer) {
+                    const numValue = parseFloat(finalAnswer);
+                    if (!isNaN(numValue)) {
+                        const expected = parseFloat(correctAnswers["9b"].finalAnswer);
+                        const diff = Math.abs(numValue - expected);
+                        correctFinal = diff < 0.0001; // Allow small rounding differences
+                    }
+                }
+
+                return correctSetup1 && correctFlipped1 && correctSetup2 && correctFlipped2 && correctFinal;
+            }
+
+            return false;
+        }
+
+        // Check individual answer and show feedback - FIXED VERSION
+        function checkAnswer(questionNumber) {
+            const feedbackEl = document.getElementById(`feedback${questionNumber}`);
+            let isCorrect = false;
+            let message = "";
+            let explanation = "";
+
+            // Convert questionNumber to string for consistent handling
+            const qNum = questionNumber.toString();
+
+            // Handle train track questions separately
+            if (qNum === "9a" || qNum === "9b") {
+                isCorrect = checkTrainTrackAnswer(qNum);
+                if (isCorrect) {
+                    message = "✓ Correct! Your train track setup and answer are correct.";
+                } else {
+                    message = "✗ Incorrect. Check your exponents and final calculation.";
+                    if (qNum === "9a") {
+                        explanation = " Remember: 1 µm = 10⁻⁶ m";
+                    } else {
+                        explanation = " Remember: 1 µm = 10⁻⁶ m and 1 m = 100 cm";
+                    }
+                    message += explanation;
+                }
+            } else {
+                // Handle all other questions
+                switch (parseInt(qNum)) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        const answer = document.getElementById(`answer${qNum}`).value;
+                        isCorrect = fuzzyMatch(answer, correctAnswers[qNum].correct, correctAnswers[qNum].variations);
+                        message = isCorrect ? "✓ Correct!" : `✗ Incorrect. The correct answer is: ${correctAnswers[qNum].correct}`;
+                        break;
+
+                    case 6:
+                        const answer6 = document.getElementById('answer6c').value;
+                        isCorrect = fuzzyMatch(answer6, correctAnswers[6].correct, correctAnswers[6].variations);
+                        message = isCorrect ? "✓ Correct! Total magnification = 10× × 10× = 100×" : "✗ Incorrect. Remember: Total magnification = Ocular × Objective";
+                        break;
+
+                    case 7:
+                    case 8:
+                        const checkbox = document.querySelector(`input[name="answer${qNum}"]:checked`);
+                        const value = checkbox ? checkbox.value : "";
+                        isCorrect = value === correctAnswers[qNum].correct;
+                        message = isCorrect ? "✓ Correct!" : `✗ Incorrect. ${correctAnswers[qNum].explanation}`;
+                        break;
+
+                    case 10:
+                        const answer10 = document.getElementById('answer10').value;
+                        isCorrect = fuzzyMatch(answer10, correctAnswers[10].correct, correctAnswers[10].variations);
+                        message = isCorrect ? "✓ Correct!" : "✗ Incorrect. As magnification increases, the field of view decreases, so less light reaches the specimen.";
+                        break;
+
+                    case 11:
+                        const answer11a = document.getElementById('answer11a').value;
+                        const answer11b = document.getElementById('answer11b').value;
+                        const correct11a = fuzzyMatch(answer11a, correctAnswers[11].dependent.correct, correctAnswers[11].dependent.variations);
+                        const correct11b = fuzzyMatch(answer11b, correctAnswers[11].independent.correct, correctAnswers[11].independent.variations);
+                        isCorrect = correct11a && correct11b;
+                        message = isCorrect ? "✓ Correct!" : "✗ Remember: Dependent variable = what is measured, Independent variable = what is changed.";
+                        break;
+
+                    case 12:
+                        const answer12a = document.getElementById('answer12a').value;
+                        const answer12b = document.getElementById('answer12b').value;
+                        const correct12a = fuzzyMatch(answer12a, correctAnswers[12].equation.correct, correctAnswers[12].equation.variations);
+                        const correct12b = fuzzyMatch(answer12b, correctAnswers[12].calculation.correct, correctAnswers[12].calculation.variations);
+                        isCorrect = correct12a && correct12b;
+                        message = isCorrect ? "✓ Correct!" : "✗ Remember: Cell size = Field diameter ÷ Number of cells";
+                        break;
+
+                    case 13:
+                        const answer13 = document.getElementById('answer13').value;
+                        isCorrect = fuzzyMatch(answer13, correctAnswers[13].correct, correctAnswers[13].variations);
+                        message = isCorrect ? "✓ Correct!" : "✗ Remember: Cell size = Field diameter ÷ Number of cells";
+                        break;
+
+                    case 14:
+                        const answer14 = document.getElementById('answer14').value;
+                        isCorrect = fuzzyMatch(answer14, correctAnswers[14].correct, correctAnswers[14].variations);
+                        message = isCorrect ? "✓ Correct!" : "✗ Incorrect. Heterocysts in Anabaena are specialized for nitrogen fixation.";
+                        break;
+
+                    default:
+                        message = "Question not found.";
+                }
+            }
+
+            // Show feedback
+            feedbackEl.textContent = message;
+            feedbackEl.className = 'answer-feedback ' + (isCorrect ? 'answer-correct' : 'answer-incorrect');
+            feedbackEl.style.display = 'block';
+
+            // Scroll to feedback
+            feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            return isCorrect;
+        }
+
+        // Calculate score and show results
+        function submitAssessment() {
+            let score = 0;
+            const totalQuestions = 14;
+            const results = [];
+
+            // Check all questions
+            for (let i = 1; i <= totalQuestions; i++) {
+                let questionNum = i;
+
+                // Handle special cases
+                if (i === 9) {
+                    // Skip 9 since we have 9a and 9b separately
+                    continue;
+                }
+
+                let isCorrect = false;
+                let userAnswer = "";
+                let correctAnswer = "";
+                let questionText = "";
+
+                switch (i) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        const answer = document.getElementById(`answer${i}`).value;
+                        isCorrect = fuzzyMatch(answer, correctAnswers[i].correct, correctAnswers[i].variations);
+                        userAnswer = answer || "(No answer)";
+                        correctAnswer = correctAnswers[i].correct;
+                        questionText = `${i}. Part ${String.fromCharCode(64 + i)}`;
+                        break;
+
+                    case 6:
+                        const answer6 = document.getElementById('answer6c').value;
+                        isCorrect = fuzzyMatch(answer6, correctAnswers[6].correct, correctAnswers[6].variations);
+                        userAnswer = answer6 || "(No answer)";
+                        correctAnswer = correctAnswers[6].correct;
+                        questionText = "6. Total magnification calculation";
+                        break;
+
+                    case 7:
+                    case 8:
+                        const checkbox = document.querySelector(`input[name="answer${i}"]:checked`);
+                        const value = checkbox ? checkbox.value : "";
+                        isCorrect = value === correctAnswers[i].correct;
+                        userAnswer = value ? value.charAt(0).toUpperCase() + value.slice(1) : "(No answer)";
+                        correctAnswer = correctAnswers[i].correct.charAt(0).toUpperCase() + correctAnswers[i].correct.slice(1);
+                        questionText = `${i}. ${i === 7 ? "Coarse adjustment knob" : "Prefix 'nano'"}`;
+                        break;
+
+                    case 10:
+                        const answer10 = document.getElementById('answer10').value;
+                        isCorrect = fuzzyMatch(answer10, correctAnswers[10].correct, correctAnswers[10].variations);
+                        userAnswer = answer10 ? answer10.charAt(0).toUpperCase() + answer10.slice(1) : "(No answer)";
+                        correctAnswer = correctAnswers[10].correct.charAt(0).toUpperCase() + correctAnswers[10].correct.slice(1);
+                        questionText = "10. Light and magnification";
+                        break;
+
+                    case 11:
+                        const answer11a = document.getElementById('answer11a').value;
+                        const answer11b = document.getElementById('answer11b').value;
+                        const correct11a = fuzzyMatch(answer11a, correctAnswers[11].dependent.correct, correctAnswers[11].dependent.variations);
+                        const correct11b = fuzzyMatch(answer11b, correctAnswers[11].independent.correct, correctAnswers[11].independent.variations);
+                        isCorrect = correct11a && correct11b;
+                        userAnswer = `Dependent: ${answer11a || "?"}, Independent: ${answer11b || "?"}`;
+                        correctAnswer = `Dependent: ${correctAnswers[11].dependent.correct}, Independent: ${correctAnswers[11].independent.correct}`;
+                        questionText = "11. Experimental variables";
+                        break;
+
+                    case 12:
+                        const answer12a = document.getElementById('answer12a').value;
+                        const answer12b = document.getElementById('answer12b').value;
+                        const correct12a = fuzzyMatch(answer12a, correctAnswers[12].equation.correct, correctAnswers[12].equation.variations);
+                        const correct12b = fuzzyMatch(answer12b, correctAnswers[12].calculation.correct, correctAnswers[12].calculation.variations);
+                        isCorrect = correct12a && correct12b;
+                        userAnswer = `Eq: ${answer12a || "?"}, Calc: ${answer12b || "?"}`;
+                        correctAnswer = `Eq: ${correctAnswers[12].equation.correct}, Calc: ${correctAnswers[12].calculation.correct}`;
+                        questionText = "12. Vegetative cell size";
+                        break;
+
+                    case 13:
+                        const answer13 = document.getElementById('answer13').value;
+                        isCorrect = fuzzyMatch(answer13, correctAnswers[13].correct, correctAnswers[13].variations);
+                        userAnswer = answer13 || "(No answer)";
+                        correctAnswer = correctAnswers[13].correct;
+                        questionText = "13. Heterocyst cell size";
+                        break;
+
+                    case 14:
+                        const answer14 = document.getElementById('answer14').value;
+                        isCorrect = fuzzyMatch(answer14, correctAnswers[14].correct, correctAnswers[14].variations);
+                        userAnswer = answer14 || "(No answer)";
+                        correctAnswer = correctAnswers[14].correct;
+                        questionText = "14. Function of heterocyst";
+                        break;
+                }
+
+                if (isCorrect) score++;
+                results.push({
+                    question: questionText,
+                    userAnswer: userAnswer,
+                    correctAnswer: correctAnswer,
+                    correct: isCorrect
+                });
+            }
+
+            // Check train track questions separately
+            const is9aCorrect = checkTrainTrackAnswer("9a");
+            const is9bCorrect = checkTrainTrackAnswer("9b");
+
+            if (is9aCorrect) score++;
+            if (is9bCorrect) score++;
+
+            // Add train track results
+            results.push({
+                question: "9a. Convert m to µm",
+                userAnswer: document.getElementById('answer9a-final').value || "(No answer)",
+                correctAnswer: correctAnswers["9a"].finalAnswer,
+                correct: is9aCorrect
+            });
+
+            results.push({
+                question: "9b. Convert µm to cm",
+                userAnswer: document.getElementById('answer9b-final').value || "(No answer)",
+                correctAnswer: correctAnswers["9b"].finalAnswer,
+                correct: is9bCorrect
+            });
+
+            // Sort results by question number
+            results.sort((a, b) => {
+                const aNum = parseInt(a.question);
+                const bNum = parseInt(b.question);
+                return (isNaN(aNum) ? 0 : aNum) - (isNaN(bNum) ? 0 : bNum);
+            });
+
+            // Display results
+            displayResults(results, score, totalQuestions);
+        }
+
+        // Display results in table
+        function displayResults(results, score, total) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const resultsTable = document.getElementById('resultsTable');
+
+            // Update score display
+            scoreDisplay.textContent = `Score: ${score}/${total} (${Math.round((score / total) * 100)}%)`;
+
+            // Clear previous results
+            resultsTable.innerHTML = '';
+
+            // Add each result to the table
+            results.forEach((result, index) => {
+                const row = document.createElement('tr');
+
+                // Question
+                const questionCell = document.createElement('td');
+                questionCell.textContent = result.question;
+                row.appendChild(questionCell);
+
+                // User answer
+                const userAnswerCell = document.createElement('td');
+                userAnswerCell.textContent = result.userAnswer;
+                row.appendChild(userAnswerCell);
+
+                // Correct answer
+                const correctAnswerCell = document.createElement('td');
+                correctAnswerCell.textContent = result.correctAnswer;
+                row.appendChild(correctAnswerCell);
+
+                // Status
+                const statusCell = document.createElement('td');
+                if (result.correct) {
+                    statusCell.innerHTML = '<span class="correct-answer">✓ Correct</span>';
+                } else {
+                    statusCell.innerHTML = '<span class="incorrect-answer">✗ Incorrect</span>';
+                }
+                row.appendChild(statusCell);
+
+                resultsTable.appendChild(row);
+            });
+
+            // Show results container
+            resultsContainer.style.display = 'block';
+
+            // Scroll to results
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reset form
+        function resetForm() {
+            if (!confirm("Are you sure you want to reset all answers? This cannot be undone.")) {
+                return;
+            }
+
+            // Clear all text inputs
+            document.querySelectorAll('input[type="text"]').forEach(input => {
+                if (!input.readOnly) {
+                    input.value = '';
+                }
+            });
+
+            // Clear select dropdowns
+            document.querySelectorAll('select').forEach(select => {
+                select.value = '';
+            });
+
+            // Clear checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Clear exponent inputs
+            document.querySelectorAll('.exponent-input').forEach(input => {
+                input.value = '';
+            });
+
+            // Reset middle values for train tracks
+            document.getElementById('answer9b-middle').value = '134×10^?';
+            document.getElementById('answer9b-middle2').value = '134×10^?';
+
+            // Hide results
+            document.getElementById('resultsContainer').style.display = 'none';
+
+            // Clear feedback messages
+            document.querySelectorAll('.answer-feedback').forEach(feedback => {
+                feedback.style.display = 'none';
+                feedback.textContent = '';
+                feedback.className = 'answer-feedback';
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize event listeners - FIXED VERSION
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("Document loaded, initializing event listeners...");
+
+            // Submit button
+            document.getElementById('submitBtn').addEventListener('click', submitAssessment);
+
+            // Reset button
+            document.getElementById('resetBtn').addEventListener('click', resetForm);
+
+            // Check buttons for individual questions
+            const checkButtons = document.querySelectorAll('.check-btn');
+            console.log(`Found ${checkButtons.length} check buttons`);
+
+            checkButtons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    console.log(`Check button clicked for question ${this.getAttribute('data-question')}`);
+                    const question = this.getAttribute('data-question');
+                    checkAnswer(question);
+                });
+            });
+
+            // Make sure only one checkbox is selected for T/F questions
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        // Uncheck other checkboxes in the same group
+                        const groupName = this.getAttribute('name');
+                        document.querySelectorAll(`input[name="${groupName}"]`).forEach(otherCheckbox => {
+                            if (otherCheckbox !== this) {
+                                otherCheckbox.checked = false;
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Update middle values for train tracks when exponents change
+            document.getElementById('answer9b-flipped1').addEventListener('input', function () {
+                const exponent = this.value;
+                if (exponent) {
+                    document.getElementById('answer9b-middle').value = `134×10^${exponent}`;
+                    document.getElementById('answer9b-middle2').value = `134×10^${exponent}`;
+                }
+            });
+
+            // Auto-calculate final answer for 9a when flipped exponent changes
+            document.getElementById('answer9a-flipped').addEventListener('input', function () {
+                const exponent = parseInt(this.value);
+                if (!isNaN(exponent)) {
+                    const result = 0.013 * Math.pow(10, exponent);
+                    document.getElementById('answer9a-final').value = result.toFixed(0);
+                }
+            });
+
+            // Auto-calculate final answer for 9b when exponents change
+            document.getElementById('answer9b-flipped2').addEventListener('input', function () {
+                const exponent2 = parseInt(this.value);
+                const exponent1 = parseInt(document.getElementById('answer9b-flipped1').value);
+                if (!isNaN(exponent1) && !isNaN(exponent2)) {
+                    const result = 134 * Math.pow(10, exponent1) * Math.pow(10, exponent2);
+                    document.getElementById('answer9b-final').value = result.toFixed(6);
+                }
+            });
+
+            console.log("Event listeners initialized successfully");
+        });
+
+        // Add error handling for any JavaScript errors
+        window.addEventListener('error', function (e) {
+            console.error('JavaScript error:', e.message, 'at', e.filename, ':', e.lineno);
+            alert('There was an error loading the assessment. Please refresh the page.');
+        });
+    </script>
+</body>
+
+</html>
