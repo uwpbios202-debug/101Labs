@@ -1,1 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pear Tissue: Carbohydrate Analysis | BIOS101</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Anton&display=swap"
+        rel="stylesheet">
+    
+    <style>
+        :root {
+            --parkside-green: #016836;
+            --near-black: rgb(33, 39, 33);
+            --warm-grey: #54534A;
+            --cool-grey: #DBD9D6;
+            --goldenrod: #FABA31; /* PMS 116 */
+            --white-birch: #EFECE2;
+            --white: #FFFFFF;
+            --bg-primary: var(--white);
+            --bg-secondary: var(--white-birch);
+            --text-primary: var(--near-black);
+            --text-secondary: var(--warm-grey);
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- Global Header (Green Strip) --- */
+        header {
+            background-color: var(--parkside-green);
+            color: var(--white);
+            padding: 15px 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-family: 'Anton', sans-serif;
+            color: var(--parkside-green);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--goldenrod);
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: var(--parkside-green);
+            font-weight: 700;
+            margin-top: 0;
+            border-bottom: 1px solid var(--cool-grey);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .section {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--cool-grey);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Forms & Interactive Elements --- */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .radio-group label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--warm-grey);
+            border-radius: 4px;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: var(--parkside-green);
+            color: var(--white);
+            border: none;
+            padding: 10px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #014f29;
+        }
+
+        button.secondary {
+            background-color: var(--warm-grey);
+        }
+        
+        button.secondary:hover {
+            background-color: #3e3d36;
+        }
+
+        /* --- Placeholders & Visuals --- */
+        .microscope-view {
+            background-color: #fff;
+            border: 2px dashed var(--cool-grey);
+            color: var(--text-secondary);
+            padding: 40px;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        /* --- Data Tables --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 15px;
+        }
+        th, td {
+            border: 1px solid var(--cool-grey);
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: var(--parkside-green);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- Metacognition Box --- */
+        .meta-box {
+            border-left: 4px solid var(--goldenrod);
+            background: white;
+            padding: 15px;
+        }
+    </style>
+
+    <style>
+        .bios-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #016836;
+            border-bottom: 2px solid #FFD100;
+        }
+        .bios-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px;
+        }
+        .bios-home {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+        }
+        .bios-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .bios-menus {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .bios-menu { position: relative; }
+        .bios-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+        .bios-trigger.active {
+            border-bottom: 2px solid #FFD100;
+        }
+        .bios-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            z-index: 1001;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .bios-dropdown a {
+            display: block;
+            padding: 6px 10px;
+            color: #212721;
+            text-decoration: none;
+        }
+        .bios-dropdown a:hover {
+            background: #EFECE2;
+        }
+        .bios-menu:hover .bios-dropdown,
+        .bios-menu:focus-within .bios-dropdown {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .bios-toggle { display: block; }
+            .bios-menus {
+                display: none;
+                flex-direction: column;
+                background: #016836;
+                width: 100%;
+            }
+            .bios-menus.open { display: flex; }
+            .bios-dropdown {
+                position: static;
+                border: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
+        </div>
+    </nav>
+
+    <header>
+        <div class="header-container">
+            <a href="../index.html" class="back-button">← Back to Dashboard</a>
+            <span>Lab: Carbohydrates & Structure</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Pear Tissue: Sclereids vs Parenchyma </h1>
+
+        <div class="section">
+            <p>Identify and contrast <strong>sclereids</strong> (rigid support cells with thick cellulose walls) and <strong>parenchyma</strong> (thin-walled storage cells) in pear tissue. You will explore how carbohydrate structure (β‑glucose → cellulose) produces tissue-level mechanical strength and the familiar "gritty" mouthfeel.</p>
+        </div>
+
+        <div class="section" aria-labelledby="prep">
+            <h2 id="prep">Microscope Prep</h2>
+            <ol>
+                <li>Place a drop of water on a clean slide. Using forceps, add a tiny amount of pear pulp. Cover with a coverslip and press gently to flatten.</li>
+                <li>Observe at <strong>4×</strong> to locate regions with both cell types.</li>
+                <li>Switch to <strong>10×</strong> to sketch the contrast between parenchyma and sclereid clusters.</li>
+                <li>Choose a small flat cluster of sclereids and switch to <strong>40×</strong> to examine wall thickness.</li>
+            </ol>
+        </div>
+
+        <div class="section" aria-labelledby="observe">
+            <h2 id="observe">Observe &amp; Sketch</h2>
+            
+            <div class="microscope-view" role="img" aria-label="Placeholder: pear tissue at 10X">
+                10× View Placeholder<br>
+                <small>Look for: parenchyma (thin wall) vs sclereid clusters (very thick wall)</small>
+            </div>
+            <textarea aria-label="Notes at 10×" placeholder="Describe cell size, wall thickness, and clustering patterns..."></textarea>
+            
+            <div class="microscope-view" role="img" aria-label="Placeholder: sclereid cluster at 40X" style="margin-top: 20px;">
+                40× View Placeholder<br>
+                <small>Look for: thick secondary walls (cellulose + lignin)</small>
+            </div>
+            <textarea aria-label="Notes at 40×" placeholder="Note the wall thickness. Did you have difficulty focusing due to the depth?"></textarea>
+        </div>
+
+        <div class="section" aria-labelledby="identify">
+            <h2 id="identify">Identify → Explain (Structure → Function)</h2>
+            
+            <div class="radio-group">
+                <label><input type="radio" name="cellpick" value="parenchyma"> Parenchyma</label>
+                <label><input type="radio" name="cellpick" value="sclereids"> Sclereids</label>
+            </div>
+            <button id="confirmPick">Check Identification</button>
+            
+            <div id="feedback" style="margin-top: 15px; font-weight: bold; color: var(--parkside-green);"></div>
+            
+            <label for="reasoning" style="margin-top: 20px;">Explain your reasoning:</label>
+            <textarea id="reasoning" placeholder="Which visual clues did you use? How do thick cellulose walls relate to rigid support and gritty texture?"></textarea>
+        </div>
+
+        <div class="section meta-box" aria-labelledby="meta">
+            <h2 id="meta">Mind Mirror: Metacognition</h2>
+            <ul>
+                <li><strong>Evidence:</strong> How do you know this cluster is sclereids and not parenchyma?</li>
+                <li><strong>Pattern Recognition:</strong> Which specific pattern (wall thickness, cluster shape, focus difficulty) helped you decide?</li>
+                <li><strong>Connection:</strong> Where else in the plant kingdom have you seen <strong>cellulose-driven support</strong> (e.g., collenchyma in celery, sclerenchyma fibers)?</li>
+            </ul>
+        </div>
+
+        <div class="section" aria-labelledby="link">
+            <h2 id="link">Mastery: Carbohydrates in Action</h2>
+            <p><strong>β‑glucose → cellulose → microfibrils → thick secondary walls</strong>.</p>
+            <p>The same monomer (<em>glucose</em>) can create storage (<em>starch</em>) or structure (<em>cellulose</em>) depending on linkage orientation. In pear sclereids, cellulose walls (often lignified) yield <strong>rigid support</strong> and the <strong>gritty texture</strong> you feel.</p>
+        </div>
+
+        <div class="section" aria-labelledby="results">
+            <h2 id="results">Results Log</h2>
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Magnification</th><th>Cell Type</th><th>Observation</th><th>Timestamp</th></tr>
+                </thead>
+                <tbody id="logBody"></tbody>
+            </table>
+            <div style="margin-top: 15px;">
+                <button id="saveRow" aria-label="Save observation">Save Observation</button>
+                <button id="exportCsv" class="secondary" aria-label="Export results as CSV">Export CSV</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Metacognitive feedback logic
+        document.getElementById('confirmPick').addEventListener('click', () => {
+            const sel = document.querySelector('input[name="cellpick"]:checked');
+            const fb = document.getElementById('feedback');
+            if(!sel){ fb.textContent = 'Please choose a cell type first.'; return; }
+            if(sel.value === 'parenchyma'){
+                fb.textContent = 'Correct Context: Parenchyma have thin primary walls, serve storage functions, and are generally larger, softer cells.';
+            }else{
+                fb.textContent = 'Correct Context: Sclereids possess very thick secondary walls (cellulose + lignin) which provide rigid support. These "stone cells" create the gritty texture.';
+            }
+        });
+
+        // Results logging logic
+        let counter = 0;
+        document.getElementById('saveRow').addEventListener('click', () => {
+            const magNotes = document.querySelector('[aria-label="Notes at 10×"]').value + ' | ' + document.querySelector('[aria-label="Notes at 40×"]').value;
+            const picked = document.querySelector('input[name="cellpick"]:checked');
+            const tbody = document.getElementById('logBody');
+            counter++;
+            const tr = document.createElement('tr');
+            const ts = new Date().toLocaleString();
+            tr.innerHTML = `<td>${counter}</td><td>10×/40×</td><td>${picked?picked.value:'(unspecified)'}</td><td>${magNotes||'(no notes)'}</td><td>${ts}</td>`;
+            tbody.appendChild(tr);
+        });
+
+        // Export CSV logic
+        document.getElementById('exportCsv').addEventListener('click', () => {
+            const rows = [['#','Magnification','Cell Type','Observation','Timestamp']];
+            Array.from(document.querySelectorAll('#logBody tr')).forEach(tr => {
+                rows.push(Array.from(tr.querySelectorAll('td')).map(td => td.textContent));
+            });
+            const csv = rows.map(r => r.map(cell => '"' + (cell||'').replace(/"/g,'""') + '"').join(',')).join('\n');
+            const blob = new Blob([csv], {type:'text/csv'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'pear_tissue_results.csv';
+            document.body.appendChild(a); a.click();
+            URL.revokeObjectURL(url); a.remove();
+        });
+
+        // Navigation Injection Script (Matches Injection Tool)
+        (function() {
+            function initNav() {
+                var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
+                var menus = document.getElementById('biosMenus');
+                var path = location.pathname;
+                if (!menus) return;
+                labs.forEach(function(lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    // Assuming standard depth for this file
+                    var bp = '../../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+                var t = document.querySelector('.bios-toggle');
+                if (t) t.onclick = function() { menus.classList.toggle('open'); };
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+    </script>
+</body>
+</html>
