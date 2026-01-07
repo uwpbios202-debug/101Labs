@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,11 +15,17 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #016836;
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
-            padding: 15px;
+        }
+
+        .page-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: calc(100vh - 50px);
+            padding: 15px;
         }
 
         .container {
@@ -254,7 +260,6 @@
         .part-item {
             padding: 8px;
             margin-bottom: 0;
-            /* grid handles spacing */
         }
 
         @media (max-width: 900px) {
@@ -345,195 +350,221 @@
             background: #fbd38d;
             color: #7c2d12;
         }
+
+        /* Navigation Styles */
+        .bios-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #016836;
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px;
+            flex-wrap: nowrap;
+        }
+
+        .bios-home {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+        }
+
+        .bios-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .bios-menus {
+            display: flex;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+
+        .bios-menu {
+            position: relative;
+        }
+
+        .bios-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        .bios-trigger.active {
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            z-index: 1001;
+        }
+
+        .bios-dropdown a {
+            display: block;
+            padding: 6px 10px;
+            color: #212721;
+            text-decoration: none;
+        }
+
+        .bios-dropdown a:hover {
+            background: #EFECE2;
+        }
+
+        .bios-menu:hover .bios-dropdown,
+        .bios-menu:focus-within .bios-dropdown {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .bios-toggle {
+                display: block;
+            }
+
+            .bios-menus {
+                display: none;
+                flex-direction: column;
+                background: #016836;
+                width: 100%;
+            }
+
+            .bios-menus.open {
+                display: flex;
+            }
+
+            .bios-dropdown {
+                position: static;
+                border: none;
+            }
+        }
     </style>
-<style>
-.bios-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #016836;
-  border-bottom: 2px solid #FFD100;
-}
-.bios-nav-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 4px 8px;
-  flex-wrap: wrap;
-}
-.bios-home {
-  color: white;
-  font-weight: 700;
-  text-decoration: none;
-  letter-spacing: .5px;
-}
-.bios-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-.bios-menus {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.bios-menu { position: relative; }
-.bios-trigger {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 2px 4px;
-}
-.bios-trigger.active {
-  border-bottom: 2px solid #FFD100;
-}
-.bios-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  border: 1px solid #ccc;
-  min-width: 160px;
-  z-index: 1001;
-}
-.bios-dropdown a {
-  display: block;
-  padding: 6px 10px;
-  color: #212721;
-  text-decoration: none;
-}
-.bios-dropdown a:hover {
-  background: #EFECE2;
-}
-.bios-menu:hover .bios-dropdown,
-.bios-menu:focus-within .bios-dropdown {
-  display: block;
-}
-@media (max-width: 768px) {
-  .bios-toggle { display: block; }
-  .bios-menus {
-    display: none;
-    flex-direction: column;
-    background: #016836;
-    width: 100%;
-  }
-  .bios-menus.open { display: flex; }
-  .bios-dropdown {
-    position: static;
-    border: none;
-  }
-}
-</style>
 </head>
 
 <body>
-<nav class="bios-nav">
-  <div class="bios-nav-inner">
-    <a href="../index.html" class="bios-home">BIOS101</a>
-    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
-    <div class="bios-menus" id="biosMenus"></div>
-  </div>
-</nav>
-    <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <a href="MicroscopeMastery.html" style="color:#667eea; text-decoration:none; font-weight: 600;">← Back to
-                Hub</a>
-            <h2
-                style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%); font-size: 2.2em; color: black;">
-                🔬 Anatomy of the Microscope</h2>
-            <div></div>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
         </div>
-        <p class="subtitle">Click <strong>'Explore'</strong> to learn the structure and <strong>'Quiz'</strong>to
-            master the structure function.
-        </p>
+    </nav>
 
-        <div class="game-controls">
-            <button class="btn btn-primary" onclick="setMode('explore')">Explore Mode</button>
-            <button class="btn btn-secondary" onclick="setMode('quiz')">Quiz Mode</button>
-            <button class="btn btn-reset" onclick="resetGame()">Reset</button>
-        </div>
-
-        <div class="game-info">
-            <div class="score">Score: <span id="score">0</span> / 8</div>
-            <div class="current-task" id="currentTask">
-                Click "Explore Mode" to learn the parts or "Quiz Mode" to test yourself!
+    <div class="page-wrapper">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <a href="MicroscopeMastery.html" style="color:#667eea; text-decoration:none; font-weight: 600;">← Back
+                    to
+                    Hub</a>
+                <h2
+                    style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%); font-size: 2.2em; color: black;">
+                    🔬 Anatomy of the Microscope</h2>
+                <div></div>
             </div>
-        </div>
+            <p class="subtitle">Click <strong>'Explore'</strong> to learn the structure and <strong>'Quiz'</strong>to
+                master the structure function.
+            </p>
 
-        <div class="game-area">
-            <div class="microscope-container">
-                <img src="https://raw.githubusercontent.com/harriauwp/Scope-Learn/main/images/image_1.png"
-                    alt="Microscope" class="microscope-img" id="microscopeImg" crossorigin="anonymous">
-
-                <svg class="hotspots-svg" id="hotspotsSvg" viewBox="0 0 1310 1195" preserveAspectRatio="xMidYMid meet">
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="context-stroke" />
-                        </marker>
-                    </defs>
-
-                    <!-- Ocular Lens - no text label, just clickable area -->
-                    <ellipse class="hotspot" data-part="ocular" cx="1120" cy="85" rx="40" ry="30"
-                        style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-
-                    <!-- Objective Lenses - correctly positioned over the actual objective lenses -->
-                    <ellipse class="hotspot" data-part="objectives" cx="500" cy="490" rx="20" ry="55"
-                        transform="rotate(35 500 490)"
-                        style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-                    <ellipse class="hotspot" data-part="objectives" cx="560" cy="540" rx="35" ry="55"
-                        transform="rotate(35 560 540)"
-                        style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-                    <ellipse class="hotspot" data-part="objectives" cx="650" cy="510" rx="35" ry="55"
-                        style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-
-                    <!-- Stage -->
-                    <polygon class="hotspot" data-part="stage" points="520,625 850,625 820,585 750,585"
-                        style="fill: rgba(0, 170, 255, 0.2); stroke: #00aaff; stroke-width: 3;" />
-
-                    <!-- Coarse Adjustment Knob -->
-                    <g class="hotspot" data-part="coarse">
-                        <text x="5" y="640" data-part="coarse">Inner Knob</text>
-                        <path d="M 120 650 Q 180 670 240 720" data-part="coarse" style="stroke-width: 10;" />
-                    </g>
-
-                    <!-- Fine Adjustment Knob -->
-                    <g class="hotspot" data-part="fine">
-                        <text x="20" y="940" data-part="fine" style="fill: #0055ff;">Outer Knob</text>
-                        <path d="M 90 920 Q 150 910 220 860" data-part="fine" style="stroke: #0055ff;" />
-                    </g>
-                    <!-- Iris Diaphragm -->
-                    <g class="hotspot" data-part="diaphragm">
-                        <path d="M 1000 750 Q 900 790 800 740" data-part="diaphragm" style="stroke-width: 10;" />
-                    </g>
-
-                    <!-- Condenser Lens Adjustment Knob -->
-                    <g class="hotspot" data-part="condenser">
-                        <text x="710" y="900" data-part="condenser" style="fill: #ff0000;">small knob</text>
-                        <path d="M 700 890 Q 650 850 500 810" data-part="condenser" style="stroke-width: 10;" />
-                    </g>
-
-                    <!-- Light Adjustment Knob - no text label, just clickable area -->
-                    <ellipse class="hotspot" data-part="lightadj" cx="470" cy="970" rx="50" ry="30"
-                        style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-                </svg>
+            <div class="game-controls">
+                <button class="btn btn-primary" onclick="setMode('explore')">Explore Mode</button>
+                <button class="btn btn-secondary" onclick="setMode('quiz')">Quiz Mode</button>
+                <button class="btn btn-reset" onclick="resetGame()">Reset</button>
             </div>
 
-            <div class="parts-list">
-                <h3>Microscope Parts</h3>
-                <div id="partsList"></div>
+            <div class="game-info">
+                <div class="score">Score: <span id="score">0</span> / 8</div>
+                <div class="current-task" id="currentTask">
+                    Click "Explore Mode" to learn the parts or "Quiz Mode" to test yourself!
+                </div>
             </div>
-        </div>
 
-        <div class="completion-message" id="completionMessage">
-            🎉 Congratulations! You've identified all microscope parts correctly!
+            <div class="game-area">
+                <div class="microscope-container">
+                    <img src="microoo.png" alt="Microscope" class="microscope-img" id="microscopeImg"
+                        crossorigin="anonymous">
+
+                    <svg class="hotspots-svg" id="hotspotsSvg" viewBox="0 0 1310 1195"
+                        preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="context-stroke" />
+                            </marker>
+                        </defs>
+
+                        <!-- Ocular Lens - no text label, just clickable area -->
+                        <ellipse class="hotspot" data-part="ocular" cx="1120" cy="85" rx="40" ry="30"
+                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
+
+                        <!-- Objective Lenses - correctly positioned over the actual objective lenses -->
+                        <ellipse class="hotspot" data-part="objectives" cx="500" cy="490" rx="20" ry="55"
+                            transform="rotate(35 500 490)"
+                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
+                        <ellipse class="hotspot" data-part="objectives" cx="560" cy="540" rx="35" ry="55"
+                            transform="rotate(35 560 540)"
+                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
+                        <ellipse class="hotspot" data-part="objectives" cx="650" cy="510" rx="35" ry="55"
+                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
+
+                        <!-- Stage -->
+                        <polygon class="hotspot" data-part="stage" points="520,625 850,625 820,585 750,585"
+                            style="fill: rgba(0, 170, 255, 0.2); stroke: #00aaff; stroke-width: 3;" />
+
+                        <!-- Coarse Adjustment Knob -->
+                        <g class="hotspot" data-part="coarse">
+                            <text x="5" y="640" data-part="coarse">Inner Knob</text>
+                            <path d="M 120 650 Q 180 670 240 720" data-part="coarse" style="stroke-width: 10;" />
+                        </g>
+
+                        <!-- Fine Adjustment Knob -->
+                        <g class="hotspot" data-part="fine">
+                            <text x="20" y="940" data-part="fine" style="fill: #0055ff;">Outer Knob</text>
+                            <path d="M 90 920 Q 150 910 220 860" data-part="fine" style="stroke: #0055ff;" />
+                        </g>
+                        <!-- Iris Diaphragm -->
+                        <g class="hotspot" data-part="diaphragm">
+                            <path d="M 1000 750 Q 900 790 800 740" data-part="diaphragm" style="stroke-width: 10;" />
+                        </g>
+
+                        <!-- Condenser Lens Adjustment Knob -->
+                        <g class="hotspot" data-part="condenser">
+                            <text x="710" y="900" data-part="condenser" style="fill: #ff0000;">small knob</text>
+                            <path d="M 700 890 Q 650 850 500 810" data-part="condenser" style="stroke-width: 10;" />
+                        </g>
+
+                        <!-- Light Adjustment Knob - no text label, just clickable area -->
+                        <ellipse class="hotspot" data-part="lightadj" cx="470" cy="970" rx="50" ry="30"
+                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
+                    </svg>
+                </div>
+
+                <div class="parts-list">
+                    <h3>Microscope Parts</h3>
+                    <div id="partsList"></div>
+                </div>
+            </div>
+
+            <div class="completion-message" id="completionMessage">
+                🎉 Congratulations! You've identified all microscope parts correctly!
+            </div>
         </div>
     </div>
 
@@ -748,38 +779,38 @@
 
         initGame();
     </script>
-<script>
-(function() {
-  function initNav() {
-    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
-    var menus = document.getElementById('biosMenus');
-    var path = location.pathname;
-    if (!menus) return;
-    labs.forEach(function(lab) {
-      var m = document.createElement('div');
-      m.className = 'bios-menu';
-      var b = document.createElement('button');
-      b.className = 'bios-trigger';
-      b.textContent = lab.title;
-      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
-      var d = document.createElement('div');
-      d.className = 'bios-dropdown';
-      var bp = '../../' + lab.folder;
-      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
-      m.appendChild(b);
-      m.appendChild(d);
-      menus.appendChild(m);
-    });
-    var t = document.querySelector('.bios-toggle');
-    if (t) t.onclick = function() { menus.classList.toggle('open'); };
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNav);
-  } else {
-    initNav();
-  }
-})();
-</script>
+    <script>
+        (function () {
+            function initNav() {
+                var labs = [{ "folder": "bios101-learning", "title": "Metacognition" }, { "folder": "01_Science_of_Biology", "title": "Scientific Process" }, { "folder": "02_Eukaryotes", "title": "Eukaryotes" }, { "folder": "03_Carbohydrates", "title": "Carbohydrates" }, { "folder": "04_Proteins", "title": "Proteins" }, { "folder": "05_Lipids", "title": "Lipids" }, { "folder": "06_Photosynthetic_Pigments", "title": "Photosynthesis" }, { "folder": "07_Nucleic Acids", "title": "Nucleic Acids" }, { "folder": "08_Mitosis", "title": "Mitosis" }, { "folder": "09_Meiosis", "title": "Meiosis" }, { "folder": "10_Genetics", "title": "Genetics" }];
+                var menus = document.getElementById('biosMenus');
+                var path = location.pathname;
+                if (!menus) return;
+                labs.forEach(function (lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    var bp = '../../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+                var t = document.querySelector('.bios-toggle');
+                if (t) t.onclick = function () { menus.classList.toggle('open'); };
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+    </script>
 </body>
 
 </html>
