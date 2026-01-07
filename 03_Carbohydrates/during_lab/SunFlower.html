@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microscope Labeling Game</title>
+    <title>Sunflower Stem Game</title>
     <style>
         * {
             margin: 0;
@@ -472,12 +472,9 @@
     <div class="page-wrapper">
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <a href="MicroscopeMastery.html"
-                    style="color:#667eea; text-decoration:none; font-weight: 600;">← Back to
-                    Hub</a>
                 <h2
                     style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%); font-size: 2.2em; color: black;">
-                    🔬 Anatomy of the Microscope</h2>
+                    The Sunflower Stem</h2>
                 <div></div>
             </div>
             <p class="subtitle">Click <strong>'Explore'</strong> to learn the structure and <strong>'Quiz'</strong>to
@@ -557,13 +554,13 @@
                 </div>
 
                 <div class="parts-list">
-                    <h3>Microscope Parts</h3>
+                    <h3>Sunflower Stem Parts</h3>
                     <div id="partsList"></div>
                 </div>
             </div>
 
             <div class="completion-message" id="completionMessage">
-                🎉 Congratulations! You've identified all microscope parts correctly!
+                🎉 Congratulations! You've identified all parts of the sunflower stem correctly!
             </div>
         </div>
     </div>
@@ -571,36 +568,36 @@
     <script>
         const parts = {
             ocular: {
-                name: "Ocular Lens (Eyepiece)",
-                description: "The lens at the top that you look through. Magnifies by 10×."
+                name: "Epidermis",
+                description: "The outermost protective cell layer of the sunflower stem. It reduces water loss and protects internal tissues."
             },
             objectives: {
-                name: "Objective Lenses",
-                description: "Set of lenses providing bulk magnification (e.g., 4×, 10×, & 40× lenses)."
+                name: "Collenchyma",
+                description: "Living support tissue located just beneath the epidermis. Provides flexible mechanical strength to the growing stem."
             },
             stage: {
-                name: "Stage",
-                description: "Flat platform where the slide/specimen is placed for viewing."
+                name: "Cortex (Parenchyma)",
+                description: "Ground tissue between the epidermis and vascular bundles. Functions in storage, metabolism, and internal transport."
             },
             coarse: {
-                name: "Coarse Adjustment Knob",
-                description: "Larger knob that moves the stage dramatically for approximate focus."
+                name: "Phloem",
+                description: "Vascular tissue that transports sugars and other organic nutrients produced during photosynthesis."
             },
             fine: {
-                name: "Fine Adjustment Knob",
-                description: "Smaller knob for precise adjustments to achieve sharp focus."
+                name: "Xylem",
+                description: "Vascular tissue that conducts water and dissolved minerals upward from the roots and provides structural support."
             },
             diaphragm: {
-                name: "Iris Diaphragm",
-                description: "Controls the amount of light passing through the specimen for contrast."
+                name: "Vascular Cambium",
+                description: "A meristematic layer between xylem and phloem responsible for secondary growth in stem thickness."
             },
             condenser: {
-                name: "Condenser Lens Adjustment Knob",
-                description: "Focuses and concentrates light onto the specimen to improve image clarity, resolution, and contrast."
+                name: "Vascular Bundle",
+                description: "A discrete unit containing xylem, phloem, and cambium arranged in a ring in dicot stems like sunflower."
             },
             lightadj: {
-                name: "Light Adjustment Knob",
-                description: "Controls the intensity/brightness of the light source."
+                name: "Pith",
+                description: "Central parenchyma tissue of the stem involved in storage and internal transport."
             }
         };
 
