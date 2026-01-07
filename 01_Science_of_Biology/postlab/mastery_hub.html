@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio 101: Interactive Lab Assessment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* UWP BRAND COLORS & VARIABLES */
+        :root {
+            --uwp-green: #006836;    /* PMS 349 */
+            --uwp-dark-green: #00502f;
+            --uwp-black: #000000;    /* PMS Black 3C */
+            --uwp-warm-grey: #54534A;
+            --uwp-cool-grey: #DBD9D6;
+            --uwp-white: #FFFFFF;
+            --uwp-orange: #d44427; /* UW Orange for specific alerts if needed, used sparingly */
+            
+            --feedback-success: #006836;
+            --feedback-error: #D32F2F; /* Accessible Red */
+            --focus-ring: #00502f;
+            
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --radius: 4px;
+        }
+
+        /* RESET & BASE STYLES */
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Open Sans', 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f4f4f4;
+            color: var(--uwp-black);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* LAYOUT */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--uwp-white);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-top: 6px solid var(--uwp-green);
+        }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3 {
+            color: var(--uwp-green);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2.25rem; font-weight: 700; border-bottom: 2px solid var(--uwp-cool-grey); padding-bottom: 10px; margin-top: 0; }
+        h2 { font-size: 1.5rem; font-weight: 600; background-color: var(--uwp-cool-grey); padding: 10px; border-left: 5px solid var(--uwp-green); }
+        h3 { font-size: 1.15rem; font-weight: 600; color: var(--uwp-warm-grey); }
+        p { margin-bottom: 1em; }
+        
+        .background-info {
+            background-color: #f9f9f9;
+            border: 1px solid var(--uwp-cool-grey);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+        }
+
+        /* QUESTION CARDS */
+        .question-card {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--uwp-cool-grey);
+        }
+        .question-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--uwp-black);
+        }
+        .question-text {
+            margin-bottom: 12px;
+        }
+
+        /* INPUTS & CONTROLS */
+        input[type="text"], 
+        input[type="number"] {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--focus-ring);
+            box-shadow: 0 0 0 3px rgba(0, 104, 54, 0.1);
+        }
+
+        /* BUTTONS */
+        .btn {
+            background-color: var(--uwp-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: var(--radius);
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .btn:hover { background-color: var(--uwp-dark-green); }
+        .btn:focus { outline: 3px solid var(--uwp-cool-grey); }
+        
+        /* MC/CHECKBOX STYLES */
+        .options-group label {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: var(--radius);
+        }
+        .options-group label:hover { background-color: #f0f0f0; }
+        .options-group input { margin-right: 10px; margin-top: 5px; }
+
+        /* FEEDBACK SYSTEM */
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: var(--radius);
+            display: none;
+            font-weight: 600;
+        }
+        .feedback.correct {
+            background-color: #e6f4ea;
+            color: var(--feedback-success);
+            border: 1px solid var(--feedback-success);
+            display: block;
+        }
+        .feedback.incorrect {
+            background-color: #fce8e6;
+            color: var(--feedback-error);
+            border: 1px solid var(--feedback-error);
+            display: block;
+        }
+
+        /* MATHJAX / FORMULA */
+        .formula { font-family: "Courier New", monospace; background: #eee; padding: 2px 5px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            input[type="text"], input[type="number"] { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Biology 101: Interactive Lab Assessment</h1>
+        <p>Complete all questions below. Your answers are auto-saved. Click "Check Answer" to verify your work.</p>
+    </header>
+
+    <div id="assessment-root">
+        </div>
+
+    <footer>
+        <hr style="border: 0; border-top: 1px solid var(--uwp-cool-grey); margin: 40px 0;">
+        <p style="text-align: center; font-size: 0.85rem; color: var(--uwp-warm-grey);">
+            Instructional System Design for UW-Parkside Biology<br>
+            Compliance: UWP Style Guide (Green #006836, Black #000000)
+        </p>
+    </footer>
+</div>
+
+<script>
+/**
+ * =========================================================================
+ * CORE SYSTEM LOGIC (Engine)
+ * =========================================================================
+ */
+
+// --- 1. Fuzzy Matching Logic (Levenshtein) ---
+function getLevenshteinDistance(a, b) {
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1, // substitution
+                    Math.min(
+                        matrix[i][j - 1] + 1, // insertion
+                        matrix[i - 1][j] + 1  // deletion
+                    )
+                );
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+
+function normalizeStr(str) {
+    return str.toString().toLowerCase().trim().replace(/\s+/g, ' ');
+}
+
+function fuzzyMatch(input, correct, variations = []) {
+    if (!input) return false;
+    const normInput = normalizeStr(input);
+    const normCorrect = normalizeStr(correct);
+
+    // Step 1: Exact Match
+    if (normInput === normCorrect) return true;
+
+    // Step 2: Variations (Synonyms) - Exact
+    for (let v of variations) {
+        if (normInput === normalizeStr(v)) return true;
+    }
+
+    // Step 3: Fuzzy Matching (Similarity >= 0.75)
+    // Compare against correct answer
+    let maxSim = 0;
+    const targets = [correct, ...variations];
+    
+    for (let t of targets) {
+        const tNorm = normalizeStr(t);
+        const dist = getLevenshteinDistance(normInput, tNorm);
+        const longLen = Math.max(normInput.length, tNorm.length);
+        const sim = 1.0 - (dist / longLen);
+        if (sim > maxSim) maxSim = sim;
+    }
+
+    return maxSim >= 0.75;
+}
+
+// --- 2. Numeric / Unit Logic ---
+function parseUnitValue(valStr) {
+    // Returns value in base units (meters) for comparison
+    // Supported: km, m, cm, mm, um (or micrometers), nm
+    let val = parseFloat(valStr);
+    if (isNaN(val)) return null;
+    
+    let str = valStr.toLowerCase();
+    let factor = 1; // default meters
+    
+    if (str.includes("km")) factor = 1000;
+    else if (str.includes("nm")) factor = 1e-9;
+    else if (str.includes("um") || str.includes("µm") || str.includes("micrometer")) factor = 1e-6;
+    else if (str.includes("mm")) factor = 0.001;
+    else if (str.includes("cm")) factor = 0.01;
+    // else m (meters)
+    
+    return val * factor;
+}
+
+function checkNumeric(input, correctVal, unitType, tolerance = 1e-6) {
+    // If unitType is provided, normalize both. If correctVal is raw number, compare raw.
+    if (!input) return { pass: false, msg: "Please enter a value." };
+    
+    let inputNum, correctNum;
+
+    if (unitType) {
+        // Advanced unit aware check could go here, but for this lab, 
+        // we mostly need standard numeric tolerance unless specific units asked.
+        // We will assume input must be a number.
+        inputNum = parseFloat(input);
+        correctNum = correctVal; // Expecting correctVal to be the raw number in the requested unit
+    } else {
+        inputNum = parseFloat(input);
+        correctNum = correctVal;
+    }
+
+    if (isNaN(inputNum)) return { pass: false, msg: "Invalid number." };
+
+    const diff = Math.abs(inputNum - correctNum);
+    if (diff <= tolerance) return { pass: true };
+    return { pass: false, msg: "Incorrect value. Check your calculations." };
+}
+
+// --- 3. Question Data ---
+// Mapped exactly from Source 432-527 + Derived 514-527
+const questions = [
+    // I. Science vs Nonscience
+    {
+        id: "q1",
+        section: "I. Science vs. Nonscience",
+        text: "Describe several characteristics that all sciences have in common.",
+        type: "mc-multi",
+        options: ["Empirical / Observable", "Testable / Falsifiable", "Reproducible", "Based on belief", "Subjective"],
+        correct: [0, 1, 2],
+        rationale: "Science relies on empirical evidence, testing, and reproducibility."
+    },
+    {
+        id: "q2",
+        section: "I. Science vs. Nonscience",
+        text: "List three examples of different sciences taught on our campus.",
+        type: "mc-multi",
+        options: ["Biology", "Chemistry", "Physics", "Astrology", "Alchemy"],
+        correct: [0, 1, 2],
+        rationale: "Biology, Chemistry, and Physics are standard science curricula."
+    },
+    {
+        id: "q3",
+        section: "I. Science vs. Nonscience",
+        text: "List three examples of nonscience.",
+        type: "mc-multi",
+        options: ["Art", "Religion", "Philosophy", "Geology", "Astronomy"],
+        correct: [0, 1, 2],
+        rationale: "Fields based on aesthetics, faith, or logic without empirical testing are non-science."
+    },
+
+    // II. Experimental Testing (Coleus)
+    {
+        id: "bg1",
+        type: "static",
+        content: `<div class="background-info"><strong>Background:</strong> A researcher wants to investigate whether the addition of nitrogen to the water would stimulate Coleus plants to grow thicker stems.</div>`
+    },
+    {
+        id: "q4",
+        section: "II. Experimental Testing",
+        text: "State the hypothesis to be tested.",
+        type: "text",
+        correct: "Nitrogen stimulates coleus plants to grow thicker stems",
+        variations: ["Nitrogen increases stem thickness", "Nitrogen makes stems thicker", "Adding nitrogen causes thicker stems"],
+        isFuzzy: true
+    },
+    {
+        id: "q5",
+        section: "II. Experimental Testing",
+        text: "State a prediction: If nitrogen is added, then the plant stems will be...",
+        type: "cloze",
+        correct: "thicker",
+        variations: ["more thick", "larger", "wider"],
+        preText: "If nitrogen is added, then the plant stems will be ",
+        postText: "."
+    },
+    {
+        id: "q6",
+        section: "II. Experimental Testing",
+        text: "Identify the independent variable.",
+        type: "mc",
+        options: ["Stem thickness", "Nitrogen", "Water amount", "Sunlight"],
+        correct: 1
+    },
+    {
+        id: "q7",
+        section: "II. Experimental Testing",
+        text: "Identify the dependent variable.",
+        type: "mc",
+        options: ["Stem thickness", "Nitrogen", "Plant height", "Leaf color"],
+        correct: 0
+    },
+    {
+        id: "q8",
+        section: "II. Experimental Testing",
+        text: "Name control variables that must remain constant.",
+        type: "mc-multi",
+        options: ["Amount of Water", "Amount of Light", "Soil Type", "Nitrogen Concentration"],
+        correct: [0, 1, 2]
+    },
+    {
+        id: "q9",
+        section: "II. Experimental Testing",
+        text: "Why must all conditions (except nitrogen) be the same for both groups?",
+        type: "mc",
+        options: ["To ensure the results are due to nitrogen only", "To save money", "To make the plants grow faster"],
+        correct: 0
+    },
+    {
+        id: "q10",
+        section: "II. Experimental Testing",
+        text: "Expected results if hypothesis is ACCEPTED:",
+        type: "matching",
+        pairs: [
+            { prompt: "Experimental Group", target: "Thicker stems" },
+            { prompt: "Control Group", target: "Normal stems" }
+        ],
+        options: ["Thicker stems", "Normal stems", "Thinner stems", "Dead plants"]
+    },
+    {
+        id: "q11",
+        section: "II. Experimental Testing",
+        text: "Expected results if hypothesis is REJECTED:",
+        type: "matching",
+        pairs: [
+            { prompt: "Experimental Group", target: "Same as control" },
+            { prompt: "Control Group", target: "Same as experimental" }
+        ],
+        options: ["Same as control", "Same as experimental", "Thicker stems", "Purple leaves"]
+    },
+    {
+        id: "q12",
+        section: "II. Experimental Testing",
+        text: "If the hypothesis is accepted, has it been proven correct? Explain.",
+        type: "tf-justify",
+        boolCorrect: false, // False
+        justifyOptions: ["Hypotheses can only be supported, not proven absolute truth", "Yes, data proves it 100%", "No, because the plants might die"],
+        justifyCorrect: 0
+    },
+
+    // III. Qualitative vs Quant
+    {
+        id: "q13",
+        section: "III. Qualitative vs. Quantitative",
+        text: "Give an example of a qualitative observation.",
+        type: "mc",
+        options: ["The leaves were greener", "The plant grew 5 cm", "The mass was 10g",],
+        correct: 0
+    },
+    {
+        id: "q14",
+        section: "III. Qualitative vs. Quantitative",
+        text: "Give an example of a quantitative observation.",
+        type: "mc",
+        options: ["The leaves were greener", "The temperature remained 25°C", "The texture is rough"],
+        correct: 1
+    },
+
+    // IV. Diabetes Study
+    {
+        id: "bg2",
+        type: "static",
+        content: `<div class="background-info"><strong>Background:</strong> Researchers tested if cinnamon effects blood glucose. Groups: 1g, 3g, 6g cinnamon daily vs Placebo. Result: Cinnamon groups dropped 18-29% in glucose/fat/cholesterol. Control: No change.</div>`
+    },
+    {
+        id: "q15",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "State the hypothesis to be tested.",
+        type: "text",
+        correct: "Cinnamon reduces blood sugar levels",
+        variations: ["Cinnamon lowers blood glucose", "Cinnamon affects blood sugar", "Cinnamon improves diabetes"],
+        isFuzzy: true
+    },
+    {
+        id: "q16",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "Prediction:",
+        type: "cloze",
+        preText: "If patients take cinnamon, then their blood glucose will ",
+        postText: ".",
+        correct: "decrease",
+        variations: ["drop", "lower", "go down"]
+    },
+    {
+        id: "q17",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "Independent Variable:",
+        type: "mc",
+        options: ["Amount of Cinnamon", "Blood Glucose Level", "Age of patients"],
+        correct: 0
+    },
+    {
+        id: "q18",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "Dependent Variable(s):",
+        type: "mc-multi",
+        options: ["Blood Glucose", "Fat levels", "Cholesterol", "Amount of Cinnamon"],
+        correct: [0, 1, 2]
+    },
+    {
+        id: "q19",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "Control Variables (Select 2):",
+        type: "mc-multi",
+        options: ["Duration (40 days)", "Diagnosis (Type 2 Diabetes)", "Cost of Cinnamon", "Brand of flour"],
+        correct: [0, 1]
+    },
+    {
+        id: "q20",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "What is the experimental group?",
+        type: "mc",
+        options: ["Patients receiving cinnamon", "Patients receiving placebo", "The doctors"],
+        correct: 0
+    },
+    {
+        id: "q21",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "Match the group to its definition/purpose.",
+        type: "matching",
+        pairs: [
+            { prompt: "Control Group", target: "Receives Placebo" },
+            { prompt: "Importance", target: "Baseline for comparison" }
+        ],
+        options: ["Receives Placebo", "Baseline for comparison", "Receives Cinnamon", "Eliminates bias"]
+    },
+    {
+        id: "q22",
+        section: "IV. Controlled Experiment (Diabetes)",
+        text: "Can this hypothesis be proven from this experiment? Explain.",
+        type: "tf-justify",
+        boolCorrect: false,
+        justifyOptions: ["Results only support the hypothesis, proof requires infinite testing", "Yes, the data is clear", "No, sample size was too small"],
+        justifyCorrect: 0
+    },
+
+    // V. Scientific Method Review
+    {
+        id: "q23",
+        section: "V. Review",
+        text: "Define hypothesis.",
+        type: "text",
+        correct: "Tentative explanation",
+        variations: ["educated guess", "testable statement", "proposed explanation"],
+        isFuzzy: true
+    },
+    {
+        id: "q24",
+        section: "V. Review",
+        text: "Match Theory vs Hypothesis.",
+        type: "matching",
+        pairs: [
+            { prompt: "Theory", target: "Broad, supported by extensive evidence" },
+            { prompt: "Hypothesis", target: "Specific, tentative prediction" }
+        ],
+        options: ["Broad, supported by extensive evidence", "Specific, tentative prediction", "Absolute Law", "Mathematical formula"]
+    },
+    {
+        id: "q25",
+        section: "V. Review",
+        text: "Define a law of nature.",
+        type: "text",
+        correct: "Description of a natural phenomenon",
+        variations: ["generalization about nature", "describes what happens", "universal principle"],
+        isFuzzy: true
+    },
+    {
+        id: "q26_28",
+        section: "V. Review",
+        text: "Match the variable types.",
+        type: "matching",
+        pairs: [
+            { prompt: "Independent Variable", target: "Manipulated by researcher" },
+            { prompt: "Dependent Variable", target: "Measured outcome" },
+            { prompt: "Control Variable", target: "Held constant" }
+        ],
+        options: ["Manipulated by researcher", "Measured outcome", "Held constant", "Random factor"]
+    },
+    {
+        id: "q29",
+        section: "V. Review",
+        text: "Match Group Types.",
+        type: "matching",
+        pairs: [
+            { prompt: "Experimental Group", target: "Receives treatment" },
+            { prompt: "Control Group", target: "Standard for comparison" }
+        ],
+        options: ["Receives treatment", "Standard for comparison", "Analyzes data"]
+    },
+    {
+        id: "q30",
+        section: "V. Review",
+        text: "Features ensuring fraud detection:",
+        type: "mc-multi",
+        options: ["Peer Review", "Reproducibility", "Publication of Methods", "Keeping data secret"],
+        correct: [0, 1, 2]
+    },
+
+    // VI. Metric Conversions
+    { id: "q31", section: "VI. Metric Conversions", text: "4.8 m = ___ km", type: "numeric", correct: 0.0048 },
+    { id: "q32", section: "VI. Metric Conversions", text: "21.2 L = ___ mL", type: "numeric", correct: 21200 },
+    { id: "q33", section: "VI. Metric Conversions", text: "334 nm = ___ cm", type: "numeric", correct: 0.0000334 }, /* 334e-7 cm */
+    { id: "q34", section: "VI. Metric Conversions", text: "0.119 cm = ___ mm", type: "numeric", correct: 1.19 },
+    { id: "q35", section: "VI. Metric Conversions", text: "0.0076 km = ___ mm", type: "numeric", correct: 7600 },
+
+    // VII. Microscopy Review
+    { id: "q37", section: "VII. Microscopy", text: "Year Light Microscope (LM) invented (approx)?", type: "numeric", correct: 1590, tolerance: 10 },
+    { id: "q38", section: "VII. Microscopy", text: "Year Electron Microscope (EM) introduced to biology?", type: "numeric", correct: 1950, tolerance: 10 },
+    { id: "q39", section: "VII. Microscopy", text: "EM uses beam of:", type: "text", correct: "electrons", variations: ["electron beam"], isFuzzy: true },
+    { id: "q40", section: "VII. Microscopy", text: "Which has better resolution? Why?", type: "mc", options: ["EM, shorter wavelength", "EM, longer wavelength", "LM, shorter wavelength"], correct: 0 },
+    
+    // Dependency Chain Q41-43
+    { id: "q41", section: "VII. Microscopy", text: "LM Resolution limit (nm):", type: "numeric", correct: 200 },
+    { id: "q42", section: "VII. Microscopy", text: "EM Resolution limit (nm):", type: "numeric", correct: 2 }, /* typical biology text val */
+    { 
+        id: "q43", 
+        section: "VII. Microscopy", 
+        text: "How many times better is EM resolution than LM?", 
+        type: "calculated", 
+        formula: (store) => {
+            const lm = parseFloat(store['q41']);
+            const em = parseFloat(store['q42']);
+            if(!lm || !em) return null;
+            return lm / em;
+        },
+        dependency: ['q41', 'q42'],
+        hint: "(Calculate based on your answers above)"
+    },
+
+    { id: "q44", section: "VII. Microscopy", text: "Best for living cells?", type: "mc", options: ["Light Microscope", "SEM", "TEM"], correct: 0 },
+    {
+        id: "q45_46",
+        section: "VII. Microscopy",
+        text: "Match EM Types:",
+        type: "matching",
+        pairs: [
+            { prompt: "TEM", target: "Internal structure (2D)" },
+            { prompt: "SEM", target: "Surface details (3D)" }
+        ],
+        options: ["Internal structure (2D)", "Surface details (3D)", "Color images"]
+    },
+
+    // VIII-XIV. Derived Questions (Source 514-527)
+    { id: "q47", section: "VIII. Microscopy Calc", text: "Calculate Total Magnification: Ocular 10x, Objective 40x.", type: "numeric", correct: 400 },
+    { id: "q48", section: "VIII. Microscopy Calc", text: "Calculate Total Magnification: Ocular 10x, Objective 100x.", type: "numeric", correct: 1000 },
+    
+    // Field Diameter Calc
+    { 
+        id: "q49", 
+        section: "IX. Field Diameter", 
+        text: "If field diameter at 40x total mag is 4.5mm, what is it at 400x? (mm)", 
+        type: "numeric", 
+        correct: 0.45 
+    },
+    
+    // Cell Size (Anabaena)
+    { 
+        id: "q50", 
+        section: "X. Cell Size", 
+        text: "Anabaena: If 10 cells span 50 μm, how long is one cell? (μm)", 
+        type: "numeric", 
+        correct: 5 
+    },
+    
+    // Cheek Cell Estimation
+    {
+        id: "q51",
+        section: "XI. Cheek Cell",
+        text: "If the field diameter is 400 μm and a cheek cell covers about 1/4 of the diameter, estimate the cell size (μm).",
+        type: "numeric",
+        correct: 100,
+        tolerance: 20
+    },
+
+    // Parts & Functions
+    {
+        id: "q52",
+        section: "XII. Microscope Parts",
+        text: "Function of the Iris Diaphragm Lever:",
+        type: "mc",
+        options: ["Regulates amount of light", "Moves stage up and down", "Changes objective lens"],
+        correct: 0
+    },
+    
+    // Preparation Types
+    {
+        id: "q53",
+        section: "XIII. Preparation",
+        text: "Match preparation type:",
+        type: "matching",
+        pairs: [
+            { prompt: "Wet Mount", target: "Fresh/Living specimen in water" },
+            { prompt: "Whole Mount", target: "Preserved entire organism" }
+        ],
+        options: ["Fresh/Living specimen in water", "Preserved entire organism", "Sliced thin section"]
+    },
+
+    // Anabaena Types
+    {
+        id: "q54",
+        section: "XIV. Anabaena",
+        text: "Match Cell Type to Function:",
+        type: "matching",
+        pairs: [
+            { prompt: "Vegetative Cell", target: "Photosynthesis" },
+            { prompt: "Heterocyst", target: "Nitrogen Fixation" }
+        ],
+        options: ["Photosynthesis", "Nitrogen Fixation", "Reproduction"]
+    }
+];
+
+// --- 4. Render & Interaction Logic ---
+
+const root = document.getElementById('assessment-root');
+const storageKey = 'bio101_assessment_v1';
+let userAnswers = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+function saveAnswer(id, value) {
+    userAnswers[id] = value;
+    localStorage.setItem(storageKey, JSON.stringify(userAnswers));
+    
+    // Trigger recalculation for dependents
+    questions.filter(q => q.type === 'calculated').forEach(q => {
+        if (q.dependency.includes(id)) {
+            renderCalculated(q);
+        }
+    });
+}
+
+function renderCalculated(q) {
+    const container = document.getElementById(`container-${q.id}`);
+    if(!container) return;
+    const input = container.querySelector('input');
+    // If user hasn't overridden it, we can auto-update or just leave it for validation
+    // For this assessment, we let the user calculate it, but the Check logic uses the live dependency.
+}
+
+function init() {
+    let currentSection = "";
+    
+    questions.forEach(q => {
+        // Section Header
+        if (q.section && q.section !== currentSection) {
+            currentSection = q.section;
+            const h2 = document.createElement('h2');
+            h2.textContent = currentSection;
+            root.appendChild(h2);
+        }
+
+        // Static Content
+        if (q.type === 'static') {
+            const div = document.createElement('div');
+            div.innerHTML = q.content;
+            root.appendChild(div);
+            return;
+        }
+
+        // Question Card
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.id = `container-${q.id}`;
+
+        const label = document.createElement('span');
+        label.className = 'question-label';
+        label.textContent = q.text; // Main question text
+        card.appendChild(label);
+
+        // Input Generation based on Type
+        let inputContainer = document.createElement('div');
+        
+        if (q.type === 'text' || q.type === 'numeric' || q.type === 'calculated') {
+            const input = document.createElement('input');
+            input.type = q.type === 'text' ? 'text' : 'number'; // Note: numeric inputs
+            if(q.type === 'numeric') input.step = "any";
+            input.id = `input-${q.id}`;
+            input.value = userAnswers[q.id] || "";
+            input.addEventListener('input', (e) => saveAnswer(q.id, e.target.value));
+            input.addEventListener('keydown', (e) => { if(e.key === 'Enter') checkQuestion(q.id); });
+            inputContainer.appendChild(input);
+            if(q.hint) {
+                const hint = document.createElement('small');
+                hint.style.display = 'block';
+                hint.style.color = 'var(--uwp-warm-grey)';
+                hint.textContent = q.hint;
+                inputContainer.appendChild(hint);
+            }
+        } 
+        else if (q.type === 'cloze') {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `${q.preText} <input type="text" id="input-${q.id}" style="width: 150px; display:inline-block;" value="${userAnswers[q.id] || ''}"> ${q.postText}`;
+            const input = wrapper.querySelector('input');
+            input.addEventListener('input', (e) => saveAnswer(q.id, e.target.value));
+            inputContainer.appendChild(wrapper);
+        }
+        else if (q.type === 'mc') {
+            const group = document.createElement('div');
+            group.className = 'options-group';
+            q.options.forEach((opt, idx) => {
+                const lbl = document.createElement('label');
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `name-${q.id}`;
+                radio.value = idx;
+                if (userAnswers[q.id] == idx) radio.checked = true;
+                radio.addEventListener('change', () => saveAnswer(q.id, idx));
+                lbl.appendChild(radio);
+                lbl.appendChild(document.createTextNode(opt));
+                group.appendChild(lbl);
+            });
+            inputContainer.appendChild(group);
+        }
+        else if (q.type === 'mc-multi') {
+            const group = document.createElement('div');
+            group.className = 'options-group';
+            let currentVals = userAnswers[q.id] || [];
+            
+            q.options.forEach((opt, idx) => {
+                const lbl = document.createElement('label');
+                const chk = document.createElement('input');
+                chk.type = 'checkbox';
+                chk.value = idx;
+                if (currentVals.includes(idx)) chk.checked = true;
+                
+                chk.addEventListener('change', () => {
+                    if (chk.checked) currentVals.push(idx);
+                    else currentVals = currentVals.filter(v => v !== idx);
+                    saveAnswer(q.id, currentVals);
+                });
+                
+                lbl.appendChild(chk);
+                lbl.appendChild(document.createTextNode(opt));
+                group.appendChild(lbl);
+            });
+            inputContainer.appendChild(group);
+        }
+        else if (q.type === 'matching') {
+            const table = document.createElement('table');
+            table.style.width = "100%";
+            q.pairs.forEach((pair, pIdx) => {
+                const row = table.insertRow();
+                const cell1 = row.insertCell();
+                cell1.textContent = pair.prompt;
+                cell1.style.padding = "5px";
+                
+                const cell2 = row.insertCell();
+                const select = document.createElement('select');
+                select.style.padding = "5px";
+                select.innerHTML = `<option value="">-- Select --</option>`;
+                q.options.forEach(opt => {
+                    const option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    select.appendChild(option);
+                });
+                
+                // Restore state
+                const saved = userAnswers[q.id] || {};
+                if (saved[pIdx]) select.value = saved[pIdx];
+
+                select.addEventListener('change', () => {
+                    const s = userAnswers[q.id] || {};
+                    s[pIdx] = select.value;
+                    saveAnswer(q.id, s);
+                });
+                cell2.appendChild(select);
+            });
+            inputContainer.appendChild(table);
+        }
+        else if (q.type === 'tf-justify') {
+            const wrap = document.createElement('div');
+            
+            // TF Part
+            const tfDiv = document.createElement('div');
+            tfDiv.style.marginBottom = "10px";
+            const tfSelect = document.createElement('select');
+            tfSelect.id = `tf-${q.id}`;
+            tfSelect.innerHTML = `<option value="">-- True/False --</option><option value="true">True</option><option value="false">False</option>`;
+            if (userAnswers[q.id]?.tf) tfSelect.value = userAnswers[q.id].tf;
+            tfSelect.addEventListener('change', () => {
+                const s = userAnswers[q.id] || {};
+                s.tf = tfSelect.value;
+                saveAnswer(q.id, s);
+            });
+            tfDiv.appendChild(document.createTextNode("Verdict: "));
+            tfDiv.appendChild(tfSelect);
+            wrap.appendChild(tfDiv);
+
+            // Justify Part
+            const jDiv = document.createElement('div');
+            jDiv.className = 'options-group';
+            jDiv.appendChild(document.createTextNode("Justification:"));
+            q.justifyOptions.forEach((opt, idx) => {
+                const lbl = document.createElement('label');
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `just-${q.id}`;
+                radio.value = idx;
+                if (userAnswers[q.id]?.just == idx) radio.checked = true;
+                radio.addEventListener('change', () => {
+                    const s = userAnswers[q.id] || {};
+                    s.just = idx;
+                    saveAnswer(q.id, s);
+                });
+                lbl.appendChild(radio);
+                lbl.appendChild(document.createTextNode(opt));
+                jDiv.appendChild(lbl);
+            });
+            wrap.appendChild(jDiv);
+            inputContainer.appendChild(wrap);
+        }
+
+        card.appendChild(inputContainer);
+
+        // Feedback Area
+        const fb = document.createElement('div');
+        fb.id = `feedback-${q.id}`;
+        fb.className = 'feedback';
+        card.appendChild(fb);
+
+        // Check Button
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = "Check Answer";
+        btn.onclick = () => checkQuestion(q.id);
+        card.appendChild(btn);
+
+        root.appendChild(card);
+    });
+}
+
+function checkQuestion(id) {
+    const q = questions.find(x => x.id === id);
+    const ans = userAnswers[id];
+    const fbEl = document.getElementById(`feedback-${id}`);
+    
+    let isCorrect = false;
+    let msg = "Correct!";
+
+    // Logic Switch
+    switch(q.type) {
+        case 'text':
+        case 'cloze':
+            if (q.isFuzzy) {
+                isCorrect = fuzzyMatch(ans, q.correct, q.variations);
+            } else {
+                // Cloze is usually fairly strict, but we can apply fuzzy logic if needed
+                isCorrect = fuzzyMatch(ans, q.correct, q.variations);
+            }
+            if(!isCorrect) msg = "Incorrect. Check spelling or context.";
+            break;
+
+        case 'numeric':
+            const check = checkNumeric(ans, q.correct, null, q.tolerance || 1e-6);
+            isCorrect = check.pass;
+            if(!isCorrect) msg = check.msg;
+            break;
+
+        case 'calculated':
+            // Calc expected value
+            const expected = q.formula(userAnswers);
+            if (expected === null) {
+                isCorrect = false;
+                msg = "Complete previous questions first.";
+            } else {
+                const c = checkNumeric(ans, expected, null, 0.1); // loosen tolerance for derived calcs
+                isCorrect = c.pass;
+                if(!isCorrect) msg = `Incorrect. Expected approx ${expected.toPrecision(4)}`;
+            }
+            break;
+
+        case 'mc':
+            isCorrect = (ans == q.correct);
+            if(!isCorrect) msg = "Incorrect option selected.";
+            break;
+
+        case 'mc-multi':
+            if (!ans || ans.length !== q.correct.length) {
+                isCorrect = false;
+            } else {
+                const sortedAns = [...ans].sort().toString();
+                const sortedCorr = [...q.correct].sort().toString();
+                isCorrect = (sortedAns === sortedCorr);
+            }
+            if(!isCorrect) msg = "Incorrect selection.";
+            break;
+
+        case 'matching':
+            if (!ans) { isCorrect = false; break; }
+            let allMatch = true;
+            q.pairs.forEach((pair, idx) => {
+                if (ans[idx] !== pair.target) allMatch = false;
+            });
+            isCorrect = allMatch;
+            if(!isCorrect) msg = "Some pairings are incorrect.";
+            break;
+
+        case 'tf-justify':
+            if (!ans) { isCorrect = false; break; }
+            const tfBool = (ans.tf === 'true');
+            const justMatch = (ans.just == q.justifyCorrect);
+            isCorrect = (tfBool === q.boolCorrect && justMatch);
+            if(!isCorrect) msg = "Either the True/False verdict or the justification is wrong.";
+            break;
+    }
+
+    // Render Feedback
+    fbEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+    fbEl.innerHTML = isCorrect ? '✔ ' + msg : '✘ ' + msg;
+}
+
+// Initialize System
+document.addEventListener('DOMContentLoaded', init);
+
+</script>
+</body>
+</html>
