@@ -137,7 +137,7 @@
             align-items: flex-start;
         }
 
-        .microscope-container {
+        .stem-container {
             position: relative;
             flex: 1;
             min-width: 500px;
@@ -145,13 +145,12 @@
             margin: 0 auto;
         }
 
-        .microscope-img {
+        .stem-img {
             width: 100%;
             height: auto;
             display: block;
             border-radius: 8px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            max-height: 550px;
             object-fit: contain;
         }
 
@@ -161,82 +160,91 @@
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            pointer-events: none; /* Let clicks pass through the SVG background */
+            z-index: 10;
         }
 
+        /* --- Hotspot Styling --- */
         .hotspot {
             cursor: pointer;
-            pointer-events: all;
+            pointer-events: all; /* Enable clicks on the groups */
             transition: all 0.3s ease;
         }
 
+        /* The invisible thick line to make clicking easier */
+        .hotspot .hit-area {
+            stroke: transparent;
+            stroke-width: 20px;
+            fill: none;
+        }
+
+        /* The visible black arrow line */
+        .hotspot .visible-line {
+            stroke: #000000;
+            stroke-width: 4px;
+            fill: none;
+            marker-end: url(#arrowhead-black);
+            transition: stroke 0.3s;
+        }
+        
+        /* The clickable text label/box */
+        .hotspot rect {
+            fill: white;
+            stroke: #000000;
+            stroke-width: 1px;
+            rx: 4; /* Rounded corners */
+        }
+
         .hotspot text {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             fill: black;
-            stroke: white;
-            stroke-width: 0.5px;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+            text-anchor: middle;
+            dominant-baseline: middle;
+            pointer-events: none; /* Let click go to the group/rect */
         }
 
-        .hotspot path {
-            stroke: #800020;
-            stroke-width: 6;
-            fill: none;
-            marker-end: url(#arrowhead);
-        }
-
-        .hotspot ellipse,
-        .hotspot polygon {
-            fill: rgba(102, 126, 234, 0.2);
+        /* Hover States */
+        .hotspot:hover .visible-line {
             stroke: #667eea;
-            stroke-width: 3;
+            stroke-width: 6px;
+            marker-end: url(#arrowhead-hover);
         }
-
+        
+        .hotspot:hover rect {
+            stroke: #667eea;
+            fill: #edf2f7;
+        }
+        
         .hotspot:hover text {
             fill: #667eea;
-            transform: scale(1.05);
-            transform-origin: center;
         }
 
-        .hotspot:hover path {
-            stroke: #667eea;
-            stroke-width: 8;
+        /* Correct State */
+        .hotspot.correct .visible-line {
+            stroke: #38a169;
+            marker-end: url(#arrowhead-correct);
         }
-
-        .hotspot:hover ellipse,
-        .hotspot:hover polygon {
-            fill: rgba(102, 126, 234, 0.4);
-            stroke: #5568d3;
+        .hotspot.correct rect {
+            stroke: #38a169;
+            fill: #f0fff4;
         }
-
         .hotspot.correct text {
             fill: #38a169;
         }
 
-        .hotspot.correct path {
-            stroke: #38a169;
+        /* Incorrect State */
+        .hotspot.incorrect .visible-line {
+            stroke: #e53e3e;
+            marker-end: url(#arrowhead-incorrect);
         }
-
-        .hotspot.correct ellipse,
-        .hotspot.correct polygon {
-            fill: rgba(72, 187, 120, 0.3);
-            stroke: #38a169;
+        .hotspot.incorrect rect {
+            stroke: #e53e3e;
         }
-
         .hotspot.incorrect text {
             fill: #e53e3e;
         }
 
-        .hotspot.incorrect path {
-            stroke: #e53e3e;
-        }
-
-        .hotspot.incorrect ellipse,
-        .hotspot.incorrect polygon {
-            fill: rgba(229, 62, 62, 0.3);
-            stroke: #e53e3e;
-        }
 
         /* Parts list container */
         .parts-list {
@@ -253,19 +261,8 @@
         /* Parts list grid */
         #partsList {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 10px 12px;
-        }
-
-        .part-item {
-            padding: 8px;
-            margin-bottom: 0;
-        }
-
-        @media (max-width: 900px) {
-            #partsList {
-                grid-template-columns: 1fr;
-            }
         }
 
         .parts-list h3 {
@@ -472,14 +469,12 @@
     <div class="page-wrapper">
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h2
-                    style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%); font-size: 2.2em; color: black;">
-                    The Sunflower Stem</h2>
+                <h2 style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%); font-size: 2.2em; color: black;">
+                    The Sunflower Stem
+                </h2>
                 <div></div>
             </div>
-            <p class="subtitle">Click <strong>'Explore'</strong> to learn the structure and <strong>'Quiz'</strong>to
-                master the structure function.
-            </p>
+            <p class="subtitle">Click <strong>'Explore'</strong> to learn the structure and <strong>'Quiz'</strong> to master the structure function.</p>
 
             <div class="game-controls">
                 <button class="btn btn-primary" onclick="setMode('explore')">Explore Mode</button>
@@ -488,68 +483,81 @@
             </div>
 
             <div class="game-info">
-                <div class="score">Score: <span id="score">0</span> / 8</div>
+                <div class="score">Score: <span id="score">0</span> / 7</div>
                 <div class="current-task" id="currentTask">
                     Click "Explore Mode" to learn the parts or "Quiz Mode" to test yourself!
                 </div>
             </div>
 
             <div class="game-area">
-                <div class="microscope-container">
-                    <img src="sunfower3.png" alt="Microscope" class="microscope-img" id="microscopeImg"
-                        crossorigin="anonymous">
+                <div class="stem-container">
+                    <img src="sunfower3.jpg" alt="Sunflower Stem Cross Section" class="stem-img" id="stemImg" crossorigin="anonymous">
 
-                    <svg class="hotspots-svg" id="hotspotsSvg" viewBox="0 0 1310 1195"
-                        preserveAspectRatio="xMidYMid meet">
+                    <svg class="hotspots-svg" id="hotspotsSvg" viewBox="0 0 800 1100" preserveAspectRatio="none">
                         <defs>
-                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                                <polygon points="0 0, 10 3.5, 0 7" fill="context-stroke" />
+                            <marker id="arrowhead-black" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#000000" />
+                            </marker>
+                            <marker id="arrowhead-hover" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#667eea" />
+                            </marker>
+                            <marker id="arrowhead-correct" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#38a169" />
+                            </marker>
+                            <marker id="arrowhead-incorrect" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#e53e3e" />
                             </marker>
                         </defs>
 
-                        <!-- Ocular Lens - no text label, just clickable area -->
-                        <ellipse class="hotspot" data-part="ocular" cx="1120" cy="85" rx="40" ry="30"
-                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-
-                        <!-- Objective Lenses - correctly positioned over the actual objective lenses -->
-                        <ellipse class="hotspot" data-part="objectives" cx="500" cy="490" rx="20" ry="55"
-                            transform="rotate(35 500 490)"
-                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-                        <ellipse class="hotspot" data-part="objectives" cx="560" cy="540" rx="35" ry="55"
-                            transform="rotate(35 560 540)"
-                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-                        <ellipse class="hotspot" data-part="objectives" cx="650" cy="510" rx="35" ry="55"
-                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
-
-                        <!-- Stage -->
-                        <polygon class="hotspot" data-part="stage" points="520,625 850,625 820,585 750,585"
-                            style="fill: rgba(0, 170, 255, 0.2); stroke: #00aaff; stroke-width: 3;" />
-
-                        <!-- Coarse Adjustment Knob -->
-                        <g class="hotspot" data-part="coarse">
-                            <text x="5" y="640" data-part="coarse">Inner Knob</text>
-                            <path d="M 120 650 Q 180 670 240 720" data-part="coarse" style="stroke-width: 10;" />
+                        <g class="hotspot" data-part="epidermis">
+                            <line class="hit-area" x1="50" y1="200" x2="110" y2="250" />
+                            <line class="visible-line" x1="50" y1="200" x2="110" y2="250" />
+                            <rect x="10" y="165" width="120" height="40" />
+                            <text x="70" y="185">Epidermis</text>
                         </g>
 
-                        <!-- Fine Adjustment Knob -->
-                        <g class="hotspot" data-part="fine">
-                            <text x="20" y="940" data-part="fine" style="fill: #0055ff;">Outer Knob</text>
-                            <path d="M 90 920 Q 150 910 220 860" data-part="fine" style="stroke: #0055ff;" />
-                        </g>
-                        <!-- Iris Diaphragm -->
-                        <g class="hotspot" data-part="diaphragm">
-                            <path d="M 1000 750 Q 900 790 800 740" data-part="diaphragm" style="stroke-width: 10;" />
+                        <g class="hotspot" data-part="cortex">
+                            <line class="hit-area" x1="50" y1="400" x2="150" y2="420" />
+                            <line class="visible-line" x1="50" y1="400" x2="150" y2="420" />
+                            <rect x="10" y="365" width="100" height="40" />
+                            <text x="60" y="385">Cortex</text>
                         </g>
 
-                        <!-- Condenser Lens Adjustment Knob -->
-                        <g class="hotspot" data-part="condenser">
-                            <text x="710" y="900" data-part="condenser" style="fill: #ff0000;">small knob</text>
-                            <path d="M 700 890 Q 650 850 500 810" data-part="condenser" style="stroke-width: 10;" />
+                        <g class="hotspot" data-part="phloem">
+                            <line class="hit-area" x1="300" y1="250" x2="350" y2="340" />
+                            <line class="visible-line" x1="300" y1="250" x2="350" y2="340" />
+                            <rect x="250" y="215" width="100" height="40" />
+                            <text x="300" y="235">Phloem</text>
                         </g>
 
-                        <!-- Light Adjustment Knob - no text label, just clickable area -->
-                        <ellipse class="hotspot" data-part="lightadj" cx="470" cy="970" rx="50" ry="30"
-                            style="fill: rgba(102, 126, 234, 0.2); stroke: #667eea; stroke-width: 3;" />
+                         <g class="hotspot" data-part="cambium">
+                            <line class="hit-area" x1="450" y1="280" x2="400" y2="370" />
+                            <line class="visible-line" x1="450" y1="280" x2="400" y2="370" />
+                            <rect x="420" y="245" width="110" height="40" />
+                            <text x="475" y="265">Cambium</text>
+                        </g>
+
+                        <g class="hotspot" data-part="xylem">
+                            <line class="hit-area" x1="600" y1="300" x2="450" y2="400" />
+                            <line class="visible-line" x1="600" y1="300" x2="450" y2="400" />
+                            <rect x="580" y="265" width="90" height="40" />
+                            <text x="625" y="285">Xylem</text>
+                        </g>
+
+                        <g class="hotspot" data-part="bundle">
+                            <line class="hit-area" x1="700" y1="600" x2="550" y2="650" />
+                            <line class="visible-line" x1="700" y1="600" x2="550" y2="650" />
+                            <rect x="650" y="565" width="140" height="40" />
+                            <text x="720" y="585">Vasc. Bundle</text>
+                        </g>
+
+                        <g class="hotspot" data-part="pith">
+                            <line class="hit-area" x1="750" y1="800" x2="600" y2="750" />
+                            <line class="visible-line" x1="750" y1="800" x2="600" y2="750" />
+                            <rect x="730" y="810" width="60" height="40" />
+                            <text x="760" y="830">Pith</text>
+                        </g>
+
                     </svg>
                 </div>
 
@@ -566,36 +574,33 @@
     </div>
 
     <script>
+        // Updated Data to remove Microscope terms and only include Sunflower terms
         const parts = {
-            ocular: {
+            epidermis: {
                 name: "Epidermis",
                 description: "The outermost protective cell layer of the sunflower stem. It reduces water loss and protects internal tissues."
             },
-            objectives: {
-                name: "Collenchyma",
-                description: "Living support tissue located just beneath the epidermis. Provides flexible mechanical strength to the growing stem."
+            cortex: {
+                name: "Cortex (Collenchyma)",
+                description: "Located just beneath the epidermis. Provides flexible mechanical strength to the growing stem."
             },
-            stage: {
-                name: "Cortex (Parenchyma)",
-                description: "Ground tissue between the epidermis and vascular bundles. Functions in storage, metabolism, and internal transport."
+            bundle: {
+                name: "Vascular Bundle",
+                description: "A discrete unit containing xylem, phloem, and cambium arranged in a ring in dicot stems."
             },
-            coarse: {
+            phloem: {
                 name: "Phloem",
-                description: "Vascular tissue that transports sugars and other organic nutrients produced during photosynthesis."
+                description: "Vascular tissue found on the outer side of the bundle. It transports sugars and other nutrients."
             },
-            fine: {
-                name: "Xylem",
-                description: "Vascular tissue that conducts water and dissolved minerals upward from the roots and provides structural support."
-            },
-            diaphragm: {
+            cambium: {
                 name: "Vascular Cambium",
                 description: "A meristematic layer between xylem and phloem responsible for secondary growth in stem thickness."
             },
-            condenser: {
-                name: "Vascular Bundle",
-                description: "A discrete unit containing xylem, phloem, and cambium arranged in a ring in dicot stems like sunflower."
+            xylem: {
+                name: "Xylem",
+                description: "Vascular tissue found on the inner side of the bundle (large red pores). Conducts water upward."
             },
-            lightadj: {
+            pith: {
                 name: "Pith",
                 description: "Central parenchyma tissue of the stem involved in storage and internal transport."
             }
@@ -629,6 +634,7 @@
         }
 
         function setupHotspots() {
+            // Updated to select groups instead of just paths
             const hotspots = document.querySelectorAll('.hotspot');
             hotspots.forEach(hotspot => {
                 hotspot.addEventListener('click', handleHotspotClick);
@@ -636,8 +642,11 @@
         }
 
         function handleHotspotClick(e) {
-            const target = e.target.closest('.hotspot') || e.target;
-            const partKey = target.dataset.part || target.getAttribute('data-part');
+            // Navigate up to the group .hotspot element
+            const target = e.target.closest('.hotspot');
+            if (!target) return;
+            
+            const partKey = target.dataset.part;
 
             if (!gameMode) {
                 alert('Please select a game mode first!');
@@ -657,11 +666,8 @@
                 score++;
                 updateScore();
 
-                const hotspot = element.closest('.hotspot');
-                if (hotspot) hotspot.classList.add('correct');
-
+                element.classList.add('correct');
                 document.getElementById(`part-${partKey}`).classList.add('found');
-
                 showFeedback(`✓ ${parts[partKey].name}`, true);
 
                 if (foundParts.size === Object.keys(parts).length) {
@@ -678,9 +684,7 @@
                 score++;
                 updateScore();
 
-                const hotspot = element.closest('.hotspot');
-                if (hotspot) hotspot.classList.add('correct');
-
+                element.classList.add('correct');
                 document.getElementById(`part-${partKey}`).classList.add('found');
 
                 showFeedback(`✓ Correct! ${parts[partKey].name}`, true);
@@ -689,13 +693,12 @@
                     nextQuizQuestion();
                 }, 1500);
             } else {
-                const hotspot = element.closest('.hotspot');
-                if (hotspot) hotspot.classList.add('incorrect');
+                element.classList.add('incorrect');
 
                 showFeedback(`✗ Try again! Look for the ${parts[currentQuizPart].name}`, false);
 
                 setTimeout(() => {
-                    if (hotspot) hotspot.classList.remove('incorrect');
+                    element.classList.remove('incorrect');
                 }, 1000);
             }
         }
@@ -707,7 +710,7 @@
             const taskElement = document.getElementById('currentTask');
 
             if (mode === 'explore') {
-                taskElement.innerHTML = 'Explore Mode <span class="mode-indicator mode-explore">EXPLORE</span><br>Click on any part to learn about it!';
+                taskElement.innerHTML = 'Explore Mode <span class="mode-indicator mode-explore">EXPLORE</span><br>Click on any label or arrow to learn about it!';
             } else if (mode === 'quiz') {
                 quizOrder = Object.keys(parts).sort(() => Math.random() - 0.5);
                 nextQuizQuestion();
