@@ -1,1 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Iodine Tests: Starch vs Cellulose & Starch Localization</title>
+    <style>
+        :root {
+            --parkside-green: #016836;
+            --parkside-black: #212721;
+            --parkside-dk-green: #00502f;
+            --goldenrod: #FABA31;
+            --white-birch: #EFECE2;
+            --cool-grey: #DBD9D6;
+            --warm-grey: #54534A;
+
+            --bg: #f7fafc;
+            --text: #1a202c;
+            --muted: #4a5568;
+            --border: #e2e8f0;
+            --accent: var(--parkside-green);
+            --warn: #b83280;
+            --ok: #2f855a;
+        }
+
+        /* Navigation Bar Styles */
+        .bios-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--parkside-green);
+            border-bottom: 2px solid var(--goldenrod);
+        }
+
+        .bios-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px;
+        }
+
+        .bios-home {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+        }
+
+        .bios-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .bios-menus {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bios-menu {
+            position: relative;
+        }
+
+        .bios-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        .bios-trigger.active {
+            border-bottom: 2px solid var(--goldenrod);
+        }
+
+        .bios-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            z-index: 1001;
+        }
+
+        .bios-dropdown a {
+            display: block;
+            padding: 6px 10px;
+            color: var(--parkside-black);
+            text-decoration: none;
+        }
+
+        .bios-dropdown a:hover {
+            background: var(--white-birch);
+        }
+
+        .bios-menu:hover .bios-dropdown,
+        .bios-menu:focus-within .bios-dropdown {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .bios-toggle {
+                display: block;
+            }
+
+            .bios-menus {
+                display: none;
+                flex-direction: column;
+                background: var(--parkside-green);
+                width: 100%;
+            }
+
+            .bios-menus.open {
+                display: flex;
+            }
+
+            .bios-dropdown {
+                position: static;
+                border: none;
+            }
+        }
+
+        html,
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+        }
+
+        a.skip {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        a.skip:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: .5rem .75rem;
+            background: #fff;
+            border: 2px solid var(--accent);
+        }
+
+        header {
+            padding: 1.25rem;
+            border-bottom: 2px solid var(--goldenrod);
+            background: #fff;
+        }
+
+        header h1 {
+            margin: .25rem 0 .5rem;
+            font-size: 1.75rem;
+            color: var(--parkside-green);
+        }
+
+        header p {
+            margin: 0;
+            color: var(--muted)
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        section {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: .75rem 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .sample-card {
+            background: var(--white-birch);
+            border: 2px solid var(--cool-grey);
+            border-radius: 10px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .sample-card.locked {
+            border-color: var(--goldenrod);
+            background: #fff;
+        }
+
+        .sample-card.tested {
+            border-color: var(--parkside-green);
+        }
+
+        .sample-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--parkside-black);
+            margin-bottom: 0.75rem;
+        }
+
+        .prediction-status {
+            display: inline-block;
+            font-size: .825rem;
+            padding: .3rem .6rem;
+            border-radius: 999px;
+            font-weight: 600;
+            margin-left: .5rem;
+        }
+
+        .status-pending {
+            background: var(--cool-grey);
+            color: var(--parkside-black);
+        }
+
+        .status-locked {
+            background: var(--goldenrod);
+            color: var(--parkside-black);
+        }
+
+        .status-tested {
+            background: var(--parkside-green);
+            color: white;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            margin-top: .5rem
+        }
+
+        .prediction-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .button-row {
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+            margin-top: .5rem;
+        }
+
+        .swatch {
+            width: 60px;
+            height: 32px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: var(--cool-grey);
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .result-positive {
+            color: var(--accent);
+            font-weight: 600
+        }
+
+        .result-negative {
+            color: var(--muted);
+            font-weight: 600
+        }
+
+        .tip {
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+            padding: .75rem;
+            border-radius: 8px;
+        }
+
+        .warn {
+            background: #fff5f7;
+            border: 1px solid #fed7e2;
+            padding: .75rem;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            color: var(--parkside-green);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin: .25rem 0 .5rem;
+            color: var(--parkside-black);
+        }
+
+        label {
+            display: inline-flex;
+            align-items: center;
+            gap: .25rem;
+            cursor: pointer;
+        }
+
+        textarea,
+        input[type="text"] {
+            width: 100%;
+            min-height: 60px;
+            padding: .5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font: inherit
+        }
+
+        button {
+            appearance: none;
+            background: var(--parkside-green);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: .5rem .75rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--parkside-dk-green);
+        }
+
+        button:disabled {
+            background: var(--cool-grey);
+            cursor: not-allowed;
+        }
+
+        button.secondary {
+            background: var(--parkside-black);
+        }
+
+        button.secondary:hover {
+            background: var(--warm-grey);
+        }
+
+        button.lock-btn {
+            background: var(--goldenrod);
+            color: var(--parkside-black);
+        }
+
+        button.lock-btn:hover {
+            background: #e8a720;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: .5rem;
+            text-align: left
+        }
+
+        th {
+            background: var(--white-birch);
+            color: var(--parkside-green);
+            font-weight: 600;
+        }
+
+        aside {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem 1rem
+        }
+
+        footer {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+            color: var(--muted)
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0
+        }
+
+        @media print {
+
+            header,
+            .controls button,
+            .tip,
+            .warn,
+            a.skip,
+            .bios-nav {
+                display: none
+            }
+
+            section,
+            aside,
+            footer {
+                border: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
+        </div>
+    </nav>
+
+    <a href="#content" class="skip">Skip to content</a>
+    <header role="banner">
+        <h1 id="title">Iodine Tests: Starch vs Cellulose & Starch Localization</h1>
+        <p>Hands-on guide to macroscopic and microscopic iodine tests with food and plant samples.</p>
+    </header>
+    <main id="content" role="main">
+
+        <section aria-labelledby="goal-heading">
+            <h2 id="goal-heading">Goal</h2>
+            <p>To apply the concept of molecular geometry to macroscopic observations, students will use the iodine
+                test to differentiate between α-glucose polymers (starch found in rice, corn, and potatoes) and
+                β-glucose polymers (cellulose found in cotton). By testing everyday items, students will demonstrate
+                that:</p>
+
+            <h3>Structure Dictates Function:</h3>
+            <p>The "flipped" bond in cellulose creates a straight chain that cannot trap iodine (negative result),
+                whereas the coiled helix of amylose traps iodine (positive blue/black result).</p>
+
+            <h3>Biological Context:</h3>
+            <p>Students will identify storage structures (amyloplasts in food) versus structural support (cell walls
+                in cotton).</p>
+        </section>
+
+        <section aria-labelledby="bg-heading">
+            <h2 id="bg-heading">From Amyloplasts to Cell Walls: A Structural Analysis of Polysaccharides</h2>
+            <p>When you look at a glucose molecule, you aren't just looking at a source of fuel; you are looking at
+                a masterpiece of spatial orientation. Glucose exists in two "anomeric" forms, α-glucose and
+                β-glucose, distinguished solely by the direction of a single hydroxyl (-OH) group on the first
+                carbon. In α-glucose, the OH group points "down," while in β-glucose, it points "up."</p>
+
+            <p>This microscopic flip changes everything. When β-glucose monomers bond, they must flip upside down
+                relative to one another to connect, creating an alternating up-down-up-down pattern that straightens
+                the chain into cellulose—the straight, rigid "armor" of plant cell walls. However, when α-glucose
+                monomers link, they form starch, which organizes into two distinct architectures:</p>
+
+            <ul>
+                <li><strong>Amylose:</strong> A long, unbranched chain that coils into a tight, spring-like helix.
+                </li>
+                <li><strong>Amylopectin:</strong> A sprawling, branched structure that allows for rapid energy
+                    release.</li>
+            </ul>
+
+            <p>These starch molecules are packed away into specialized organelles called amyloplasts. Think of the
+                amyloplast as the plant's "pantry"—a dense vault where glucose is converted into solid granules.
+                When you perform the iodine test today, you are looking for a physical "fit." The iodine molecules
+                slide into the hollow center of the amylose helix, creating the signature blue/purple-black color.
+                You aren't just testing for glucose—you're testing for how it's arranged.</p>
+
+            <h2>Critical Thinking Questions</h2>
+
+            <p><strong>Spatial Reasoning:</strong> If the only difference between starch (soft/edible) and wood
+                (hard/indigestible) is the "up" or "down" orientation of a single bond, what does this suggest about
+                how enzymes "recognize" their targets?</p>
+
+            <p><strong>The Iodine Puzzle:</strong> The iodine test requires a "coiled" shape to trap the liquid.
+                Based on the reading, why would the straight, rigid chains of β-glucose (cellulose) likely fail to
+                produce a blue/purple-black result?</p>
+
+            <p><strong>Enzyme Efficiency:</strong> Amylopectin has many "ends" due to its branching, while amylose
+                has only two. If an enzyme can only break down starch starting from the ends, which molecule can be
+                converted back into energy the fastest?</p>
+
+            <h2>Metacognitive Reflection</h2>
+
+            <p><strong>Metacognition:</strong> Identify one part of the "flipping" or "branching" process that is
+                difficult to visualize. Return to the models you made earlier, are these differences evident?</p>
+        </section>
+
+        <section aria-labelledby="macro-heading">
+            <h2 id="macro-heading">Activity A — Macroscopic Iodine Test: Starch vs Cellulose & Food Samples</h2>
+            <div class="card">
+                <h3>Step-by-step</h3>
+                <ol>
+                    <li>Get 3 slides per group</li>
+                    <li>Set the slides on a piece of paper and label each end: Cotton, Packing Material, Rice, French
+                        Fries, Popcorn, Cooked Pasta, Veggie Straws</li>
+                    <li>Place two items on each slide according to the labels</li>
+                    <li>For each sample below: <strong>Make your prediction → Lock it in → Test with iodine</strong>
+                    </li>
+                    <li>Record the outcomes in the table</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h3>Predict → Lock → Test → Explain</h3>
+                <p class="tip"><strong>Important:</strong> First make your prediction, then click "Lock Prediction" to
+                    commit. Only then can you test with iodine. This ensures your prediction is independent of the
+                    result!</p>
+                <div class="grid" id="samples-grid" aria-live="polite"></div>
+                <div class="controls" style="margin-top:1rem; flex-direction: row; gap: 1rem;">
+                    <button id="resetAll" aria-label="Reset all samples">Reset all</button>
+                    <button id="exportCsv" class="secondary" aria-label="Export results as CSV">Export results</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Results Log</h3>
+                <table aria-describedby="macro-heading">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Sample</th>
+                            <th scope="col">Predicted</th>
+                            <th scope="col">Observed</th>
+                            <th scope="col">Match?</th>
+                            <th scope="col">Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody"></tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Metacognitive Prompts</h3>
+                <ul>
+                    <li><strong>Prediction Check:</strong> Before testing, you predicted which items would turn
+                        blue/black. Which prediction surprised you most, and why?</li>
+                    <li><strong>Pattern Recognition:</strong> Cotton and the packing material both tested negative. What
+                        biological role do these share that might explain why they lack starch?</li>
+                    <li><strong>The Veggie Straw Puzzle:</strong> Veggie straws are made from vegetables. Based on your
+                        results, what part of the plant do you think they're made from—roots/tubers (storage) or
+                        stems/leaves (structure)?</li>
+                    <li><strong>Micro to Macro:</strong> How does the difference between α-glucose (coiled) and
+                        β-glucose (straight) explain why you can eat pasta but not paper?</li>
+                </ul>
+            </div>
+        </section>
+
+        <section aria-labelledby="micro-heading">
+            <h2 id="micro-heading">Activity B — Microscopic Iodine Test: Starch Localization in Potato Parenchyma</h2>
+            <div class="card">
+                <h3>Steps</h3>
+                <ol>
+                    <li>Prepare a thin potato wet mount. Start at 4×, then 10×.</li>
+                    <li><strong>Before iodine:</strong> find clear cells and identify <em>amyloplasts</em> and <em>cell
+                            walls</em>.</li>
+                    <li>Add one drop of iodine; observe for ~2 minutes.</li>
+                    <li><strong>After iodine:</strong> record your results: What happened to the amyloplasts? What
+                        happened to the Cell walls? Why?</li>
+                </ol>
+            </div>
+
+            <div class="grid">
+                <div class="card" aria-labelledby="before-card">
+                    <h3 id="before-card">Before iodine</h3>
+                    <div role="img" aria-label="Placeholder microscope view before iodine"
+                        style="height:160px; border:2px dashed var(--border); border-radius:10px; background: var(--white-birch)">
+                    </div>
+                    <p><strong>Label:</strong> cell wall; amyloplasts and note color</p>
+                    <textarea aria-label="Notes before iodine"
+                        placeholder="Observations (lighting, focus, locations of amyloplasts, wall outline)..."></textarea>
+                </div>
+                <div class="card" aria-labelledby="after-card">
+                    <h3 id="after-card">After iodine</h3>
+                    <div role="img" aria-label="Placeholder microscope view after iodine"
+                        style="height:160px; border:2px dashed var(--border); border-radius:10px; background:#ebf8ff">
+                    </div>
+                    <p><strong>Label:</strong> amyloplasts, cell wall and note color change (if any)</p>
+                    <textarea aria-label="Notes after iodine"
+                        placeholder="Where did color appear? Which structures stayed clear?"></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Claim – Evidence – Reasoning</h3>
+                <p class="sr-only">Use this template to summarize your findings.</p>
+                <label>Claim<input type="text" aria-label="Claim" placeholder="Iodine binds to..." /></label>
+                <label>Evidence<textarea aria-label="Evidence"
+                        placeholder="Describe structure and color."></textarea></label>
+                <label>Reasoning<textarea aria-label="Reasoning"
+                        placeholder="Explain the structure of the polymers."></textarea></label>
+            </div>
+        </section>
+
+    </main>
+
+    <aside role="complementary">
+        <section class="card" aria-labelledby="ref-heading">
+            <h2 id="ref-heading">Quick Reference</h2>
+            <ul>
+                <li><span class="result-positive">Positive for starch</span> = blue/black.</li>
+                <li><span class="result-negative">Negative (cellulose)</span> = no significant color change.</li>
+                <li class="warn"><strong>Safety:</strong> Handle iodine carefully; avoid contact with lenses/stage.
+                    Clean slides after use.</li>
+            </ul>
+        </section>
+    </aside>
+
+    <footer role="contentinfo">
+        <section class="card" aria-labelledby="reflect-heading">
+            <h2 id="reflect-heading">Reflection</h2>
+            <ol>
+                <li>How does the starch vs cellulose test connect to sunflower stem tissues?</li>
+                <li>Where is starch likely found in stems (cortex/pith parenchyma) and why?</li>
+                <li>Why do collenchyma and sclerenchyma not show starch staining?</li>
+            </ol>
+        </section>
+        <p>&copy; BIOS101 2026 Iodine Lab Guide — University of Wisconsin-Parkside</p>
+    </footer>
+
+    <script>
+        // Navigation initialization
+        (function () {
+            var labs = [
+                { folder: "bios101-learning", title: "Metacognition" },
+                { folder: "01_Science_of_Biology", title: "Scientific Process" },
+                { folder: "02_Eukaryotes", title: "Eukaryotes" },
+                { folder: "03_Carbohydrates", title: "Carbohydrates" },
+                { folder: "04_Proteins", title: "Proteins" },
+                { folder: "05_Lipids", title: "Lipids" },
+                { folder: "06_Photosynthetic_Pigments", title: "Photosynthesis" },
+                { folder: "07_Nucleic Acids", title: "Nucleic Acids" },
+                { folder: "08_Mitosis", title: "Mitosis" },
+                { folder: "09_Meiosis", title: "Meiosis" },
+                { folder: "10_Genetics", title: "Genetics" }
+            ];
+
+            function initNav() {
+                var menus = document.getElementById('biosMenus');
+                var path = location.pathname;
+                if (!menus) return;
+
+                labs.forEach(function (lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    var bp = '../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+
+                var t = document.querySelector('.bios-toggle');
+                if (t) t.onclick = function () { menus.classList.toggle('open'); };
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+
+        // Sample test data - no hints about answers
+        const samples = [
+            { name: 'Packing material (biodegradable)' },
+            { name: 'Cotton' },
+            { name: 'Rice' },
+            { name: 'Cooked pasta' },
+            { name: 'Popcorn' },
+            { name: 'French fries' },
+            { name: 'Veggie straws' }
+        ];
+
+        // Actual results (hidden from UI)
+        const actualResults = {
+            'Packing material (biodegradable)': 'Blue/Black',
+            'Cotton': 'No change',
+            'Rice': 'Blue/Black',
+            'Cooked pasta': 'Blue/Black',
+            'Popcorn': 'Blue/Black',
+            'French fries': 'Blue/Black',
+            'Veggie straws': 'Blue/Black'
+        };
+
+        const grid = document.getElementById('samples-grid');
+        const resultsBody = document.getElementById('resultsBody');
+        let logCounter = 0;
+
+        function slugify(text) {
+            return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
+        function addRow(sample, predicted, observed, match) {
+            const tr = document.createElement('tr');
+            const ts = new Date().toLocaleString();
+            logCounter++;
+            const matchIcon = match ? '✓' : '✗';
+            tr.innerHTML = `<td>${logCounter}</td><td>${sample}</td><td>${predicted}</td><td>${observed}</td><td>${matchIcon}</td><td>${ts}</td>`;
+            resultsBody.appendChild(tr);
+        }
+
+        function buildSampleCard(sample) {
+            const id = slugify(sample.name);
+            const card = document.createElement('div');
+            card.className = 'sample-card';
+            card.innerHTML = `
+                <div class="sample-name">
+                    ${sample.name}
+                    <span class="prediction-status status-pending" id="status-${id}">Predict</span>
+                </div>
+                <div class="controls" role="group" aria-labelledby="pred-${id}">
+                    <span id="pred-${id}" class="sr-only">Prediction controls for ${sample.name}</span>
+                    <div class="prediction-row">
+                        <label><input type="radio" name="pred-${id}" value="Blue/Black" aria-label="Predict blue/black"> Blue/Black</label>
+                        <label><input type="radio" name="pred-${id}" value="No change" aria-label="Predict no change"> No change</label>
+                    </div>
+                    <div class="button-row">
+                        <button id="lock-${id}" class="lock-btn" aria-controls="swatch-${id}">Lock Prediction</button>
+                        <button id="test-${id}" aria-controls="swatch-${id}" disabled>Test with Iodine</button>
+                        <span class="swatch" id="swatch-${id}" title="Observation swatch" aria-label="Observation swatch"></span>
+                    </div>
+                </div>
+                <label for="exp-${id}" class="sr-only">Explain your reasoning for ${sample.name}</label>
+                <textarea id="exp-${id}" placeholder="Explain your prediction: Why do you think this sample will/won't react with iodine?"></textarea>
+            `;
+
+            const lockBtn = card.querySelector(`#lock-${id}`);
+            const testBtn = card.querySelector(`#test-${id}`);
+            const status = card.querySelector(`#status-${id}`);
+            const radios = card.querySelectorAll(`input[name="pred-${id}"]`);
+            const sw = card.querySelector(`#swatch-${id}`);
+
+            let lockedPrediction = null;
+
+            // Lock prediction behavior
+            lockBtn.addEventListener('click', () => {
+                let predicted = null;
+                radios.forEach(r => { if (r.checked) predicted = r.value; });
+
+                if (!predicted) {
+                    alert('Please make a prediction before locking!');
+                    return;
+                }
+
+                lockedPrediction = predicted;
+
+                // Disable radios
+                radios.forEach(r => r.disabled = true);
+                lockBtn.disabled = true;
+                testBtn.disabled = false;
+
+                // Update UI
+                card.classList.add('locked');
+                status.textContent = 'Locked';
+                status.className = 'prediction-status status-locked';
+            });
+
+            // Test behavior
+            testBtn.addEventListener('click', () => {
+                if (!lockedPrediction) return;
+
+                const observed = actualResults[sample.name];
+                const match = (lockedPrediction === observed);
+
+                // Update swatch
+                if (observed === 'Blue/Black') {
+                    sw.style.background = '#0b3d91';
+                    sw.style.borderColor = '#0b3d91';
+                } else {
+                    sw.style.background = '#FABA31';
+                    sw.style.borderColor = '#e2e8f0';
+                }
+
+                // Update UI
+                card.classList.add('tested');
+                testBtn.disabled = true;
+                status.textContent = 'Tested';
+                status.className = 'prediction-status status-tested';
+
+                // Log result
+                addRow(sample.name, lockedPrediction, observed, match);
+            });
+
+            return card;
+        }
+
+        // Build all cards
+        samples.forEach(s => grid.appendChild(buildSampleCard(s)));
+
+        // Reset
+        document.getElementById('resetAll').addEventListener('click', () => {
+            samples.forEach(s => {
+                const id = slugify(s.name);
+                const radios = document.querySelectorAll(`input[name="pred-${id}"]`);
+                radios.forEach(r => {
+                    r.checked = false;
+                    r.disabled = false;
+                });
+
+                const lockBtn = document.getElementById(`lock-${id}`);
+                const testBtn = document.getElementById(`test-${id}`);
+                const status = document.getElementById(`status-${id}`);
+                const sw = document.getElementById(`swatch-${id}`);
+                const ta = document.getElementById(`exp-${id}`);
+                const card = sw.closest('.sample-card');
+
+                if (lockBtn) lockBtn.disabled = false;
+                if (testBtn) testBtn.disabled = true;
+                if (sw) {
+                    sw.style.background = '#DBD9D6';
+                    sw.style.borderColor = '#e2e8f0';
+                }
+                if (ta) ta.value = '';
+                if (status) {
+                    status.textContent = 'Predict';
+                    status.className = 'prediction-status status-pending';
+                }
+                if (card) {
+                    card.classList.remove('locked', 'tested');
+                }
+            });
+            resultsBody.innerHTML = '';
+            logCounter = 0;
+        });
+
+        // Export CSV
+        document.getElementById('exportCsv').addEventListener('click', () => {
+            const rows = [['#', 'Sample', 'Predicted', 'Observed', 'Match?', 'Timestamp']];
+            Array.from(resultsBody.querySelectorAll('tr')).forEach(tr => {
+                const cols = Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+                rows.push(cols);
+            });
+            const csv = rows.map(r => r.map(cell => '"' + (cell || '').replace(/"/g, '""') + '"').join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'iodine_results.csv';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+            a.remove();
+        });
+    </script>
+</body>
+
+</html>
