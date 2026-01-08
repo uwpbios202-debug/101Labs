@@ -1,1 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Monomer → Dimer: Dehydration & Hydrolysis (Glycine & Alanine Models)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <style>
+    :root{
+      --primary: #016836;
+      --primary-dark: #00502f;
+      --neutral: #f7f7f7;
+      --text: #111111;
+      --text-on-primary: #ffffff;
+    }
+
+    /* Base */
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin:0;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.6;
+    }
+    header{
+      background: var(--primary);
+      color: var(--text-on-primary);
+      padding: 1.25rem;
+      border-bottom: 6px solid var(--primary-dark);
+    }
+    header h1{
+      margin:0 0 .25rem 0;
+      font-weight:700;
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+    }
+    header p{
+      margin:0;
+      font-weight:600;
+      font-size: 0.95rem;
+    }
+    main{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    /* Note box (Reminder + Materials) */
+    .note{
+      background: #ececec;
+      border-left: 6px solid var(--primary-dark);
+      padding: 1rem;
+      margin-bottom: 1rem; /* consistent spacing */
+    }
+    .inline-tip{
+      display:inline-block;
+      background: var(--primary-dark);
+      color: var(--text-on-primary);
+      padding: .2rem .4rem;
+      border-radius: 2px;
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    /* Card boxes */
+    .card{
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      padding: 1rem;
+      background: #fff;
+      margin-bottom: 1rem; /* ensures equal spacing between all boxes */
+    }
+    .card h2{
+      margin-top:0;
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: .25rem;
+      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+    }
+    .card h3{
+      margin-top:0;
+      color: var(--primary-dark);
+      font-size: 1.05rem;
+    }
+
+    /* Steps */
+    ol.steps{
+      padding-left:1.1rem;
+    }
+    ol.steps li{
+      margin:.5rem 0;
+    }
+    .step{
+      display:flex;
+      align-items:flex-start;
+      gap:.6rem;
+    }
+    .step input[type="checkbox"]{
+      margin-top:.2rem;
+      inline-size:1rem;
+      block-size:1rem;
+    }
+
+    /* Footer */
+    footer{
+      margin-top: 2rem;
+      padding: 1rem;
+      border-top: 6px solid var(--primary-dark);
+      background: var(--neutral);
+      font-size: .9rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Monomer → Dimer: Dehydration & Hydrolysis</h1>
+    <p>Hands‑On Guidance Using Glycine &amp; Alanine Models</p>
+  </header>
+
+  <main>
+
+    <!-- REMINDER + LAB MATERIALS COMBINED (FULL-WIDTH) -->
+    <section class="note" aria-label="Reminder and Materials">
+      <p><span class="inline-tip">Reminder</span>
+        You already built <strong>glycine</strong> and <strong>alanine</strong> models. Today you will <strong>join two monomers</strong> into a <strong>dipeptide (dimer)</strong> using a <em>dehydration reaction</em>, then <strong>split them back</strong> by <em>hydrolysis</em>.
+      </p>
+
+      <h3>Lab Materials &amp; Conventions</h3>
+      <ul>
+        <li><strong>Carbon (C):</strong> black</li>
+        <li><strong>Nitrogen (N):</strong> red</li>
+        <li><strong>Oxygen (O):</strong> blue</li>
+        <li><strong>Hydrogen (H):</strong> white</li>
+        <li><strong>Covalent bond:</strong> white tube</li>
+      </ul>
+
+      <h4>Reaction Logic</h4>
+      <ul>
+        <li><strong>Dehydration reaction:</strong> joins monomers and releases water.</li>
+        <li><strong>Hydrolysis:</strong> adds water to split a dimer back into monomers.</li>
+      </ul>
+    </section>
+
+    <!-- A) DEHYDRATION (FULL-WIDTH CARD) -->
+    <article class="card">
+      <h2>A) Dehydration Synthesis — Build a Dipeptide</h2>
+
+      <h3>Materials</h3>
+      <ul>
+        <li>Glycine and alanine models with amino (–NH₂) and carboxyl (–COOH) groups.</li>
+        <li>White covalent bond tubes; atom pieces in standard colors.</li>
+      </ul>
+
+      <h3>Goal</h3>
+      <p>
+        Remove <strong>H</strong> from the amino group of one amino acid and <strong>OH</strong> from the carboxyl of the other to form <strong>H₂O</strong> and connect the backbones with a new <strong>peptide bond</strong>.
+      </p>
+
+      <h3>Steps</h3>
+      <ol class="steps">
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Orient the monomers:</strong> Align the amino group of one with the carboxyl of the other.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Remove water:</strong> Detach one H and one OH and set them aside as H₂O.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Create the peptide bond:</strong> Connect the carbonyl carbon to the nitrogen using a white tube.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Identify ends & sequence:</strong> Determine the N‑terminus and C‑terminus; record Gly–Ala or Ala–Gly.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Instructor check</strong> when the dipeptide is complete.</label>
+        </li>
+      </ol>
+
+      <h3>What You Should See</h3>
+      <p>A glycine–alanine (or alanine–glycine) dipeptide with one water molecule formed.</p>
+    </article>
+
+    <!-- B) HYDROLYSIS (FULL-WIDTH CARD) -->
+    <article class="card">
+      <h2>B) Hydrolysis — Split the Dipeptide</h2>
+
+      <h3>Goal</h3>
+      <p>Add <strong>H₂O</strong> across the peptide bond to regenerate two monomers.</p>
+
+      <h3>Steps</h3>
+      <ol class="steps">
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Stage the water:</strong> Place H₂O beside the peptide bond.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Break the peptide bond:</strong> Remove the tube between C and N.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Reattach groups:</strong> Put H back on the nitrogen and OH back on the carbonyl carbon.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Verify monomers:</strong> Confirm both fully restored glycine and alanine models.</label>
+        </li>
+        <li class="step">
+          <input type="checkbox" />
+          <label><strong>Instructor check</strong> when complete.</label>
+        </li>
+      </ol>
+
+      <h3>What You Should See</h3>
+      <p>Two separate amino acids with complete amino and carboxyl groups.</p>
+    </article>
+
+    <!-- C) REFLECTION (FULL-WIDTH CARD) -->
+    <article class="card">
+      <h2>C) Quick Reflection</h2>
+      <ul>
+        <li>How many water molecules were released/consumed?</li>
+        <li>Which direction did you assemble the dipeptide (N → C)?</li>
+        <li>Record your two‑residue sequence.</li>
+      </ul>
+
+      <form>
+        <label><strong>H₂O count:</strong></label><br />
+        <input type="text" /><br /><br />
+
+        <label><strong>Sequence:</strong></label><br />
+        <input type="text" placeholder="e.g., Gly–Ala" />
+      </form>
+    </article>
+
+  </main>
+
+  <footer>
+    <p><strong>Instructor initials:</strong> ___________________________</p>
+  </footer>
+
+</body>
+</html>
