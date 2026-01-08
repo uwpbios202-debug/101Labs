@@ -1,1 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <title>Adipose Tissue Lab | Energy Storage & Structure</title>
+
+    <style>
+        /* ===============================
+   UWP STYLE GUIDE — SACROSANCT
+================================ */
+        :root {
+            --uwp-green: #016836;
+            --uwp-black: #21272A;
+            --uwp-gray: #DBD9D6;
+            --uwp-yellow: #FABA31;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: var(--uwp-black);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--uwp-green);
+        }
+
+        .section {
+            background: var(--uwp-gray);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 10px solid var(--uwp-green);
+        }
+
+        button {
+            background: var(--uwp-yellow);
+            color: var(--uwp-black);
+            border: none;
+            padding: 0.6rem 1rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            margin-top: 0.5rem;
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            border: 2px solid var(--uwp-black);
+            background: #fff;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Adipose Tissue Lab: Structure, Function & Energy Storage</h1>
+
+    <!-- ========================= -->
+    <!-- 1. LAB PURPOSE -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Why This Lab Exists</h2>
+        <p>
+            This lab trains you to connect <strong>microscopic structure</strong> to
+            <strong>biological function</strong>. Adipose tissue is not just “fat” — it is a
+            specialized tissue critical for energy balance, protection, and thermal regulation.
+        </p>
+        <p>
+            By the end of this exercise, you should be able to look at a slide and immediately
+            recognize adipose tissue <em>and explain why it looks the way it does</em>.
+        </p>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 2. GOALS (METACOGNITIVE PRIMING) -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Your Learning Targets</h2>
+        <ul>
+            <li>Identify adipose tissue under the microscope</li>
+            <li>Describe the structure of an adipose cell</li>
+            <li>Explain how structure supports energy storage</li>
+            <li>Predict what you should see before viewing the slide</li>
+            <li>Encode visual memory through drawing</li>
+        </ul>
+
+        <p><strong>Pause:</strong> Before moving on, ask yourself:<br>
+            “What would success look like by the end of this lab?”
+        </p>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 3. BACKGROUND: WHAT YOU MUST KNOW FIRST -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Background: What Adipose Tissue Is and What It Does</h2>
+
+        <p>
+            The major function of fat is <strong>long-term energy storage</strong>. In humans and other
+            mammals, fat is stored in <strong>adipose tissue</strong>, which consists of large groups of
+            specialized cells called <strong>adipocytes</strong>.
+        </p>
+
+        <p>
+            Each adipose cell is almost completely filled by a single, large
+            <strong>fat (lipid) droplet</strong> stored inside a vesicle. This droplet contains a
+            huge number of fat molecules (primarily triglycerides). Because this droplet
+            occupies most of the cell’s volume, the cytoplasm forms only a thin rim and the
+            <strong>nucleus is pushed to the edge of the cell</strong>.
+        </p>
+
+        <p>
+            When the body needs energy—such as between meals or during prolonged activity—
+            adipose cells <strong>hydrolyze their stored fats</strong> and release
+            <strong>fatty acids into the bloodstream</strong>, where they can be used by other tissues.
+        </p>
+
+        <p>
+            In addition to energy storage, adipose tissue also:
+        </p>
+        <ul>
+            <li>Cushions and protects vital organs such as the heart and kidneys</li>
+            <li>Insulates the body to reduce heat loss</li>
+        </ul>
+
+        <p>
+            In adults, the <strong>number of adipose cells is generally fixed</strong> because these cells
+            do not readily divide. Changes in body fat are therefore primarily due to changes
+            in the <em>size</em> of adipose cells, not their number.
+        </p>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 4. TRANSLATING FUNCTION → STRUCTURE -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>From Function to Structure: Think Like a Biologist</h2>
+
+        <p>
+            Before looking at the slide, translate what you just read into
+            <strong>structural expectations</strong>.
+        </p>
+
+        <p><strong>Ask yourself:</strong></p>
+        <ul>
+            <li>If a cell’s main job is to store fat, how much space should organelles take up?</li>
+            <li>What would happen to the nucleus if one large droplet fills the cell?</li>
+            <li>What might fat droplets look like after chemical slide preparation?</li>
+        </ul>
+
+        <p>
+            <strong>Important:</strong> During slide preparation, fats are often dissolved and removed.
+            This means fat droplets may appear as <em>empty or clear spaces</em> under the microscope.
+        </p>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 5. BEFORE YOU VIEW THE SLIDE (NOW GROUNDED) -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Before You View the Slide: Informed Prediction</h2>
+
+        <p>
+            Now that you understand the function and structure of adipose tissue,
+            make a prediction about what you expect to see under the microscope.
+        </p>
+
+        <p>
+            Your prediction should address:
+        </p>
+        <ul>
+            <li>Overall appearance of the tissue</li>
+            <li>Size and shape of individual cells</li>
+            <li>Location of nuclei</li>
+            <li>Presence of large clear spaces</li>
+        </ul>
+
+        <textarea
+            placeholder="Based on the background information, describe what adipose tissue should look like under the microscope and explain why."></textarea>
+
+        <p>
+            <strong>Metacognitive check:</strong>
+            Are you predicting based on evidence from the text, or guessing?
+            If guessing, reread the background before proceeding.
+        </p>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 4. GUIDED SLIDE VIEWING -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>While Viewing the Microscope Slide</h2>
+        <p>As you examine the slide, actively look for the following:</p>
+        <ul>
+            <li>Large, empty-appearing spaces (fat droplets removed during slide prep)</li>
+            <li>Thin rims of cytoplasm</li>
+            <li>Nuclei pushed to the cell edge</li>
+            <li>Cells packed closely together</li>
+        </ul>
+
+        <p>
+            <strong>Metacognitive cue:</strong> If you are “just looking,” stop.
+            Ask: <em>Why does it look like this?</em>
+        </p>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 5. DRAW IT TO KNOW IT -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Draw What You See (Critical Encoding Step)</h2>
+        <p>
+            Drawing forces your brain to encode structure spatially.
+            Do not trace. Do not copy. Draw from observation.
+        </p>
+
+        <canvas id="drawCanvas" width="500" height="300"></canvas><br>
+        <button onclick="clearCanvas()">Clear Drawing</button>
+
+        <p>
+            <strong>Label on paper or mentally:</strong> fat droplet, nucleus, cell boundary
+        </p>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 6. CONCEPTUAL CHALLENGE -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Conceptual Challenge</h2>
+
+        <p><strong>Question:</strong><br>
+            Why is adipose tissue well-suited for long-term energy storage rather than quick energy release?
+        </p>
+
+        <button onclick="toggle('answer1')">Reveal Explanation</button>
+        <div id="answer1" class="hidden">
+            <p>
+                Fat stores far more energy per gram than carbohydrates. The large lipid droplet
+                allows massive energy storage without disrupting cellular processes.
+            </p>
+        </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 7. METACOGNITIVE REFLECTION -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Metacognitive Reflection</h2>
+        <p>
+            Rate your understanding honestly, then explain why.
+        </p>
+
+        <textarea placeholder="What part of this lab do you understand best? What is still unclear?"></textarea>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 8. RETRIEVAL PRACTICE -->
+    <!-- ========================= -->
+    <div class="section">
+        <h2>Retrieval Check (No Looking Back)</h2>
+        <p>
+            Without scrolling up, answer:
+        </p>
+        <ul>
+            <li>What fills most of an adipose cell?</li>
+            <li>Where is the nucleus located?</li>
+            <li>What happens to fat when energy is needed?</li>
+        </ul>
+
+        <textarea placeholder="Answer from memory. This is how learning sticks."></textarea>
+    </div>
+
+    <script>
+        /* Toggle explanations */
+        function toggle(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
+
+        /* Drawing canvas */
+        const canvas = document.getElementById("drawCanvas");
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
+
+        canvas.addEventListener("mousedown", () => drawing = true);
+        canvas.addEventListener("mouseup", () => drawing = false);
+        canvas.addEventListener("mousemove", draw);
+
+        function draw(e) {
+            if (!drawing) return;
+            ctx.fillStyle = "#000";
+            ctx.beginPath();
+            ctx.arc(e.offsetX, e.offsetY, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    </script>
+
+</body>
+
+</html>
