@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biologist's Eye: Visual Literacy Tool</title>
+    <style>
+        :root {
+            --uwp-green: #007A33;
+            --uwp-amber: #FFB81C;
+            --uwp-purple: #6A2E91;
+            --uwp-blue: #002F6C;
+            --uwp-gray: #E0E0E0;
+            --uwp-light: #F8F9FA;
+            --uwp-dark: #212529;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--uwp-light);
+            color: var(--uwp-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--uwp-blue);
+            color: white;
+            padding: 20px 30px;
+            border-bottom: 5px solid var(--uwp-green);
+        }
+
+        h1 {
+            margin: 0 0 10px 0;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: var(--uwp-blue);
+            border-bottom: 2px solid var(--uwp-gray);
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        .prompt-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid var(--uwp-blue);
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid var(--uwp-gray);
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .image-display {
+            max-width: 90%;
+            height: auto;
+            max-height: 500px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .recorder-box {
+            background-color: #f9f9f9;
+            border: 2px solid var(--uwp-gray);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .control-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .control-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .record-button {
+            background-color: var(--uwp-green);
+            color: white;
+        }
+
+        .record-button:hover {
+            background-color: #006227;
+        }
+
+        .pause-button {
+            background-color: var(--uwp-amber);
+            color: var(--uwp-dark);
+        }
+
+        .pause-button:hover {
+            background-color: #e6a100;
+        }
+
+        .stop-button {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .stop-button:hover {
+            background-color: #c82333;
+        }
+
+        .reset-button {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .reset-button:hover {
+            background-color: #5a6268;
+        }
+
+        .record-button.recording {
+            background-color: #d32f2f;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .status-indicator {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .status-listening {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-paused {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-processing {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .transcript-box {
+            min-height: 200px;
+            border: 1px solid var(--uwp-gray);
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: white;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .highlight-green {
+            background-color: rgba(0, 122, 51, 0.15);
+            text-decoration: underline;
+            text-decoration-color: var(--uwp-green);
+            text-decoration-thickness: 2px;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .highlight-amber {
+            background-color: rgba(255, 184, 28, 0.25);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .glossary-box {
+            background-color: rgba(106, 46, 145, 0.08);
+            border-left: 4px solid var(--uwp-purple);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .glossary-title {
+            color: var(--uwp-purple);
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .score-display {
+            display: inline-block;
+            background-color: var(--uwp-blue);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 15px 0;
+        }
+
+        .score-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .instructions {
+            font-size: 14px;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .question-container {
+            margin: 30px 0;
+        }
+
+        .question {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--uwp-blue);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--uwp-blue);
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: white;
+            border: 1px solid var(--uwp-gray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            background-color: #f0f7ff;
+            border-color: var(--uwp-blue);
+        }
+
+        .option.correct {
+            background-color: rgba(0, 122, 51, 0.1);
+            border-color: var(--uwp-green);
+        }
+
+        .option.incorrect {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-color: #dc3545;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid var(--uwp-amber);
+            display: none;
+        }
+
+        .check-answer {
+            background-color: var(--uwp-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid var(--uwp-gray);
+        }
+
+        .manual-input-box {
+            margin-top: 20px;
+        }
+
+        .manual-input-box textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--uwp-gray);
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-button {
+            background-color: var(--uwp-purple);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: #5a2a7a;
+        }
+
+        .combined-text-info {
+            background-color: #f0f7ff;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 14px;
+            color: var(--uwp-blue);
+            border-left: 3px solid var(--uwp-blue);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Biologist's Eye: Visual Literacy Tool</h1>
+            <p class="subtitle">From observation to narration - training the scientific eye</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Step 1: Metacognitive Observation -->
+            <div class="section">
+                <h2 class="section-title">1. Metacognitive Observation</h2>
+                <div class="prompt-box">
+                    <h3>Your Task</h3>
+                    <p>Your task is to turn <a href="images/polymers.jpg">this picture</a> into words. Describe what you think is happening and why it matters, in whatever way makes sense to you.</p>
+                    
+                    <h3>Before You Begin</h3>
+                    <p>Take a moment to look at the image without trying to explain it. There is no single correct starting point.</p>
+                    
+                    <p>If it helps you prepare:</p>
+                    <ul>
+                        <li>Write a few words or short phrases that come to mind.</li>
+                        <li>Write what feels familiar, unfamiliar or confusing.</li>
+                        <li>Say out loud what you notice first, even if it feels incomplete.</li>
+                        <li>Sketch or trace small parts of the image.</li>
+                        <li>Write questions you would ask about the image.</li>
+                    </ul>
+                    
+                    <h3>How to Proceed</h3>
+                    <ul>
+                        <li>Either <strong>type</strong> a short explanation or <strong>say it out loud</strong> as if teaching someone else.</li>
+                        <li>Describe what changes, what stays the same, and why those differences matter.</li>
+                        <li>Focus on how structure relates to function rather than memorizing names or labels.</li>
+                    </ul>
+                    
+                    <h3>Why This Exercise Matters</h3>
+                    <p>Turning an image into your own words forces you to organize, connect, and explain ideas. This increases your ability to store the information long-term and retrieve it later in new contexts.</p>
+                    <p>If you can clearly explain this image without relying on labels, you understand the biology behind it.</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Image for Analysis -->
+            <div class="section">
+                <h2 class="section-title">2. Image for Analysis</h2>
+                <div class="image-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Starch_granules_in_potato_cells.jpg/800px-Starch_granules_in_potato_cells.jpg"
+                        alt="Storage structures (plastids) containing starch granules in a potato tuber cell"
+                        class="image-display">
+                    
+                    <div class="recorder-box">
+                        <h3>Recording Controls</h3>
+                        <p class="instructions">Use these controls to record your narrative. You can pause, stop, and resume without losing your work.</p>
+                        
+                        <div class="control-buttons">
+                            <button id="recordButton" class="control-button record-button">
+                                <span id="micIcon">🎤</span> <span id="recordText">Start Recording</span>
+                            </button>
+                            <button id="pauseButton" class="control-button pause-button" style="display:none;">
+                                <span>⏸️</span> Pause
+                            </button>
+                            <button id="stopButton" class="control-button stop-button" style="display:none;">
+                                <span>⏹️</span> Stop
+                            </button>
+                            <button id="resetButton" class="control-button reset-button">
+                                <span>🔄</span> Reset
+                            </button>
+                        </div>
+                        
+                        <div id="statusIndicator" class="status-indicator" style="display:none;">
+                            <!-- Status will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Your Narrative -->
+            <div class="section">
+                <h2 class="section-title">3. Your Narrative</h2>
+                <div id="transcriptBox" class="transcript-box">
+                    Your transcript will appear here...
+                </div>
+                
+                <div class="manual-input-box">
+                    <p class="instructions">Alternative: Type your narrative directly in the box below. Or combine with your verbal narrative - both will be analyzed together.</p>
+                    <textarea id="manualInput" placeholder="Type your narrative here... You can also use the recording controls above. Both text and verbal input will be combined for analysis." rows="6"></textarea>
+                    <button id="submitText" class="submit-button">
+                        Submit Text Analysis (Combines typed and spoken text)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Analysis & Biological Terminology -->
+            <div class="section">
+                <h2 class="section-title">4. Analysis & Biological Terminology</h2>
+                <div id="combinedTextInfo" class="combined-text-info" style="display:none;">
+                    <!-- Info about combined text will appear here -->
+                </div>
+                
+                <div id="analysisResult">
+                    <p>After you submit your narrative, the analysis will appear here with:</p>
+                    <ul>
+                        <li><span class="highlight-green">Green highlight + underline</span>: Key biological terms that match the example analysis</li>
+                        <li><span class="highlight-amber">Amber highlight</span>: Additional biological terms not in the example</li>
+                    </ul>
+                </div>
+
+                <div id="highlightedText" class="transcript-box" style="display:none;">
+                    <!-- Highlighted text will appear here -->
+                </div>
+
+                <div id="scoreDisplay" style="display:none; margin-top: 20px;">
+                    <div class="score-display">
+                        <span id="scoreValue">0</span>
+                        <div class="score-label">Biological Terms</div>
+                    </div>
+                    <p>This objective metric counts the number of precise biological terms in your narrative.</p>
+                    <p><strong>Scoring:</strong> Each unique biological term concept counts as 1 point (variations of the same term are grouped).</p>
+                </div>
+            </div>
+
+            <!-- Step 5: Key Biological Terms You Missed -->
+            <div class="section">
+                <h2 class="section-title">5. Key Biological Terms You Missed</h2>
+                <div id="glossaryBox" class="glossary-box" style="display:none;">
+                    <!-- Glossary will appear here -->
+                </div>
+            </div>
+
+            <!-- Step 6: Multiple Choice Questions -->
+            <div class="section">
+                <h2 class="section-title">6. Multiple Choice Questions</h2>
+                <p class="instructions">Test your understanding with these questions based on the image showing starch, glycogen, and cellulose polysaccharides.</p>
+                
+                <div id="questionsContainer">
+                    <!-- Questions will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>BIOS101 2026 Biologist's Eye: Visual Literacy Tool | Designed for use in scientific observation training</p>
+        </footer>
+    </div>
+
+    <script>
+        // Biological terms grouped by concept to eliminate redundancy
+        // Each group represents a single biological concept with multiple variations
+        const termGroups = [
+            {
+                baseTerm: "plastids",
+                variations: ["plastids", "plastid", "plastic"]
+            },
+            {
+                baseTerm: "starch",
+                variations: ["starch", "starchy"]
+            },
+            {
+                baseTerm: "granule",
+                variations: ["granule", "granules", "grain", "grains", "granular"]
+            },
+            {
+                baseTerm: "potato tuber",
+                variations: ["potato", "tuber", "potato tuber", "potatoes"]
+            },
+            {
+                baseTerm: "cell",
+                variations: ["cell", "cells", "cellular"]
+            },
+            {
+                baseTerm: "glucose",
+                variations: ["glucose", "glucos", "glucoses"]
+            },
+            {
+                baseTerm: "monomer",
+                variations: ["monomer", "monomers", "monomeric"]
+            },
+            {
+                baseTerm: "polymer",
+                variations: ["polymer", "polymers", "polymeric"]
+            },
+            {
+                baseTerm: "molecule",
+                variations: ["molecule", "molecules", "molecular"]
+            },
+            {
+                baseTerm: "tissue",
+                variations: ["tissue", "tissues"]
+            },
+            {
+                baseTerm: "organelle",
+                variations: ["organelle", "organelles", "organels", "organells"]
+            },
+            {
+                baseTerm: "alpha glucose",
+                variations: ["alpha glucose", "alpha-glucose", "a-glucose", "alfa glucose", "alpha d glucose", "α glucose"]
+            },
+            {
+                baseTerm: "beta glucose",
+                variations: ["beta glucose", "beta-glucose", "b-glucose", "beta d glucose", "β glucose"]
+            },
+            {
+                baseTerm: "monosaccharide",
+                variations: ["monosaccharide", "monosacharide", "simple sugar", "single sugar"]
+            },
+            {
+                baseTerm: "disaccharide",
+                variations: ["disaccharide", "dissaccharide", "double sugar", "two sugars"]
+            },
+            {
+                baseTerm: "amylose",
+                variations: ["amylose", "amilose", "amyloze", "amylose chain"]
+            },
+            {
+                baseTerm: "amylopectin",
+                variations: ["amylopectin", "amylo-pectin", "amilopectin", "amylopectin branch"]
+            },
+            {
+                baseTerm: "unbranched",
+                variations: ["unbranched", "non-branched", "linear", "straight chain", "not branched"]
+            },
+            {
+                baseTerm: "branched",
+                variations: ["branched", "somewhat branched", "branching", "branches", "branch points"]
+            },
+            {
+                baseTerm: "glycogen",
+                variations: ["glycogen", "glicogen", "glychogen", "animal starch"]
+            },
+            {
+                baseTerm: "extensively branched",
+                variations: ["extensively branched", "highly branched", "heavily branched", "many branches", "dense branching"]
+            },
+            {
+                baseTerm: "muscle tissue",
+                variations: ["muscle", "muscle tissue", "skeletal muscle", "muscle cell", "muscles"]
+            },
+            {
+                baseTerm: "storage",
+                variations: ["storage", "store", "storing", "reserve", "energy storage", "stored"]
+            },
+            {
+                baseTerm: "cell wall",
+                variations: ["cell wall", "plant cell wall", "cellular wall"]
+            },
+            {
+                baseTerm: "cellulose",
+                variations: ["cellulose", "celulose", "celluloze"]
+            },
+            {
+                baseTerm: "microfibril",
+                variations: ["microfibril", "microfibrils", "micro-fibrils", "cellulose microfibrils", "fibrils"]
+            },
+            {
+                baseTerm: "glycosidic linkage",
+                variations: ["glycosidic linkage", "glycosidic bond", "glucosidic bond", "glycosidic link", "glycosidic"]
+            },
+            {
+                baseTerm: "1-4 glycosidic",
+                variations: ["1-4 glycosidic", "1,4-glycosidic", "1-4 linkage", "1-4 bond", "alpha 1-4", "α1-4"]
+            },
+            {
+                baseTerm: "hydrogen bonding",
+                variations: ["hydrogen bonding", "hydrogen bonds", "h-bonds", "h-bonding", "hydrogen bond"]
+            },
+            {
+                baseTerm: "hydrolysis",
+                variations: ["hydrolysis", "hydrolisis", "hydrolyze", "hydrolyses"]
+            },
+            {
+                baseTerm: "dehydration synthesis",
+                variations: ["dehydration", "condensation", "dehydration synthesis", "condensation reaction"]
+            },
+            {
+                baseTerm: "parenchyma",
+                variations: ["parenchyma", "perenchyma", "parenchymal"]
+            }
+        ];
+
+        // Additional biological concepts that might be used
+        const additionalTermGroups = [
+            {
+                baseTerm: "chloroplast",
+                variations: ["chloroplast", "chloroplasts"]
+            },
+            {
+                baseTerm: "mitochondria",
+                variations: ["mitochondria", "mitochondrion", "mitochondrial"]
+            },
+            {
+                baseTerm: "enzyme",
+                variations: ["enzyme", "enzymes", "enzymatic"]
+            },
+            {
+                baseTerm: "protein",
+                variations: ["protein", "proteins"]
+            },
+            {
+                baseTerm: "carbohydrate",
+                variations: ["carbohydrate", "carbohydrates", "carbs"]
+            },
+            {
+                baseTerm: "photosynthesis",
+                variations: ["photosynthesis", "photosynthetic"]
+            },
+            {
+                baseTerm: "respiration",
+                variations: ["respiration", "respiratory", "cellular respiration"]
+            }
+        ];
+
+        // Multiple Choice Questions Data
+        const questions = [
+            {
+                question: "What structural difference between amylose and cellulose accounts for their drastically different physical properties and biological functions?",
+                options: [
+                    "Amylose contains α-1,4-glycosidic bonds forming helical structures, while cellulose contains β-1,4-glycosidic bonds forming linear chains that hydrogen-bond into rigid microfibrils.",
+                    "Amylose is composed of α-glucose monomers while cellulose is composed of β-glucose monomers, but both form identical glycosidic linkages.",
+                    "Amylose forms branched structures with α-1,6 bonds at branch points, while cellulose is completely unbranched.",
+                    "Amylose is stored in plastids while cellulose is secreted outside cells, but both polymers have identical molecular structures.",
+                    "Amylose contains alternating α and β glucose units, while cellulose contains only β-glucose in a branched configuration."
+                ],
+                correct: 0,
+                explanation: "The image clearly shows that amylose (starch) forms a helical structure due to α-1,4-glycosidic bonds between α-glucose monomers, making it compact and suitable for energy storage in amyloplasts. In contrast, cellulose contains β-1,4-glycosidic bonds between β-glucose units, which flip every other glucose 180°, creating linear chains that associate via hydrogen bonds into rigid microfibrils for structural support in plant cell walls."
+            },
+            {
+                question: "A student examines the image showing starch granules in potato tuber cells and glycogen granules in muscle tissue. Which statement accurately explains the localization of these storage polysaccharides?",
+                options: [
+                    "Starch granules are stored in amyloplasts (plastids) within plant parenchyma cells, while glycogen granules are dispersed in the cytoplasm of animal muscle tissue.",
+                    "Both starch and glycogen are stored in mitochondria because they are the sites of cellular respiration.",
+                    "Starch is stored in the cell wall of plant cells, while glycogen is stored in lysosomes of animal cells.",
+                    "Starch granules are found free-floating in the plant cell cytoplasm, while glycogen is stored in specialized organelles called glycosomes.",
+                    "Both starch and glycogen are stored extracellularly in the spaces between cells for easy mobilization."
+                ],
+                correct: 0,
+                explanation: "The image explicitly labels 'Storage structures (plastids) containing starch granules in a potato tuber cell' and 'Glycogen granules stored in muscle tissue.' Starch is synthesized and stored within amyloplasts (a type of plastid) in plant storage tissues like potato tubers (parenchyma cells). Glycogen, the animal equivalent, is stored as granules in the cytoplasm of liver and muscle cells—not within membrane-bound organelles."
+            },
+            {
+                question: "Comparing the molecular structures shown in the image, which polymer exhibits the MOST extensive branching, and what functional advantage does this provide?",
+                options: [
+                    "Cellulose; extensive branching increases surface area for hydrogen bonding in microfibrils.",
+                    "Amylose; branching occurs every 10-15 glucose units, creating compact storage.",
+                    "Glycogen; extensive branching (α-1,6 bonds every 8-12 glucose units) creates many chain ends for rapid glucose mobilization.",
+                    "Amylopectin; it has more branches than glycogen, allowing faster energy release in plants.",
+                    "All three polymers have identical branching patterns because they're all made of glucose monomers."
+                ],
+                correct: 2,
+                explanation: "The image clearly labels glycogen as 'extensively branched' with visible branch points. Glycogen has α-1,6-glycosidic bonds approximately every 8-12 glucose residues, creating a highly branched structure. This maximizes the number of non-reducing ends where enzymes (glycogen phosphorylase) can simultaneously cleave glucose units, enabling rapid energy mobilization in muscle tissue during contraction."
+            },
+            {
+                question: "During starch synthesis in potato amyloplasts, glucose monomers are joined through which reaction, and what is required to break these bonds during digestion?",
+                options: [
+                    "Dehydration synthesis (condensation) forms glycosidic bonds by removing H₂O; hydrolysis breaks these bonds by adding H₂O.",
+                    "Hydrolysis forms glycosidic bonds by adding H₂O; dehydration breaks these bonds by removing H₂O.",
+                    "Phosphorylation forms glycosidic bonds; dephosphorylation breaks them during digestion.",
+                    "Oxidation forms glycosidic bonds; reduction breaks them during cellular respiration.",
+                    "Dehydration synthesis forms hydrogen bonds between cellulose molecules; hydrolysis breaks these hydrogen bonds."
+                ],
+                correct: 0,
+                explanation: "Polysaccharide synthesis (starch, glycogen, cellulose) occurs via dehydration synthesis: two monosaccharides approach, a hydroxyl (-OH) from one and a hydrogen (-H) from the other are removed to form H₂O, creating a glycosidic bond (C-O-C). The image shows glucose monomers linked in chains—each linkage required removal of H₂O. Digestion reverses this: hydrolysis adds H₂O back across the glycosidic bond, breaking it into monosaccharides."
+            },
+            {
+                question: "The image shows cellulose microfibrils with 'hydrogen bonds between parallel cellulose molecules hold them together.' Why are hydrogen bonds critical for cellulose's structural role in plant cell walls, but NOT emphasized in starch's storage function?",
+                options: [
+                    "Cellulose's linear β-1,4-linked chains align parallel, maximizing H-bonding between -OH groups on adjacent chains, creating tensile strength; starch's helical α-1,4-linked chains coil compactly, prioritizing dense packing over intermolecular bonding.",
+                    "Hydrogen bonds in cellulose are covalent and stronger than glycosidic bonds, while starch has no hydrogen bonds because it's stored in water-free environments.",
+                    "Cellulose forms hydrogen bonds because it's in cell walls exposed to water, while starch is stored dry in amyloplasts where H-bonding cannot occur.",
+                    "Hydrogen bonds between cellulose molecules are identical to those in starch, but starch is digested too quickly for these bonds to matter functionally.",
+                    "Cellulose molecules form hydrogen bonds with lignin in cell walls, while starch molecules form hydrogen bonds only with glycogen during storage."
+                ],
+                correct: 0,
+                explanation: "The image depicts cellulose microfibrils as bundles of ~80 linear cellulose molecules held together by extensive hydrogen bonding. The β-1,4-glycosidic bonds force adjacent glucose units to flip 180°, creating fully extended, linear chains with -OH groups projecting outward for maximal H-bonding with neighboring chains. This creates rigid, insoluble microfibrils that resist tension—essential for cell wall strength."
+            },
+            {
+                question: "If the enzyme amylase hydrolyzes starch into disaccharide units during digestion, which statement correctly describes the relationship between monomers, disaccharides, and polymers in this process?",
+                options: [
+                    "Starch is a polymer of glucose monomers; amylase breaks it into maltose disaccharides (two glucose units linked by α-1,4-bonds), which maltase then hydrolyzes into glucose monomers.",
+                    "Starch is a disaccharide of amylose and amylopectin monomers; amylase converts it into glucose polymers.",
+                    "Glucose is a polymer made of starch monomers; amylase breaks polymers into monosaccharides directly.",
+                    "Maltose is a polymer of glucose, starch is a monomer, and amylase converts monomers into polymers.",
+                    "Amylose and amylopectin are disaccharides that amylase combines into the glucose polymer called starch."
+                ],
+                correct: 0,
+                explanation: "The image shows starch (amylose) as a polymer—long chains of glucose monomers (single hexagonal rings) connected by glycosidic bonds. A monomer is the building block (glucose), a polymer is many monomers linked (starch = 100s-1000s of glucose units), and a disaccharide is two monomers (maltose = 2 glucose). Amylase hydrolyzes starch by breaking internal α-1,4-glycosidic bonds, producing maltose."
+            },
+            {
+                question: "A researcher isolates starch-containing amyloplasts from potato tuber tissue. Which combination of tissue type, cell type, and organelle classification is correct?",
+                options: [
+                    "Parenchyma tissue → plant storage cells → amyloplasts (specialized plastids lacking chlorophyll).",
+                    "Muscle tissue → animal storage cells → amyloplasts (mitochondria-like organelles).",
+                    "Vascular tissue → xylem cells → amyloplasts (cell wall components).",
+                    "Parenchyma tissue → chloroplast-containing cells → amyloplasts (photosynthetic organelles).",
+                    "Connective tissue → glycogen-storing cells → amyloplasts (modified lysosomes)."
+                ],
+                correct: 0,
+                explanation: "The image labels the source as 'potato tuber cell' and shows 'storage structures (plastids) containing starch granules.' Potato tubers are storage organs composed of parenchyma tissue—simple plant tissue with large vacuoles and plastids specialized for storage. Amyloplasts are a type of plastid (like chloroplasts) but lack chlorophyll and specialize in starch synthesis/storage."
+            },
+            {
+                question: "A biologist compares the properties of cellulose in plant cell walls and starch in potato amyloplasts. Which pairing of properties correctly distinguishes structural from storage polysaccharides?",
+                options: [
+                    "Cellulose: unbranched β-1,4-glucose polymer, insoluble, forms H-bonded microfibrils, NOT digestible by most animals → provides structural support. Starch: α-1,4-linked (amylose) or α-1,4 + α-1,6-branched (amylopectin), soluble/swells in water, readily hydrolyzed → stores energy.",
+                    "Cellulose: branched polymer, stored in amyloplasts, easily digested. Starch: unbranched polymer, forms cell walls, indigestible.",
+                    "Cellulose: stores energy in chloroplasts. Starch: provides structural rigidity in cell walls.",
+                    "Both cellulose and starch have identical structures and functions; the only difference is their location in plant vs. animal cells.",
+                    "Cellulose: composed of fructose monomers, found in muscle tissue. Starch: composed of galactose monomers, found in cell walls."
+                ],
+                correct: 0,
+                explanation: "The image clearly distinguishes these polymers: cellulose (bottom panel) shows unbranched chains forming microfibrils with extensive H-bonding in cell walls—this rigidity provides structural support. Most animals lack cellulase enzymes to break β-1,4-bonds. Starch (top panel) shows amylose (unbranched helix) and amylopectin (branched) stored in amyloplasts; α-1,4/α-1,6-bonds are readily hydrolyzed by amylases for energy release."
+            },
+            {
+                question: "The image depicts cellulose microfibrils as 'bundles of about 80 cellulose molecules' in plant cell walls. What level of structural organization does a microfibril represent, and what forces maintain this organization?",
+                options: [
+                    "Quaternary structure; microfibrils are supramolecular assemblies of multiple cellulose polymers held together by hydrogen bonds between hydroxyl groups on adjacent chains.",
+                    "Primary structure; microfibrils are single cellulose molecules folded by peptide bonds.",
+                    "Secondary structure; microfibrils are α-helices of cellulose stabilized by covalent disulfide bonds.",
+                    "Tertiary structure; microfibrils are individual cellulose chains folded by hydrophobic interactions.",
+                    "Primary structure; microfibrils are monomeric glucose units connected by glycosidic bonds."
+                ],
+                correct: 0,
+                explanation: "Structural biology defines protein organization as: primary (sequence), secondary (local folding like α-helices), tertiary (3D fold of one chain), quaternary (multiple chains associating). This terminology extends to polysaccharides: a single cellulose chain is analogous to 'primary' (glucose sequence + glycosidic bonds), but microfibrils represent ~80 parallel cellulose chains held together by inter-chain hydrogen bonds—analogous to quaternary structure (multi-chain assembly)."
+            },
+            {
+                question: "A runner's muscles mobilize glycogen during a sprint, while a potato tuber cell maintains its starch reserves. Why is glycogen more extensively branched than amylopectin in starch, despite both serving energy storage functions?",
+                options: [
+                    "Glycogen's extensive branching (α-1,6 bonds every 8-12 residues) creates more non-reducing ends for simultaneous enzyme attack, enabling rapid glucose release during high-intensity muscle activity; starch's less frequent branching (every 20-25 residues) suits slower, sustained energy release in plants.",
+                    "Glycogen is branched because animals move and need fast energy, while plants don't move so starch can be unbranched like cellulose.",
+                    "Glycogen and amylopectin have identical branching patterns; the difference in energy release is due to different enzymes, not structure.",
+                    "Glycogen stores more energy per gram than starch because branching increases the number of glucose molecules per unit volume.",
+                    "Starch is more branched than glycogen, allowing plants to mobilize energy faster than animals during photosynthesis."
+                ],
+                correct: 0,
+                explanation: "The image labels glycogen as 'extensively branched,' showing dense branching compared to amylose (unbranched) and amylopectin (somewhat branched). The functional reason is kinetic: during muscle contraction, ATP demand spikes, requiring rapid glucose release. Glycogen phosphorylase and debranching enzymes work simultaneously on many branch termini (non-reducing ends). More branches = more enzyme binding sites = faster mobilization."
+            }
+        ];
+
+        // DOM Elements
+        const recordButton = document.getElementById('recordButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const stopButton = document.getElementById('stopButton');
+        const resetButton = document.getElementById('resetButton');
+        const micIcon = document.getElementById('micIcon');
+        const recordText = document.getElementById('recordText');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const transcriptBox = document.getElementById('transcriptBox');
+        const manualInput = document.getElementById('manualInput');
+        const submitText = document.getElementById('submitText');
+        const analysisResult = document.getElementById('analysisResult');
+        const highlightedText = document.getElementById('highlightedText');
+        const glossaryBox = document.getElementById('glossaryBox');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const scoreValue = document.getElementById('scoreValue');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const combinedTextInfo = document.getElementById('combinedTextInfo');
+
+        // Speech Recognition
+        let recognition;
+        let isRecording = false;
+        let isPaused = false;
+        let finalTranscript = '';
+        let interimTranscript = '';
+
+        // Initialize speech recognition
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            if (!SpeechRecognition) {
+                alert("Speech recognition is not supported in this browser. Please use Chrome or Edge.");
+                return;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function () {
+                isRecording = true;
+                isPaused = false;
+                recordButton.classList.add('recording');
+                micIcon.textContent = '🎤';
+                recordText.textContent = 'Recording...';
+                pauseButton.style.display = 'flex';
+                stopButton.style.display = 'flex';
+                statusIndicator.style.display = 'block';
+                statusIndicator.textContent = "Listening... Speak your observations now.";
+                statusIndicator.className = "status-indicator status-listening";
+            };
+
+            recognition.onresult = function (event) {
+                interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                // Display the transcript
+                transcriptBox.textContent = finalTranscript + interimTranscript;
+            };
+
+            recognition.onerror = function (event) {
+                console.error('Speech recognition error', event.error);
+                statusIndicator.textContent = "Error: " + event.error;
+                statusIndicator.className = "status-indicator status-processing";
+            };
+
+            recognition.onend = function () {
+                if (!isPaused) {
+                    stopRecording();
+                }
+            };
+        }
+
+        function startRecording() {
+            if (!isRecording && recognition) {
+                if (finalTranscript === '') {
+                    transcriptBox.textContent = '';
+                }
+                recognition.start();
+            } else if (isPaused && recognition) {
+                isPaused = false;
+                recognition.start();
+                pauseButton.style.display = 'flex';
+                statusIndicator.style.display = 'block';
+                statusIndicator.textContent = "Resumed recording...";
+                statusIndicator.className = "status-indicator status-listening";
+            }
+        }
+
+        function pauseRecording() {
+            if (isRecording && recognition && !isPaused) {
+                isPaused = true;
+                recognition.stop();
+                pauseButton.style.display = 'none';
+                statusIndicator.style.display = 'block';
+                statusIndicator.textContent = "Recording paused. Click 'Start Recording' to resume.";
+                statusIndicator.className = "status-indicator status-paused";
+                recordText.textContent = 'Resume Recording';
+                recordButton.classList.remove('recording');
+            }
+        }
+
+        function stopRecording() {
+            if (isRecording && recognition) {
+                recognition.stop();
+                isRecording = false;
+                isPaused = false;
+                recordButton.classList.remove('recording');
+                micIcon.textContent = '🎤';
+                recordText.textContent = 'Start Recording';
+                pauseButton.style.display = 'none';
+                stopButton.style.display = 'none';
+                statusIndicator.style.display = 'none';
+            }
+        }
+
+        function resetRecording() {
+            if (isRecording && recognition) {
+                recognition.stop();
+            }
+            isRecording = false;
+            isPaused = false;
+            finalTranscript = '';
+            interimTranscript = '';
+            transcriptBox.textContent = 'Your transcript will appear here...';
+            manualInput.value = '';
+            recordButton.classList.remove('recording');
+            micIcon.textContent = '🎤';
+            recordText.textContent = 'Start Recording';
+            pauseButton.style.display = 'none';
+            stopButton.style.display = 'none';
+            statusIndicator.style.display = 'none';
+            
+            // Reset analysis display
+            analysisResult.innerHTML = `<p>After you submit your narrative, the analysis will appear here...</p>`;
+            highlightedText.style.display = 'none';
+            glossaryBox.style.display = 'none';
+            scoreDisplay.style.display = 'none';
+            combinedTextInfo.style.display = 'none';
+        }
+
+        // Get combined text from both voice recording and manual input
+        function getCombinedText() {
+            const voiceText = finalTranscript.trim();
+            const typedText = manualInput.value.trim();
+            
+            let combined = '';
+            let sources = [];
+            
+            if (voiceText && typedText) {
+                combined = `${voiceText} ${typedText}`;
+                sources = ['voice recording', 'typed input'];
+            } else if (voiceText) {
+                combined = voiceText;
+                sources = ['voice recording'];
+            } else if (typedText) {
+                combined = typedText;
+                sources = ['typed input'];
+            }
+            
+            return {
+                text: combined,
+                sources: sources
+            };
+        }
+
+        // Process transcript/text input
+        function processTranscript() {
+            const combined = getCombinedText();
+            
+            if (combined.text.length === 0) {
+                alert("Please provide a narrative to analyze. You can either speak it (using the microphone) or type it in the text box.");
+                return;
+            }
+
+            // Display info about combined text
+            if (combined.sources.length > 1) {
+                combinedTextInfo.innerHTML = `<strong>Note:</strong> Your analysis combines text from ${combined.sources.join(' and ')}.`;
+                combinedTextInfo.style.display = 'block';
+            } else if (combined.sources.length === 1) {
+                combinedTextInfo.innerHTML = `<strong>Note:</strong> Your analysis uses text from ${combined.sources[0]}.`;
+                combinedTextInfo.style.display = 'block';
+            }
+
+            // Display the raw transcript
+            transcriptBox.textContent = combined.text;
+
+            // Analyze the text
+            analyzeText(combined.text);
+        }
+
+        // Check if text contains any variation of a term
+        function containsTermVariation(text, variations) {
+            const textLower = text.toLowerCase();
+            
+            for (const variation of variations) {
+                // Escape special regex characters in the variation
+                const escapedVariation = variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                // Use word boundary regex to match whole words
+                const regex = new RegExp(`\\b${escapedVariation}\\b`, 'i');
+                if (regex.test(textLower)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Find all variations of a term in text
+        function findTermVariations(text, variations) {
+            const foundVariations = [];
+            const textLower = text.toLowerCase();
+            
+            for (const variation of variations) {
+                const escapedVariation = variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`\\b${escapedVariation}\\b`, 'gi');
+                const matches = text.match(regex);
+                
+                if (matches) {
+                    foundVariations.push({
+                        variation: variation,
+                        matches: matches
+                    });
+                }
+            }
+            
+            return foundVariations;
+        }
+
+        // Analyze text for biological terms using grouped concepts
+        function analyzeText(text) {
+            const textLower = text.toLowerCase();
+            
+            // Track found and missed concepts
+            const foundConcepts = [];
+            const missedConcepts = [];
+            
+            // Track found variations for highlighting
+            const foundVariationsMap = new Map();
+            
+            // Check each concept group
+            termGroups.forEach(group => {
+                const foundVariations = findTermVariations(text, group.variations);
+                
+                if (foundVariations.length > 0) {
+                    foundConcepts.push({
+                        baseTerm: group.baseTerm,
+                        variations: foundVariations
+                    });
+                    
+                    // Store variations for highlighting
+                    foundVariations.forEach(fv => {
+                        fv.matches.forEach(match => {
+                            if (!foundVariationsMap.has(match.toLowerCase())) {
+                                foundVariationsMap.set(match.toLowerCase(), {
+                                    baseTerm: group.baseTerm,
+                                    variation: fv.variation
+                                });
+                            }
+                        });
+                    });
+                } else {
+                    missedConcepts.push(group.baseTerm);
+                }
+            });
+            
+            // Check additional concepts
+            const foundAdditionalConcepts = [];
+            additionalTermGroups.forEach(group => {
+                const foundVariations = findTermVariations(text, group.variations);
+                
+                if (foundVariations.length > 0) {
+                    foundAdditionalConcepts.push({
+                        baseTerm: group.baseTerm,
+                        variations: foundVariations
+                    });
+                    
+                    // Store variations for highlighting
+                    foundVariations.forEach(fv => {
+                        fv.matches.forEach(match => {
+                            if (!foundVariationsMap.has(match.toLowerCase())) {
+                                foundVariationsMap.set(match.toLowerCase(), {
+                                    baseTerm: group.baseTerm,
+                                    variation: fv.variation,
+                                    isAdditional: true
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+            
+            // Create highlighted text
+            let highlightedHTML = text;
+            
+            // Sort variations by length (longer first) to avoid partial matches
+            const sortedVariations = Array.from(foundVariationsMap.entries())
+                .sort((a, b) => b[0].length - a[0].length);
+            
+            // First highlight additional terms (amber)
+            sortedVariations.forEach(([matchedText, data]) => {
+                if (data.isAdditional) {
+                    const escapedText = matchedText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\b${escapedText}\\b`, 'gi');
+                    highlightedHTML = highlightedHTML.replace(regex, 
+                        `<span class="highlight-amber">$&</span>`);
+                }
+            });
+            
+            // Then highlight main concepts (green) - will override amber if overlap
+            sortedVariations.forEach(([matchedText, data]) => {
+                if (!data.isAdditional) {
+                    const escapedText = matchedText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\b${escapedText}\\b`, 'gi');
+                    highlightedHTML = highlightedHTML.replace(regex, 
+                        `<span class="highlight-green">$&</span>`);
+                }
+            });
+            
+            // Display highlighted text
+            highlightedText.innerHTML = highlightedHTML;
+            highlightedText.style.display = 'block';
+
+            // Display glossary of missed concepts
+            if (missedConcepts.length > 0) {
+                let glossaryHTML = `<h3 class="glossary-title">Key Biological Concepts You Missed</h3>`;
+                glossaryHTML += `<p>These biological concepts were in the example analysis but not in your narrative:</p>`;
+                glossaryHTML += `<div style="column-count: 2; margin-top: 10px;">`;
+
+                missedConcepts.forEach(concept => {
+                    glossaryHTML += `<div class="glossary-item" style="color: var(--uwp-purple);">• ${concept}</div>`;
+                });
+
+                glossaryHTML += `</div>`;
+                glossaryBox.innerHTML = glossaryHTML;
+                glossaryBox.style.display = 'block';
+            } else {
+                glossaryBox.innerHTML = `<h3 class="glossary-title">Excellent!</h3><p>You included all key biological concepts from the example analysis.</p>`;
+                glossaryBox.style.display = 'block';
+            }
+
+            // Calculate score - count unique concepts, not individual words
+            const totalConcepts = foundConcepts.length + foundAdditionalConcepts.length;
+            scoreValue.textContent = totalConcepts;
+
+            // Update analysis result
+            analysisResult.innerHTML = `
+                <p><strong>Analysis Complete:</strong></p>
+                <p>Found <span class="highlight-green">${foundConcepts.length} key biological concepts</span> from the example analysis.</p>
+                <p>Found <span class="highlight-amber">${foundAdditionalConcepts.length} additional biological concepts</span>.</p>
+                <p><em>Note: Variations of the same concept (e.g., "granule" and "granules") are grouped together.</em></p>
+            `;
+
+            // Show score display
+            scoreDisplay.style.display = 'block';
+        }
+
+        // Create multiple choice questions
+        function createQuestions() {
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                
+                let optionsHTML = '';
+                q.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <div class="option" data-question="${index}" data-option="${optIndex}">
+                            ${String.fromCharCode(65 + optIndex)}) ${option}
+                        </div>
+                    `;
+                });
+                
+                questionDiv.innerHTML = `
+                    <div class="question-title">Question ${index + 1}: ${q.question}</div>
+                    ${optionsHTML}
+                    <div class="explanation" id="explanation-${index}">
+                        <strong>Explanation:</strong> ${q.explanation}
+                    </div>
+                    <button class="check-answer" data-question="${index}">Check Answer</button>
+                `;
+                
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Check answer for a question
+        function checkAnswer(questionIndex) {
+            const options = document.querySelectorAll(`.option[data-question="${questionIndex}"]`);
+            const explanation = document.getElementById(`explanation-${questionIndex}`);
+            const correctIndex = questions[questionIndex].correct;
+            
+            options.forEach((option, index) => {
+                option.classList.remove('correct', 'incorrect');
+                if (index === correctIndex) {
+                    option.classList.add('correct');
+                } else {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            explanation.style.display = 'block';
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize speech recognition
+            initSpeechRecognition();
+            
+            // Create questions
+            createQuestions();
+
+            // Record button
+            recordButton.addEventListener('click', startRecording);
+
+            // Pause button
+            pauseButton.addEventListener('click', pauseRecording);
+
+            // Stop button
+            stopButton.addEventListener('click', stopRecording);
+
+            // Reset button
+            resetButton.addEventListener('click', resetRecording);
+
+            // Submit text button - now combines both inputs
+            submitText.addEventListener('click', processTranscript);
+
+            // Allow Enter key in textarea (but with Shift+Enter for new line)
+            manualInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    processTranscript();
+                }
+            });
+
+            // Check answer buttons
+            questionsContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('check-answer')) {
+                    const questionIndex = parseInt(e.target.getAttribute('data-question'));
+                    checkAnswer(questionIndex);
+                }
+                
+                if (e.target.classList.contains('option')) {
+                    const questionIndex = parseInt(e.target.getAttribute('data-question'));
+                    const optionIndex = parseInt(e.target.getAttribute('data-option'));
+                    
+                    // Just for visual feedback when clicking
+                    const options = document.querySelectorAll(`.option[data-question="${questionIndex}"]`);
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
