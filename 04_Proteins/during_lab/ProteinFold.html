@@ -1,1 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protein Structure Interactive Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(to bottom, #eff6ff, #ffffff);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .level-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .tab-btn:not(.active) {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #d1d5db;
+        }
+
+        .description {
+            color: #4b5563;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .visualization-box {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #canvas-container {
+            background: #f1f5f9;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            min-height: 400px;
+        }
+
+        .controls-box {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-mute {
+            background: #d1d5db;
+            color: #374151;
+        }
+
+        .btn-mute:hover {
+            background: #9ca3af;
+        }
+
+        .repeat-counter {
+            text-align: right;
+        }
+
+        .repeat-counter .label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .repeat-counter .count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .speed-control {
+            margin-bottom: 1rem;
+        }
+
+        .speed-control label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .speed-control input[type="range"] {
+            width: 100%;
+        }
+
+        .speed-label {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .i-see-it-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .legend-box {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .color-box {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        .level2-content {
+            display: none;
+        }
+
+        .level2-content.active {
+            display: block;
+        }
+
+        .structure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .structure-card {
+            padding: 1.5rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .structure-card:hover {
+            border-color: #3b82f6;
+        }
+
+        .structure-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .info-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 0.5rem;
+        }
+
+        .info-box h4 {
+            font-weight: bold;
+            color: #059669;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Protein Structure: The Backbone Journey</h1>
+
+        <div class="level-tabs">
+            <button class="tab-btn active" onclick="switchLevel('1a')">Level 1a: Backbone Pattern</button>
+            <button class="tab-btn" onclick="switchLevel('1b')">Level 1b: Reactive Groups</button>
+            <button class="tab-btn" onclick="switchLevel('2')">Level 2: Secondary Structure</button>
+        </div>
+
+        <p class="description" id="description">
+            Listen to the mantra: <strong>Nitrogen → Carbon → Carbon</strong>.
+            The backbone repeats this pattern. Watch the atoms light up!
+        </p>
+
+        <div class="visualization-box">
+            <div id="canvas-container"></div>
+
+            <div class="level2-content" id="level2-content">
+                <h3>Level 2: Secondary Structure Formation</h3>
+                <p style="margin-bottom: 1.5rem;">Now that you've seen the backbone and its reactive groups, let's watch
+                    them fold!</p>
+
+                <div class="structure-grid">
+                    <div class="structure-card" id="helix-card" onclick="selectStructure('helix')">
+                        <h4>α-Helix</h4>
+                        <p>N-H (i) bonds with C=O (i+4)</p>
+                        <svg width="200" height="200" viewBox="0 0 200 200" style="margin-top: 1rem;">
+                            <ellipse cx="100" cy="50" rx="40" ry="15" fill="none" stroke="#3B82F6" stroke-width="2" />
+                            <ellipse cx="100" cy="80" rx="40" ry="15" fill="none" stroke="#3B82F6" stroke-width="2" />
+                            <ellipse cx="100" cy="110" rx="40" ry="15" fill="none" stroke="#3B82F6" stroke-width="2" />
+                            <ellipse cx="100" cy="140" rx="40" ry="15" fill="none" stroke="#3B82F6" stroke-width="2" />
+                            <line x1="70" y1="60" x2="70" y2="100" stroke="#EF4444" stroke-width="2"
+                                stroke-dasharray="5,5" />
+                            <line x1="130" y1="90" x2="130" y2="130" stroke="#EF4444" stroke-width="2"
+                                stroke-dasharray="5,5" />
+                        </svg>
+                    </div>
+
+                    <div class="structure-card" id="sheet-card" onclick="selectStructure('sheet')">
+                        <h4>β-Sheet</h4>
+                        <p>N-H bonds with C=O on adjacent strand</p>
+                        <svg width="200" height="200" viewBox="0 0 200 200" style="margin-top: 1rem;">
+                            <path d="M 40 80 Q 60 70, 80 80 Q 100 90, 120 80 Q 140 70, 160 80" fill="none"
+                                stroke="#3B82F6" stroke-width="3" />
+                            <path d="M 40 120 Q 60 130, 80 120 Q 100 110, 120 120 Q 140 130, 160 120" fill="none"
+                                stroke="#3B82F6" stroke-width="3" />
+                            <line x1="60" y1="80" x2="60" y2="120" stroke="#EF4444" stroke-width="2"
+                                stroke-dasharray="5,5" />
+                            <line x1="100" y1="85" x2="100" y2="115" stroke="#EF4444" stroke-width="2"
+                                stroke-dasharray="5,5" />
+                            <line x1="140" y1="80" x2="140" y2="120" stroke="#EF4444" stroke-width="2"
+                                stroke-dasharray="5,5" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div id="structure-info" class="hidden"></div>
+            </div>
+        </div>
+
+        <div class="controls-box" id="controls-box">
+            <div class="controls-row">
+                <div class="button-group">
+                    <button class="btn btn-primary" id="playBtn" onclick="togglePlay()">▶ Play Mantra</button>
+                    <button class="btn btn-secondary" onclick="reset()">↻ Reset</button>
+                    <button class="btn btn-mute" id="muteBtn" onclick="toggleMute()">🔊</button>
+                </div>
+                <div class="repeat-counter">
+                    <div class="label">Repeats completed</div>
+                    <div class="count" id="repeatCount">0</div>
+                </div>
+            </div>
+
+            <div class="speed-control">
+                <label>Speed</label>
+                <input type="range" min="300" max="2000" step="100" value="1000" id="speedSlider"
+                    oninput="updateSpeed()">
+                <div class="speed-label" id="speedLabel">Medium</div>
+            </div>
+
+            <button class="i-see-it-btn hidden" id="iSeeItBtn" onclick="handleISeeIt()">I See It! →</button>
+        </div>
+
+        <div class="legend-box">
+            <h3>Color Guide</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="color-box" style="background:#EF4444;"></div><span>Nitrogen (N)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background:#1F2937;"></div><span>Carbon (C)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background:#3B82F6;"></div><span>Oxygen (O)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background:#FFF;border:2px solid #9CA3AF;"></div><span>Hydrogen
+                        (H)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background:#EAB308;opacity:0.6;"></div><span>Hydrophobic R</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background:#22C55E;opacity:0.6;"></div><span>Hydrophilic R</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background:#EC4899;opacity:0.6;"></div><span>Acidic R</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background:#93C5FD;opacity:0.6;"></div><span>Basic R</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = '1a', isPlaying = false, isMuted = false, currentAtomIndex = 0, repeatCount = 0, speed = 1000, animationInterval = null;
+        const aminoAcids = [{ name: 'Ala', rGroup: 'yellow' }, { name: 'Ser', rGroup: 'green' }, { name: 'Leu', rGroup: 'yellow' }, { name: 'Glu', rGroup: 'pink' }, { name: 'Val', rGroup: 'yellow' }, { name: 'Lys', rGroup: 'lightblue' }, { name: 'Ile', rGroup: 'yellow' }, { name: 'Thr', rGroup: 'green' }, { name: 'Phe', rGroup: 'yellow' }, { name: 'Asp', rGroup: 'pink' }, { name: 'Leu', rGroup: 'yellow' }, { name: 'Ser', rGroup: 'green' }];
+        const rGroupColors = { yellow: '#EAB308', green: '#22C55E', pink: '#EC4899', lightblue: '#93C5FD' };
+
+        function speak(text) { if (isMuted || !text) return; if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = 0.9; u.pitch = 1.0; u.volume = 0.8; window.speechSynthesis.speak(u); } }
+        function playSound(freq, dur = 100) { if (isMuted) return; try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value = freq; osc.type = 'sine'; gain.gain.setValueAtTime(0.3, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur / 1000); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur / 1000); } catch (e) { } }
+
+        function renderAtom(svg, el, x, y, hl) { const c = { N: '#EF4444', C: '#1F2937', O: '#3B82F6', H: '#FFF' }; const s = el === 'H' ? 8 : 16; const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); circle.setAttribute('cx', x); circle.setAttribute('cy', y); circle.setAttribute('r', s); circle.setAttribute('fill', c[el]); circle.setAttribute('stroke', hl ? '#FCD34D' : '#64748B'); circle.setAttribute('stroke-width', hl ? '4' : '1'); if (hl) circle.style.filter = 'drop-shadow(0 0 10px #FCD34D)'; svg.appendChild(circle); if (el !== 'H') { const t = document.createElementNS('http://www.w3.org/2000/svg', 'text'); t.setAttribute('x', x); t.setAttribute('y', y + 5); t.setAttribute('text-anchor', 'middle'); t.setAttribute('fill', 'white'); t.setAttribute('font-size', '10'); t.setAttribute('font-weight', 'bold'); t.textContent = el; svg.appendChild(t); } }
+
+        function renderRGroup(svg, col, x, y) { const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 20); c.setAttribute('fill', rGroupColors[col]); c.setAttribute('opacity', '0.6'); c.setAttribute('stroke', '#64748B'); c.setAttribute('stroke-width', '1'); svg.appendChild(c); const t = document.createElementNS('http://www.w3.org/2000/svg', 'text'); t.setAttribute('x', x); t.setAttribute('y', y + 5); t.setAttribute('text-anchor', 'middle'); t.setAttribute('fill', '#1F2937'); t.setAttribute('font-size', '12'); t.setAttribute('font-weight', 'bold'); t.textContent = 'R'; svg.appendChild(t); }
+
+        function renderLine(svg, x1, y1, x2, y2) { const l = document.createElementNS('http://www.w3.org/2000/svg', 'line'); l.setAttribute('x1', x1); l.setAttribute('y1', y1); l.setAttribute('x2', x2); l.setAttribute('y2', y2); l.setAttribute('stroke', '#64748B'); l.setAttribute('stroke-width', '3'); svg.appendChild(l); }
+
+        function renderLevel1a() { 
+            const c = document.getElementById('canvas-container'); 
+            c.innerHTML = ''; 
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); 
+            svg.setAttribute('width', '100%'); 
+            svg.setAttribute('height', '400'); 
+            svg.style.minWidth = '1500px'; 
+            const baseY = 200, atomSpacing = 40; 
+            
+            aminoAcids.forEach((aa, i) => { 
+                // Each amino acid has 3 backbone atoms: N, Cα, C=O
+                const baseX = 100 + i * (atomSpacing * 3); // 3 atoms per residue
+                const si = i * 3;
+                
+                // Nitrogen (N) - red
+                renderAtom(svg, 'N', baseX, baseY, currentAtomIndex === si);
+                renderLine(svg, baseX + 16, baseY, baseX + 34, baseY);
+                
+                // Alpha Carbon (Cα) - black
+                renderAtom(svg, 'C', baseX + atomSpacing, baseY, currentAtomIndex === si + 1);
+                renderRGroup(svg, aa.rGroup, baseX + atomSpacing, baseY - 40);
+                renderLine(svg, baseX + atomSpacing, baseY - 16, baseX + atomSpacing, baseY - 20);
+                renderLine(svg, baseX + atomSpacing + 16, baseY, baseX + atomSpacing + 34, baseY);
+                
+                // Carbonyl Carbon (C=O) - black
+                renderAtom(svg, 'C', baseX + (atomSpacing * 2), baseY, currentAtomIndex === si + 2);
+                
+                // Connect to next residue if there is one
+                if (i < aminoAcids.length - 1) {
+                    renderLine(svg, baseX + (atomSpacing * 2) + 16, baseY, baseX + (atomSpacing * 3) - 4, baseY);
+                }
+            }); 
+            c.appendChild(svg); 
+        }
+
+        function renderLevel1b() { 
+            const c = document.getElementById('canvas-container'); 
+            c.innerHTML = ''; 
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); 
+            svg.setAttribute('width', '100%'); 
+            svg.setAttribute('height', '400'); 
+            svg.style.minWidth = '1500px'; 
+            const baseY = 200, atomSpacing = 40; 
+            
+            aminoAcids.forEach((aa, i) => { 
+                const baseX = 100 + i * (atomSpacing * 5); // 5 atoms per residue in level 1b
+                const si = i * 5;
+                
+                // Nitrogen (N) with Hydrogen
+                renderAtom(svg, 'N', baseX, baseY, currentAtomIndex === si);
+                renderAtom(svg, 'H', baseX, baseY - 20, currentAtomIndex === si + 1);
+                renderLine(svg, baseX, baseY - 16, baseX, baseY - 8);
+                renderLine(svg, baseX + 16, baseY, baseX + 34, baseY);
+                
+                // Alpha Carbon (Cα)
+                renderAtom(svg, 'C', baseX + atomSpacing, baseY, currentAtomIndex === si + 2);
+                renderRGroup(svg, aa.rGroup, baseX + atomSpacing, baseY + 40);
+                renderLine(svg, baseX + atomSpacing, baseY + 16, baseX + atomSpacing, baseY + 20);
+                renderLine(svg, baseX + atomSpacing + 16, baseY, baseX + atomSpacing + 34, baseY);
+                
+                // Carbonyl Carbon (C=O) with Oxygen
+                renderAtom(svg, 'C', baseX + (atomSpacing * 2), baseY, currentAtomIndex === si + 3);
+                renderAtom(svg, 'O', baseX + (atomSpacing * 2), baseY - 25, currentAtomIndex === si + 4);
+                renderLine(svg, baseX + (atomSpacing * 2), baseY - 16, baseX + (atomSpacing * 2), baseY - 9);
+                renderLine(svg, baseX + (atomSpacing * 2) + 3, baseY - 16, baseX + (atomSpacing * 2) + 3, baseY - 9);
+                
+                // Connect to next residue if there is one
+                if (i < aminoAcids.length - 1) {
+                    renderLine(svg, baseX + (atomSpacing * 2) + 16, baseY, baseX + (atomSpacing * 5) - 4, baseY);
+                }
+            }); 
+            c.appendChild(svg); 
+        }
+
+        function animate() {
+            const apr = currentLevel === '1b' ? 5 : 3; 
+            const tot = aminoAcids.length * apr; 
+            const pos = currentAtomIndex % apr; 
+            
+            if (currentLevel === '1a') { 
+                if (pos === 0) { 
+                    speak('Nitrogen'); 
+                    playSound(300); 
+                } else if (pos === 1) { 
+                    speak('Carbon'); 
+                    playSound(350); 
+                } else if (pos === 2) { 
+                    speak('Carbon'); 
+                    playSound(350); 
+                } 
+            } else if (currentLevel === '1b') { 
+                if (pos === 0) { 
+                    speak('Nitrogen Hydrogen'); 
+                    playSound(300); 
+                } else if (pos === 1) { 
+                    playSound(280); 
+                } else if (pos === 2) { 
+                    speak('Carbon'); 
+                    playSound(350); 
+                } else if (pos === 3) { 
+                    speak('Carbon Oxygen'); 
+                    playSound(400); 
+                } 
+            }
+            
+            if (currentLevel === '1a') renderLevel1a(); 
+            else if (currentLevel === '1b') renderLevel1b(); 
+            
+            currentAtomIndex++; 
+            if (currentAtomIndex >= tot) { 
+                currentAtomIndex = 0; 
+                repeatCount++; 
+                document.getElementById('repeatCount').textContent = repeatCount; 
+                if (repeatCount >= 15) document.getElementById('iSeeItBtn').classList.remove('hidden'); 
+            }
+        }
+
+        function startAnimation() { if (animationInterval) clearInterval(animationInterval); animationInterval = setInterval(animate, speed); }
+        function stopAnimation() { if (animationInterval) { clearInterval(animationInterval); animationInterval = null; } }
+
+        function togglePlay() { isPlaying = !isPlaying; const btn = document.getElementById('playBtn'); if (isPlaying) { btn.innerHTML = '⏸ Pause'; startAnimation(); } else { btn.innerHTML = '▶ Play Mantra'; stopAnimation(); } }
+        function toggleMute() { isMuted = !isMuted; document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊'; }
+        function reset() { isPlaying = false; currentAtomIndex = 0; repeatCount = 0; stopAnimation(); document.getElementById('playBtn').innerHTML = '▶ Play Mantra'; document.getElementById('repeatCount').textContent = '0'; document.getElementById('iSeeItBtn').classList.add('hidden'); if (currentLevel === '1a') renderLevel1a(); else if (currentLevel === '1b') renderLevel1b(); }
+        function updateSpeed() { const sl = document.getElementById('speedSlider'); speed = parseInt(sl.value); const lbl = document.getElementById('speedLabel'); lbl.textContent = speed < 700 ? 'Fast' : speed < 1300 ? 'Medium' : 'Slow'; if (isPlaying) { stopAnimation(); startAnimation(); } }
+        function handleISeeIt() { stopAnimation(); isPlaying = false; document.getElementById('playBtn').innerHTML = '▶ Play Mantra'; alert('Great! You\'ve internalized the backbone pattern. Ready to move to the next level!'); }
+
+        function switchLevel(lvl) { 
+            currentLevel = lvl; 
+            reset(); 
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
+            event.target.classList.add('active'); 
+            const desc = { 
+                '1a': 'Listen to the mantra: <strong>Nitrogen → Carbon → Carbon</strong>. The backbone repeats this pattern. Watch the atoms light up!', 
+                '1b': 'Now see the groups that will interact: <strong>Nitrogen-Hydrogen... Carbon... Carbon-Oxygen</strong>. These form hydrogen bonds!', 
+                '2': 'The backbone can fold! These reactive groups seek each other to form stable structures.' 
+            }; 
+            document.getElementById('description').innerHTML = desc[lvl]; 
+            if (lvl === '2') { 
+                document.getElementById('level2-content').classList.add('active'); 
+                document.getElementById('controls-box').classList.add('hidden'); 
+            } else { 
+                document.getElementById('level2-content').classList.remove('active'); 
+                document.getElementById('controls-box').classList.remove('hidden'); 
+                if (lvl === '1a') renderLevel1a(); 
+                else if (lvl === '1b') renderLevel1b(); 
+            } 
+        }
+
+        function selectStructure(type) { document.querySelectorAll('.structure-card').forEach(c => c.classList.remove('selected')); document.getElementById(type + '-card').classList.add('selected'); const info = document.getElementById('structure-info'); const txt = { helix: '<h4>α-Helix Formation</h4><p>The chain coils so that each N-H group forms a hydrogen bond with the C=O group four residues ahead. This creates a stable, spiral structure.</p>', sheet: '<h4>β-Sheet Formation</h4><p>Extended chains line up side-by-side, with N-H groups of one strand bonding to C=O groups of the adjacent strand. This creates a pleated, sheet-like structure.</p>' }; info.innerHTML = '<div class="info-box">' + txt[type] + '</div>'; info.classList.remove('hidden'); }
+
+        window.onload = () => renderLevel1a();
+    </script>
+</body>
+
+</html>
