@@ -1,1 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life's Hierarchy: The Cat Tongue Explorer</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+            --highlight: #3498db;
+            --light: #ecf0f1;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: var(--primary);
+        }
+        .intro-text {
+            background-color: #e8f4fc;
+            border-left: 5px solid var(--highlight);
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        
+        /* Hierarchy Card Styles */
+        .level-card {
+            border: 1px solid #ddd;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .level-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .level-header:hover {
+            background-color: #34495e;
+        }
+        .level-content {
+            max-height: 0;
+            overflow: hidden;
+            background-color: white;
+            transition: max-height 0.5s ease;
+        }
+        .content-padding {
+            padding: 20px;
+        }
+        .level-card.active .level-content {
+            max-height: 1000px; /* Arbitrary large height for expansion */
+            border-bottom: 4px solid var(--accent);
+        }
+        
+        /* Nested Specific Styles */
+        .sub-item {
+            background: var(--light);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+        .protein-tag {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-left: 5px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .protein-type {
+            font-size: 0.8em;
+            opacity: 0.9;
+            margin-left: 5px;
+            font-style: italic;
+        }
+        
+        /* Icon helpers */
+        .icon {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <h1>🧬 Biological Organization Explorer</h1>
+    <h2>Case Study: The Cat Tongue</h2>
+    
+    <div class="intro-text">
+        <p><strong>Instructions:</strong> Click the hierarchy levels below to "zoom in" from the whole organism down to the molecular protein level. Can you find where the 5 specific proteins hide?</p>
+    </div>
+
+    <div class="level-card" id="level1">
+        <div class="level-header" onclick="toggleLevel('level1')">
+            <span>Level 1: The Organism</span>
+            <span class="icon">🐈</span>
+        </div>
+        <div class="level-content">
+            <div class="content-padding">
+                <p><strong>The Cat:</strong> A complex living being made of organ systems working together.</p>
+                <p><em>Let's look closer at one specific organ...</em></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="level-card" id="level2">
+        <div class="level-header" onclick="toggleLevel('level2')">
+            <span>Level 2: The Organ</span>
+            <span class="icon">👅</span>
+        </div>
+        <div class="level-content">
+            <div class="content-padding">
+                <p><strong>The Tongue:</strong> An organ composed of multiple tissue types working together to provide movement, protection, and sensory input.</p>
+                <p><em>Let's dissect the three main tissue layers found here...</em></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="level-card" id="level3">
+        <div class="level-header" onclick="toggleLevel('level3')">
+            <span>Level 3: The Tissues</span>
+            <span class="icon">🔬</span>
+        </div>
+        <div class="level-content">
+            <div class="content-padding">
+                <p>The tongue is built from these three distinct tissues:</p>
+                
+                <div class="sub-item">
+                    <strong>A. Epithelial Tissue:</strong> The "Covering."<br>
+                    <small>Found on the surface (dark purple on slide)[cite: 31, 32].</small>
+                </div>
+                
+                <div class="sub-item">
+                    <strong>B. Connective Tissue:</strong> The "Glue."<br>
+                    <small>Found below epithelium, binds layers together[cite: 19, 20].</small>
+                </div>
+
+                <div class="sub-item">
+                    <strong>C. Muscle Tissue:</strong> The "Motor."<br>
+                    <small>The bulk of the tongue, allows voluntary movement[cite: 22, 23].</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="level-card" id="level4">
+        <div class="level-header" onclick="toggleLevel('level4')">
+            <span>Level 4: Cells & Molecules (The Proteins)</span>
+            <span class="icon">🧪</span>
+        </div>
+        <div class="level-content">
+            <div class="content-padding">
+                <p>This is where we distinguish the <strong>Builder</strong> (Cell) from the <strong>Building Material</strong> (Protein Molecule).</p>
+
+                <h3>1. Inside Epithelial Tissue</h3>
+                <ul>
+                    <li><strong>The Cell:</strong> Keratinocyte (Squamous cell).</li>
+                    <li><strong>The Protein:</strong> <span class="protein-tag">Keratin</span> <span class="protein-type">(Structural)</span><br>
+                    <small>Provides waterproofing and protection. The top layer is non-living keratin[cite: 34, 37].</small></li>
+                </ul>
+
+                <h3>2. Inside Connective Tissue</h3>
+                <ul>
+                    <li><strong>The Cell:</strong> Fibroblast.</li>
+                    <li><strong>The Proteins:</strong> 
+                        <br><span class="protein-tag">Collagen</span> <span class="protein-type">(Structural - Strength)</span>
+                        <br><span class="protein-tag">Elastin</span> <span class="protein-type">(Structural - Flexibility)</span>
+                    <br><small>These form the "matrix" surrounding the cells[cite: 44, 45].</small></li>
+                </ul>
+
+                <h3>3. Inside Muscle Tissue</h3>
+                <ul>
+                    <li><strong>The Cell:</strong> Muscle Fiber (Cell)[cite: 50].</li>
+                    <li><strong>The Proteins:</strong>
+                        <br><span class="protein-tag">Actin</span> <span class="protein-type">(Contractile - Thin filament)</span>
+                        <br><span class="protein-tag">Myosin</span> <span class="protein-type">(Contractile - Thick filament)</span>
+                    <br><small>These overlap to create striations and cause contraction[cite: 56, 61].</small></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleLevel(id) {
+        const element = document.getElementById(id);
+        element.classList.toggle('active');
+        
+        // Auto-scroll to the opened element
+        if (element.classList.contains('active')) {
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+    }
+</script>
+
+</body>
+</html>
