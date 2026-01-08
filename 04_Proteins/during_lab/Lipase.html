@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* UWP Color Scheme */
+        /* UWP Color Scheme - Based on the style guide */
         :root {
-            --uwp-primary: #002F6C;
-            --uwp-secondary: #BA0C2F;
-            --uwp-accent: #006C45;
-            --uwp-light: #F2F2F2;
-            --uwp-dark: #333333;
-            --uwp-highlight: #FFC72C;
+            --uwp-primary: #002F6C; /* Primary Blue */
+            --uwp-secondary: #BA0C2F; /* Cardinal Red */
+            --uwp-accent: #006C45; /* Forest Green */
+            --uwp-light: #F2F2F2; /* Light Gray */
+            --uwp-dark: #333333; /* Dark Gray */
+            --uwp-highlight: #FFC72C; /* Gold */
             --uwp-white: #FFFFFF;
         }
 
@@ -368,7 +368,7 @@
             background-color: #9a0b26;
         }
 
-        /* Key Concepts */
+        /* Key Concepts - UPDATED WITH CLICKABLE CARDS */
         .concept-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -381,12 +381,74 @@
             padding: 15px;
             border-radius: 8px;
             border: 1px solid #c6e2ff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--uwp-highlight);
         }
 
         .concept-card h5 {
             color: var(--uwp-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 8px;
             font-size: 1rem;
+        }
+
+        .info-icon {
+            color: var(--uwp-accent);
+            font-size: 1.1rem;
+            opacity: 0.7;
+        }
+
+        .concept-card:hover .info-icon {
+            opacity: 1;
+        }
+
+        /* Simple Modal Styles */
+        .simple-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 25px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--uwp-secondary);
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--uwp-primary);
         }
 
         /* Footer */
@@ -409,7 +471,11 @@
             margin-bottom: 15px;
         }
 
-        /* Responsive */
+        .copyright {
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
         @media (max-width: 992px) {
             .experiment-container {
                 grid-template-columns: 1fr;
@@ -642,35 +708,39 @@
                 </section>
             </div>
             
-            <!-- Sidebar -->
+            <!-- Sidebar - UPDATED WITH CLICKABLE CARDS -->
             <div class="sidebar">
                 <div class="sidebar-section">
-                    <h3><i class="fas fa-key"></i> Key Concepts</h3>
+                    <h3><i class="fas fa-key"></i> Key Concepts (Click for Details)</h3>
                     <div class="concept-grid">
-                        <div class="concept-card">
-                            <h5>Enzyme</h5>
+                        <div class="concept-card" onclick="showSimpleModal('enzyme')">
+                            <h5>Enzyme <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
                             <p>Biological catalyst that speeds up chemical reactions</p>
                         </div>
-                        <div class="concept-card">
-                            <h5>Hydrolysis</h5>
+                        
+                        <div class="concept-card" onclick="showSimpleModal('hydrolysis')">
+                            <h5>Hydrolysis <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
                             <p>Breaking chemical bonds using water</p>
                         </div>
-                        <div class="concept-card">
-                            <h5>Optimum Temperature</h5>
+                        
+                        <div class="concept-card" onclick="showSimpleModal('optimum')">
+                            <h5>Optimum Temperature <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
                             <p>Temperature at which enzyme works fastest</p>
                         </div>
-                        <div class="concept-card">
-                            <h5>Denaturation</h5>
+                        
+                        <div class="concept-card" onclick="showSimpleModal('denaturation')">
+                            <h5>Denaturation <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
                             <p>Loss of enzyme structure due to extreme conditions</p>
                         </div>
-                        <div class="concept-card">
-                            <h5>pH Indicator</h5>
-                            <p>Chemical that changes color with pH changes</p>
-                        </div>
-                        <div class="concept-card">
-                            <h5>Enzyme Inhibitor</h5>
-                            <p>Molecule that reduces enzyme activity</p>
-                        </div>
+                    </div>
+                    
+                    <!-- Hydrolysis Image Link -->
+                    <div style="margin-top: 25px; text-align: center;">
+                        <h5><i class="fas fa-image"></i> Hydrolysis Diagram</h5>
+                        <a href="images/hydrolysis.jpg" target="_blank" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: var(--uwp-accent); color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">
+                            <i class="fas fa-external-link-alt"></i> View Hydrolysis Reaction
+                        </a>
+                        <p style="margin-top: 10px; font-size: 0.9rem;">Opens in new tab</p>
                     </div>
                 </div>
                 
@@ -705,6 +775,14 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Simple Modal for Concept Details -->
+    <div id="simpleModal" class="simple-modal">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeSimpleModal()">&times;</span>
+            <div id="modalContent"></div>
         </div>
     </div>
 
@@ -1121,6 +1199,127 @@
                 }
             }
         }
+        
+        // NEW: Simple modal functions for concept cards
+        function showSimpleModal(type) {
+            const modal = document.getElementById('simpleModal');
+            const content = document.getElementById('modalContent');
+            
+            let title = '';
+            let html = '';
+            
+            switch(type) {
+                case 'enzyme':
+                    title = '<i class="fas fa-atom"></i> Enzyme Details';
+                    html = `
+                        <h4>What is an Enzyme?</h4>
+                        <p>Enzymes are <strong>biological catalysts</strong> - proteins that speed up chemical reactions without being consumed.</p>
+                        
+                        <h4>Lipase Specifics</h4>
+                        <p><strong>Lipase</strong> hydrolyzes triglycerides into:</p>
+                        <ul>
+                            <li><strong>Glycerol</strong> (the head group)</li>
+                            <li><strong>Fatty acids</strong> (3 molecules per triglyceride)</li>
+                        </ul>
+                        
+                        <p><strong>Reaction:</strong> Triglyceride + 3H₂O → Glycerol + 3 Fatty Acids</p>
+                        
+                        <h4>Key Characteristics</h4>
+                        <ul>
+                            <li><strong>Specificity:</strong> Works on specific substrates</li>
+                            <li><strong>Reusability:</strong> Not consumed in reactions</li>
+                            <li><strong>Temperature sensitive:</strong> Has an optimum temperature</li>
+                            <li><strong>pH sensitive:</strong> Has an optimal pH range</li>
+                        </ul>
+                    `;
+                    break;
+                    
+                case 'hydrolysis':
+                    title = '<i class="fas fa-tint"></i> Hydrolysis Details';
+                    html = `
+                        <h4>What is Hydrolysis?</h4>
+                        <p><strong>Hydrolysis</strong> (from Greek: <em>hydro</em> = water, <em>lysis</em> = break) is a chemical process where water molecules break chemical bonds in larger molecules.</p>
+                        
+                        <h4>In Biological Systems</h4>
+                        <p>In living organisms, hydrolysis is crucial for:</p>
+                        <ul>
+                            <li><strong>Digestion:</strong> Breaking down polymers into absorbable monomers</li>
+                            <li><strong>Energy release:</strong> Breaking ATP to release energy</li>
+                            <li><strong>Metabolism:</strong> Processing nutrients for energy and building blocks</li>
+                        </ul>
+                        
+                        <div style="text-align: center; margin: 20px 0; padding: 15px; background-color: #f0f7ff; border-radius: 8px;">
+                            <h5>View the Hydrolysis Diagram</h5>
+                            <a href="images/hydrolysis.jpg" target="_blank" style="display: inline-block; margin: 10px 0; padding: 10px 20px; background-color: var(--uwp-primary); color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">
+                                <i class="fas fa-external-link-alt"></i> Open hydrolysis.jpg
+                            </a>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">The image shows how polymers are disassembled to monomers by hydrolysis.</p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'denaturation':
+                    title = '<i class="fas fa-fire"></i> Denaturation Details';
+                    html = `
+                        <h4>What is Denaturation?</h4>
+                        <p><strong>Denaturation</strong> is when a protein loses its <strong>three-dimensional structure</strong> due to external stress, leading to loss of function.</p>
+                        
+                        <h4>Key Distinction</h4>
+                        <div style="margin: 15px 0; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                            <p><strong>0°C:</strong> Enzyme intact but inactive due to slow molecular motion (reversible)</p>
+                            <p><strong>100°C:</strong> Enzyme structure destroyed, active site distorted (irreversible)</p>
+                        </div>
+                        
+                        <h4>In This Experiment</h4>
+                        <p>At <strong>100°C</strong>, lipase is <strong>denatured</strong>:</p>
+                        <ul>
+                            <li>No color change observed</li>
+                            <li>Permanent structural damage</li>
+                        </ul>
+                    `;
+                    break;
+                    
+                case 'optimum':
+                    title = '<i class="fas fa-thermometer-half"></i> Optimum Temperature Details';
+                    html = `
+                        <h4>What is Optimum Temperature?</h4>
+                        <p>The <strong>optimum temperature</strong> is where an enzyme operates at <strong>maximum efficiency</strong>, balancing reaction rates with stability.</p>
+                        
+                        <h4>Finding the Optimum</h4>
+                        <p>In this experiment, determine optimum temperature by:</p>
+                        <ol>
+                            <li>Comparing the <strong>rate of color change</strong></li>
+                            <li>Identifying the <strong>fastest conversion</strong> from blue to yellow</li>
+                            <li>Looking for the <strong>steepest slope</strong> on your graph</li>
+                        </ol>
+                        
+                        <div style="margin: 15px 0; padding: 15px; background-color: #d4edda; border-left: 4px solid var(--uwp-accent);">
+                            <p><strong>Graphical Interpretation:</strong><br>
+                            Steeper slope = Faster reaction = Higher enzyme activity</p>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            content.innerHTML = `
+                <h3 style="color: var(--uwp-primary); margin-bottom: 20px;">${title}</h3>
+                <div>${html}</div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeSimpleModal() {
+            document.getElementById('simpleModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside content
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('simpleModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
         
         // Initialize on page load
         window.onload = function() {
