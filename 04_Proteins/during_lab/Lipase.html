@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,18 @@
     <style>
         /* UWP Color Scheme - Based on the style guide */
         :root {
-            --uwp-primary: #002F6C; /* Primary Blue */
-            --uwp-secondary: #BA0C2F; /* Cardinal Red */
-            --uwp-accent: #006C45; /* Forest Green */
-            --uwp-light: #F2F2F2; /* Light Gray */
-            --uwp-dark: #333333; /* Dark Gray */
-            --uwp-highlight: #FFC72C; /* Gold */
+            --uwp-primary: #002F6C;
+            /* Primary Blue */
+            --uwp-secondary: #BA0C2F;
+            /* Cardinal Red */
+            --uwp-accent: #006C45;
+            /* Forest Green */
+            --uwp-light: #F2F2F2;
+            /* Light Gray */
+            --uwp-dark: #333333;
+            /* Dark Gray */
+            --uwp-highlight: #FFC72C;
+            /* Gold */
             --uwp-white: #FFFFFF;
         }
 
@@ -221,7 +228,7 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .data-table th {
@@ -265,7 +272,7 @@
             background-color: white;
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             margin: 30px 0;
         }
 
@@ -480,7 +487,7 @@
             .experiment-container {
                 grid-template-columns: 1fr;
             }
-            
+
             .header-content {
                 flex-direction: column;
                 text-align: center;
@@ -492,13 +499,14 @@
             .concept-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .chart-controls {
                 flex-direction: column;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="container header-content">
@@ -507,7 +515,7 @@
                     <i class="fas fa-temperature-high"></i>
                 </div>
                 <div class="logo-text">
-                    <h1>Lipase Enzyme Experiment</h1>
+                    <h1>Lipase Enzyme pH Indicator Assay</h1>
                     <p>Effect of Temperature on Lipid Hydrolysis</p>
                 </div>
             </div>
@@ -524,65 +532,146 @@
                 <!-- Introduction Section -->
                 <section class="section">
                     <h2><i class="fas fa-flask"></i> Experiment Overview</h2>
-                    
+
                     <div class="theory-box">
                         <h4><i class="fas fa-lightbulb"></i> Key Concept: Enzyme Kinetics</h4>
-                        <p>Lipase is an enzyme that catalyzes the hydrolysis of triglycerides into glycerol and fatty acids. In this experiment, you'll investigate how temperature affects the rate of this enzymatic reaction using a pH indicator that changes color as fatty acids are released.</p>
+                        <p>Lipase is an enzyme that catalyzes the hydrolysis of triglycerides into glycerol and fatty
+                            acids. In this experiment, you'll investigate how temperature affects the rate of this
+                            enzymatic reaction using a pH indicator that changes color as fatty acids are released.</p>
                         <p><strong>Chemical Reaction:</strong> Triglyceride + 3H₂O → Glycerol + 3 Fatty Acids</p>
                     </div>
-                    
+
                     <h3>Temperature Conditions</h3>
                     <div>
                         <span class="temp-indicator temp-0"><i class="fas fa-snowflake"></i> 0°C (Ice Bath)</span>
-                        <span class="temp-indicator temp-21"><i class="fas fa-thermometer-half"></i> 21°C (Room Temp)</span>
+                        <span class="temp-indicator temp-21"><i class="fas fa-thermometer-half"></i> 21°C (Room
+                            Temp)</span>
                         <span class="temp-indicator temp-100"><i class="fas fa-fire"></i> 100°C (Boiling)</span>
-                        <span class="temp-indicator" style="background-color:#e8d4ff; border-color:#9b59b6; color:#6c3483;">
+                        <span class="temp-indicator"
+                            style="background-color:#e8d4ff; border-color:#9b59b6; color:#6c3483;">
                             <i class="fas fa-ban"></i> 21°C with Inhibitor
                         </span>
                     </div>
-                    
-                    <p style="margin-top: 15px;">Each temperature condition will affect the enzyme's activity differently. You'll measure the reaction progress by observing color changes from blue (basic pH) to yellow (acidic pH) as fatty acids are produced.</p>
+
+                    <p style="margin-top: 15px;">Each temperature condition will affect the enzyme's activity
+                        differently. You'll measure the reaction progress by observing color changes from blue (basic
+                        pH) to yellow (acidic pH) as fatty acids are produced.</p>
                 </section>
-                
+
                 <!-- Procedure Section -->
                 <section class="section">
                     <h2><i class="fas fa-list-ol"></i> Experimental Procedure</h2>
-                    
+
                     <div class="procedure-steps">
+
                         <div class="step">
-                            <strong>Prepare Water Baths:</strong> Set up three beakers: one ice bath (0°C), two at room temperature (21°C). Instructor will prepare 100°C water bath.
+
+                            <strong>1. Prepare Your Temperature Water Baths:</strong>
+                            <p>Gather three medium beakers and set up the following baths:</p>
+                            <ul>
+                                <li><strong>0°C Ice Bath:</strong> Fill one beaker ¼ full with ice; add cold water until
+                                    ¾ full.</li>
+                                <li><strong>21°C Room‑Temperature Baths (2 total):</strong> Fill two beakers ¾ full with
+                                    room‑temperature water. Place at your station.</li>
+                                <li><em>Note: The 100°C hot‑water bath will be prepared by the instructor (demo).</em>
+                                </li>
+                            </ul>
                         </div>
-                        
+
                         <div class="step">
-                            <strong>Label Test Tubes:</strong> Label three tubes 1-3 and three tubes with 'E' for enzyme.
+                            <strong>2. Label and Prepare Your Test Tubes:</strong>
+                            <p>Locate 6 test tubes. Label three "1, 2, 3" and three "E" (for enzyme).</p>
+                            <ul>
+                                <li><strong>Tubes 1–3:</strong> Add 4 mL milk solution + 2 mL alkaline solution. (Should
+                                    be blue).</li>
+                                <li><strong>Tube 3 ONLY:</strong> Add 1 mL inhibitor (Orlistat).</li>
+                            </ul>
                         </div>
-                        
+
                         <div class="step">
-                            <strong>Add Solutions:</strong> To tubes 1-3, add 4 mL milk solution + 2 mL alkaline solution. To tube 3 ONLY, add 1 mL Orlistat inhibitor.
+                            <strong>3. Add Enzyme to Enzyme Tubes:</strong>
+                            <p>Using a separate graduated cylinder, add <strong>2 mL lipase enzyme solution</strong> to
+                                each "E" tube. Verify you have three enzyme tubes containing lipase.</p>
                         </div>
-                        
+
                         <div class="step">
-                            <strong>Add Enzyme:</strong> Add 2 mL lipase solution to each 'E' tube.
+                            <strong>4. Equilibrate Tubes in Temperature Baths:</strong>
+
+                            <p>Place the tubes in their designated baths for <strong>10 minutes</strong> to reach the
+                                correct temperature. <strong>Do not mix anything yet.</strong></p>
+
+                            <table style="width: 100%; text-align: left; margin-top: 10px; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid #333;">
+                                        <th style="padding: 8px;">Water Bath</th>
+                                        <th style="padding: 8px;">Substrate Tube</th>
+                                        <th style="padding: 8px;">Enzyme Tube</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <td style="padding: 8px;"><strong>0°C</strong></td>
+                                        <td style="padding: 8px;">Tube 1</td>
+                                        <td style="padding: 8px;">One E tube</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <td style="padding: 8px;"><strong>21°C</strong></td>
+                                        <td style="padding: 8px;">Tube 2</td>
+                                        <td style="padding: 8px;">One E tube</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px;"><strong>21°C (With Inhibitor)</strong></td>
+                                        <td style="padding: 8px;">Tube 3</td>
+                                        <td style="padding: 8px;">One E tube</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        
+
                         <div class="step">
-                            <strong>Temperature Equilibration:</strong> Place tubes in respective water baths for 10 minutes.
+                            <strong>5. Start the Reaction (Time 0):</strong>
+                            <p>For each water bath:</p>
+                            <ul>
+                                <li>Remove the E tube briefly.</li>
+                                <li>Quickly pour enzyme solution into the numbered tube in the same bath.</li>
+                                <li>Mix gently using dropper and immediately return to bath.</li>
+                                <li><strong>Start Timer:</strong> This is Time 0. All tubes begin blue.</li>
+                            </ul>
                         </div>
-                        
+
                         <div class="step">
-                            <strong>Initiate Reaction:</strong> At Time 0, pour enzyme solution into corresponding numbered tube. Record time and mix.
+                            <strong>6. Record Color Change (30 Mins):</strong>
+                            <p>Every 5 minutes, briefly remove tubes to evaluate yellowing (fatty acid production).
+                                Record in Table 4-1.</p>
+                            <ul>
+                                <li><strong>Few + signs:</strong> Light yellow (slow reaction)</li>
+                                <li><strong>Many + signs:</strong> Strong yellow (fast reaction)</li>
+                            </ul>
                         </div>
-                        
+
                         <div class="step">
-                            <strong>Data Collection:</strong> Every 5 minutes for 30 minutes, record color intensity using "+" system.
+                            <strong>7. Complete Data Table & Interpret:</strong>
+                            <p>After 30 minutes, review your "+" scores to determine:</p>
+                            <ul>
+                                <li>Optimum temperature (fastest activity).</li>
+                                <li>Effect of denaturation (100°C) and suppression (0°C).</li>
+                                <li>Effectiveness of the inhibitor (Orlistat).</li>
+                            </ul>
                         </div>
+
+                        <div class="step">
+                            <strong>8. Clean Up:</strong>
+                            Dispose of solutions as directed, rinse glassware thoroughly, and return equipment neatly to
+                            the station.
+                        </div>
+
                     </div>
                 </section>
-                
+
                 <!-- Data Collection Section -->
                 <section class="section">
                     <h2><i class="fas fa-clipboard-list"></i> Data Collection</h2>
-                    
+
                     <div class="data-collection">
                         <p>Record the intensity of yellow color using the "+" system:</p>
                         <ul style="margin-left: 20px; margin-bottom: 15px;">
@@ -592,7 +681,7 @@
                             <li><strong>7-9 +</strong>: Yellow (high activity)</li>
                             <li><strong>10-12 +</strong>: Bright yellow (maximum hydrolysis)</li>
                         </ul>
-                        
+
                         <table class="data-table">
                             <thead>
                                 <tr>
@@ -607,7 +696,7 @@
                                 <!-- Rows will be generated by JavaScript -->
                             </tbody>
                         </table>
-                        
+
                         <div style="text-align: center; margin-top: 20px;">
                             <button class="chart-btn" onclick="generateSampleData()">
                                 <i class="fas fa-vial"></i> Load Sample Data
@@ -621,14 +710,15 @@
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Data Analysis & Graphing -->
                 <section class="section">
                     <h2><i class="fas fa-chart-line"></i> Data Analysis</h2>
-                    
+
                     <div class="graph-container">
-                        <p>Visualize your data to compare enzyme activity across different temperatures. The graph will plot the "+" score (representing hydrolysis progress) against time for each condition.</p>
-                        
+                        <p>Visualize your data to compare enzyme activity across different temperatures. The graph will
+                            plot the "+" score (representing hydrolysis progress) against time for each condition.</p>
+
                         <div class="chart-controls">
                             <button class="chart-btn" onclick="plotLineGraph()">
                                 <i class="fas fa-chart-line"></i> Plot Line Graph
@@ -636,28 +726,31 @@
                             <button class="chart-btn secondary" onclick="plotBarChart()">
                                 <i class="fas fa-chart-bar"></i> Plot Bar Chart (Final Time)
                             </button>
-                            <button class="chart-btn" onclick="calculateReactionRates()" style="background-color: var(--uwp-secondary);">
+                            <button class="chart-btn" onclick="calculateReactionRates()"
+                                style="background-color: var(--uwp-secondary);">
                                 <i class="fas fa-calculator"></i> Calculate Reaction Rates
                             </button>
                         </div>
-                        
+
                         <div style="height: 400px;">
                             <canvas id="reactionChart"></canvas>
                         </div>
-                        
-                        <div id="rateCalculation" style="margin-top: 25px; padding: 15px; background-color: #f0f9ff; border-radius: 8px; display: none;">
+
+                        <div id="rateCalculation"
+                            style="margin-top: 25px; padding: 15px; background-color: #f0f9ff; border-radius: 8px; display: none;">
                             <h4><i class="fas fa-calculator"></i> Reaction Rate Analysis</h4>
                             <div id="rateResults"></div>
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Questions Section -->
                 <section class="section">
                     <h2><i class="fas fa-question-circle"></i> Analysis Questions</h2>
-                    
+
                     <div class="question-box">
-                        <div class="question">1. Which water bath temperature is closest to where lipase normally functions in the human body?</div>
+                        <div class="question">1. Which water bath temperature is closest to where lipase normally
+                            functions in the human body?</div>
                         <select class="answer-input" id="q1">
                             <option value="">Select an option</option>
                             <option value="100">100°C</option>
@@ -667,14 +760,14 @@
                         <button class="check-answer" onclick="checkAnswer(1)">Check Answer</button>
                         <div class="feedback" id="feedback1"></div>
                     </div>
-                    
+
                     <div class="question-box">
                         <div class="question">2. What is the specific substrate for lipase?</div>
                         <input type="text" class="answer-input" id="q2" placeholder="Enter substrate name">
                         <button class="check-answer" onclick="checkAnswer(2)">Check Answer</button>
                         <div class="feedback" id="feedback2"></div>
                     </div>
-                    
+
                     <div class="question-box">
                         <div class="question">3. The faster the pH changes, the ______ active the enzyme is.</div>
                         <select class="answer-input" id="q3">
@@ -685,29 +778,33 @@
                         <button class="check-answer" onclick="checkAnswer(3)">Check Answer</button>
                         <div class="feedback" id="feedback3"></div>
                     </div>
-                    
+
                     <div class="question-box">
-                        <div class="question">5. Compare the results from ice bath (0°C) to boiling water bath (100°C). Was lipase denatured at 100°C? At 0°C?</div>
-                        <textarea class="answer-input" id="q5" rows="4" placeholder="Enter your analysis here..."></textarea>
+                        <div class="question">5. Compare the results from ice bath (0°C) to boiling water bath (100°C).
+                            Was lipase denatured at 100°C? At 0°C?</div>
+                        <textarea class="answer-input" id="q5" rows="4"
+                            placeholder="Enter your analysis here..."></textarea>
                         <button class="check-answer" onclick="checkAnswer(5)">Check Answer</button>
                         <div class="feedback" id="feedback5"></div>
                     </div>
-                    
+
                     <div class="question-box">
-                        <div class="question">6. Based on your results, what is the optimum temperature for lipase activity?</div>
+                        <div class="question">6. Based on your results, what is the optimum temperature for lipase
+                            activity?</div>
                         <input type="text" class="answer-input" id="q6" placeholder="Enter temperature">
                         <button class="check-answer" onclick="checkAnswer(6)">Check Answer</button>
                         <div class="feedback" id="feedback6"></div>
                     </div>
-                    
+
                     <div style="text-align: center; margin-top: 25px;">
-                        <button class="chart-btn" onclick="checkAllAnswers()" style="padding: 12px 30px; font-size: 1.1rem;">
+                        <button class="chart-btn" onclick="checkAllAnswers()"
+                            style="padding: 12px 30px; font-size: 1.1rem;">
                             <i class="fas fa-check-double"></i> Check All Answers
                         </button>
                     </div>
                 </section>
             </div>
-            
+
             <!-- Sidebar - UPDATED WITH CLICKABLE CARDS -->
             <div class="sidebar">
                 <div class="sidebar-section">
@@ -717,40 +814,42 @@
                             <h5>Enzyme <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
                             <p>Biological catalyst that speeds up chemical reactions</p>
                         </div>
-                        
+
                         <div class="concept-card" onclick="showSimpleModal('hydrolysis')">
                             <h5>Hydrolysis <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
                             <p>Breaking chemical bonds using water</p>
                         </div>
-                        
+
                         <div class="concept-card" onclick="showSimpleModal('optimum')">
-                            <h5>Optimum Temperature <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
+                            <h5>Optimum Temperature <span class="info-icon"><i class="fas fa-info-circle"></i></span>
+                            </h5>
                             <p>Temperature at which enzyme works fastest</p>
                         </div>
-                        
+
                         <div class="concept-card" onclick="showSimpleModal('denaturation')">
                             <h5>Denaturation <span class="info-icon"><i class="fas fa-info-circle"></i></span></h5>
                             <p>Loss of enzyme structure due to extreme conditions</p>
                         </div>
                     </div>
-                    
+
                     <!-- Hydrolysis Image Link -->
                     <div style="margin-top: 25px; text-align: center;">
                         <h5><i class="fas fa-image"></i> Hydrolysis Diagram</h5>
-                        <a href="images/hydrolysis.jpg" target="_blank" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: var(--uwp-accent); color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">
+                        <a href="images/hydrolysis.jpg" target="_blank"
+                            style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: var(--uwp-accent); color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">
                             <i class="fas fa-external-link-alt"></i> View Hydrolysis Reaction
                         </a>
                         <p style="margin-top: 10px; font-size: 0.9rem;">Opens in new tab</p>
                     </div>
                 </div>
-                
+
                 <div class="sidebar-section">
                     <h3><i class="fas fa-chart-bar"></i> Graph Interpretation</h3>
                     <p><strong>Steeper slope</strong> = Faster reaction rate</p>
                     <p><strong>Higher plateau</strong> = More complete hydrolysis</p>
                     <p><strong>Flat line</strong> = No enzyme activity</p>
                     <p><strong>Compare lines</strong> to identify optimum temperature</p>
-                    
+
                     <div style="margin-top: 15px; padding: 15px; background-color: #f0f7ff; border-radius: 8px;">
                         <h5>Expected Results:</h5>
                         <ul style="margin-left: 20px;">
@@ -761,7 +860,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="sidebar-section">
                     <h3><i class="fas fa-flask"></i> Experimental Variables</h3>
                     <p><strong>Independent:</strong> Temperature (0°C, 21°C, 100°C)</p>
@@ -793,7 +892,8 @@
             </div>
             <h3>Lipase Enzyme Laboratory</h3>
             <p>Interactive experiment following UWP Style Guidelines</p>
-            <p style="margin-top: 15px; opacity: 0.8;">Primary Color: #002F6C | Secondary Color: #BA0C2F | Accent: #006C45</p>
+            <p style="margin-top: 15px; opacity: 0.8;">Primary Color: #002F6C | Secondary Color: #BA0C2F | Accent:
+                #006C45</p>
             <p style="opacity: 0.7; margin-top: 10px;">© 2023 Biology Department | Data Analysis & Graphing Enabled</p>
         </div>
     </footer>
@@ -802,7 +902,7 @@
         // Initialize Chart.js
         let reactionChart;
         let ctx = document.getElementById('reactionChart').getContext('2d');
-        
+
         // Data storage
         let experimentData = {
             times: [0, 5, 10, 15, 20, 25, 30],
@@ -811,31 +911,31 @@
             temp21: [0, 0, 0, 0, 0, 0, 0],
             temp21Inhibitor: [0, 0, 0, 0, 0, 0, 0]
         };
-        
+
         // Initialize data table
         function initializeDataTable() {
             const tableBody = document.getElementById('dataTableBody');
             tableBody.innerHTML = '';
-            
+
             for (let i = 0; i < experimentData.times.length; i++) {
                 const row = document.createElement('tr');
-                
+
                 // Time cell
                 const timeCell = document.createElement('td');
                 timeCell.className = 'time-cell';
                 timeCell.textContent = experimentData.times[i] + ' min';
                 row.appendChild(timeCell);
-                
+
                 // Create input cells for each condition
                 createInputCell(row, 'temp100', i);
                 createInputCell(row, 'temp0', i);
                 createInputCell(row, 'temp21', i);
                 createInputCell(row, 'temp21Inhibitor', i);
-                
+
                 tableBody.appendChild(row);
             }
         }
-        
+
         function createInputCell(row, dataKey, index) {
             const cell = document.createElement('td');
             const input = document.createElement('input');
@@ -846,23 +946,23 @@
             input.value = experimentData[dataKey][index];
             input.dataset.key = dataKey;
             input.dataset.index = index;
-            
-            input.addEventListener('change', function() {
+
+            input.addEventListener('change', function () {
                 const key = this.dataset.key;
                 const idx = parseInt(this.dataset.index);
                 const value = parseInt(this.value) || 0;
-                
+
                 // Ensure value is within range
                 if (value < 0) this.value = 0;
                 if (value > 12) this.value = 12;
-                
+
                 experimentData[key][idx] = parseInt(this.value) || 0;
             });
-            
+
             cell.appendChild(input);
             row.appendChild(cell);
         }
-        
+
         // Generate sample data for demonstration
         function generateSampleData() {
             // Sample data based on expected results
@@ -870,14 +970,14 @@
             experimentData.temp0 = [0, 1, 2, 3, 4, 5, 6]; // Slow activity at 0°C
             experimentData.temp21 = [0, 3, 6, 8, 10, 11, 12]; // Optimal activity at 21°C
             experimentData.temp21Inhibitor = [0, 1, 2, 3, 4, 5, 6]; // Inhibitor reduces activity
-            
+
             initializeDataTable();
             plotLineGraph();
-            
+
             // Show notification
             alert("Sample data loaded! This represents expected experimental results. You can modify the values in the table.");
         }
-        
+
         // Clear all data
         function clearData() {
             if (confirm("Are you sure you want to clear all data?")) {
@@ -885,23 +985,23 @@
                 experimentData.temp0 = [0, 0, 0, 0, 0, 0, 0];
                 experimentData.temp21 = [0, 0, 0, 0, 0, 0, 0];
                 experimentData.temp21Inhibitor = [0, 0, 0, 0, 0, 0, 0];
-                
+
                 initializeDataTable();
-                
+
                 if (reactionChart) {
                     reactionChart.destroy();
                 }
-                
+
                 document.getElementById('rateCalculation').style.display = 'none';
             }
         }
-        
+
         // Save data locally
         function saveData() {
             localStorage.setItem('lipaseExperimentData', JSON.stringify(experimentData));
             alert('Data saved to browser storage!');
         }
-        
+
         // Load saved data
         function loadSavedData() {
             const savedData = localStorage.getItem('lipaseExperimentData');
@@ -910,13 +1010,13 @@
                 initializeDataTable();
             }
         }
-        
+
         // Plot line graph
         function plotLineGraph() {
             if (reactionChart) {
                 reactionChart.destroy();
             }
-            
+
             reactionChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -1003,13 +1103,13 @@
                 }
             });
         }
-        
+
         // Plot bar chart for final time point
         function plotBarChart() {
             if (reactionChart) {
                 reactionChart.destroy();
             }
-            
+
             // Get final values
             const finalValues = [
                 experimentData.temp100[6],
@@ -1017,7 +1117,7 @@
                 experimentData.temp21[6],
                 experimentData.temp21Inhibitor[6]
             ];
-            
+
             reactionChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -1069,12 +1169,12 @@
                 }
             });
         }
-        
+
         // Calculate reaction rates
         function calculateReactionRates() {
             const rateDiv = document.getElementById('rateResults');
             const rateContainer = document.getElementById('rateCalculation');
-            
+
             // Calculate average rate of change (slope) for each condition
             const rates = {
                 temp100: calculateSlope(experimentData.temp100),
@@ -1082,17 +1182,17 @@
                 temp21: calculateSlope(experimentData.temp21),
                 temp21Inhibitor: calculateSlope(experimentData.temp21Inhibitor)
             };
-            
+
             // Find optimum temperature
             const rateValues = [rates.temp100, rates.temp0, rates.temp21, rates.temp21Inhibitor];
             const maxRate = Math.max(...rateValues);
-            
+
             let optimumTemp = '';
             if (maxRate === rates.temp21) optimumTemp = '21°C';
             else if (maxRate === rates.temp0) optimumTemp = '0°C';
             else if (maxRate === rates.temp100) optimumTemp = '100°C';
             else optimumTemp = '21°C with Inhibitor';
-            
+
             // Display results
             rateDiv.innerHTML = `
                 <h5>Reaction Rates (change in "+" score per minute):</h5>
@@ -1119,36 +1219,36 @@
                     </tr>
                 </table>
                 <p><strong>Optimum Temperature:</strong> ${optimumTemp} (highest rate: ${maxRate.toFixed(2)} per minute)</p>
-                <p><strong>Conclusion:</strong> Based on reaction rates, enzyme activity is highest at ${optimumTemp}. The inhibitor reduces activity at 21°C by approximately ${((1 - rates.temp21Inhibitor/rates.temp21)*100).toFixed(0)}%.</p>
+                <p><strong>Conclusion:</strong> Based on reaction rates, enzyme activity is highest at ${optimumTemp}. The inhibitor reduces activity at 21°C by approximately ${((1 - rates.temp21Inhibitor / rates.temp21) * 100).toFixed(0)}%.</p>
             `;
-            
+
             rateContainer.style.display = 'block';
         }
-        
+
         function calculateSlope(data) {
             // Simple linear regression slope calculation
             const n = data.length;
             let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
-            
+
             for (let i = 0; i < n; i++) {
                 sumX += i * 5; // Time in minutes
                 sumY += data[i];
                 sumXY += (i * 5) * data[i];
                 sumX2 += (i * 5) * (i * 5);
             }
-            
+
             const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
             return slope || 0;
         }
-        
+
         // Answer checking functions
         function checkAnswer(questionNum) {
             const feedback = document.getElementById(`feedback${questionNum}`);
             let isCorrect = false;
             let correctAnswer = '';
             let userAnswer = '';
-            
-            switch(questionNum) {
+
+            switch (questionNum) {
                 case 1:
                     userAnswer = document.getElementById('q1').value;
                     correctAnswer = '21';
@@ -1171,27 +1271,27 @@
                     const hasBoil = userAnswer.includes('100') || userAnswer.includes('boil') || userAnswer.includes('hot');
                     const hasDenatured = userAnswer.includes('denatur');
                     const hasSlow = userAnswer.includes('slow') || userAnswer.includes('low') || userAnswer.includes('reduced');
-                    
+
                     isCorrect = hasIce && hasBoil && hasDenatured;
                     correctAnswer = 'At 0°C, enzyme activity is slow but not denatured. At 100°C, the enzyme is denatured (permanent structural change).';
                     break;
                 case 6:
                     userAnswer = document.getElementById('q6').value;
                     // Check if answer contains 21 or room temperature
-                    isCorrect = userAnswer.includes('21') || 
-                                userAnswer.toLowerCase().includes('room') || 
-                                userAnswer.toLowerCase().includes('twenty');
+                    isCorrect = userAnswer.includes('21') ||
+                        userAnswer.toLowerCase().includes('room') ||
+                        userAnswer.toLowerCase().includes('twenty');
                     correctAnswer = '21°C (room temperature)';
                     break;
             }
-            
-            feedback.textContent = isCorrect 
-                ? `✓ Correct! ${correctAnswer ? 'Answer: ' + correctAnswer : ''}` 
+
+            feedback.textContent = isCorrect
+                ? `✓ Correct! ${correctAnswer ? 'Answer: ' + correctAnswer : ''}`
                 : `✗ Try again. ${correctAnswer ? 'Hint: ' + correctAnswer : ''}`;
             feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
             feedback.style.display = 'block';
         }
-        
+
         function checkAllAnswers() {
             for (let i = 1; i <= 8; i++) {
                 if (document.getElementById(`q${i}`)) {
@@ -1199,16 +1299,16 @@
                 }
             }
         }
-        
+
         // NEW: Simple modal functions for concept cards
         function showSimpleModal(type) {
             const modal = document.getElementById('simpleModal');
             const content = document.getElementById('modalContent');
-            
+
             let title = '';
             let html = '';
-            
-            switch(type) {
+
+            switch (type) {
                 case 'enzyme':
                     title = '<i class="fas fa-atom"></i> Enzyme Details';
                     html = `
@@ -1233,7 +1333,7 @@
                         </ul>
                     `;
                     break;
-                    
+
                 case 'hydrolysis':
                     title = '<i class="fas fa-tint"></i> Hydrolysis Details';
                     html = `
@@ -1257,7 +1357,7 @@
                         </div>
                     `;
                     break;
-                    
+
                 case 'denaturation':
                     title = '<i class="fas fa-fire"></i> Denaturation Details';
                     html = `
@@ -1278,7 +1378,7 @@
                         </ul>
                     `;
                     break;
-                    
+
                 case 'optimum':
                     title = '<i class="fas fa-thermometer-half"></i> Optimum Temperature Details';
                     html = `
@@ -1300,33 +1400,34 @@
                     `;
                     break;
             }
-            
+
             content.innerHTML = `
                 <h3 style="color: var(--uwp-primary); margin-bottom: 20px;">${title}</h3>
                 <div>${html}</div>
             `;
-            
+
             modal.style.display = 'flex';
         }
-        
+
         function closeSimpleModal() {
             document.getElementById('simpleModal').style.display = 'none';
         }
-        
+
         // Close modal when clicking outside content
-        window.addEventListener('click', function(event) {
+        window.addEventListener('click', function (event) {
             const modal = document.getElementById('simpleModal');
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
         });
-        
+
         // Initialize on page load
-        window.onload = function() {
+        window.onload = function () {
             initializeDataTable();
             loadSavedData();
             plotLineGraph();
         };
     </script>
 </body>
+
 </html>
