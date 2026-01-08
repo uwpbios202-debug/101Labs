@@ -361,6 +361,16 @@
         .submit-button:hover {
             background-color: #5a2a7a;
         }
+
+        .combined-text-info {
+            background-color: #f0f7ff;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 14px;
+            color: var(--uwp-blue);
+            border-left: 3px solid var(--uwp-blue);
+        }
     </style>
 </head>
 
@@ -408,7 +418,7 @@
             <div class="section">
                 <h2 class="section-title">2. Image for Analysis</h2>
                 <div class="image-container">
-                    <img src="images/polymers.jpg"
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Starch_granules_in_potato_cells.jpg/800px-Starch_granules_in_potato_cells.jpg"
                         alt="Storage structures (plastids) containing starch granules in a potato tuber cell"
                         class="image-display">
                     
@@ -446,10 +456,10 @@
                 </div>
                 
                 <div class="manual-input-box">
-                    <p class="instructions">Alternative: Type your narrative directly in the box below.</p>
-                    <textarea id="manualInput" placeholder="Type your narrative here... You can also use the recording controls above." rows="6"></textarea>
+                    <p class="instructions">Alternative: Type your narrative directly in the box below. Or combine with your verbal narrative - both will be analyzed together.</p>
+                    <textarea id="manualInput" placeholder="Type your narrative here... You can also use the recording controls above. Both text and verbal input will be combined for analysis." rows="6"></textarea>
                     <button id="submitText" class="submit-button">
-                        Submit Text Analysis
+                        Submit Text Analysis (Combines typed and spoken text)
                     </button>
                 </div>
             </div>
@@ -457,6 +467,10 @@
             <!-- Step 4: Analysis & Biological Terminology -->
             <div class="section">
                 <h2 class="section-title">4. Analysis & Biological Terminology</h2>
+                <div id="combinedTextInfo" class="combined-text-info" style="display:none;">
+                    <!-- Info about combined text will appear here -->
+                </div>
+                
                 <div id="analysisResult">
                     <p>After you submit your narrative, the analysis will appear here with:</p>
                     <ul>
@@ -475,7 +489,7 @@
                         <div class="score-label">Biological Terms</div>
                     </div>
                     <p>This objective metric counts the number of precise biological terms in your narrative.</p>
-                    <p><strong>Scoring:</strong> Each unique biological term (green or amber) counts as 1 point.</p>
+                    <p><strong>Scoring:</strong> Each unique biological term concept counts as 1 point (variations of the same term are grouped).</p>
                 </div>
             </div>
 
@@ -504,63 +518,169 @@
     </div>
 
     <script>
-        // Expanded biological terms including misspellings, synonyms, and variations
-        const exampleTerms = [
-            // Original List & Basic Structures
-            "plastids", "starch", "granules", "granule", "grain", "potato", "tuber", "cell",
-            "glucose", "monomer", "polymer", "molecule", "molecules", "tissue", "organelles",
-            "organels", "organells", "scale", "μm", "micro", "granular", "texture",
-
-            // Glucose & Monosaccharides
-            "alpha glucose", "alpha-glucose", "a-glucose", "alfa glucose",
-            "beta glucose", "beta-glucose", "b-glucose", "monosaccharide", "monosacharide",
-            "disaccharide", "dissaccharide", "dimer", "maltose", "maltoze", "hexagon", "hexose",
-
-            // Starch Components & Plastids
-            "amylose", "amilose", "amyloze", "unbranched", "non-branched", "linear",
-            "amylopectin", "amylo-pectin", "amilopectin", "branched", "somewhat branched",
-            "amyloplast", "amylopast", "starch granules", "starch grains",
-
-            // Storage & Glycogen
-            "glycogen", "glicogen", "glychogen", "extensively branched", "highly branched",
-            "glycogen granules", "muscle", "muscle tissue", "skeletal muscle",
-            "storage", "store", "storing", "reserve",
-
-            // Cell Wall & Cellulose
-            "cell wall", "plant cell", "cellulose", "celulose", "celluloze",
-            "microfibril", "microfibrils", "micro-fibrils", "cellulose microfibrils",
-            "cellulose molecule", "fibrils",
-
-            // Chemical Bonding & Reactions
-            "glycosidic linkage", "glycosidic bond", "glucosidic bond", "glycosidic link",
-            "1-4 glycosidic", "1,4-glycosidic", "1-4 linkage", "1-4 bond",
-            "hydrogen bonding", "hydrogen bonds", "h-bonds", "h-bonding",
-            "hydrolysis", "hydrolisis", "dehydration", "condensation", "dehydration synthesis",
-
-            // Anatomy & Extra Context
-            "parenchyma", "perenchyma", "potato parenchyma", "cytoplasmic", "myofibrils",
-            "chains", "crystals", "structures"
+        // Biological terms grouped by concept to eliminate redundancy
+        // Each group represents a single biological concept with multiple variations
+        const termGroups = [
+            {
+                baseTerm: "plastids",
+                variations: ["plastids", "plastid", "plastic"]
+            },
+            {
+                baseTerm: "starch",
+                variations: ["starch", "starchy"]
+            },
+            {
+                baseTerm: "granule",
+                variations: ["granule", "granules", "grain", "grains", "granular"]
+            },
+            {
+                baseTerm: "potato tuber",
+                variations: ["potato", "tuber", "potato tuber", "potatoes"]
+            },
+            {
+                baseTerm: "cell",
+                variations: ["cell", "cells", "cellular"]
+            },
+            {
+                baseTerm: "glucose",
+                variations: ["glucose", "glucos", "glucoses"]
+            },
+            {
+                baseTerm: "monomer",
+                variations: ["monomer", "monomers", "monomeric"]
+            },
+            {
+                baseTerm: "polymer",
+                variations: ["polymer", "polymers", "polymeric"]
+            },
+            {
+                baseTerm: "molecule",
+                variations: ["molecule", "molecules", "molecular"]
+            },
+            {
+                baseTerm: "tissue",
+                variations: ["tissue", "tissues"]
+            },
+            {
+                baseTerm: "organelle",
+                variations: ["organelle", "organelles", "organels", "organells"]
+            },
+            {
+                baseTerm: "alpha glucose",
+                variations: ["alpha glucose", "alpha-glucose", "a-glucose", "alfa glucose", "alpha d glucose", "α glucose"]
+            },
+            {
+                baseTerm: "beta glucose",
+                variations: ["beta glucose", "beta-glucose", "b-glucose", "beta d glucose", "β glucose"]
+            },
+            {
+                baseTerm: "monosaccharide",
+                variations: ["monosaccharide", "monosacharide", "simple sugar", "single sugar"]
+            },
+            {
+                baseTerm: "disaccharide",
+                variations: ["disaccharide", "dissaccharide", "double sugar", "two sugars"]
+            },
+            {
+                baseTerm: "amylose",
+                variations: ["amylose", "amilose", "amyloze", "amylose chain"]
+            },
+            {
+                baseTerm: "amylopectin",
+                variations: ["amylopectin", "amylo-pectin", "amilopectin", "amylopectin branch"]
+            },
+            {
+                baseTerm: "unbranched",
+                variations: ["unbranched", "non-branched", "linear", "straight chain", "not branched"]
+            },
+            {
+                baseTerm: "branched",
+                variations: ["branched", "somewhat branched", "branching", "branches", "branch points"]
+            },
+            {
+                baseTerm: "glycogen",
+                variations: ["glycogen", "glicogen", "glychogen", "animal starch"]
+            },
+            {
+                baseTerm: "extensively branched",
+                variations: ["extensively branched", "highly branched", "heavily branched", "many branches", "dense branching"]
+            },
+            {
+                baseTerm: "muscle tissue",
+                variations: ["muscle", "muscle tissue", "skeletal muscle", "muscle cell", "muscles"]
+            },
+            {
+                baseTerm: "storage",
+                variations: ["storage", "store", "storing", "reserve", "energy storage", "stored"]
+            },
+            {
+                baseTerm: "cell wall",
+                variations: ["cell wall", "plant cell wall", "cellular wall"]
+            },
+            {
+                baseTerm: "cellulose",
+                variations: ["cellulose", "celulose", "celluloze"]
+            },
+            {
+                baseTerm: "microfibril",
+                variations: ["microfibril", "microfibrils", "micro-fibrils", "cellulose microfibrils", "fibrils"]
+            },
+            {
+                baseTerm: "glycosidic linkage",
+                variations: ["glycosidic linkage", "glycosidic bond", "glucosidic bond", "glycosidic link", "glycosidic"]
+            },
+            {
+                baseTerm: "1-4 glycosidic",
+                variations: ["1-4 glycosidic", "1,4-glycosidic", "1-4 linkage", "1-4 bond", "alpha 1-4", "α1-4"]
+            },
+            {
+                baseTerm: "hydrogen bonding",
+                variations: ["hydrogen bonding", "hydrogen bonds", "h-bonds", "h-bonding", "hydrogen bond"]
+            },
+            {
+                baseTerm: "hydrolysis",
+                variations: ["hydrolysis", "hydrolisis", "hydrolyze", "hydrolyses"]
+            },
+            {
+                baseTerm: "dehydration synthesis",
+                variations: ["dehydration", "condensation", "dehydration synthesis", "condensation reaction"]
+            },
+            {
+                baseTerm: "parenchyma",
+                variations: ["parenchyma", "perenchyma", "parenchymal"]
+            }
         ];
 
-        const additionalBioTerms = [
-            // General Biology & Cell Anatomy
-            "organism", "organ", "membrane", "nucleus", "mitochondria",
-            "chloroplast", "ribosome", "enzyme", "protein", "lipid",
-            "carbohydrate", "nucleic", "acid", "dna", "rna", "atp",
-            "metabolism", "photosynthesis", "respiration", "vacuole",
-            "lysosome", "endoplasmic", "reticulum", "golgi", "apparatus",
-            "cytoskeleton", "microtubules", "filaments", "xylem", "phloem", "vesicles",
-
-            // Variations & Common Student Phrasings
-            "alpha-d-glucose", "beta-d-glucose", "alfa glucose", "simple sugar",
-            "complex carb", "amylo-pectin", "amilopectin", "amyloze", "amilose",
-            "glicogen", "animal starch", "cellulose microfibrils", "micro-fibrils",
-            "celulose", "celluloze", "glycosidic bond", "glucosidic bond",
-            "glycosidic link", "h-bonds", "h-bonding", "hydrogen bonding",
-            "1,4-glycosidic", "1-4 linkage", "1-4 bond", "dehydration synthesis",
-            "condensation", "hydrolisis", "water-splitting", "hexose",
-            "six-sided", "non-branched", "linear chain", "cross-linked",
-            "starch grains", "energy storage", "reserve", "perenchyma"
+        // Additional biological concepts that might be used
+        const additionalTermGroups = [
+            {
+                baseTerm: "chloroplast",
+                variations: ["chloroplast", "chloroplasts"]
+            },
+            {
+                baseTerm: "mitochondria",
+                variations: ["mitochondria", "mitochondrion", "mitochondrial"]
+            },
+            {
+                baseTerm: "enzyme",
+                variations: ["enzyme", "enzymes", "enzymatic"]
+            },
+            {
+                baseTerm: "protein",
+                variations: ["protein", "proteins"]
+            },
+            {
+                baseTerm: "carbohydrate",
+                variations: ["carbohydrate", "carbohydrates", "carbs"]
+            },
+            {
+                baseTerm: "photosynthesis",
+                variations: ["photosynthesis", "photosynthetic"]
+            },
+            {
+                baseTerm: "respiration",
+                variations: ["respiration", "respiratory", "cellular respiration"]
+            }
         ];
 
         // Multiple Choice Questions Data
@@ -704,6 +824,7 @@
         const scoreDisplay = document.getElementById('scoreDisplay');
         const scoreValue = document.getElementById('scoreValue');
         const questionsContainer = document.getElementById('questionsContainer');
+        const combinedTextInfo = document.getElementById('combinedTextInfo');
 
         // Speech Recognition
         let recognition;
@@ -809,11 +930,6 @@
                 pauseButton.style.display = 'none';
                 stopButton.style.display = 'none';
                 statusIndicator.style.display = 'none';
-                
-                // Process the transcript
-                if (finalTranscript.trim().length > 0) {
-                    processTranscript(finalTranscript);
-                }
             }
         }
 
@@ -839,114 +955,218 @@
             highlightedText.style.display = 'none';
             glossaryBox.style.display = 'none';
             scoreDisplay.style.display = 'none';
+            combinedTextInfo.style.display = 'none';
+        }
+
+        // Get combined text from both voice recording and manual input
+        function getCombinedText() {
+            const voiceText = finalTranscript.trim();
+            const typedText = manualInput.value.trim();
+            
+            let combined = '';
+            let sources = [];
+            
+            if (voiceText && typedText) {
+                combined = `${voiceText} ${typedText}`;
+                sources = ['voice recording', 'typed input'];
+            } else if (voiceText) {
+                combined = voiceText;
+                sources = ['voice recording'];
+            } else if (typedText) {
+                combined = typedText;
+                sources = ['typed input'];
+            }
+            
+            return {
+                text: combined,
+                sources: sources
+            };
         }
 
         // Process transcript/text input
-        function processTranscript(text) {
-            const userText = text.trim();
-
-            if (userText.length === 0) {
-                alert("Please provide a narrative to analyze.");
+        function processTranscript() {
+            const combined = getCombinedText();
+            
+            if (combined.text.length === 0) {
+                alert("Please provide a narrative to analyze. You can either speak it (using the microphone) or type it in the text box.");
                 return;
             }
 
+            // Display info about combined text
+            if (combined.sources.length > 1) {
+                combinedTextInfo.innerHTML = `<strong>Note:</strong> Your analysis combines text from ${combined.sources.join(' and ')}.`;
+                combinedTextInfo.style.display = 'block';
+            } else if (combined.sources.length === 1) {
+                combinedTextInfo.innerHTML = `<strong>Note:</strong> Your analysis uses text from ${combined.sources[0]}.`;
+                combinedTextInfo.style.display = 'block';
+            }
+
             // Display the raw transcript
-            transcriptBox.textContent = userText;
+            transcriptBox.textContent = combined.text;
 
             // Analyze the text
-            analyzeText(userText);
+            analyzeText(combined.text);
         }
 
-        // Analyze text for biological terms
-        function analyzeText(text) {
-            // Convert to lowercase for comparison
+        // Check if text contains any variation of a term
+        function containsTermVariation(text, variations) {
             const textLower = text.toLowerCase();
+            
+            for (const variation of variations) {
+                // Escape special regex characters in the variation
+                const escapedVariation = variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                // Use word boundary regex to match whole words
+                const regex = new RegExp(`\\b${escapedVariation}\\b`, 'i');
+                if (regex.test(textLower)) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-            // Find matches for example terms
-            const foundExampleTerms = [];
-            const missedExampleTerms = [];
-
-            exampleTerms.forEach(term => {
-                // Create regex to find the term as a whole word
-                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+        // Find all variations of a term in text
+        function findTermVariations(text, variations) {
+            const foundVariations = [];
+            const textLower = text.toLowerCase();
+            
+            for (const variation of variations) {
+                const escapedVariation = variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`\\b${escapedVariation}\\b`, 'gi');
                 const matches = text.match(regex);
+                
+                if (matches) {
+                    foundVariations.push({
+                        variation: variation,
+                        matches: matches
+                    });
+                }
+            }
+            
+            return foundVariations;
+        }
 
-                if (matches && matches.length > 0) {
-                    foundExampleTerms.push({
-                        term: term,
-                        count: matches.length
+        // Analyze text for biological terms using grouped concepts
+        function analyzeText(text) {
+            const textLower = text.toLowerCase();
+            
+            // Track found and missed concepts
+            const foundConcepts = [];
+            const missedConcepts = [];
+            
+            // Track found variations for highlighting
+            const foundVariationsMap = new Map();
+            
+            // Check each concept group
+            termGroups.forEach(group => {
+                const foundVariations = findTermVariations(text, group.variations);
+                
+                if (foundVariations.length > 0) {
+                    foundConcepts.push({
+                        baseTerm: group.baseTerm,
+                        variations: foundVariations
+                    });
+                    
+                    // Store variations for highlighting
+                    foundVariations.forEach(fv => {
+                        fv.matches.forEach(match => {
+                            if (!foundVariationsMap.has(match.toLowerCase())) {
+                                foundVariationsMap.set(match.toLowerCase(), {
+                                    baseTerm: group.baseTerm,
+                                    variation: fv.variation
+                                });
+                            }
+                        });
                     });
                 } else {
-                    missedExampleTerms.push(term);
+                    missedConcepts.push(group.baseTerm);
                 }
             });
-
-            // Find additional biological terms
-            const foundAdditionalTerms = [];
-
-            additionalBioTerms.forEach(term => {
-                // Skip if already in example terms
-                if (exampleTerms.includes(term.toLowerCase())) return;
-
-                const regex = new RegExp(`\\b${term}\\b`, 'gi');
-                const matches = text.match(regex);
-
-                if (matches && matches.length > 0) {
-                    foundAdditionalTerms.push({
-                        term: term,
-                        count: matches.length
+            
+            // Check additional concepts
+            const foundAdditionalConcepts = [];
+            additionalTermGroups.forEach(group => {
+                const foundVariations = findTermVariations(text, group.variations);
+                
+                if (foundVariations.length > 0) {
+                    foundAdditionalConcepts.push({
+                        baseTerm: group.baseTerm,
+                        variations: foundVariations
+                    });
+                    
+                    // Store variations for highlighting
+                    foundVariations.forEach(fv => {
+                        fv.matches.forEach(match => {
+                            if (!foundVariationsMap.has(match.toLowerCase())) {
+                                foundVariationsMap.set(match.toLowerCase(), {
+                                    baseTerm: group.baseTerm,
+                                    variation: fv.variation,
+                                    isAdditional: true
+                                });
+                            }
+                        });
                     });
                 }
             });
-
+            
             // Create highlighted text
             let highlightedHTML = text;
-
-            // First, highlight additional terms (amber)
-            foundAdditionalTerms.forEach(item => {
-                const regex = new RegExp(`\\b${item.term}\\b`, 'gi');
-                highlightedHTML = highlightedHTML.replace(regex,
-                    `<span class="highlight-amber">$&</span>`);
+            
+            // Sort variations by length (longer first) to avoid partial matches
+            const sortedVariations = Array.from(foundVariationsMap.entries())
+                .sort((a, b) => b[0].length - a[0].length);
+            
+            // First highlight additional terms (amber)
+            sortedVariations.forEach(([matchedText, data]) => {
+                if (data.isAdditional) {
+                    const escapedText = matchedText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\b${escapedText}\\b`, 'gi');
+                    highlightedHTML = highlightedHTML.replace(regex, 
+                        `<span class="highlight-amber">$&</span>`);
+                }
             });
-
-            // Then highlight example terms (green) - will override amber if overlap
-            foundExampleTerms.forEach(item => {
-                const regex = new RegExp(`\\b${item.term}\\b`, 'gi');
-                highlightedHTML = highlightedHTML.replace(regex,
-                    `<span class="highlight-green">$&</span>`);
+            
+            // Then highlight main concepts (green) - will override amber if overlap
+            sortedVariations.forEach(([matchedText, data]) => {
+                if (!data.isAdditional) {
+                    const escapedText = matchedText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\b${escapedText}\\b`, 'gi');
+                    highlightedHTML = highlightedHTML.replace(regex, 
+                        `<span class="highlight-green">$&</span>`);
+                }
             });
-
+            
             // Display highlighted text
             highlightedText.innerHTML = highlightedHTML;
             highlightedText.style.display = 'block';
 
-            // Display glossary of missed terms
-            if (missedExampleTerms.length > 0) {
-                let glossaryHTML = `<h3 class="glossary-title">Key Biological Terms You Missed</h3>`;
-                glossaryHTML += `<p>These terms were in the example analysis but not in your narrative:</p>`;
+            // Display glossary of missed concepts
+            if (missedConcepts.length > 0) {
+                let glossaryHTML = `<h3 class="glossary-title">Key Biological Concepts You Missed</h3>`;
+                glossaryHTML += `<p>These biological concepts were in the example analysis but not in your narrative:</p>`;
                 glossaryHTML += `<div style="column-count: 2; margin-top: 10px;">`;
 
-                missedExampleTerms.forEach(term => {
-                    glossaryHTML += `<div class="glossary-item" style="color: var(--uwp-purple);">• ${term}</div>`;
+                missedConcepts.forEach(concept => {
+                    glossaryHTML += `<div class="glossary-item" style="color: var(--uwp-purple);">• ${concept}</div>`;
                 });
 
                 glossaryHTML += `</div>`;
                 glossaryBox.innerHTML = glossaryHTML;
                 glossaryBox.style.display = 'block';
             } else {
-                glossaryBox.innerHTML = `<h3 class="glossary-title">Excellent!</h3><p>You included all key biological terms from the example analysis.</p>`;
+                glossaryBox.innerHTML = `<h3 class="glossary-title">Excellent!</h3><p>You included all key biological concepts from the example analysis.</p>`;
                 glossaryBox.style.display = 'block';
             }
 
-            // Calculate score
-            const totalBioTerms = foundExampleTerms.length + foundAdditionalTerms.length;
-            scoreValue.textContent = totalBioTerms;
+            // Calculate score - count unique concepts, not individual words
+            const totalConcepts = foundConcepts.length + foundAdditionalConcepts.length;
+            scoreValue.textContent = totalConcepts;
 
             // Update analysis result
             analysisResult.innerHTML = `
                 <p><strong>Analysis Complete:</strong></p>
-                <p>Found <span class="highlight-green">${foundExampleTerms.length} key biological terms</span> from the example analysis.</p>
-                <p>Found <span class="highlight-amber">${foundAdditionalTerms.length} additional biological terms</span>.</p>
+                <p>Found <span class="highlight-green">${foundConcepts.length} key biological concepts</span> from the example analysis.</p>
+                <p>Found <span class="highlight-amber">${foundAdditionalConcepts.length} additional biological concepts</span>.</p>
+                <p><em>Note: Variations of the same concept (e.g., "granule" and "granules") are grouped together.</em></p>
             `;
 
             // Show score display
@@ -1019,16 +1239,14 @@
             // Reset button
             resetButton.addEventListener('click', resetRecording);
 
-            // Submit text button
-            submitText.addEventListener('click', function () {
-                processTranscript(manualInput.value);
-            });
+            // Submit text button - now combines both inputs
+            submitText.addEventListener('click', processTranscript);
 
             // Allow Enter key in textarea (but with Shift+Enter for new line)
             manualInput.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    submitText.click();
+                    processTranscript();
                 }
             });
 
