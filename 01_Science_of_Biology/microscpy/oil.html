@@ -438,11 +438,14 @@
             font-size: 1.3rem;
             color: #00adb5;
             font-weight: 600;
-            display: none;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .score-display.show {
-            display: block;
+            visibility: visible;
+            opacity: 1;
         }
 
         .instructions {
@@ -623,7 +626,7 @@
                 <div class="question-text" id="question-text">Loading question...</div>
 
                 <div class="options-container" id="options-container"></div>
-                
+
                 <div id="true-false-container" style="display: none;" class="true-false-container">
                     <button class="true-false-btn" id="true-btn">TRUE</button>
                     <button class="true-false-btn" id="false-btn">FALSE</button>
@@ -932,7 +935,7 @@
             fillInAnswerElement.value = '';
             submitButton.disabled = false;
             submitButton.textContent = 'Submit Answer';
-            
+
             // Reset true/false buttons
             trueButton.classList.remove('selected');
             falseButton.classList.remove('selected');
@@ -1058,7 +1061,7 @@
                 if (!isPlaying && currentQuestionIndex < quizData.length - 1) {
                     videoElement.play();
                 }
-            }, 2000);
+            }, 500);
         }
 
         function showFeedback(isCorrect) {
