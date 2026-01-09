@@ -1,895 +1,964 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <title>Microscope Video Quiz</title>
-  <style>
-    .player-container {
-      max-width: 800px;
-      margin: 20px auto;
-      background: #f5f5f5;
-      padding: 20px;
-      border-radius: 10px;
-      font-family: Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microscope Anatomy Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    video {
-      width: 100%;
-      border-radius: 5px;
-      background: #000;
-    }
+        body {
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            line-height: 1.6;
+        }
 
-    .control-bar {
-      display: flex;
-      gap: 10px;
-      margin: 15px 0;
-      flex-wrap: wrap;
-    }
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            background-color: #16213e;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
 
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
+        header {
+            background: linear-gradient(135deg, #0f3460 0%, #1a5f7a 100%);
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            border-bottom: 5px solid #00adb5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    .btn-play {
-      background: #2ecc71;
-      color: white;
-    }
+        .header-left {
+            flex: 1;
+            text-align: left;
+        }
 
-    .btn-stop {
-      background: #e74c3c;
-      color: white;
-    }
+        .header-center {
+            flex: 2;
+            text-align: center;
+        }
 
-    .btn-time {
-      background: #3498db;
-      color: white;
-    }
+        .header-right {
+            flex: 1;
+            text-align: right;
+        }
 
-    .btn:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
 
-    .progress-container {
-      margin: 15px 0;
-    }
+        .back-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
 
-    .progress-bar {
-      width: 100%;
-      height: 10px;
-      background: #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-      cursor: pointer;
-    }
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
 
-    .progress-fill {
-      height: 100%;
-      background: #2ecc71;
-      width: 0%;
-      transition: width 0.3s;
-    }
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
 
-    .time-display {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-      color: #666;
-      margin-top: 5px;
-    }
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+            gap: 25px;
+        }
 
-    /* Quiz Container Styles */
-    .quiz-container {
-      display: none;
-      margin-top: 20px;
-      background: white;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid #3498db;
-    }
+        .microscope-section {
+            flex: 1;
+            min-width: 500px;
+            background-color: #0f3460;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
-    .quiz-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
+        .game-section {
+            flex: 1;
+            min-width: 400px;
+            background-color: #0f3460;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
-    .question-number {
-      background: #3498db;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 14px;
-    }
+        .microscope-container {
+            position: relative;
+            border-radius: 10px;
+            background-color: #000;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
 
-    .question-text {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
+        .microscope-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
 
-    .options-container {
-      margin-bottom: 20px;
-    }
+        .hotspots-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
 
-    .option {
-      padding: 12px 15px;
-      margin: 8px 0;
-      background: #f8f9fa;
-      border: 2px solid #e9ecef;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+        .hotspot {
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.3s ease;
+        }
 
-    .option:hover {
-      background: #e9ecef;
-      border-color: #3498db;
-    }
+        .hotspot text {
+            font-size: 24px;
+            font-weight: bold;
+            fill: #fff;
+            stroke: #1a1a2e;
+            stroke-width: 2px;
+        }
 
-    .option.selected {
-      background: #e3f2fd;
-      border-color: #3498db;
-      font-weight: bold;
-    }
+        .hotspot path {
+            stroke: #00adb5;
+            stroke-width: 4;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
 
-    .option.correct {
-      background: #d4edda;
-      border-color: #28a745;
-      color: #155724;
-    }
+        .hotspot ellipse,
+        .hotspot polygon {
+            fill: rgba(0, 173, 181, 0.2);
+            stroke: #00adb5;
+            stroke-width: 2;
+        }
 
-    .option.incorrect {
-      background: #f8d7da;
-      border-color: #dc3545;
-      color: #721c24;
-    }
+        .hotspot:hover ellipse,
+        .hotspot:hover polygon {
+            fill: rgba(0, 173, 181, 0.4);
+            stroke: #4fd8e0;
+        }
 
-    .quiz-controls {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
+        .hotspot.correct ellipse,
+        .hotspot.correct polygon {
+            fill: rgba(76, 175, 80, 0.3);
+            stroke: #4CAF50;
+        }
 
-    .btn-submit {
-      background: #28a745;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+        .hotspot.incorrect ellipse,
+        .hotspot.incorrect polygon {
+            fill: rgba(244, 67, 54, 0.3);
+            stroke: #f44336;
+        }
 
-    .btn-continue {
-      background: #3498db;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
 
-    .feedback {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 5px;
-      display: none;
-    }
+        .game-btn {
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            min-width: 140px;
+            justify-content: center;
+        }
 
-    .feedback.correct {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
+        .game-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
-    .feedback.incorrect {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
+        #explore-btn {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        }
 
-    .explanation {
-      margin-top: 10px;
-      font-style: italic;
-      color: #666;
-    }
+        #quiz-btn {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+        }
 
-    .short-answer-input {
-      width: 100%;
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-      margin: 10px 0;
-    }
+        #reset-btn {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
 
-    .score-display {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #3498db;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-weight: bold;
-    }
+        .game-info {
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #00adb5;
+        }
 
-    .quiz-progress {
-      margin: 10px 0;
-      font-size: 14px;
-      color: #666;
-    }
+        .score-display {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #00adb5;
+            margin-bottom: 15px;
+            text-align: center;
+        }
 
-    /* Question markers on timeline */
-    .question-marker {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: #e74c3c;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      top: -3px;
-      cursor: pointer;
-    }
+        .current-task {
+            font-size: 1.1rem;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
 
-    .question-marker.answered {
-      background: #2ecc71;
-    }
-  </style>
-<style>
-.bios-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #016836;
-  border-bottom: 2px solid #FFD100;
-}
-.bios-nav-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 4px 8px;
-}
-.bios-home {
-  color: white;
-  font-weight: 700;
-  text-decoration: none;
-  letter-spacing: .5px;
-}
-.bios-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-.bios-menus {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.bios-menu { position: relative; }
-.bios-trigger {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 2px 4px;
-}
-.bios-trigger.active {
-  border-bottom: 2px solid #FFD100;
-}
-.bios-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  border: 1px solid #ccc;
-  min-width: 160px;
-  z-index: 1001;
-}
-.bios-dropdown a {
-  display: block;
-  padding: 6px 10px;
-  color: #212721;
-  text-decoration: none;
-}
-.bios-dropdown a:hover {
-  background: #EFECE2;
-}
-.bios-menu:hover .bios-dropdown,
-.bios-menu:focus-within .bios-dropdown {
-  display: block;
-}
-@media (max-width: 768px) {
-  .bios-toggle { display: block; }
-  .bios-menus {
-    display: none;
-    flex-direction: column;
-    background: #016836;
-    width: 100%;
-  }
-  .bios-menus.open { display: flex; }
-  .bios-dropdown {
-    position: static;
-    border: none;
-  }
-}
-</style>
+        .mode-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .mode-explore {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .mode-quiz {
+            background-color: #FF9800;
+            color: white;
+        }
+
+        .parts-list {
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .parts-list h4 {
+            color: #00adb5;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #2d4059;
+            padding-bottom: 10px;
+        }
+
+        #partsList {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 1100px) {
+            #partsList {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .part-item {
+            background-color: #0f3460;
+            border-radius: 6px;
+            padding: 12px;
+            border-left: 4px solid #2d4059;
+            transition: all 0.3s ease;
+        }
+
+        .part-item.found {
+            border-left-color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .part-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .part-description {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            line-height: 1.4;
+        }
+
+        .completion-message {
+            background: linear-gradient(135deg, #4CAF50 0%, #2e7d32 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .completion-message.show {
+            display: block;
+        }
+
+        .instructions {
+            background-color: #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #00adb5;
+        }
+
+        .instructions h4 {
+            color: #00adb5;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            color: #e6e6e6;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #2d4059;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #00adb5;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .game-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #00adb5;
+        }
+
+        .parts-counter {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #00adb5;
+        }
+
+        .total-parts {
+            background-color: #1a5f7a;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .microscope-section,
+            .game-section {
+                min-width: 100%;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .game-btn {
+                min-width: 120px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .header-left,
+            .header-center,
+            .header-right {
+                text-align: center;
+                width: 100%;
+            }
+        }
+
+        .bios-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #016836;
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px;
+        }
+
+        .bios-home {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+        }
+
+        .bios-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .bios-menus {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bios-menu {
+            position: relative;
+        }
+
+        .bios-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        .bios-trigger.active {
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            z-index: 1001;
+        }
+
+        .bios-dropdown a {
+            display: block;
+            padding: 6px 10px;
+            color: #212721;
+            text-decoration: none;
+        }
+
+        .bios-dropdown a:hover {
+            background: #EFECE2;
+        }
+
+        .bios-menu:hover .bios-dropdown,
+        .bios-menu:focus-within .bios-dropdown {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .bios-toggle {
+                display: block;
+            }
+
+            .bios-menus {
+                display: none;
+                flex-direction: column;
+                background: #016836;
+                width: 100%;
+            }
+
+            .bios-menus.open {
+                display: flex;
+            }
+
+            .bios-dropdown {
+                position: static;
+                border: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-<nav class="bios-nav">
-  <div class="bios-nav-inner">
-    <a href="../index.html" class="bios-home">BIOS101</a>
-    <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
-    <div class="bios-menus" id="biosMenus"></div>
-  </div>
-</nav>
-  <div class="score-display">
-    Score: <span id="score">0</span> / <span id="totalPoints">0</span>
-  </div>
-
-  <div class="player-container">
-    <h2>Microscope Training Video Quiz</h2>
-
-    <video id="mainVideo" preload="metadata">
-      <source src="vids/Leica_CME.mp4" type="video/mp4">
-      Your browser doesn't support HTML5 video.
-    </video>
-
-    <div class="progress-container">
-      <div class="progress-bar" onclick="seekVideo(event)">
-        <div class="progress-fill" id="progressFill"></div>
-        <!-- Question markers will be added here dynamically -->
-      </div>
-      <div class="time-display">
-        <span id="currentTimeDisplay">0:00</span>
-        <span id="durationDisplay">0:00</span>
-      </div>
-      <div class="quiz-progress">
-        Questions: <span id="questionsAnswered">0</span> / <span id="totalQuestions">0</span> answered
-      </div>
-    </div>
-
-    <div class="control-bar">
-      <button class="btn btn-play" onclick="playPause()">▶ Play/Pause</button>
-      <button class="btn btn-stop" onclick="stopVideo()">⏹ Stop</button>
-      <button class="btn btn-time" onclick="skip(-10)">⏪ -10s</button>
-      <button class="btn btn-time" onclick="skip(10)">+10s ⏩</button>
-      <button class="btn btn-time" onclick="skipToNextQuestion()">Next Question →</button>
-    </div>
-
-    <!-- Quiz Container -->
-    <div id="quizContainer" class="quiz-container">
-      <div class="quiz-header">
-        <div class="question-number">Question <span id="currentQuestionNum">1</span></div>
-        <div id="questionType" style="font-size: 14px; color: #666;">Multiple Choice</div>
-      </div>
-
-      <div class="question-text" id="questionText"></div>
-
-      <div class="options-container" id="optionsContainer">
-        <!-- Options will be inserted here -->
-      </div>
-
-      <div id="shortAnswerContainer" style="display: none;">
-        <input type="text" id="shortAnswerInput" class="short-answer-input" placeholder="Type your answer here...">
-      </div>
-
-      <div id="feedback" class="feedback"></div>
-
-      <div class="quiz-controls">
-        <div id="pointsDisplay" style="font-weight: bold; color: #3498db;">
-          Points: <span id="questionPoints">0</span>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
         </div>
-        <button id="submitBtn" class="btn-submit" onclick="submitAnswer()" style="display: none;">Submit Answer</button>
-        <button id="continueBtn" class="btn-continue" onclick="continueVideo()" style="display: none;">Continue
-          Video</button>
-      </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <a href="MicroscopeMastery.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to Hub
+                </a>
+            </div>
+            <div class="header-center">
+                <h3>Microscope Anatomy</h3>
+                <p class="subtitle">Identify and Learn Microscope Components - Interactive Labeling Game</p>
+            </div>
+            <div class="header-right"></div>
+        </header>
+
+        <div class="content-wrapper">
+            <section class="microscope-section">
+                <div class="microscope-container">
+                    <img src="microscopy.png" alt="Microscope Diagram" class="microscope-img" id="microscopeImg"
+                        crossorigin="anonymous">
+
+                    <svg class="hotspots-svg" id="hotspotsSvg" viewBox="0 0 1310 1195"
+                        preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="context-stroke" />
+                            </marker>
+                        </defs>
+
+                        <!-- Ocular Lens -->
+                        <ellipse class="hotspot" data-part="ocular" cx="1120" cy="85" rx="40" ry="30" />
+
+                        <!-- Objective Lenses -->
+                        <ellipse class="hotspot" data-part="objectives" cx="500" cy="490" rx="20" ry="55"
+                            transform="rotate(35 500 490)" />
+                        <ellipse class="hotspot" data-part="objectives" cx="560" cy="540" rx="35" ry="55"
+                            transform="rotate(35 560 540)" />
+                        <ellipse class="hotspot" data-part="objectives" cx="650" cy="510" rx="35" ry="55" />
+
+                        <!-- Stage -->
+                        <polygon class="hotspot" data-part="stage" points="520,625 850,625 820,585 750,585" />
+
+                        <!-- Coarse Adjustment Knob -->
+                        <g class="hotspot" data-part="coarse">
+                            <text x="5" y="640" data-part="coarse">Inner Knob</text>
+                            <path d="M 120 650 Q 180 670 240 720" data-part="coarse" />
+                        </g>
+
+                        <!-- Fine Adjustment Knob -->
+                        <g class="hotspot" data-part="fine">
+                            <text x="20" y="940" data-part="fine">Outer Knob</text>
+                            <path d="M 90 920 Q 150 910 220 860" data-part="fine" />
+                        </g>
+                        
+                        <!-- Iris Diaphragm -->
+                        <g class="hotspot" data-part="diaphragm">
+                            <path d="M 1000 750 Q 900 790 800 740" data-part="diaphragm" />
+                        </g>
+
+                        <!-- Condenser Lens Adjustment Knob -->
+                        <g class="hotspot" data-part="condenser">
+                            <text x="710" y="900" data-part="condenser">Small Knob</text>
+                            <path d="M 700 890 Q 650 850 500 810" data-part="condenser" />
+                        </g>
+
+                        <!-- Light Adjustment Knob -->
+                        <ellipse class="hotspot" data-part="lightadj" cx="470" cy="970" rx="50" ry="30" />
+                    </svg>
+                </div>
+
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> How to Play</h4>
+                    <ul>
+                        <li><strong>Explore Mode:</strong> Click any part to learn its name and function</li>
+                        <li><strong>Quiz Mode:</strong> Identify specific parts when prompted</li>
+                        <li>Correct answers earn points and mark parts as found</li>
+                        <li>Complete all parts to finish the game</li>
+                        <li>Use Reset to start over or switch modes</li>
+                    </ul>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress" id="game-progress"></div>
+                </div>
+            </section>
+
+            <section class="game-section">
+                <div class="game-section-header">
+                    <div class="parts-counter">Parts Found: <span id="found-parts">0</span> of <span id="total-parts">8</span></div>
+                    <div class="total-parts">8 parts</div>
+                </div>
+
+                <div class="game-controls">
+                    <button class="game-btn" id="explore-btn">
+                        <i class="fas fa-search"></i> Explore Mode
+                    </button>
+                    <button class="game-btn" id="quiz-btn">
+                        <i class="fas fa-question-circle"></i> Quiz Mode
+                    </button>
+                    <button class="game-btn" id="reset-btn">
+                        <i class="fas fa-redo"></i> Reset Game
+                    </button>
+                </div>
+
+                <div class="game-info">
+                    <div class="score-display">Score: <span id="score">0</span> / 8</div>
+                    <div class="current-task" id="currentTask">
+                        Select a game mode to begin!
+                    </div>
+                </div>
+
+                <div class="parts-list">
+                    <h4><i class="fas fa-list"></i> Microscope Parts</h4>
+                    <div id="partsList"></div>
+                </div>
+
+                <div class="completion-message" id="completionMessage">
+                    <i class="fas fa-trophy" style="font-size: 2rem; margin-bottom: 10px;"></i><br>
+                    🎉 Congratulations! You've mastered the microscope anatomy!<br>
+                    <span style="font-size: 1rem; opacity: 0.9;">Perfect Score: 8/8</span>
+                </div>
+            </section>
+        </div>
     </div>
 
-    <!-- Quiz Summary (shown at end) -->
-    <div id="quizSummary"
-      style="display: none; margin-top: 20px; background: white; padding: 20px; border-radius: 5px;">
-      <h3>Quiz Complete!</h3>
-      <p>Final Score: <span id="finalScore">0</span> / <span id="maxScore">0</span></p>
-      <p id="percentageScore" style="font-size: 24px; font-weight: bold; color: #28a745;"></p>
-      <button onclick="location.reload()" class="btn" style="background: #3498db; color: white;">Restart Quiz</button>
-    </div>
-  </div>
+    <script>
+        const parts = {
+            ocular: {
+                name: "Ocular Lens (Eyepiece)",
+                description: "The lens at the top that you look through. Magnifies by 10×."
+            },
+            objectives: {
+                name: "Objective Lenses",
+                description: "Set of lenses providing bulk magnification (e.g., 4×, 10×, & 40× lenses)."
+            },
+            stage: {
+                name: "Stage",
+                description: "Flat platform where the slide/specimen is placed for viewing."
+            },
+            coarse: {
+                name: "Coarse Adjustment Knob",
+                description: "Larger knob that moves the stage dramatically for approximate focus."
+            },
+            fine: {
+                name: "Fine Adjustment Knob",
+                description: "Smaller knob for precise adjustments to achieve sharp focus."
+            },
+            diaphragm: {
+                name: "Iris Diaphragm",
+                description: "Controls the amount of light passing through the specimen for contrast."
+            },
+            condenser: {
+                name: "Condenser Lens Adjustment Knob",
+                description: "Focuses and concentrates light onto the specimen to improve image clarity, resolution, and contrast."
+            },
+            lightadj: {
+                name: "Light Adjustment Knob",
+                description: "Controls the intensity/brightness of the light source."
+            }
+        };
 
-  <script>
-    // Quiz data from CSV
-    const quizData = [
-      { timestamp: "00:00:28", type: "Multiple Choice", question: "When retrieving a microscope from the cabinet, how should you carry it?", options: ["With one hand on the arm", "With both hands - one on the arm and one under the base", "With both hands on the base", "By the ocular lenses"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:00:34", type: "True/False", question: "If the microscope is too heavy to carry safely, you should ask for assistance.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
-      { timestamp: "00:00:38", type: "Multiple Choice", question: "Where is the power cord located on the microscope?", options: ["On the side of the microscope", "Under the base", "On the back of the microscope", "Attached to the stage"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:00:46", type: "Multiple Choice", question: "Where is the on/off switch located?", options: ["On the front of the microscope", "Under the base", "On the back of the scope", "On the stage"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:00:55", type: "Short Answer", question: "What number should line up with the white line on the ocular lenses during setup?", options: [], correctAnswer: "64", points: 2, explanation: "" },
-      { timestamp: "00:00:59", type: "Multiple Choice", question: "Where should the condenser lens be positioned during initial setup?", options: ["Above the stage", "Just below the stage", "At its lowest position", "Removed from the microscope"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:01:06", type: "Multiple Choice", question: "During initial setup, which objective lens should be in place?", options: ["Low power (4X)", "Medium power (10X)", "High power (40X)", "Any lens is fine"], correctAnswer: "A", points: 1, explanation: "" },
-      { timestamp: "00:01:10", type: "Multiple Choice", question: "What position should the stage be in during initial setup?", options: ["Lowest position", "Middle position", "Highest position", "It doesn't matter"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:01:19", type: "True/False", question: "The brightest light always results in the best image.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:01:42", type: "Multiple Choice", question: "Which knobs are used to center the specimen over the condenser lens?", options: ["Knobs on the upper left side", "Knobs on the lower right side of the stage", "Focus knobs on the arm", "Knobs under the base"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:01:49", type: "Multiple Choice", question: "Which objective lens should you start with when viewing a specimen?", options: ["40X (highest power)", "10X (medium power)", "4X (low power)", "It doesn't matter"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:02:03", type: "True/False", question: "You should center the specimen in the field of view before moving to the next highest objective lens.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
-      { timestamp: "00:02:18", type: "Multiple Choice", question: "When moving to higher magnification, which focus knob should you primarily use?", options: ["The large coarse-focus knob", "The smaller fine-focus knob", "Both knobs equally", "No focusing is needed"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:02:21", type: "Multiple Choice", question: "What is the correct first lens in the viewing sequence?", options: ["4X (low power)", "10X (medium power)", "40X (high power)", "100X (oil immersion)"], correctAnswer: "A", points: 1, explanation: "" },
-      { timestamp: "00:02:21", type: "Multiple Choice", question: "What is the correct second lens in the viewing sequence?", options: ["4X (low power)", "10X (medium power)", "40X (high power)", "100X (oil immersion)"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:02:21", type: "Multiple Choice", question: "What is the correct third lens in the viewing sequence?", options: ["4X (low power)", "10X (medium power)", "40X (high power)", "100X (oil immersion)"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:02:34", type: "Short Answer", question: "If your slide doesn't move when you turn the knobs, what two things should you check? (Separate with semicolon)", options: [], correctAnswer: "Using the right knobs; The slide is clipped in place properly", points: 2, explanation: "" },
-      { timestamp: "00:02:53", type: "Multiple Choice", question: "If you're having trouble finding the specimen, what should you do first?", options: ["Make sure the specimen is centered", "Start over at the lowest power", "Move the stage back to its highest position", "All of the above"], correctAnswer: "D", points: 1, explanation: "" },
-      { timestamp: "00:03:02", type: "Multiple Choice", question: "When focusing, why should you move the slide back and forth slightly with the slide holder knobs?", options: ["It cleans the slide", "Your eyes can see motion better than stationary objects", "It adjusts the light", "It centers the condenser"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:03:09", type: "Multiple Choice", question: "When observing unstained specimens, what should you do to improve visibility?", options: ["Increase light to maximum", "Use the stage diaphragm to reduce light", "Remove the condenser lens", "Switch to 40X immediately"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:03:28", type: "True/False", question: "If the specimen becomes blurry like it's coated with Vaseline at higher power, you may need to clean the lens.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
-      { timestamp: "00:03:32", type: "Multiple Choice", question: "What should you use to clean microscope lenses?", options: ["Regular tissue paper", "Your shirt", "Lens paper soaked with lens cleaner", "Paper towels"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:03:41", type: "Short Answer", question: "List the lens cleaning procedure steps in order. (Separate with semicolon)", options: [], correctAnswer: "Soak lens paper with lens cleaner; Wipe the lens; Wipe dry with clean lens paper; Repeat a couple of times", points: 3, explanation: "" },
-      { timestamp: "00:03:53", type: "Multiple Choice", question: "During cleanup, which lens should be rotated into place?", options: ["The highest power lens", "The lowest power lens", "The medium power lens", "No lens"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:03:58", type: "Multiple Choice", question: "Where should the slide holder be positioned during cleanup?", options: ["To the right", "To the left", "Centered", "Removed"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:04:00", type: "True/False", question: "You should check that the stage is clean and dry before putting the microscope away.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
-      { timestamp: "00:04:04", type: "Multiple Choice", question: "What should you do with the light and power during cleanup?", options: ["Turn off the light only", "Turn off the power only", "Turn off both light and power", "Leave them on for the next person"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:04:04", type: "Multiple Choice", question: "What should you do with the power cord during cleanup?", options: ["Leave it plugged in", "Wrap the cord", "Remove it from the microscope", "Let it hang loose"], correctAnswer: "B", points: 1, explanation: "" },
-      { timestamp: "00:04:13", type: "Multiple Choice", question: "When returning the microscope to the cabinet, which direction should the arm face?", options: ["Toward the back", "To the side", "Facing out", "It doesn't matter"], correctAnswer: "C", points: 1, explanation: "" },
-      { timestamp: "00:04:15", type: "True/False", question: "Microscopes should be crowded together in the cabinet to save space.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "" }
-    ];
+        let gameMode = null;
+        let score = 0;
+        let foundParts = new Set();
+        let currentQuizPart = null;
+        let quizOrder = [];
 
-    // Convert timestamp to seconds
-    function timestampToSeconds(timestamp) {
-      const parts = timestamp.split(':');
-      if (parts.length === 3) {
-        return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
-      } else if (parts.length === 2) {
-        return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-      }
-      return parseInt(timestamp);
-    }
+        const microscopeImg = document.getElementById('microscopeImg');
+        const hotspotsSvg = document.getElementById('hotspotsSvg');
+        const scoreElement = document.getElementById('score');
+        const foundPartsElement = document.getElementById('found-parts');
+        const totalPartsElement = document.getElementById('total-parts');
+        const currentTaskElement = document.getElementById('currentTask');
+        const exploreBtn = document.getElementById('explore-btn');
+        const quizBtn = document.getElementById('quiz-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const completionMessage = document.getElementById('completionMessage');
+        const gameProgressElement = document.getElementById('game-progress');
 
-    // Add time in seconds to each question
-    quizData.forEach((q, index) => {
-      q.timeInSeconds = timestampToSeconds(q.timestamp);
-      q.id = index + 1;
-      q.answered = false;
-      q.userAnswer = null;
-      q.correct = false;
-    });
-
-    // Sort by timestamp
-    quizData.sort((a, b) => a.timeInSeconds - b.timeInSeconds);
-
-    const video = document.getElementById('mainVideo');
-    const progressFill = document.getElementById('progressFill');
-    const currentTimeDisplay = document.getElementById('currentTimeDisplay');
-    const durationDisplay = document.getElementById('durationDisplay');
-    const progressBar = document.querySelector('.progress-bar');
-
-    let currentQuestionIndex = -1;
-    let score = 0;
-    let totalPoints = 0;
-    let quizActive = false;
-
-    // Initialize
-    video.addEventListener('loadedmetadata', function () {
-      updateDisplay();
-      createQuestionMarkers();
-      updateScoreDisplay();
-    });
-
-    video.addEventListener('timeupdate', function () {
-      updateDisplay();
-      checkForQuestions();
-    });
-
-    video.addEventListener('ended', function () {
-      showQuizSummary();
-    });
-
-    // Format time
-    function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs.toString().padStart(2, '0')}`;
-    }
-
-    // Update progress and time display
-    function updateDisplay() {
-      if (video.duration) {
-        const progress = (video.currentTime / video.duration) * 100;
-        progressFill.style.width = `${progress}%`;
-        currentTimeDisplay.textContent = formatTime(video.currentTime);
-        durationDisplay.textContent = formatTime(video.duration);
-      }
-    }
-
-    // Create question markers on progress bar
-    function createQuestionMarkers() {
-      quizData.forEach(question => {
-        if (video.duration) {
-          const position = (question.timeInSeconds / video.duration) * 100;
-          const marker = document.createElement('div');
-          marker.className = 'question-marker';
-          marker.style.left = `${position}%`;
-          marker.title = `Question ${question.id} at ${question.timestamp}`;
-          marker.onclick = () => {
-            video.currentTime = question.timeInSeconds;
-            video.play();
-          };
-          progressBar.appendChild(marker);
+        function initGame() {
+            renderPartsList();
+            setupHotspots();
+            totalPartsElement.textContent = Object.keys(parts).length;
+            updateProgress();
+            
+            exploreBtn.addEventListener('click', () => setMode('explore'));
+            quizBtn.addEventListener('click', () => setMode('quiz'));
+            resetBtn.addEventListener('click', resetGame);
         }
-      });
-    }
 
-    // Check if video reached a question
-    function checkForQuestions() {
-      if (quizActive) return;
+        function renderPartsList() {
+            const listContainer = document.getElementById('partsList');
+            listContainer.innerHTML = '';
 
-      const currentTime = video.currentTime;
-
-      // Find the next unanswered question
-      const nextQuestion = quizData.find(q =>
-        !q.answered &&
-        currentTime >= q.timeInSeconds - 0.5 &&
-        currentTime <= q.timeInSeconds + 0.5
-      );
-
-      if (nextQuestion && !nextQuestion.answered) {
-        showQuestion(nextQuestion);
-      }
-    }
-
-    // Show question
-    function showQuestion(question) {
-      currentQuestionIndex = quizData.indexOf(question);
-      quizActive = true;
-      video.pause();
-
-      // Update question markers
-      updateQuestionMarkers();
-
-      // Show quiz container
-      document.getElementById('quizContainer').style.display = 'block';
-      document.getElementById('currentQuestionNum').textContent = question.id;
-      document.getElementById('questionText').textContent = question.question;
-      document.getElementById('questionType').textContent = question.type;
-      document.getElementById('questionPoints').textContent = question.points;
-
-      // Hide all containers initially
-      document.getElementById('optionsContainer').style.display = 'none';
-      document.getElementById('shortAnswerContainer').style.display = 'none';
-      document.getElementById('feedback').style.display = 'none';
-      document.getElementById('submitBtn').style.display = 'none';
-      document.getElementById('continueBtn').style.display = 'none';
-
-      // Setup based on question type
-      if (question.type === 'Multiple Choice' || question.type === 'True/False') {
-        setupMultipleChoice(question);
-      } else if (question.type === 'Short Answer') {
-        setupShortAnswer(question);
-      }
-
-      // Scroll quiz into view
-      document.getElementById('quizContainer').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // Setup multiple choice question
-    function setupMultipleChoice(question) {
-      const optionsContainer = document.getElementById('optionsContainer');
-      optionsContainer.style.display = 'block';
-      optionsContainer.innerHTML = '';
-
-      const optionLetters = ['A', 'B', 'C', 'D'];
-
-      question.options.forEach((option, index) => {
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'option';
-        optionDiv.textContent = `${optionLetters[index]}. ${option}`;
-        optionDiv.onclick = () => selectOption(optionDiv, optionLetters[index]);
-        optionsContainer.appendChild(optionDiv);
-      });
-
-      document.getElementById('submitBtn').style.display = 'inline-block';
-    }
-
-    // Setup short answer question
-    function setupShortAnswer(question) {
-      const container = document.getElementById('shortAnswerContainer');
-      container.style.display = 'block';
-      document.getElementById('shortAnswerInput').value = '';
-      document.getElementById('submitBtn').style.display = 'inline-block';
-    }
-
-    // Select option for multiple choice
-    function selectOption(optionDiv, letter) {
-      // Deselect all options
-      document.querySelectorAll('.option').forEach(opt => {
-        opt.classList.remove('selected');
-      });
-
-      // Select clicked option
-      optionDiv.classList.add('selected');
-      optionDiv.dataset.selected = letter;
-    }
-
-    // Submit answer
-    function submitAnswer() {
-      const question = quizData[currentQuestionIndex];
-      let isCorrect = false;
-      let userAnswer = '';
-
-      if (question.type === 'Multiple Choice' || question.type === 'True/False') {
-        const selectedOption = document.querySelector('.option.selected');
-        if (!selectedOption) {
-          alert('Please select an answer');
-          return;
+            Object.entries(parts).forEach(([key, part]) => {
+                const item = document.createElement('div');
+                item.className = 'part-item';
+                item.id = `part-${key}`;
+                item.innerHTML = `
+                    <div class="part-name">${part.name}</div>
+                    <div class="part-description">${part.description}</div>
+                `;
+                listContainer.appendChild(item);
+            });
         }
-        userAnswer = selectedOption.dataset.selected;
-        isCorrect = userAnswer === question.correctAnswer;
 
-        // Show correct/incorrect
-        document.querySelectorAll('.option').forEach(opt => {
-          const optLetter = opt.dataset.selected;
-          if (optLetter === question.correctAnswer) {
-            opt.classList.add('correct');
-          } else if (optLetter === userAnswer && !isCorrect) {
-            opt.classList.add('incorrect');
-          }
-        });
-
-      } else if (question.type === 'Short Answer') {
-        userAnswer = document.getElementById('shortAnswerInput').value.trim();
-        // For short answer, accept case-insensitive comparison
-        // Also handle semicolon-separated answers
-        const correctAnswers = question.correctAnswer.split(';').map(a => a.trim().toLowerCase());
-        const userAnswers = userAnswer.toLowerCase();
-
-        // Check if any part of the answer matches (for partial credit)
-        let matches = 0;
-        correctAnswers.forEach(correct => {
-          if (userAnswers.includes(correct) || correct.includes(userAnswers)) {
-            matches++;
-          }
-        });
-
-        // More lenient grading for short answer
-        isCorrect = matches > 0;
-
-        const feedback = document.getElementById('feedback');
-        feedback.textContent = isCorrect ?
-          `Correct! The answer is: ${question.correctAnswer}` :
-          `Incorrect. The correct answer is: ${question.correctAnswer}`;
-        feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-        feedback.style.display = 'block';
-      }
-
-      // Update question state
-      question.answered = true;
-      question.userAnswer = userAnswer;
-      question.correct = isCorrect;
-
-      // Update score
-      if (isCorrect) {
-        score += question.points;
-      }
-
-      // Update display
-      updateScoreDisplay();
-      updateQuestionMarkers();
-
-      // Show continue button
-      document.getElementById('submitBtn').style.display = 'none';
-      document.getElementById('continueBtn').style.display = 'inline-block';
-
-      // If short answer with feedback already shown, don't add more
-      if (question.type !== 'Short Answer') {
-        const feedback = document.getElementById('feedback');
-        feedback.textContent = isCorrect ?
-          `Correct! ${question.explanation}` :
-          `Incorrect. ${question.explanation}`;
-        feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-        feedback.style.display = 'block';
-      }
-    }
-
-    // Continue video
-    function continueVideo() {
-      document.getElementById('quizContainer').style.display = 'none';
-      quizActive = false;
-
-      // Check if all questions answered
-      const unansweredQuestions = quizData.filter(q => !q.answered);
-      if (unansweredQuestions.length === 0 && video.currentTime >= video.duration - 1) {
-        showQuizSummary();
-      } else {
-        video.play();
-      }
-    }
-
-    // Update question markers on progress bar
-    function updateQuestionMarkers() {
-      document.querySelectorAll('.question-marker').forEach((marker, index) => {
-        if (quizData[index].answered) {
-          marker.classList.add('answered');
-        } else {
-          marker.classList.remove('answered');
+        function setupHotspots() {
+            const hotspots = document.querySelectorAll('.hotspot');
+            hotspots.forEach(hotspot => {
+                hotspot.addEventListener('click', handleHotspotClick);
+            });
         }
-      });
 
-      // Update question progress
-      const answeredCount = quizData.filter(q => q.answered).length;
-      document.getElementById('questionsAnswered').textContent = answeredCount;
-      document.getElementById('totalQuestions').textContent = quizData.length;
-    }
+        function handleHotspotClick(e) {
+            const target = e.target.closest('.hotspot') || e.target;
+            const partKey = target.dataset.part || target.getAttribute('data-part');
 
-    // Update score display
-    function updateScoreDisplay() {
-      document.getElementById('score').textContent = score;
-      totalPoints = quizData.reduce((sum, q) => sum + q.points, 0);
-      document.getElementById('totalPoints').textContent = totalPoints;
-    }
+            if (!gameMode) {
+                updateTask('Please select a game mode first!');
+                return;
+            }
 
-    // Show quiz summary
-    function showQuizSummary() {
-      document.getElementById('quizContainer').style.display = 'none';
-      const summary = document.getElementById('quizSummary');
-      summary.style.display = 'block';
-
-      document.getElementById('finalScore').textContent = score;
-      document.getElementById('maxScore').textContent = totalPoints;
-
-      const percentage = Math.round((score / totalPoints) * 100);
-      const percentageElem = document.getElementById('percentageScore');
-      percentageElem.textContent = `${percentage}%`;
-
-      if (percentage >= 90) {
-        percentageElem.style.color = '#28a745';
-        percentageElem.textContent += ' - Excellent!';
-      } else if (percentage >= 70) {
-        percentageElem.style.color = '#ffc107';
-        percentageElem.textContent += ' - Good job!';
-      } else {
-        percentageElem.style.color = '#dc3545';
-        percentageElem.textContent += ' - Keep practicing!';
-      }
-    }
-
-    // Skip to next unanswered question
-    function skipToNextQuestion() {
-      const currentTime = video.currentTime;
-      const nextQuestion = quizData.find(q => !q.answered && q.timeInSeconds > currentTime + 1);
-
-      if (nextQuestion) {
-        video.currentTime = nextQuestion.timeInSeconds;
-        video.play();
-      } else {
-        // If no more questions, go to end
-        video.currentTime = video.duration - 1;
-      }
-    }
-
-    // Existing video control functions
-    function playPause() {
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    }
-
-    function stopVideo() {
-      video.pause();
-      video.currentTime = 0;
-      document.getElementById('quizContainer').style.display = 'none';
-      quizActive = false;
-    }
-
-    function skip(seconds) {
-      video.currentTime += seconds;
-      if (video.currentTime < 0) video.currentTime = 0;
-      if (video.currentTime > video.duration) video.currentTime = video.duration;
-    }
-
-    function seekVideo(event) {
-      const progressBar = event.currentTarget;
-      const clickX = event.offsetX;
-      const width = progressBar.clientWidth;
-      const percentage = clickX / width;
-      video.currentTime = percentage * video.duration;
-    }
-
-    // Keyboard controls
-    document.addEventListener('keydown', function (e) {
-      if (quizActive) {
-        // Handle quiz keyboard controls
-        if (e.key >= '1' && e.key <= '4') {
-          const index = parseInt(e.key) - 1;
-          const options = document.querySelectorAll('.option');
-          if (index < options.length) {
-            selectOption(options[index], ['A', 'B', 'C', 'D'][index]);
-          }
-        } else if (e.key === 'Enter') {
-          if (document.getElementById('submitBtn').style.display !== 'none') {
-            submitAnswer();
-          } else if (document.getElementById('continueBtn').style.display !== 'none') {
-            continueVideo();
-          }
+            if (gameMode === 'explore') {
+                handleExploreClick(partKey, target);
+            } else if (gameMode === 'quiz') {
+                handleQuizClick(partKey, target);
+            }
         }
-      } else {
-        // Handle video keyboard controls
-        switch (e.key.toLowerCase()) {
-          case ' ':
-            e.preventDefault();
-            playPause();
-            break;
-          case 's':
-            stopVideo();
-            break;
-          case 'arrowright':
-            skip(5);
-            break;
-          case 'arrowleft':
-            skip(-5);
-            break;
-          case 'n':
-            skipToNextQuestion();
-            break;
-        }
-      }
-    });
 
-    // Initialize score display
-    updateScoreDisplay();
-    document.getElementById('questionsAnswered').textContent = 0;
-    document.getElementById('totalQuestions').textContent = quizData.length;
-  </script>
-<script>
-(function() {
-  function initNav() {
-    var labs = [{"folder":"bios101-learning","title":"Metacognition"},{"folder":"01_Science_of_Biology","title":"Scientific Process"},{"folder":"02_Eukaryotes","title":"Eukaryotes"},{"folder":"03_Carbohydrates","title":"Carbohydrates"},{"folder":"04_Proteins","title":"Proteins"},{"folder":"05_Lipids","title":"Lipids"},{"folder":"06_Photosynthetic_Pigments","title":"Photosynthesis"},{"folder":"07_Nucleic Acids","title":"Nucleic Acids"},{"folder":"08_Mitosis","title":"Mitosis"},{"folder":"09_Meiosis","title":"Meiosis"},{"folder":"10_Genetics","title":"Genetics"}];
-    var menus = document.getElementById('biosMenus');
-    var path = location.pathname;
-    if (!menus) return;
-    labs.forEach(function(lab) {
-      var m = document.createElement('div');
-      m.className = 'bios-menu';
-      var b = document.createElement('button');
-      b.className = 'bios-trigger';
-      b.textContent = lab.title;
-      if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
-      var d = document.createElement('div');
-      d.className = 'bios-dropdown';
-      var bp = '../../' + lab.folder;
-      d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
-      m.appendChild(b);
-      m.appendChild(d);
-      menus.appendChild(m);
-    });
-    var t = document.querySelector('.bios-toggle');
-    if (t) t.onclick = function() { menus.classList.toggle('open'); };
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNav);
-  } else {
-    initNav();
-  }
-})();
-</script>
+        function handleExploreClick(partKey, element) {
+            if (!foundParts.has(partKey)) {
+                foundParts.add(partKey);
+                score++;
+                updateScore();
+
+                const hotspot = element.closest('.hotspot');
+                if (hotspot) hotspot.classList.add('correct');
+
+                document.getElementById(`part-${partKey}`).classList.add('found');
+
+                updateTask(`✓ Found: ${parts[partKey].name}`);
+                updateProgress();
+
+                if (foundParts.size === Object.keys(parts).length) {
+                    setTimeout(showCompletion, 500);
+                }
+            } else {
+                updateTask(`Already found: ${parts[partKey].name}`);
+            }
+        }
+
+        function handleQuizClick(partKey, element) {
+            if (currentQuizPart === null) return;
+
+            if (partKey === currentQuizPart) {
+                foundParts.add(partKey);
+                score++;
+                updateScore();
+
+                const hotspot = element.closest('.hotspot');
+                if (hotspot) hotspot.classList.add('correct');
+
+                document.getElementById(`part-${partKey}`).classList.add('found');
+
+                updateTask(`✓ Correct! ${parts[partKey].name}`, 'correct');
+                updateProgress();
+
+                setTimeout(() => {
+                    nextQuizQuestion();
+                }, 1500);
+            } else {
+                const hotspot = element.closest('.hotspot');
+                if (hotspot) hotspot.classList.add('incorrect');
+
+                updateTask(`✗ Try again! Look for: ${parts[currentQuizPart].name}`, 'incorrect');
+
+                setTimeout(() => {
+                    if (hotspot) hotspot.classList.remove('incorrect');
+                }, 1000);
+            }
+        }
+
+        function setMode(mode) {
+            gameMode = mode;
+            
+            if (mode === 'explore') {
+                updateTask('Explore Mode <span class="mode-indicator mode-explore">EXPLORE</span><br>Click on any microscope part to learn about it!');
+                exploreBtn.style.opacity = '1';
+                quizBtn.style.opacity = '0.7';
+            } else if (mode === 'quiz') {
+                quizOrder = Object.keys(parts).sort(() => Math.random() - 0.5);
+                updateTask('Quiz Mode <span class="mode-indicator mode-quiz">QUIZ</span><br>Get ready to identify microscope parts!');
+                exploreBtn.style.opacity = '0.7';
+                quizBtn.style.opacity = '1';
+                nextQuizQuestion();
+            }
+        }
+
+        function nextQuizQuestion() {
+            const remaining = quizOrder.filter(key => !foundParts.has(key));
+
+            if (remaining.length === 0) {
+                showCompletion();
+                return;
+            }
+
+            currentQuizPart = remaining[0];
+            updateTask(`Quiz Mode <span class="mode-indicator mode-quiz">QUIZ</span><br>Find: <strong>${parts[currentQuizPart].name}</strong>`);
+        }
+
+        function updateTask(message, type = 'info') {
+            currentTaskElement.innerHTML = message;
+            
+            if (type === 'correct') {
+                currentTaskElement.style.background = 'rgba(76, 175, 80, 0.1)';
+                currentTaskElement.style.borderColor = '#4CAF50';
+            } else if (type === 'incorrect') {
+                currentTaskElement.style.background = 'rgba(244, 67, 54, 0.1)';
+                currentTaskElement.style.borderColor = '#f44336';
+            } else {
+                currentTaskElement.style.background = 'rgba(0, 0, 0, 0.2)';
+                currentTaskElement.style.borderColor = '#00adb5';
+            }
+        }
+
+        function showCompletion() {
+            completionMessage.classList.add('show');
+            updateTask('🎉 Game Complete! All parts identified correctly!', 'correct');
+        }
+
+        function updateScore() {
+            scoreElement.textContent = score;
+            foundPartsElement.textContent = foundParts.size;
+        }
+
+        function updateProgress() {
+            const progressPercent = (foundParts.size / Object.keys(parts).length) * 100;
+            gameProgressElement.style.width = `${progressPercent}%`;
+        }
+
+        function resetGame() {
+            score = 0;
+            foundParts.clear();
+            currentQuizPart = null;
+            gameMode = null;
+            
+            updateScore();
+            updateProgress();
+            completionMessage.classList.remove('show');
+
+            document.querySelectorAll('.hotspot').forEach(h => {
+                h.classList.remove('correct', 'incorrect');
+            });
+
+            document.querySelectorAll('.part-item').forEach(p => {
+                p.classList.remove('found');
+            });
+
+            exploreBtn.style.opacity = '0.7';
+            quizBtn.style.opacity = '0.7';
+            updateTask('Select a game mode to begin!');
+        }
+
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+    <script>
+        (function () {
+            function initNav() {
+                var labs = [{ "folder": "bios101-learning", "title": "Metacognition" }, { "folder": "01_Science_of_Biology", "title": "Scientific Process" }, { "folder": "02_Eukaryotes", "title": "Eukaryotes" }, { "folder": "03_Carbohydrates", "title": "Carbohydrates" }, { "folder": "04_Proteins", "title": "Proteins" }, { "folder": "05_Lipids", "title": "Lipids" }, { "folder": "06_Photosynthetic_Pigments", "title": "Photosynthesis" }, { "folder": "07_Nucleic Acids", "title": "Nucleic Acids" }, { "folder": "08_Mitosis", "title": "Mitosis" }, { "folder": "09_Meiosis", "title": "Meiosis" }, { "folder": "10_Genetics", "title": "Genetics" }];
+                var menus = document.getElementById('biosMenus');
+                var path = location.pathname;
+                if (!menus) return;
+                labs.forEach(function (lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    var bp = '../../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+                var t = document.querySelector('.bios-toggle');
+                if (t) t.onclick = function () { menus.classList.toggle('open'); };
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+    </script>
 </body>
 
 </html>
