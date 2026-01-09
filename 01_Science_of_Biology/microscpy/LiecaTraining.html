@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microscope Setup Training</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            background-color: #16213e;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f3460 0%, #1a5f7a 100%);
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            border-bottom: 5px solid #00adb5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            flex: 1;
+            text-align: left;
+        }
+
+        .header-center {
+            flex: 2;
+            text-align: center;
+        }
+
+        .header-right {
+            flex: 1;
+            text-align: right;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+            gap: 25px;
+        }
+
+        .video-section {
+            flex: 1;
+            min-width: 500px;
+        }
+
+        .quiz-section {
+            flex: 1;
+            min-width: 400px;
+            background-color: #0f3460;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container {
+            position: relative;
+            border-radius: 10px;
+            background-color: #000;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        .youtube-link {
+            background-color: #ff0000;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .youtube-link:hover {
+            background-color: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .timestamp-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            z-index: 5;
+        }
+
+        .video-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .control-btn {
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            min-width: 100px;
+            justify-content: center;
+        }
+
+        #play-pause {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        #play-pause:hover {
+            background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+            transform: translateY(-2px);
+        }
+
+        #stop {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        #stop:hover {
+            background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+            transform: translateY(-2px);
+        }
+
+        #back-10, #back-5 {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        }
+
+        #back-10:hover, #back-5:hover {
+            background: linear-gradient(135deg, #1976D2 0%, #1565c0 100%);
+            transform: translateY(-2px);
+        }
+
+        #forward-5, #forward-10, #next-question-btn {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+        }
+
+        #forward-5:hover, #forward-10:hover, #next-question-btn:hover {
+            background: linear-gradient(135deg, #F57C00 0%, #EF6C00 100%);
+            transform: translateY(-2px);
+        }
+
+        .progress-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #2d4059;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #00adb5;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+
+        .question-markers {
+            position: relative;
+            height: 20px;
+            margin-top: 10px;
+        }
+
+        .question-marker {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+        }
+
+        .question-marker:hover {
+            transform: translateX(-50%) scale(1.3);
+        }
+
+        .question-marker.answered {
+            background-color: #4CAF50;
+        }
+
+        .quiz-progress-info {
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            border-left: 5px solid #00adb5;
+        }
+
+        .instructions {
+            background-color: #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #00adb5;
+        }
+
+        .instructions h4 {
+            color: #00adb5;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            color: #e6e6e6;
+        }
+
+        /* Quiz Section Styles */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #00adb5;
+        }
+
+        .question-counter {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #00adb5;
+        }
+
+        .question-points {
+            background-color: #1a5f7a;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #ffffff;
+            min-height: 80px;
+        }
+
+        .question-type {
+            display: inline-block;
+            background-color: #1a5f7a;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .options-container {
+            margin-bottom: 25px;
+        }
+
+        .option {
+            background-color: #1a1a2e;
+            border: 2px solid #2d4059;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background-color: #2d4059;
+            border-color: #00adb5;
+        }
+
+        .option.selected {
+            background-color: #0f3460;
+            border-color: #00adb5;
+            box-shadow: 0 0 0 2px rgba(0, 173, 181, 0.3);
+        }
+
+        .option.correct {
+            background-color: #2e7d32;
+            border-color: #4caf50;
+        }
+
+        .option.incorrect {
+            background-color: #c62828;
+            border-color: #f44336;
+        }
+
+        .option-label {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: #2d4059;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .fill-in-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #2d4059;
+            border-radius: 8px;
+            background-color: #1a1a2e;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .fill-in-input:focus {
+            outline: none;
+            border-color: #00adb5;
+        }
+
+        .feedback-container {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #1a1a2e;
+            border-radius: 8px;
+            border-left: 5px solid #00adb5;
+            display: none;
+        }
+
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .feedback-title {
+            color: #00adb5;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .explanation-text {
+            font-style: italic;
+            color: #b0b0b0;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .quiz-btn {
+            background-color: #2d4059;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .quiz-btn:hover:not(:disabled) {
+            background-color: #00adb5;
+            transform: translateY(-3px);
+        }
+
+        .quiz-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .submit-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: #388e3c;
+            transform: translateY(-3px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: #00adb5;
+            font-weight: 600;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .quiz-summary {
+            display: none;
+            background: linear-gradient(135deg, #1a5f7a 0%, #0f3460 100%);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 25px;
+            text-align: center;
+            color: white;
+        }
+
+        .quiz-summary.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .percentage-score {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 15px 0;
+        }
+
+        .summary-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .summary-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .summary-btn.restart {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .summary-btn.continue {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .summary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .video-section, .quiz-section {
+                min-width: 100%;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .control-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                min-width: 80px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .header-left, .header-center, .header-right {
+                text-align: center;
+                width: 100%;
+            }
+
+            .summary-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .bios-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #016836;
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px;
+        }
+
+        .bios-home {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+        }
+
+        .bios-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .bios-menus {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bios-menu {
+            position: relative;
+        }
+
+        .bios-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        .bios-trigger.active {
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            z-index: 1001;
+        }
+
+        .bios-dropdown a {
+            display: block;
+            padding: 6px 10px;
+            color: #212721;
+            text-decoration: none;
+        }
+
+        .bios-dropdown a:hover {
+            background: #EFECE2;
+        }
+
+        .bios-menu:hover .bios-dropdown,
+        .bios-menu:focus-within .bios-dropdown {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .bios-toggle {
+                display: block;
+            }
+
+            .bios-menus {
+                display: none;
+                flex-direction: column;
+                background: #016836;
+                width: 100%;
+            }
+
+            .bios-menus.open {
+                display: flex;
+            }
+
+            .bios-dropdown {
+                position: static;
+                border: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <a href="MicroscopeMastery.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to Hub
+                </a>
+            </div>
+            <div class="header-center">
+                <h3>Microscope Setup Training</h3>
+                <p class="subtitle">Learn Proper Microscope Handling - Interactive Video Quiz</p>
+            </div>
+            <div class="header-right"></div>
+        </header>
+
+        <div class="content-wrapper">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="timestamp-indicator" id="timestamp-indicator">Time: 00:00</div>
+                    <div class="video-overlay">
+                        <a href="https://www.youtube.com/watch?v=SUo2fHZaZCU" target="_blank" class="youtube-link">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
+                    </div>
+                    <video id="mainVideo" preload="metadata">
+                        <source src="Leica_CME.mp4" type="video/mp4">
+                        Your browser doesn't support HTML5 video.
+                    </video>
+                </div>
+
+                <div class="video-controls">
+                    <button class="control-btn" id="play-pause">
+                        <i class="fas fa-play"></i> Play/Pause
+                    </button>
+                    <button class="control-btn" id="stop">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                    <button class="control-btn" id="back-10">
+                        <i class="fas fa-backward"></i> -10s
+                    </button>
+                    <button class="control-btn" id="back-5">
+                        <i class="fas fa-step-backward"></i> -5s
+                    </button>
+                    <button class="control-btn" id="forward-5">
+                        <i class="fas fa-step-forward"></i> +5s
+                    </button>
+                    <button class="control-btn" id="forward-10">
+                        <i class="fas fa-forward"></i> +10s
+                    </button>
+                    <button class="control-btn" id="next-question-btn">
+                        <i class="fas fa-question-circle"></i> Next Question
+                    </button>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" onclick="seekVideo(event)">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="question-markers" id="question-markers"></div>
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span id="video-duration">0:00</span>
+                    </div>
+                </div>
+
+                <div class="quiz-progress-info">
+                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <strong>Score:</strong> <span id="score-display">0</span> / <span id="total-points">0</span>
+                        </div>
+                        <div>
+                            <strong>Questions:</strong> <span id="questions-answered">0</span> / <span id="total-questions">0</span>
+                        </div>
+                        <div>
+                            <strong>Progress:</strong> <span id="quiz-progress-percent">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> How to Use This Training</h4>
+                    <ul>
+                        <li>Watch the video and answer questions as they appear at specific timestamps</li>
+                        <li>The video will automatically pause when a question appears</li>
+                        <li>Use the video controls to pause, jump forward/backward, or stop the video</li>
+                        <li>Answer each question on the right side and submit to see the correct answer</li>
+                        <li>Questions include multiple choice, true/false, and short answer types</li>
+                        <li>Your progress and score are tracked automatically</li>
+                        <li>Complete all questions to finish the training</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="quiz-section">
+                <div class="quiz-header">
+                    <div class="question-counter">Question <span id="current-question-num">1</span></div>
+                    <div class="question-points" id="points-display">0 points</div>
+                </div>
+
+                <div id="question-type" class="question-type">Multiple Choice</div>
+
+                <div class="question-text" id="question-text">Question will appear here when video reaches a question timestamp...</div>
+
+                <div class="options-container" id="options-container">
+                    <!-- Options will be inserted here -->
+                </div>
+
+                <div id="short-answer-container" style="display: none;">
+                    <input type="text" class="fill-in-input" id="short-answer-input" placeholder="Type your answer here...">
+                    <div style="font-size: 0.9rem; color: #b0b0b0; margin-top: 5px;">
+                        <i class="fas fa-lightbulb"></i> For multiple parts, separate with semicolons (;)
+                    </div>
+                </div>
+
+                <button class="submit-btn" id="submit-btn" style="display: none;">Submit Answer</button>
+                <button class="submit-btn" id="continue-btn" style="display: none; background-color: #2196F3;">Continue Video</button>
+
+                <div class="feedback-container" id="feedback-container">
+                    <div class="feedback-title" id="feedback-title"></div>
+                    <div class="explanation-text" id="explanation-text"></div>
+                </div>
+
+                <div class="quiz-summary" id="quiz-summary">
+                    <h3><i class="fas fa-trophy"></i> Training Complete!</h3>
+                    <div class="percentage-score" id="percentage-score">0%</div>
+                    <p>Final Score: <span id="final-score">0</span> / <span id="max-score">0</span></p>
+                    <p id="performance-message" style="font-size: 1.2rem; margin: 15px 0;"></p>
+                    
+                    <div class="summary-buttons">
+                        <button onclick="location.reload()" class="summary-btn restart">
+                            <i class="fas fa-redo"></i> Restart Training
+                        </button>
+                        <a href="MicroscopeMastery.html" class="summary-btn continue">
+                            <i class="fas fa-arrow-right"></i> Proceed to Microscope Mastery
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Quiz data from original code
+        const quizData = [
+            { timestamp: "00:00:28", type: "Multiple Choice", question: "When retrieving a microscope from the cabinet, how should you carry it?", options: ["With one hand on the arm", "With both hands - one on the arm and one under the base", "With both hands on the base", "By the ocular lenses"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:00:34", type: "True/False", question: "If the microscope is too heavy to carry safely, you should ask for assistance.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
+            { timestamp: "00:00:38", type: "Multiple Choice", question: "Where is the power cord located on the microscope?", options: ["On the side of the microscope", "Under the base", "On the back of the microscope", "Attached to the stage"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:00:46", type: "Multiple Choice", question: "Where is the on/off switch located?", options: ["On the front of the microscope", "Under the base", "On the back of the scope", "On the stage"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:00:55", type: "Short Answer", question: "What number should line up with the white line on the ocular lenses during setup?", options: [], correctAnswer: "64", points: 2, explanation: "" },
+            { timestamp: "00:00:59", type: "Multiple Choice", question: "Where should the condenser lens be positioned during initial setup?", options: ["Above the stage", "Just below the stage", "At its lowest position", "Removed from the microscope"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:01:06", type: "Multiple Choice", question: "During initial setup, which objective lens should be in place?", options: ["Low power (4X)", "Medium power (10X)", "High power (40X)", "Any lens is fine"], correctAnswer: "A", points: 1, explanation: "" },
+            { timestamp: "00:01:10", type: "Multiple Choice", question: "What position should the stage be in during initial setup?", options: ["Lowest position", "Middle position", "Highest position", "It doesn't matter"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:01:19", type: "True/False", question: "The brightest light always results in the best image.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:01:42", type: "Multiple Choice", question: "Which knobs are used to center the specimen over the condenser lens?", options: ["Knobs on the upper left side", "Knobs on the lower right side of the stage", "Focus knobs on the arm", "Knobs under the base"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:01:49", type: "Multiple Choice", question: "Which objective lens should you start with when viewing a specimen?", options: ["40X (highest power)", "10X (medium power)", "4X (low power)", "It doesn't matter"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:02:03", type: "True/False", question: "You should center the specimen in the field of view before moving to the next highest objective lens.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
+            { timestamp: "00:02:18", type: "Multiple Choice", question: "When moving to higher magnification, which focus knob should you primarily use?", options: ["The large coarse-focus knob", "The smaller fine-focus knob", "Both knobs equally", "No focusing is needed"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:02:21", type: "Multiple Choice", question: "What is the correct first lens in the viewing sequence?", options: ["4X (low power)", "10X (medium power)", "40X (high power)", "100X (oil immersion)"], correctAnswer: "A", points: 1, explanation: "" },
+            { timestamp: "00:02:21", type: "Multiple Choice", question: "What is the correct second lens in the viewing sequence?", options: ["4X (low power)", "10X (medium power)", "40X (high power)", "100X (oil immersion)"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:02:21", type: "Multiple Choice", question: "What is the correct third lens in the viewing sequence?", options: ["4X (low power)", "10X (medium power)", "40X (high power)", "100X (oil immersion)"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:02:34", type: "Short Answer", question: "If your slide doesn't move when you turn the knobs, what two things should you check? (Separate with semicolon)", options: [], correctAnswer: "Using the right knobs; The slide is clipped in place properly", points: 2, explanation: "" },
+            { timestamp: "00:02:53", type: "Multiple Choice", question: "If you're having trouble finding the specimen, what should you do first?", options: ["Make sure the specimen is centered", "Start over at the lowest power", "Move the stage back to its highest position", "All of the above"], correctAnswer: "D", points: 1, explanation: "" },
+            { timestamp: "00:03:02", type: "Multiple Choice", question: "When focusing, why should you move the slide back and forth slightly with the slide holder knobs?", options: ["It cleans the slide", "Your eyes can see motion better than stationary objects", "It adjusts the light", "It centers the condenser"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:03:09", type: "Multiple Choice", question: "When observing unstained specimens, what should you do to improve visibility?", options: ["Increase light to maximum", "Use the stage diaphragm to reduce light", "Remove the condenser lens", "Switch to 40X immediately"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:03:28", type: "True/False", question: "If the specimen becomes blurry like it's coated with Vaseline at higher power, you may need to clean the lens.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
+            { timestamp: "00:03:32", type: "Multiple Choice", question: "What should you use to clean microscope lenses?", options: ["Regular tissue paper", "Your shirt", "Lens paper soaked with lens cleaner", "Paper towels"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:03:41", type: "Short Answer", question: "List the lens cleaning procedure steps in order. (Separate with semicolon)", options: [], correctAnswer: "Soak lens paper with lens cleaner; Wipe the lens; Wipe dry with clean lens paper; Repeat a couple of times", points: 3, explanation: "" },
+            { timestamp: "00:03:53", type: "Multiple Choice", question: "During cleanup, which lens should be rotated into place?", options: ["The highest power lens", "The lowest power lens", "The medium power lens", "No lens"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:03:58", type: "Multiple Choice", question: "Where should the slide holder be positioned during cleanup?", options: ["To the right", "To the left", "Centered", "Removed"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:04:00", type: "True/False", question: "You should check that the stage is clean and dry before putting the microscope away.", options: ["True", "False"], correctAnswer: "A", points: 1, explanation: "" },
+            { timestamp: "00:04:04", type: "Multiple Choice", question: "What should you do with the light and power during cleanup?", options: ["Turn off the light only", "Turn off the power only", "Turn off both light and power", "Leave them on for the next person"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:04:04", type: "Multiple Choice", question: "What should you do with the power cord during cleanup?", options: ["Leave it plugged in", "Wrap the cord", "Remove it from the microscope", "Let it hang loose"], correctAnswer: "B", points: 1, explanation: "" },
+            { timestamp: "00:04:13", type: "Multiple Choice", question: "When returning the microscope to the cabinet, which direction should the arm face?", options: ["Toward the back", "To the side", "Facing out", "It doesn't matter"], correctAnswer: "C", points: 1, explanation: "" },
+            { timestamp: "00:04:15", type: "True/False", question: "Microscopes should be crowded together in the cabinet to save space.", options: ["True", "False"], correctAnswer: "B", points: 1, explanation: "" }
+        ];
+
+        // Convert timestamp to seconds and add properties
+        quizData.forEach((q, index) => {
+            q.timeInSeconds = timestampToSeconds(q.timestamp);
+            q.id = index + 1;
+            q.answered = false;
+            q.userAnswer = null;
+            q.correct = false;
+        });
+
+        // Sort by timestamp
+        quizData.sort((a, b) => a.timeInSeconds - b.timeInSeconds);
+
+        const videoElement = document.getElementById('mainVideo');
+        const timestampIndicator = document.getElementById('timestamp-indicator');
+        const progressFill = document.getElementById('progress-fill');
+        const currentTimeDisplay = document.getElementById('current-time');
+        const durationDisplay = document.getElementById('video-duration');
+        const questionMarkersContainer = document.getElementById('question-markers');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalPointsDisplay = document.getElementById('total-points');
+        const questionsAnsweredDisplay = document.getElementById('questions-answered');
+        const totalQuestionsDisplay = document.getElementById('total-questions');
+        const quizProgressPercent = document.getElementById('quiz-progress-percent');
+        const currentQuestionNum = document.getElementById('current-question-num');
+        const questionText = document.getElementById('question-text');
+        const questionType = document.getElementById('question-type');
+        const pointsDisplay = document.getElementById('points-display');
+        const optionsContainer = document.getElementById('options-container');
+        const shortAnswerContainer = document.getElementById('short-answer-container');
+        const shortAnswerInput = document.getElementById('short-answer-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const continueBtn = document.getElementById('continue-btn');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const explanationText = document.getElementById('explanation-text');
+        const quizSummary = document.getElementById('quiz-summary');
+        const finalScore = document.getElementById('final-score');
+        const maxScore = document.getElementById('max-score');
+        const percentageScore = document.getElementById('percentage-score');
+        const performanceMessage = document.getElementById('performance-message');
+
+        const playPauseBtn = document.getElementById('play-pause');
+        const stopBtn = document.getElementById('stop');
+        const back10Btn = document.getElementById('back-10');
+        const back5Btn = document.getElementById('back-5');
+        const forward5Btn = document.getElementById('forward-5');
+        const forward10Btn = document.getElementById('forward-10');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+
+        let currentQuestionIndex = -1;
+        let score = 0;
+        let totalPoints = 0;
+        let quizActive = false;
+        let isPlaying = false;
+
+        function timestampToSeconds(timestamp) {
+            const parts = timestamp.split(':');
+            if (parts.length === 3) {
+                return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+            } else if (parts.length === 2) {
+                return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+            }
+            return parseInt(timestamp);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function initTraining() {
+            totalQuestionsDisplay.textContent = quizData.length;
+            totalPoints = quizData.reduce((sum, q) => sum + q.points, 0);
+            totalPointsDisplay.textContent = totalPoints;
+            
+            updateProgress();
+            createQuestionMarkers();
+
+            videoElement.addEventListener('loadedmetadata', () => {
+                durationDisplay.textContent = formatTime(videoElement.duration);
+                updateProgress();
+            });
+
+            videoElement.addEventListener('timeupdate', () => {
+                timestampIndicator.textContent = `Time: ${formatTime(videoElement.currentTime)}`;
+                updateProgressBar();
+                checkForQuestions();
+            });
+
+            videoElement.addEventListener('play', () => {
+                isPlaying = true;
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            });
+
+            videoElement.addEventListener('pause', () => {
+                isPlaying = false;
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+            });
+
+            videoElement.addEventListener('ended', () => {
+                isPlaying = false;
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+                if (quizData.every(q => q.answered)) {
+                    showQuizSummary();
+                }
+            });
+        }
+
+        function createQuestionMarkers() {
+            questionMarkersContainer.innerHTML = '';
+            
+            quizData.forEach((question, index) => {
+                if (videoElement.duration) {
+                    const position = (question.timeInSeconds / videoElement.duration) * 100;
+                    const marker = document.createElement('div');
+                    marker.className = 'question-marker';
+                    marker.style.left = `${position}%`;
+                    marker.title = `Question ${question.id} at ${question.timestamp}`;
+                    marker.dataset.index = index;
+                    
+                    marker.addEventListener('click', () => {
+                        videoElement.currentTime = question.timeInSeconds;
+                        videoElement.play();
+                    });
+                    
+                    questionMarkersContainer.appendChild(marker);
+                }
+            });
+            
+            updateQuestionMarkers();
+        }
+
+        function updateQuestionMarkers() {
+            const markers = document.querySelectorAll('.question-marker');
+            markers.forEach((marker, index) => {
+                if (quizData[index].answered) {
+                    marker.classList.add('answered');
+                } else {
+                    marker.classList.remove('answered');
+                }
+            });
+        }
+
+        function updateProgressBar() {
+            if (videoElement.duration) {
+                const progress = (videoElement.currentTime / videoElement.duration) * 100;
+                progressFill.style.width = `${progress}%`;
+            }
+        }
+
+        function updateProgress() {
+            const answeredCount = quizData.filter(q => q.answered).length;
+            questionsAnsweredDisplay.textContent = answeredCount;
+            scoreDisplay.textContent = score;
+            
+            const progressPercent = Math.round((answeredCount / quizData.length) * 100);
+            quizProgressPercent.textContent = `${progressPercent}%`;
+        }
+
+        function checkForQuestions() {
+            if (quizActive) return;
+
+            const currentTime = videoElement.currentTime;
+            
+            const nextQuestion = quizData.find(q =>
+                !q.answered &&
+                currentTime >= q.timeInSeconds - 0.5 &&
+                currentTime <= q.timeInSeconds + 0.5
+            );
+
+            if (nextQuestion) {
+                showQuestion(nextQuestion);
+            }
+        }
+
+        function showQuestion(question) {
+            currentQuestionIndex = quizData.indexOf(question);
+            quizActive = true;
+            videoElement.pause();
+
+            currentQuestionNum.textContent = question.id;
+            questionText.textContent = question.question;
+            questionType.textContent = question.type;
+            pointsDisplay.textContent = `${question.points} point${question.points > 1 ? 's' : ''}`;
+
+            optionsContainer.style.display = 'none';
+            shortAnswerContainer.style.display = 'none';
+            feedbackContainer.classList.remove('show');
+            submitBtn.style.display = 'none';
+            continueBtn.style.display = 'none';
+
+            if (question.type === 'Multiple Choice' || question.type === 'True/False') {
+                setupMultipleChoice(question);
+            } else if (question.type === 'Short Answer') {
+                setupShortAnswer(question);
+            }
+
+            document.querySelector('.quiz-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function setupMultipleChoice(question) {
+            optionsContainer.style.display = 'block';
+            optionsContainer.innerHTML = '';
+
+            const optionLabels = ['A', 'B', 'C', 'D'];
+
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                
+                optionElement.innerHTML = `
+                    <div class="option-label">${optionLabels[index]}</div>
+                    <div class="option-text">${option}</div>
+                `;
+
+                optionElement.addEventListener('click', () => {
+                    if (question.answered) return;
+                    
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    optionElement.classList.add('selected');
+                    optionElement.dataset.selected = optionLabels[index];
+                });
+
+                optionsContainer.appendChild(optionElement);
+            });
+
+            submitBtn.style.display = 'block';
+        }
+
+        function setupShortAnswer(question) {
+            shortAnswerContainer.style.display = 'block';
+            shortAnswerInput.value = '';
+            submitBtn.style.display = 'block';
+        }
+
+        function submitAnswer() {
+            const question = quizData[currentQuestionIndex];
+            let isCorrect = false;
+            let userAnswer = '';
+
+            if (question.type === 'Multiple Choice' || question.type === 'True/False') {
+                const selectedOption = document.querySelector('.option.selected');
+                if (!selectedOption) {
+                    alert('Please select an answer');
+                    return;
+                }
+                userAnswer = selectedOption.dataset.selected;
+                isCorrect = userAnswer === question.correctAnswer;
+
+                document.querySelectorAll('.option').forEach(opt => {
+                    const optLetter = opt.dataset.selected;
+                    if (optLetter === question.correctAnswer) {
+                        opt.classList.add('correct');
+                    } else if (optLetter === userAnswer && !isCorrect) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+            } else if (question.type === 'Short Answer') {
+                userAnswer = shortAnswerInput.value.trim();
+                const correctAnswers = question.correctAnswer.split(';').map(a => a.trim().toLowerCase());
+                const userAnswers = userAnswer.toLowerCase();
+
+                let matches = 0;
+                correctAnswers.forEach(correct => {
+                    if (userAnswers.includes(correct) || correct.includes(userAnswers)) {
+                        matches++;
+                    }
+                });
+
+                isCorrect = matches > 0;
+            }
+
+            question.answered = true;
+            question.userAnswer = userAnswer;
+            question.correct = isCorrect;
+
+            if (isCorrect) {
+                score += question.points;
+            }
+
+            updateProgress();
+            updateQuestionMarkers();
+
+            submitBtn.style.display = 'none';
+            continueBtn.style.display = 'block';
+
+            showFeedback(isCorrect, question);
+        }
+
+        function showFeedback(isCorrect, question) {
+            feedbackTitle.textContent = isCorrect ?
+                `✓ Correct! (${question.points} point${question.points > 1 ? 's' : ''} earned)` :
+                `✗ Incorrect`;
+                
+            explanationText.textContent = question.explanation || 
+                (isCorrect ? 'Well done!' : `The correct answer is: ${getCorrectAnswerText(question)}`);
+            feedbackContainer.classList.add('show');
+        }
+
+        function getCorrectAnswerText(question) {
+            if (question.type === 'Short Answer') {
+                return question.correctAnswer;
+            } else {
+                const optionLabels = ['A', 'B', 'C', 'D'];
+                const correctIndex = optionLabels.indexOf(question.correctAnswer);
+                return question.options[correctIndex];
+            }
+        }
+
+        function continueVideo() {
+            feedbackContainer.classList.remove('show');
+            continueBtn.style.display = 'none';
+            quizActive = false;
+
+            const unansweredQuestions = quizData.filter(q => !q.answered);
+            if (unansweredQuestions.length === 0) {
+                showQuizSummary();
+            } else {
+                videoElement.play();
+            }
+        }
+
+        function showQuizSummary() {
+            quizSummary.classList.add('show');
+            finalScore.textContent = score;
+            maxScore.textContent = totalPoints;
+            
+            const percentage = Math.round((score / totalPoints) * 100);
+            percentageScore.textContent = `${percentage}%`;
+            
+            if (percentage >= 90) {
+                percentageScore.style.color = '#4CAF50';
+                performanceMessage.textContent = 'Excellent! You\'ve mastered microscope setup!';
+            } else if (percentage >= 70) {
+                percentageScore.style.color = '#FF9800';
+                performanceMessage.textContent = 'Good job! You understand the basics well.';
+            } else {
+                percentageScore.style.color = '#f44336';
+                performanceMessage.textContent = 'Keep practicing! Review the video and try again.';
+            }
+        }
+
+        function skipToNextQuestion() {
+            const currentTime = videoElement.currentTime;
+            const nextQuestion = quizData.find(q => !q.answered && q.timeInSeconds > currentTime + 1);
+
+            if (nextQuestion) {
+                videoElement.currentTime = nextQuestion.timeInSeconds;
+                videoElement.play();
+            } else if (quizData.every(q => q.answered)) {
+                showQuizSummary();
+            }
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                videoElement.pause();
+            } else {
+                videoElement.play();
+            }
+        }
+
+        function stopVideo() {
+            videoElement.pause();
+            videoElement.currentTime = 0;
+            quizActive = false;
+            continueBtn.style.display = 'none';
+            feedbackContainer.classList.remove('show');
+        }
+
+        function seekBackward(seconds) {
+            videoElement.currentTime = Math.max(0, videoElement.currentTime - seconds);
+        }
+
+        function seekForward(seconds) {
+            videoElement.currentTime = Math.min(videoElement.duration, videoElement.currentTime + seconds);
+        }
+
+        function seekVideo(event) {
+            const progressBar = event.currentTarget;
+            const clickX = event.offsetX;
+            const width = progressBar.clientWidth;
+            const percentage = clickX / width;
+            videoElement.currentTime = percentage * videoElement.duration;
+        }
+
+        // Event listeners
+        submitBtn.addEventListener('click', submitAnswer);
+        continueBtn.addEventListener('click', continueVideo);
+        playPauseBtn.addEventListener('click', togglePlayPause);
+        stopBtn.addEventListener('click', stopVideo);
+        back10Btn.addEventListener('click', () => seekBackward(10));
+        back5Btn.addEventListener('click', () => seekBackward(5));
+        forward5Btn.addEventListener('click', () => seekForward(5));
+        forward10Btn.addEventListener('click', () => seekForward(10));
+        nextQuestionBtn.addEventListener('click', skipToNextQuestion);
+
+        shortAnswerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitAnswer();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (quizActive) {
+                if (e.key >= '1' && e.key <= '4') {
+                    const index = parseInt(e.key) - 1;
+                    const options = document.querySelectorAll('.option');
+                    if (index < options.length) {
+                        options[index].click();
+                    }
+                } else if (e.key === 'Enter') {
+                    if (submitBtn.style.display !== 'none') {
+                        submitAnswer();
+                    } else if (continueBtn.style.display !== 'none') {
+                        continueVideo();
+                    }
+                }
+            } else {
+                switch (e.key.toLowerCase()) {
+                    case ' ':
+                        e.preventDefault();
+                        togglePlayPause();
+                        break;
+                    case 's':
+                        stopVideo();
+                        break;
+                    case 'arrowright':
+                        seekForward(5);
+                        break;
+                    case 'arrowleft':
+                        seekBackward(5);
+                        break;
+                    case 'n':
+                        skipToNextQuestion();
+                        break;
+                }
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', initTraining);
+    </script>
+    <script>
+        (function () {
+            function initNav() {
+                var labs = [{ "folder": "bios101-learning", "title": "Metacognition" }, { "folder": "01_Science_of_Biology", "title": "Scientific Process" }, { "folder": "02_Eukaryotes", "title": "Eukaryotes" }, { "folder": "03_Carbohydrates", "title": "Carbohydrates" }, { "folder": "04_Proteins", "title": "Proteins" }, { "folder": "05_Lipids", "title": "Lipids" }, { "folder": "06_Photosynthetic_Pigments", "title": "Photosynthesis" }, { "folder": "07_Nucleic Acids", "title": "Nucleic Acids" }, { "folder": "08_Mitosis", "title": "Mitosis" }, { "folder": "09_Meiosis", "title": "Meiosis" }, { "folder": "10_Genetics", "title": "Genetics" }];
+                var menus = document.getElementById('biosMenus');
+                var path = location.pathname;
+                if (!menus) return;
+                labs.forEach(function (lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    var bp = '../../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+                var t = document.querySelector('.bios-toggle');
+                if (t) t.onclick = function () { menus.classList.toggle('open'); };
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+    </script>
+</body>
+
+</html>
