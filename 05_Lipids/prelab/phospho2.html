@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phospholipid Bilayer — Structure Before Function</title>
+
+<style>
+/* ===============================
+   UW–Parkside–Aligned Styling
+   =============================== */
+
+:root {
+  --uwp-green: #016836;
+  --uwp-gold: #FFD100;
+  --uwp-gray: #212721;
+  --uwp-light: #EFECE2;
+  --uwp-blue: #005B94;
+  --uwp-red: #C40027;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--uwp-gray);
+  background: white;
+  line-height: 1.6;
+}
+
+header {
+  background: var(--uwp-green);
+  color: white;
+  padding: 1.2rem;
+  border-bottom: 4px solid var(--uwp-gold);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 1.5rem;
+}
+
+section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+h2 {
+  color: var(--uwp-green);
+  border-left: 6px solid var(--uwp-gold);
+  padding-left: 0.6rem;
+}
+
+h3 {
+  color: var(--uwp-blue);
+  margin-top: 1.5rem;
+}
+
+figure {
+  margin: 1.2rem auto;
+  max-width: 520px;
+}
+
+figure img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+figcaption {
+  font-size: 0.9rem;
+  background: var(--uwp-light);
+  padding: 0.5rem;
+  border-radius: 0 0 4px 4px;
+}
+
+.callout {
+  background: var(--uwp-light);
+  padding: 1.2rem;
+  border-left: 6px solid var(--uwp-gold);
+  border-radius: 4px;
+  margin: 1.5rem 0;
+}
+
+.audio-term {
+  margin-bottom: 0.8rem;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.audio-term button {
+  margin-left: 0.5rem;
+  background: var(--uwp-green);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.audio-term button:hover {
+  background: #014d2d;
+}
+
+details {
+  background: #f9f9f9;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+summary {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+iframe {
+  max-width: 100%;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+footer {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  background: var(--uwp-light);
+  text-align: center;
+}
+
+/* Interactive Activity Styles */
+.activity {
+  background: #f8fafc;
+  border: 2px solid var(--uwp-blue);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.activity-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.activity-icon {
+  background: var(--uwp-blue);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.activity-title {
+  color: var(--uwp-blue);
+  margin: 0;
+}
+
+.scenario {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.scenario h4 {
+  color: var(--uwp-green);
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+}
+
+.scenario-number {
+  display: inline-block;
+  background: var(--uwp-gold);
+  color: var(--uwp-gray);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.options {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.option {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option:hover {
+  background: #e2e8f0;
+  border-color: var(--uwp-blue);
+}
+
+.option.selected {
+  background: #e0f2fe;
+  border-color: var(--uwp-blue);
+  border-width: 2px;
+}
+
+.option.correct {
+  background: #d1fae5;
+  border-color: #10b981;
+}
+
+.option.incorrect {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.rank-item {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  cursor: move;
+}
+
+.rank-item.dragging {
+  opacity: 0.5;
+}
+
+.rank-container {
+  min-height: 200px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.feedback {
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  display: none;
+}
+
+.feedback.show {
+  display: block;
+}
+
+.feedback.correct {
+  background: #d1fae5;
+  border-left: 4px solid #10b981;
+}
+
+.feedback.incorrect {
+  background: #fee2e2;
+  border-left: 4px solid #ef4444;
+}
+
+.button {
+  background: var(--uwp-green);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background: #014d2d;
+}
+
+.button.secondary {
+  background: var(--uwp-blue);
+}
+
+.button.secondary:hover {
+  background: #004a7a;
+}
+
+/* Progress indicator */
+.progress {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.progress-step {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-step.active {
+  background: var(--uwp-blue);
+  color: white;
+}
+
+.progress-step.completed {
+  background: var(--uwp-green);
+  color: white;
+}
+
+.progress-line {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  height: 2px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+
+.progress-line.fill {
+  background: var(--uwp-green);
+}
+
+/* Visualization area */
+.visualization {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  min-height: 200px;
+  position: relative;
+}
+
+.molecule {
+  position: absolute;
+  width: 120px;
+  cursor: move;
+  transition: transform 0.3s;
+}
+
+.molecule-head {
+  fill: var(--uwp-blue);
+}
+
+.molecule-tail {
+  fill: var(--uwp-gold);
+}
+
+.water-area {
+  fill: rgba(0, 91, 148, 0.1);
+  stroke: var(--uwp-blue);
+  stroke-width: 2;
+}
+
+.oil-area {
+  fill: rgba(255, 209, 0, 0.1);
+  stroke: var(--uwp-gold);
+  stroke-width: 2;
+}
+
+/* Metacognitive reflection */
+.reflection {
+  background: #fefce8;
+  border: 1px solid #fde047;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.reflection textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main {
+    padding: 1rem;
+  }
+  
+  .activity {
+    padding: 1rem;
+  }
+  
+  .options {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Phospholipid Bilayer: Structure Before Function</h1>
+</header>
+
+<main>
+
+<!-- 1. ORIENTATION -->
+<section>
+  <h2>Why This Matters</h2>
+  <p>
+    Every living cell depends on one critical structure: a boundary that separates
+    <em>inside</em> from <em>outside</em>. The phospholipid bilayer is that boundary.
+  </p>
+  <p>
+    Understanding this structure is not about memorizing parts—it is about recognizing
+    how molecular properties create order, stability, and life itself.
+  </p>
+</section>
+
+<!-- 2. PRIOR KNOWLEDGE -->
+<section>
+  <h2>Before You Learn: Activate Your Thinking</h2>
+  <ul>
+    <li>Have you ever mixed oil and water? What happened?</li>
+    <li>Why do you think a cell needs a boundary instead of freely mixing with its environment?</li>
+    <li>What might happen if that boundary were unstable?</li>
+  </ul>
+  <div class="callout">
+    <strong>Pause.</strong> These questions prime your brain to notice patterns.
+  </div>
+</section>
+
+<!-- 3. CORE BACKGROUND WITH INTERACTIVE ACTIVITY 1 -->
+<section>
+  <h2>The Phospholipid Molecule</h2>
+  <p>
+    A phospholipid is an <strong>amphipathic molecule</strong>—it has two regions with
+    opposite relationships to water.
+  </p>
+
+  <figure>
+    <img src="amphipathic.jpg" alt="Diagram showing hydrophilic head and hydrophobic tails of a phospholipid">
+    <figcaption>
+      Amphipathic structure: a water-loving head and water-fearing tails.
+    </figcaption>
+  </figure>
+
+  <div class="activity">
+    <div class="activity-header">
+      <div class="activity-icon">!</div>
+      <h3 class="activity-title">Activity 1: Molecule With a Personality</h3>
+    </div>
+    
+    <p><strong>Type:</strong> Conceptual manipulation + verbal encoding<br>
+    <strong>Cognitive target:</strong> Dual coding, causal attribution, self-explanation<br>
+    <strong>Bloom's Level:</strong> Analyze → Explain</p>
+    
+    <div class="callout">
+      <strong>Your Task:</strong> "This molecule has preferences. Your job is to predict and justify its behavior."
+    </div>
+    
+    <div id="activity1-progress" class="progress">
+      <div class="progress-step active">1</div>
+      <div class="progress-step">2</div>
+      <div class="progress-step">3</div>
+      <div class="progress-line"></div>
+      <div class="progress-line fill" style="width: 0%;"></div>
+    </div>
+    
+    <!-- Scenario 1: Pure Water -->
+    <div class="scenario" id="scenario1">
+      <h4><span class="scenario-number">1</span> Pure Water Environment</h4>
+      <p>Imagine this phospholipid molecule is placed in pure water. How will it orient itself?</p>
+      
+      <div class="visualization" id="viz1">
+        <svg width="100%" height="200" id="water-scene">
+          <rect class="water-area" x="0" y="0" width="100%" height="200"/>
+          <text x="50%" y="30" text-anchor="middle" font-weight="bold">Water Environment</text>
+          <g class="molecule" id="molecule1">
+            <circle class="molecule-head" cx="60" cy="100" r="20"/>
+            <rect class="molecule-tail" x="40" y="120" width="40" height="40" rx="5"/>
+            <rect class="molecule-tail" x="40" y="160" width="40" height="20" rx="3"/>
+          </g>
+        </svg>
+      </div>
+      
+      <div class="options">
+        <div class="option" data-value="a">Heads facing water, tails clustering together (forms micelle)</div>
+        <div class="option" data-value="b">Tails facing water, heads clustering together</div>
+        <div class="option" data-value="c">Random orientation, dissolves completely</div>
+        <div class="option" data-value="d">Lays flat on surface with tails in air</div>
+      </div>
+      
+      <div class="feedback" id="feedback1"></div>
+      
+      <button class="button" onclick="checkScenario(1)">Check Answer</button>
+      <button class="button secondary" onclick="nextScenario(1)" style="display:none;" id="next1">Next Scenario</button>
+    </div>
+    
+    <!-- Scenario 2: Pure Oil -->
+    <div class="scenario" id="scenario2" style="display:none;">
+      <h4><span class="scenario-number">2</span> Pure Oil Environment</h4>
+      <p>Now imagine the same molecule in pure oil. What changes?</p>
+      
+      <div class="visualization" id="viz2">
+        <svg width="100%" height="200" id="oil-scene">
+          <rect class="oil-area" x="0" y="0" width="100%" height="200"/>
+          <text x="50%" y="30" text-anchor="middle" font-weight="bold">Oil Environment</text>
+          <g class="molecule" id="molecule2">
+            <circle class="molecule-head" cx="60" cy="100" r="20"/>
+            <rect class="molecule-tail" x="40" y="120" width="40" height="40" rx="5"/>
+            <rect class="molecule-tail" x="40" y="160" width="40" height="20" rx="3"/>
+          </g>
+        </svg>
+      </div>
+      
+      <div class="options">
+        <div class="option" data-value="a">Forms reverse micelle (heads in, tails out)</div>
+        <div class="option" data-value="b">Same as in water (heads out, tails in)</div>
+        <div class="option" data-value="c">Completely dissolves, spreads evenly</div>
+        <div class="option" data-value="d">Forms a flat monolayer</div>
+      </div>
+      
+      <div class="feedback" id="feedback2"></div>
+      
+      <button class="button" onclick="checkScenario(2)">Check Answer</button>
+      <button class="button secondary" onclick="nextScenario(2)" style="display:none;" id="next2">Next Scenario</button>
+    </div>
+    
+    <!-- Scenario 3: Water-Oil Interface -->
+    <div class="scenario" id="scenario3" style="display:none;">
+      <h4><span class="scenario-number">3</span> Water-Oil Interface</h4>
+      <p>Finally, imagine water on one side and oil on the other. What happens at the boundary?</p>
+      
+      <div class="visualization" id="viz3">
+        <svg width="100%" height="200" id="interface-scene">
+          <rect class="water-area" x="0" y="0" width="50%" height="200"/>
+          <rect class="oil-area" x="50%" y="0" width="50%" height="200"/>
+          <text x="25%" y="30" text-anchor="middle" font-weight="bold">Water</text>
+          <text x="75%" y="30" text-anchor="middle" font-weight="bold">Oil</text>
+          <line x1="50%" y1="0" x2="50%" y2="200" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+          <g class="molecule" id="molecule3">
+            <circle class="molecule-head" cx="50" cy="100" r="20"/>
+            <rect class="molecule-tail" x="30" y="120" width="40" height="40" rx="5"/>
+            <rect class="molecule-tail" x="30" y="160" width="40" height="20" rx="3"/>
+          </g>
+        </svg>
+      </div>
+      
+      <div class="options">
+        <div class="option" data-value="a">Heads in water, tails in oil (forms interface monolayer)</div>
+        <div class="option" data-value="b">Completely in water side</div>
+        <div class="option" data-value="c">Completely in oil side</div>
+        <div class="option" data-value="d">Random orientation across boundary</div>
+      </div>
+      
+      <div class="feedback" id="feedback3"></div>
+      
+      <button class="button" onclick="checkScenario(3)">Check Answer</button>
+      <button class="button secondary" onclick="completeActivity1()" style="display:none;" id="complete1">Complete Activity</button>
+    </div>
+    
+    <!-- Metacognitive Reflection -->
+    <div class="reflection" id="reflection1" style="display:none;">
+      <h4>Critical Encoding Move</h4>
+      <p>"Which feature of the molecule mattered most in determining its behavior?"</p>
+      
+      <div class="rank-container" id="rank-container">
+        <div class="rank-item" data-id="1">Water preference (hydrophobicity/hydrophilicity)</div>
+        <div class="rank-item" data-id="2">Electrical charge distribution</div>
+        <div class="rank-item" data-id="3">Molecular shape</div>
+      </div>
+      
+      <p>Drag and drop to rank from most to least important:</p>
+      
+      <div class="callout">
+        <strong>Instructor Diagnostic:</strong> If you think "the tails go inside because that's how membranes look" — 
+        you have not encoded amphipathicity yet. The correct understanding is: "the tails avoid water because they're hydrophobic."
+      </div>
+      
+      <h4>What Changed in Your Thinking?</h4>
+      <textarea placeholder="Describe one idea that feels clearer now..."></textarea>
+    </div>
+  </div>
+  
+  <p class="callout">
+    This dual nature is not a flaw—it is the reason membranes form at all.
+  </p>
+</section>
+
+<!-- 4. BILAYER CONSTRUCTION WITH INTERACTIVE ACTIVITY 2 -->
+<section>
+  <h2>How a Bilayer Forms</h2>
+
+  <figure>
+    <img src="phospholipid.jpg" alt="Phospholipid bilayer with heads outward and tails inward">
+    <figcaption>
+      Phospholipid bilayer forming a stable boundary between water-based environments.
+    </figcaption>
+  </figure>
+
+  <div class="activity">
+    <div class="activity-header">
+      <div class="activity-icon">!</div>
+      <h3 class="activity-title">Activity 2: Build a Boundary That Must Survive</h3>
+    </div>
+    
+    <p><strong>Type:</strong> Constraint-based simulation<br>
+    <strong>Cognitive target:</strong> Emergent structure, systems thinking<br>
+    <strong>Bloom's Level:</strong> Apply → Evaluate</p>
+    
+    <div class="callout">
+      <strong>Your Task:</strong> "Build a boundary that survives in water. You are not allowed to use the word 'membrane'."
+    </div>
+    
+    <h4>Rules:</h4>
+    <ul>
+      <li>Water exists on both sides</li>
+      <li>Hydrophobic parts cannot contact water</li>
+      <li>No external glue or scaffolding allowed</li>
+    </ul>
+    
+    <div class="scenario">
+      <h4>Reasoning Challenge 1: Why a Single Layer Fails</h4>
+      <p>Explain why one layer of phospholipids cannot form a stable boundary between two water compartments:</p>
+      
+      <div class="options">
+        <div class="option" data-value="correct">One side would expose hydrophobic tails to water</div>
+        <div class="option" data-value="incorrect">Molecules would diffuse away too quickly</div>
+        <div class="option" data-value="incorrect">It would be too thin to see under a microscope</div>
+        <div class="option" data-value="incorrect">Single layers can't curve to form compartments</div>
+      </div>
+      
+      <div class="feedback" id="feedback-challenge1"></div>
+      
+      <button class="button" onclick="checkChallenge(1)">Check Reasoning</button>
+    </div>
+    
+    <div class="scenario">
+      <h4>Reasoning Challenge 2: Tails-Facing-Out Disaster</h4>
+      <p>What happens if phospholipids arrange with hydrophobic tails facing outward toward water?</p>
+      
+      <div class="visualization">
+        <svg width="100%" height="150">
+          <rect class="water-area" x="0" y="0" width="100%" height="150"/>
+          <text x="50%" y="30" text-anchor="middle" font-weight="bold">Water</text>
+          <!-- Incorrect arrangement -->
+          <circle class="molecule-head" cx="100" cy="100" r="15"/>
+          <rect class="molecule-tail" x="85" y="115" width="30" height="30" rx="3"/>
+          <rect class="molecule-tail" x="85" y="145" width="30" height="10" rx="2"/>
+          
+          <circle class="molecule-head" cx="150" cy="100" r="15"/>
+          <rect class="molecule-tail" x="135" y="70" width="30" height="30" rx="3" transform="rotate(180, 150, 85)"/>
+          
+          <text x="50%" y="80" text-anchor="middle" font-size="14">❌ Tails exposed to water</text>
+        </svg>
+      </div>
+      
+      <div class="options">
+        <div class="option" data-value="correct">System becomes unstable, molecules rearrange or aggregate</div>
+        <div class="option" data-value="incorrect">Forms a stable but inverted membrane</div>
+        <div class="option" data-value="incorrect">Creates a waterproof barrier</div>
+        <div class="option" data-value="incorrect">Nothing special happens</div>
+      </div>
+      
+      <div class="feedback" id="feedback-challenge2"></div>
+      
+      <button class="button" onclick="checkChallenge(2)">Check Reasoning</button>
+    </div>
+    
+    <div class="scenario">
+      <h4>High-Value Twist: What Survives Disruption?</h4>
+      <p>"If you shake this system, what stays the same?" (Select all that apply)</p>
+      
+      <div class="options">
+        <div class="option" data-value="correct">Heads still face water</div>
+        <div class="option" data-value="correct">Tails still avoid water</div>
+        <div class="option" data-value="correct">Bilayer reforms even if disrupted</div>
+        <div class="option" data-value="incorrect">Exact same molecules remain neighbors</div>
+        <div class="option" data-value="incorrect">Membrane thickness stays constant</div>
+      </div>
+      
+      <div class="feedback" id="feedback-challenge3"></div>
+      
+      <button class="button" onclick="checkChallenge(3)">Check Understanding</button>
+    </div>
+    
+    <div class="reflection">
+      <h4>Metacognitive Reflection</h4>
+      <p>"Which idea felt least intuitive at first, but now feels unavoidable?"</p>
+      <textarea placeholder="For me, the idea that..."></textarea>
+      
+      <div class="callout">
+        <strong>Key Insight:</strong> The membrane forms because of chemistry, not because the cell "decides" to build it.
+        This is <em>self-assembly</em> — an emergent solution to a molecular constraint problem.
+      </div>
+    </div>
+  </div>
+
+  <ol>
+    <li>Hydrophilic heads orient toward water.</li>
+    <li>Hydrophobic tails turn away from water.</li>
+    <li>A bilayer self-assembles without external guidance.</li>
+  </ol>
+</section>
+
+<!-- 5. LANGUAGE DECODING -->
+<section>
+  <h2>Say the Words, Own the Concepts</h2>
+
+  <div class="audio-term">
+    <strong>Phospholipid</strong> — a lipid with a phosphate head
+    <button onclick="document.getElementById('a1').play()">🔊</button>
+    <audio id="a1" src="phospholipid.mp3"></audio>
+  </div>
+
+  <div class="audio-term">
+    <strong>Amphipathic</strong> — having two opposing water properties
+    <button onclick="document.getElementById('a2').play()">🔊</button>
+    <audio id="a2" src="amphipathic.mp3"></audio>
+  </div>
+
+  <div class="audio-term">
+    <strong>Hydrophilic</strong> — water-loving
+    <button onclick="document.getElementById('a3').play()">🔊</button>
+    <audio id="a3" src="hydrophilic.mp3"></audio>
+  </div>
+
+  <div class="audio-term">
+    <strong>Hydrophobic</strong> — water-fearing
+    <button onclick="document.getElementById('a4').play()">🔊</button>
+    <audio id="a4" src="hydrophobic.mp3"></audio>
+  </div>
+
+  <div class="audio-term">
+    <strong>Bilayer</strong> — two layers arranged back-to-back
+    <button onclick="document.getElementById('a5').play()">🔊</button>
+    <audio id="a5" src="bilayer.mp3"></audio>
+  </div>
+</section>
+
+<!-- 6. VIDEO -->
+<section>
+  <h2>Guided Video Observation</h2>
+  <p>
+    Watch <strong>0:59–1:45 only</strong>. Focus on how phospholipids arrange themselves.
+    Ignore transport proteins for now.
+  </p>
+
+  <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/6wGAVxe7cik?start=59"
+    title="Phospholipid bilayer video"></iframe>
+
+  <ul>
+    <li>What forces cause the bilayer to form?</li>
+    <li>Why does this arrangement remain stable in water?</li>
+  </ul>
+</section>
+
+<!-- 7. INTERACTION -->
+<section>
+  <h2>Check Your Understanding</h2>
+
+  <details>
+    <summary>What would happen if phospholipids were not amphipathic?</summary>
+    <p>
+      A stable membrane would not form. The cell would lose its boundary and internal order.
+    </p>
+  </details>
+</section>
+
+<!-- 8. OPTIONAL CROSS-IMAGE CAPSTONE -->
+<section>
+  <h2>From Molecule to Boundary: The Critical Connection</h2>
+  
+  <div class="activity">
+    <div class="activity-header">
+      <div class="activity-icon">★</div>
+      <h3 class="activity-title">Capstone Challenge: Trace the Causal Chain</h3>
+    </div>
+    
+    <p><strong>Prompt:</strong> "If I erase one feature from the single molecule, the entire bilayer collapses. Which feature did I erase?"</p>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; margin: 2rem 0; align-items: center;">
+      <div style="flex: 1; min-width: 250px;">
+        <img src="amphipathic.jpg" alt="Single phospholipid" style="width: 100%; border: 2px solid var(--uwp-blue);">
+        <p class="callout" style="margin-top: 0.5rem; text-align: center;">Molecular Feature</p>
+      </div>
+      
+      <div style="font-size: 2rem; color: var(--uwp-green);">→</div>
+      
+      <div style="flex: 1; min-width: 250px;">
+        <img src="phospholipid.jpg" alt="Phospholipid bilayer" style="width: 100%; border: 2px solid var(--uwp-green);">
+        <p class="callout" style="margin-top: 0.5rem; text-align: center;">Emergent Structure</p>
+      </div>
+    </div>
+    
+    <div class="options">
+      <div class="option" data-value="incorrect">The phosphate group</div>
+      <div class="option" data-value="incorrect">The glycerol backbone</div>
+      <div class="option" data-value="correct">The hydrophobic/hydrophilic contrast (amphipathicity)</div>
+      <div class="option" data-value="incorrect">The fatty acid chain length</div>
+    </div>
+    
+    <div class="feedback" id="capstone-feedback"></div>
+    
+    <button class="button" onclick="checkCapstone()">Submit Answer</button>
+    
+    <div class="callout" style="margin-top: 1.5rem;">
+      <strong>Correct Answer:</strong> Hydrophobic/hydrophilic contrast (amphipathicity).<br>
+      <strong>Why:</strong> Without this dual relationship to water, phospholipids wouldn't self-assemble into bilayers. 
+      The contrast creates the driving force for organization.
+    </div>
+  </div>
+</section>
+
+<!-- 9. METACOGNITIVE REFLECTION -->
+<section>
+  <h2>What Changed in Your Thinking?</h2>
+  <ul>
+    <li>What idea about membranes feels clearer now?</li>
+    <li>What part is still fuzzy?</li>
+    <li>What question would you ask before lab?</li>
+  </ul>
+</section>
+
+<!-- 10. LAB BRIDGE -->
+<section>
+  <h2>Preparing for Lab</h2>
+  <p>
+    In lab, membranes appear as boundaries—not molecules. This model explains why
+    those boundaries exist and why they are reliable.
+  </p>
+  <div class="callout">
+    <strong>Transfer Ready:</strong> You've now built the foundation for understanding diffusion, osmosis, 
+    and membrane transport. Notice how each builds on the bilayer's emergent properties.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  BIOS 101 • University of Wisconsin–Parkside • Educational Use Only
+</footer>
+
+<script>
+// Activity 1: Molecule With a Personality
+let currentScenario = 1;
+const correctAnswers = {
+  1: "a", // Pure water: forms micelle
+  2: "a", // Pure oil: reverse micelle
+  3: "a"  // Interface: monolayer
+};
+
+const scenarioFeedback = {
+  1: {
+    correct: "Correct! In water, phospholipids form micelles with heads facing water and tails protected inside.",
+    incorrect: "Think about water's interaction with hydrophobic vs hydrophilic parts. The tails avoid water."
+  },
+  2: {
+    correct: "Yes! In oil, the reverse happens: tails face oil (which they like), heads cluster together.",
+    incorrect: "Consider: oil is hydrophobic like the tails. What would the tails prefer?"
+  },
+  3: {
+    correct: "Exactly! At a water-oil interface, molecules arrange with heads in water, tails in oil.",
+    incorrect: "Look at the boundary. Where would hydrophilic heads be happiest? Where would hydrophobic tails?"
+  }
+};
+
+function checkScenario(scenarioNum) {
+  const scenario = document.getElementById(`scenario${scenarioNum}`);
+  const selected = scenario.querySelector('.option.selected');
+  const feedback = document.getElementById(`feedback${scenarioNum}`);
+  const nextBtn = document.getElementById(scenarioNum === 3 ? 'complete1' : `next${scenarioNum}`);
+  
+  if (!selected) {
+    feedback.textContent = "Please select an option first.";
+    feedback.className = "feedback show incorrect";
+    return;
+  }
+  
+  const isCorrect = selected.dataset.value === correctAnswers[scenarioNum];
+  
+  feedback.innerHTML = `<strong>${isCorrect ? '✓ Correct!' : '✗ Reconsider:'}</strong> ${scenarioFeedback[scenarioNum][isCorrect ? 'correct' : 'incorrect']}`;
+  feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+  
+  // Update progress
+  const progressFill = document.querySelector('.progress-line.fill');
+  const progressSteps = document.querySelectorAll('.progress-step');
+  
+  progressSteps[scenarioNum - 1].classList.add('completed');
+  if (scenarioNum < 3) {
+    progressSteps[scenarioNum].classList.add('active');
+  }
+  progressFill.style.width = `${(scenarioNum / 3) * 100}%`;
+  
+  // Show next button
+  nextBtn.style.display = 'inline-block';
+  
+  // Mark options
+  scenario.querySelectorAll('.option').forEach(opt => {
+    if (opt.dataset.value === correctAnswers[scenarioNum]) {
+      opt.classList.add('correct');
+    } else if (opt.classList.contains('selected')) {
+      opt.classList.add('incorrect');
+    }
+  });
+}
+
+function nextScenario(current) {
+  document.getElementById(`scenario${current}`).style.display = 'none';
+  document.getElementById(`scenario${current + 1}`).style.display = 'block';
+  currentScenario = current + 1;
+}
+
+function completeActivity1() {
+  document.getElementById('scenario3').style.display = 'none';
+  document.getElementById('reflection1').style.display = 'block';
+  
+  // Setup drag and drop for ranking
+  const rankItems = document.querySelectorAll('.rank-item');
+  const container = document.getElementById('rank-container');
+  
+  rankItems.forEach(item => {
+    item.draggable = true;
+    
+    item.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', item.dataset.id);
+      item.classList.add('dragging');
+    });
+    
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+    });
+  });
+  
+  container.addEventListener('dragover', e => {
+    e.preventDefault();
+    const dragging = document.querySelector('.dragging');
+    const siblings = [...container.querySelectorAll('.rank-item:not(.dragging)')];
+    
+    const nextSibling = siblings.find(sibling => {
+      return e.clientY <= sibling.getBoundingClientRect().top + sibling.offsetHeight / 2;
+    });
+    
+    container.insertBefore(dragging, nextSibling);
+  });
+}
+
+// Activity 2: Build a Boundary
+function checkChallenge(challengeNum) {
+  const challenge = document.querySelectorAll('.scenario')[challengeNum + 2]; // +2 because of activity structure
+  const feedback = document.getElementById(`feedback-challenge${challengeNum}`);
+  const options = challenge.querySelectorAll('.option');
+  
+  let correctCount = 0;
+  let selectedCount = 0;
+  
+  options.forEach(opt => {
+    if (opt.classList.contains('selected')) {
+      selectedCount++;
+      if (opt.dataset.value === 'correct') {
+        correctCount++;
+        opt.classList.add('correct');
+      } else {
+        opt.classList.add('incorrect');
+      }
+    } else if (opt.dataset.value === 'correct') {
+      opt.classList.add('correct');
+    }
+  });
+  
+  if (selectedCount === 0) {
+    feedback.textContent = "Please select at least one option.";
+    feedback.className = "feedback show incorrect";
+    return;
+  }
+  
+  let message = "";
+  if (challengeNum === 3) {
+    // Multiple select challenge
+    const totalCorrect = 3; // There are 3 correct options for challenge 3
+    if (correctCount === totalCorrect && selectedCount === totalCorrect) {
+      message = "Perfect! You identified all the stable features that survive disruption.";
+    } else if (correctCount === totalCorrect) {
+      message = "Good, but you selected some incorrect options too.";
+    } else {
+      message = "Review which features are inherent to amphipathic assembly vs. incidental.";
+    }
+  } else {
+    // Single select challenges
+    const isCorrect = correctCount > 0 && selectedCount === 1;
+    message = isCorrect ? 
+      "Correct reasoning! This understanding is key to predicting membrane behavior." :
+      "Think about the constraints: hydrophobic parts MUST avoid water.";
+  }
+  
+  feedback.innerHTML = `<strong>${correctCount > 0 ? '✓' : '✗'}</strong> ${message}`;
+  feedback.className = `feedback show ${correctCount > 0 ? 'correct' : 'incorrect'}`;
+}
+
+// Capstone Challenge
+function checkCapstone() {
+  const capstone = document.querySelector('.options');
+  const feedback = document.getElementById('capstone-feedback');
+  const selected = capstone.querySelector('.option.selected');
+  
+  if (!selected) {
+    feedback.textContent = "Please select an answer.";
+    feedback.className = "feedback show incorrect";
+    return;
+  }
+  
+  const isCorrect = selected.dataset.value === 'correct';
+  
+  feedback.innerHTML = isCorrect ? 
+    "✓ Exactly! Without amphipathicity, there's no driving force for self-assembly." :
+    "✗ Close, but think: which feature creates the water-avoiding/water-seeking behavior?";
+  feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+  
+  // Mark all options
+  capstone.querySelectorAll('.option').forEach(opt => {
+    if (opt.dataset.value === 'correct') {
+      opt.classList.add('correct');
+    } else if (opt.classList.contains('selected') && opt.dataset.value !== 'correct') {
+      opt.classList.add('incorrect');
+    }
+  });
+}
+
+// Initialize interactive elements
+document.addEventListener('DOMContentLoaded', function() {
+  // Setup option selection
+  document.querySelectorAll('.option').forEach(option => {
+    option.addEventListener('click', function() {
+      // Clear previous selections in this question group
+      const parent = this.closest('.scenario') || this.closest('.options').parentElement;
+      parent.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      
+      // Select this option
+      this.classList.add('selected');
+    });
+  });
+  
+  // Setup basic molecule dragging for visualization
+  const molecules = document.querySelectorAll('.molecule');
+  molecules.forEach(mol => {
+    let isDragging = false;
+    let offsetX, offsetY;
+    
+    mol.addEventListener('mousedown', startDrag);
+    mol.addEventListener('touchstart', startDrag);
+    
+    function startDrag(e) {
+      isDragging = true;
+      const rect = mol.getBoundingClientRect();
+      
+      if (e.type === 'mousedown') {
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDrag);
+      } else {
+        const touch = e.touches[0];
+        offsetX = touch.clientX - rect.left;
+        offsetY = touch.clientY - rect.top;
+        document.addEventListener('touchmove', drag);
+        document.addEventListener('touchend', stopDrag);
+      }
+    }
+    
+    function drag(e) {
+      if (!isDragging) return;
+      
+      let clientX, clientY;
+      if (e.type === 'mousemove') {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      } else {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      }
+      
+      const parent = mol.parentElement.getBoundingClientRect();
+      const x = Math.max(0, Math.min(parent.width - 120, clientX - parent.left - offsetX));
+      const y = Math.max(0, Math.min(parent.height - 60, clientY - parent.top - offsetY));
+      
+      mol.style.transform = `translate(${x}px, ${y}px)`;
+    }
+    
+    function stopDrag() {
+      isDragging = false;
+      document.removeEventListener('mousemove', drag);
+      document.removeEventListener('touchmove', drag);
+    }
+  });
+  
+  // Initialize audio buttons with better feedback
+  document.querySelectorAll('.audio-term button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const audioId = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+      const audio = document.getElementById(audioId);
+      
+      // Visual feedback
+      this.style.background = var('--uwp-red');
+      setTimeout(() => {
+        this.style.background = var('--uwp-green');
+      }, 300);
+      
+      audio.play();
+    });
+  });
+});
+</script>
+
+</body>
+</html>
