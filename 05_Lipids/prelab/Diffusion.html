@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>05 • Passive Transport — Video Quiz</title>
+    <base target="_self">
+    <style>
+        /* --- Styles mirrored from VideoQuizPrototype.html --- */
+        :root {
+            --uwp-green: #016836;
+            --accent: #FABA31;
+            --text: #000000;
+            --border: #e0e0e0;
+            --light-bg: #f9f9f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #fff;
+            color: var(--text);
+            line-height: 1.3;
+            padding: 0;
+        }
+
+        header {
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--uwp-green);
+            background: #f5f5f5;
+            font-size: 0.85rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.5rem 0.8rem;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            color: var(--uwp-green);
+            margin: 0.3rem 0 1rem 0;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* --- New Styles for Video Quiz Interface --- */
+        .video-wrapper {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Quiz Overlay */
+        .quiz-overlay {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .quiz-overlay.active {
+            display: flex;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--uwp-green);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 10px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 1px solid var(--uwp-green);
+            color: var(--uwp-green);
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: var(--light-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .option-btn.correct {
+            background: var(--uwp-green);
+            color: white;
+            border-color: var(--uwp-green);
+        }
+
+        .option-btn.incorrect {
+            background: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+        .feedback-msg {
+            margin-top: 1rem;
+            font-weight: bold;
+            min-height: 1.5rem;
+        }
+
+        .continue-btn {
+            margin-top: 1rem;
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            display: none; /* Hidden until answer is selected */
+        }
+
+        .continue-btn:hover {
+            background: #e5aa2b;
+        }
+
+        /* End Screen */
+        .end-screen {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: var(--light-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+
+        .end-screen h2 {
+            color: var(--uwp-green);
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--uwp-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #00502f;
+        }
+
+        /* --- Navbar CSS (Mirrored) --- */
+        .bios-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #016836;
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px;
+        }
+
+        .bios-home {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+        }
+
+        .bios-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .bios-menus {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bios-menu {
+            position: relative;
+        }
+
+        .bios-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        .bios-trigger.active {
+            border-bottom: 2px solid #FFD100;
+        }
+
+        .bios-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            z-index: 1001;
+        }
+
+        .bios-dropdown a {
+            display: block;
+            padding: 6px 10px;
+            color: #212721;
+            text-decoration: none;
+        }
+
+        .bios-dropdown a:hover {
+            background: #EFECE2;
+        }
+
+        .bios-menu:hover .bios-dropdown,
+        .bios-menu:focus-within .bios-dropdown {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .bios-toggle {
+                display: block;
+            }
+
+            .bios-menus {
+                display: none;
+                flex-direction: column;
+                background: #016836;
+                width: 100%;
+            }
+
+            .bios-menus.open {
+                display: flex;
+            }
+
+            .bios-dropdown {
+                position: static;
+                border: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
+        </div>
+    </nav>
+
+    <header>
+        <div><strong>UW‑Parkside</strong> • Chapter 5: Lipids, Membranes, and Transport — Video Quiz</div>
+        <div style="font-size: 0.75rem; margin-top: 0.1rem;">Watch the video and answer the questions to proceed.</div>
+    </header>
+
+    <main>
+        <h1>Structure of the Cell Membrane</h1>
+
+        <div class="video-wrapper">
+            <video id="quizVideo" controls playsinline>
+                <source src="PassiveTransport.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <div class="quiz-overlay" id="quizOverlay">
+                <div class="question-text" id="questionText">Question goes here?</div>
+                <div class="options-grid" id="optionsGrid">
+                    </div>
+                <div class="feedback-msg" id="feedbackMsg"></div>
+                <button class="continue-btn" id="continueBtn">Continue Video</button>
+            </div>
+        </div>
+
+        <div class="end-screen" id="endScreen">
+            <h2>🎉 Module Complete!</h2>
+            <p style="margin-bottom: 1rem;">You have completed the video quiz on the Cell Membrane Structure.</p>
+            <p style="margin-bottom: 1.5rem;">Next, apply what you've learned by drawing the model.</p>
+            <a href="cellmembraneDITKI.html" class="btn-primary">Proceed to Draw It To Know It</a>
+        </div>
+
+    </main>
+
+    <script>
+        // --- Navbar Script (Mirrored from Prototype) ---
+        (function () {
+            function initNav() {
+                var labs = [{ "folder": "bios101-learning", "title": "Metacognition" }, { "folder": "01_Science_of_Biology", "title": "Scientific Process" }, { "folder": "02_Eukaryotes", "title": "Eukaryotes" }, { "folder": "03_Carbohydrates", "title": "Carbohydrates" }, { "folder": "04_Proteins", "title": "Proteins" }, { "folder": "05_Lipids", "title": "Lipids" }, { "folder": "06_Photosynthetic_Pigments", "title": "Photosynthesis" }, { "folder": "07_Nucleic Acids", "title": "Nucleic Acids" }, { "folder": "08_Mitosis", "title": "Mitosis" }, { "folder": "09_Meiosis", "title": "Meiosis" }, { "folder": "10_Genetics", "title": "Genetics" }];
+                var menus = document.getElementById('biosMenus');
+                var path = location.pathname;
+                if (!menus) return;
+                labs.forEach(function (lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    var bp = '../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+                var t = document.querySelector('.bios-toggle');
+                if (t) t.onclick = function () { menus.classList.toggle('open'); };
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+
+        // --- Video Quiz Logic ---
+        
+        // Questions derived from transcript timestamps
+        // Timings set >0.5s after the answer is spoken in the video
+        const quizData = [
+            {
+                time: 17, // ~0:15 "fluid mosaic"
+                question: "How do scientists describe the structure of the cell membrane?",
+                options: ["Rigid Shell", "Fluid Mosaic", "Static Barrier", "Solid Wall"],
+                answer: 1 // Index of correct answer
+            },
+            {
+                time: 42, // ~0:38 "lipid bilayer"
+                question: "The cell membrane consists of two layers of phospholipids, referred to as a:",
+                options: ["Protein Coat", "Carbohydrate Chain", "Lipid Bilayer", "Mosaic Tile"],
+                answer: 2
+            },
+            {
+                time: 63, // ~0:58 "heads... hydrophilic"
+                question: "The round head portions of the phospholipids are:",
+                options: ["Hydrophobic (repelled by water)", "Hydrophilic (attracted to water)", "Neutral", "Non-polar"],
+                answer: 1
+            },
+            {
+                time: 98, // ~1:32 "tails... hydrophobic"
+                question: "The phospholipid tails orient away from water because they are:",
+                options: ["Hydrophilic", "Magnetic", "Hydrophobic", "Charged"],
+                answer: 2
+            },
+            {
+                time: 157, // ~2:32 "move through proteins"
+                question: "How do large molecules that cannot seep between phospholipids cross the membrane?",
+                options: ["They break the membrane", "They move through embedded protein tunnels", "They dissolve the lipids", "They cannot enter the cell"],
+                answer: 1
+            }
+        ];
+
+        const video = document.getElementById('quizVideo');
+        const overlay = document.getElementById('quizOverlay');
+        const questionText = document.getElementById('questionText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const feedbackMsg = document.getElementById('feedbackMsg');
+        const continueBtn = document.getElementById('continueBtn');
+        const endScreen = document.getElementById('endScreen');
+
+        let currentQuestionIndex = 0;
+        let isQuizActive = false;
+
+        // Sort quiz data by time just in case
+        quizData.sort((a, b) => a.time - b.time);
+
+        video.addEventListener('timeupdate', () => {
+            if (isQuizActive || currentQuestionIndex >= quizData.length) return;
+
+            // Check if we reached the trigger time for the current question
+            if (video.currentTime >= quizData[currentQuestionIndex].time) {
+                triggerQuiz(quizData[currentQuestionIndex]);
+            }
+        });
+
+        video.addEventListener('ended', () => {
+            video.webkitExitFullscreen?.(); // Exit fullscreen if applicable
+            endScreen.style.display = 'block';
+            endScreen.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function triggerQuiz(qData) {
+            video.pause();
+            isQuizActive = true;
+            
+            // Exit fullscreen to show quiz overlay if user was in fullscreen
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+               if (document.exitFullscreen) document.exitFullscreen();
+               else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            }
+
+            // Populate Interface
+            questionText.textContent = qData.question;
+            optionsGrid.innerHTML = '';
+            feedbackMsg.textContent = '';
+            feedbackMsg.style.color = 'inherit';
+            continueBtn.style.display = 'none';
+
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = () => handleAnswer(index, qData.answer, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            overlay.classList.add('active');
+        }
+
+        function handleAnswer(selectedIndex, correctIndex, btnElement) {
+            // Disable all buttons
+            const buttons = optionsGrid.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                btnElement.classList.add('correct');
+                feedbackMsg.textContent = "Correct! ★";
+                feedbackMsg.style.color = "var(--uwp-green)";
+                continueBtn.style.display = 'inline-block';
+            } else {
+                btnElement.classList.add('incorrect');
+                // Highlight the correct one
+                buttons[correctIndex].classList.add('correct');
+                feedbackMsg.textContent = "Incorrect. The correct answer is highlighted.";
+                feedbackMsg.style.color = "#d32f2f";
+                continueBtn.style.display = 'inline-block';
+            }
+        }
+
+        continueBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            isQuizActive = false;
+            currentQuestionIndex++;
+            video.play();
+        });
+    </script>
+</body>
+
+</html>
