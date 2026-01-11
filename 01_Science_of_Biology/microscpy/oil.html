@@ -610,14 +610,14 @@
                 </div>
 
                 <div class="score-display" id="score-display">
-                    Score: <span id="score">0</span> / <span id="total-points">12</span>
+                    Score: <span id="score">0</span> / <span id="total-points">24</span>
                 </div>
             </section>
 
             <section class="quiz-section">
                 <div class="quiz-header">
                     <div class="question-counter">Question <span id="current-question">1</span> of <span
-                            id="total-questions">12</span></div>
+                            id="total-questions">24</span></div>
                     <div class="question-points" id="points-display">1 point</div>
                 </div>
 
@@ -660,157 +660,329 @@
         const quizData = [
             {
                 number: 1,
-                timestamp: "00:05:12",
+                timestamp: "00:01:07.920",
                 type: "Multiple Choice",
-                question: "Which microscope lens is the ONLY lens allowed to touch immersion oil?",
-                options: ["10x objective", "40x objective", "100x objective", "4x objective"],
-                correctAnswer: "C",
+                question: "Why did the instructor have you draw circles on the slide?",
+                options: [
+                    "To mark where the stain should be placed",
+                    "To know where to look under the microscope",
+                    "To identify different bacterial cultures",
+                    "To prevent the slide from breaking"
+                ],
+                correctAnswer: "B",
                 points: 1,
-                explanation: "Instructor states repeatedly that only the 100x lens may ever contact oil; others would be permanently damaged.",
+                explanation: "The circles help locate the smear position since bacteria are too small to see with the naked eye.",
                 hasTriggered: false
             },
             {
                 number: 2,
-                timestamp: "00:03:31",
+                timestamp: "00:01:29.280",
                 type: "Multiple Choice",
-                question: "Which action must students NEVER perform when focusing at 40x or 100x?",
-                options: ["Use fine adjustment", "Move the slide", "Adjust diaphragm", "Use coarse adjustment"],
-                correctAnswer: "D",
+                question: "Where should the slide be positioned on the microscope?",
+                options: [
+                    "In the clip, over the light source",
+                    "On top of the objective lens",
+                    "Below the condenser",
+                    "Next to the diaphragm"
+                ],
+                correctAnswer: "A",
                 points: 1,
-                explanation: "Instructor specifies that coarse adjustment is prohibited at 40x and 100x because it risks crashing the lens into the slide.",
+                explanation: "The slide goes in the clip and must be centered over the light source.",
                 hasTriggered: false
             },
             {
                 number: 3,
-                timestamp: "00:05:15",
-                type: "True/False",
-                question: "It is acceptable to get oil on the 40x objective lens.",
-                options: ["TRUE", "FALSE"],
+                timestamp: "00:01:44.920",
+                type: "Multiple Choice",
+                question: "What does the instructor adjust using the diaphragm lever?",
+                options: [
+                    "The magnification level",
+                    "The amount of light",
+                    "The condenser height",
+                    "The focus clarity"
+                ],
                 correctAnswer: "B",
                 points: 1,
-                explanation: "Oil on the 40x lens is described as 'very, very bad' and will permanently damage the microscope.",
+                explanation: "The diaphragm lever is used to reduce bright light at lower powers by moving it to the right.",
                 hasTriggered: false
             },
             {
                 number: 4,
-                timestamp: "00:07:10",
+                timestamp: "00:02:00.360",
                 type: "Multiple Choice",
-                question: "Why is transitioning from 100x back to 40x prohibited?",
+                question: "Where should the condenser be positioned?",
                 options: [
-                    "It makes the image too dark",
-                    "It risks contaminating the 40x lens with oil",
-                    "It breaks parfocal alignment",
-                    "It damages the condenser"
+                    "At the bottom of the microscope",
+                    "Pretty close to the slide, right below it",
+                    "Above the objective lens",
+                    "As far down as possible"
                 ],
                 correctAnswer: "B",
                 points: 1,
-                explanation: "Returning from 100x to 40x causes oil to smear onto the 40x lens, which is prohibited.",
+                explanation: "The condenser should be positioned close to the slide, just below it, to avoid focusing issues.",
                 hasTriggered: false
             },
             {
                 number: 5,
-                timestamp: "00:05:53",
+                timestamp: "00:02:12.878",
                 type: "Multiple Choice",
-                question: "Which of the following is PROHIBITED when adding immersion oil?",
-                options: [
-                    "Touching the dropper to the slide",
-                    "Letting a drop fall without contact",
-                    "Using the smallest drop possible",
-                    "Centering the specimen before adding oil"
-                ],
+                question: "Which objective power should you skip when viewing bacteria?",
+                options: ["4x", "10x", "40x", "100x"],
                 correctAnswer: "A",
                 points: 1,
-                explanation: "Instructor states the dropper must NOT touch the slide; oil should fall freely from above.",
+                explanation: "The 4x power is not needed for bacteria since they are very small; always start with 10x.",
                 hasTriggered: false
             },
             {
                 number: 6,
-                timestamp: "00:02:27",
+                timestamp: "00:02:19.680",
                 type: "Multiple Choice",
-                question: "What should students NOT do when first trying to locate the smear?",
-                options: [
-                    "Start with 10x",
-                    "Draw circle during staining",
-                    "Skip directly to 100x",
-                    "Check condenser height"
-                ],
-                correctAnswer: "C",
+                question: "Which objective must you use to find the smear before proceeding further?",
+                options: ["4x", "10x", "40x", "100x"],
+                correctAnswer: "B",
                 points: 1,
-                explanation: "Students must begin at 10x; skipping directly to 100x prevents locating the smear.",
+                explanation: "You must always find the specimen with the 10x power before moving to higher magnifications.",
                 hasTriggered: false
             },
             {
                 number: 7,
-                timestamp: "00:07:01",
-                type: "True/False",
-                question: "It is acceptable to use coarse adjustment at 100x power.",
-                options: ["TRUE", "FALSE"],
-                correctAnswer: "B",
+                timestamp: "00:02:58.360",
+                type: "Fill in the Blank",
+                question: "The instructor's 'little trick' involves using a ______ to check if the condenser is in the right place.",
+                correctAnswer: "loop",
                 points: 1,
-                explanation: "Coarse adjustment at 100x is explicitly forbidden because it can damage the slide or lens.",
+                explanation: "Hold your loop over the light source and adjust the condenser until the loop comes into focus.",
                 hasTriggered: false
             },
             {
                 number: 8,
-                timestamp: "00:07:10",
-                type: "Fill in the Blank",
-                question: "If the specimen cannot be found at 100x, students must return to the ______ objective rather than the 40x.",
-                correctAnswer: "10x",
+                timestamp: "00:03:23.000",
+                type: "Multiple Choice",
+                question: "Which adjustment knob do you use to initially find your specimen at 10x?",
+                options: [
+                    "Fine adjustment knob",
+                    "Coarse adjustment knob",
+                    "Stage adjustment knob",
+                    "Condenser adjustment knob"
+                ],
+                correctAnswer: "B",
                 points: 1,
-                explanation: "Students must NEVER return to 40x once oil is applied; they must go back to 10x.",
+                explanation: "The coarse adjustment knob is used with the 10x power to initially find the specimen.",
                 hasTriggered: false
             },
             {
                 number: 9,
-                timestamp: "00:06:20",
+                timestamp: "00:03:39.540",
                 type: "Multiple Choice",
-                question: "Which action is PROHIBITED after immersion oil has been placed?",
+                question: "Which adjustment knob is prohibited at 40x magnification?",
                 options: [
-                    "Center the specimen at 40x",
-                    "Move the stage",
-                    "Rotate between 40x and 100x",
-                    "Check condenser height"
+                    "Fine adjustment knob",
+                    "Coarse adjustment knob",
+                    "Condenser knob",
+                    "Diaphragm lever"
                 ],
                 correctAnswer: "B",
                 points: 1,
-                explanation: "Once oil is added, the stage must not be moved; exact alignment is required to prevent losing the smear.",
+                explanation: "At 40x and 100x, you can ONLY use the fine adjustment knob; coarse adjustment is prohibited.",
                 hasTriggered: false
             },
             {
                 number: 10,
-                timestamp: "00:02:31",
-                type: "Multiple Choice",
-                question: "Students should NOT attempt viewing their smear before confirming visibility at which objective?",
-                options: ["4x", "10x", "40x", "100x"],
-                correctAnswer: "B",
+                timestamp: "00:03:50.519",
+                type: "True/False",
+                question: "The instructor's rule of thumb is to focus away from yourself to bring the specimen into focus.",
+                options: ["TRUE", "FALSE"],
+                correctAnswer: "A",
                 points: 1,
-                explanation: "Instructor states students must FIRST find the smear at 10x before proceeding further.",
+                explanation: "In most cases, focusing away from yourself will bring the specimen into focus at higher magnifications.",
                 hasTriggered: false
             },
             {
                 number: 11,
-                timestamp: "00:04:46",
+                timestamp: "00:03:56.400",
                 type: "Fill in the Blank",
-                question: "Using 100x without immersion oil results in a blurry image and the ______ color.",
-                correctAnswer: "wrong",
+                question: "If you feel like you're just 'focusing, focusing, focusing, focusing,' you should take a step back and go to the ______ objective.",
+                correctAnswer: "10x",
                 points: 1,
-                explanation: "Without oil, refraction changes and the color appears incorrect (pink vs. purple).",
+                explanation: "If you're struggling with focus, return to 10x to readjust and recenter the specimen.",
                 hasTriggered: false
             },
             {
                 number: 12,
-                timestamp: "00:05:21",
+                timestamp: "00:04:55.820",
+                type: "True/False",
+                question: "It is acceptable to use the 100x objective without oil immersion.",
+                options: ["TRUE", "FALSE"],
+                correctAnswer: "B",
+                points: 1,
+                explanation: "Oil immersion is mandatory at 100x; without it, the image will be blurry and the wrong color.",
+                hasTriggered: false
+            },
+            {
+                number: 13,
+                timestamp: "00:05:08.400",
                 type: "Multiple Choice",
-                question: "Which behavior is explicitly prohibited because it may damage the microscope?",
+                question: "What happens when you use 100x without oil immersion?",
                 options: [
-                    "Getting oil on 40x lens",
-                    "Lowering condenser",
-                    "Adjusting diaphragm",
-                    "Using fine focus at 100x"
+                    "The specimen appears larger",
+                    "It's always out of focus or the wrong color",
+                    "The microscope gets damaged",
+                    "Nothing, it works fine"
+                ],
+                correctAnswer: "B",
+                points: 1,
+                explanation: "Without oil, increased light refraction causes blurriness and incorrect colors (pink vs. purple).",
+                hasTriggered: false
+            },
+            {
+                number: 14,
+                timestamp: "00:05:22.759",
+                type: "Multiple Choice",
+                question: "Which lens is the ONLY lens that can ever have oil on it?",
+                options: ["4x objective", "10x objective", "40x objective", "100x objective"],
+                correctAnswer: "D",
+                points: 1,
+                explanation: "Only the 100x lens can have oil; getting oil on other lenses permanently damages the microscope.",
+                hasTriggered: false
+            },
+            {
+                number: 15,
+                timestamp: "00:05:27.939",
+                type: "True/False",
+                question: "Getting oil on the 40x or 10x lens will permanently damage the microscope.",
+                options: ["TRUE", "FALSE"],
+                correctAnswer: "A",
+                points: 1,
+                explanation: "The instructor emphasizes this is 'very, very bad' and causes permanent damage to the microscope.",
+                hasTriggered: false
+            },
+            {
+                number: 16,
+                timestamp: "00:05:40.680",
+                type: "Multiple Choice",
+                question: "Where should the objective lens be positioned before adding oil?",
+                options: [
+                    "At 100x magnification",
+                    "Between 40x and 100x",
+                    "At 10x magnification",
+                    "At 40x magnification"
+                ],
+                correctAnswer: "B",
+                points: 1,
+                explanation: "Position the lens between 40x and 100x to avoid getting oil on the 40x lens.",
+                hasTriggered: false
+            },
+            {
+                number: 17,
+                timestamp: "00:06:09.919",
+                type: "True/False",
+                question: "You should touch the dropper or bottle to the slide when adding oil.",
+                options: ["TRUE", "FALSE"],
+                correctAnswer: "B",
+                points: 1,
+                explanation: "Never touch the slide with the dropper; let the oil drop fall freely from above.",
+                hasTriggered: false
+            },
+            {
+                number: 18,
+                timestamp: "00:06:10.919",
+                type: "Multiple Choice",
+                question: "How much oil should you add to the slide?",
+                options: [
+                    "The smallest drop possible",
+                    "A large drop for best results",
+                    "Multiple drops",
+                    "Enough to cover the entire smear"
                 ],
                 correctAnswer: "A",
                 points: 1,
-                explanation: "Oil on the 40x lens is described as permanently damaging the microscope.",
+                explanation: "Use the smallest drop of oil you possibly can to avoid excess oil on the slide.",
+                hasTriggered: false
+            },
+            {
+                number: 19,
+                timestamp: "00:06:36.759",
+                type: "True/False",
+                question: "After adding oil, you should ensure the specimen is in absolute focus at 40x before moving to 100x.",
+                options: ["TRUE", "FALSE"],
+                correctAnswer: "A",
+                points: 1,
+                explanation: "The specimen must be in absolute focus and centered at 40x before adding oil - it's the 'point of no return.'",
+                hasTriggered: false
+            },
+            {
+                number: 20,
+                timestamp: "00:07:25.919",
+                type: "Multiple Choice",
+                question: "Why can't you go from 100x back to 40x when oil is on the slide?",
+                options: [
+                    "The microscope will break",
+                    "You will get oil on the 40x lens",
+                    "The image becomes too bright",
+                    "The parfocal feature stops working"
+                ],
+                correctAnswer: "B",
+                points: 1,
+                explanation: "Moving to 40x after using oil will contaminate the 40x lens with oil, causing permanent damage.",
+                hasTriggered: false
+            },
+            {
+                number: 21,
+                timestamp: "00:07:50.120",
+                type: "Multiple Choice",
+                question: "What should you do if you're 'focusing the heck out of it' at 100x?",
+                options: [
+                    "Use the coarse adjustment knob",
+                    "Add more oil",
+                    "Go back to 10x (not 40x)",
+                    "Clean the lens immediately"
+                ],
+                correctAnswer: "C",
+                points: 1,
+                explanation: "Never use coarse adjustment at 100x; if struggling, go back to 10x, NOT 40x (to avoid oil contamination).",
+                hasTriggered: false
+            },
+            {
+                number: 22,
+                timestamp: "00:08:24.919",
+                type: "True/False",
+                question: "You can go to the 40x objective if there is oil on your slide.",
+                options: ["TRUE", "FALSE"],
+                correctAnswer: "B",
+                points: 1,
+                explanation: "You can NEVER go to 40x if there is oil on the slide; this would damage the 40x lens.",
+                hasTriggered: false
+            },
+            {
+                number: 23,
+                timestamp: "00:10:05.580",
+                type: "Multiple Choice",
+                question: "What type of paper must be used to clean oil off the 100x lens?",
+                options: [
+                    "Paper towel",
+                    "Chem wipe",
+                    "Lens paper",
+                    "Tissue paper"
+                ],
+                correctAnswer: "C",
+                points: 1,
+                explanation: "Only lens paper should be used; other papers can scratch or damage the lens.",
+                hasTriggered: false
+            },
+            {
+                number: 24,
+                timestamp: "00:10:18.399",
+                type: "Multiple Choice",
+                question: "How should you clean oil off the 100x lens?",
+                options: [
+                    "Rub it vigorously",
+                    "Gently dab it",
+                    "Use cleaning solution",
+                    "Rinse with water"
+                ],
+                correctAnswer: "B",
+                points: 1,
+                explanation: "Gently dab the lens with lens paper, moving to dry spots, until no more oil comes off.",
                 hasTriggered: false
             }
         ];

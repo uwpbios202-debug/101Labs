@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DITKI: Phospholipid Bilayer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #EFECE2;
+            color: #212721;
+            line-height: 1.6;
+        }
+        
+        /* UWP Brand Colors */
+        :root {
+            --uwp-green: #016836;
+            --uwp-yellow: #FFD100;
+            --uwp-cream: #EFECE2;
+            --uwp-black: #212721;
+        }
+        
+        /* BIOS101 Navigation Bar Styles */
+        .bios-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--uwp-green);
+            border-bottom: 2px solid var(--uwp-yellow);
+        }
+        
+        .bios-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px;
+        }
+        
+        .bios-home {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+            font-size: 1.2rem;
+        }
+        
+        .bios-home:hover {
+            color: var(--uwp-yellow);
+        }
+        
+        .bios-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .bios-menus {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .bios-menu { 
+            position: relative; 
+        }
+        
+        .bios-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 12px;
+            font-size: 0.95rem;
+        }
+        
+        .bios-trigger:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .bios-trigger.active {
+            border-bottom: 2px solid var(--uwp-yellow);
+        }
+        
+        .bios-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            z-index: 1001;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .bios-dropdown a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--uwp-black);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .bios-dropdown a:hover {
+            background: var(--uwp-cream);
+        }
+        
+        .bios-menu:hover .bios-dropdown,
+        .bios-menu:focus-within .bios-dropdown {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .bios-toggle { display: block; }
+            .bios-menus {
+                display: none;
+                flex-direction: column;
+                background: var(--uwp-green);
+                width: 100%;
+            }
+            .bios-menus.open { display: flex; }
+            .bios-dropdown {
+                position: static;
+                border: none;
+                background: rgba(255, 255, 255, 0.1);
+            }
+            .bios-dropdown a {
+                color: white;
+                padding-left: 24px;
+            }
+        }
+        
+        header {
+            background: var(--uwp-green);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 4px solid var(--uwp-yellow);
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .phase-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--uwp-green);
+        }
+        
+        .phase-card.active {
+            border-left-color: var(--uwp-yellow);
+            border-left-width: 8px;
+        }
+        
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--uwp-cream);
+        }
+        
+        .phase-number {
+            background: var(--uwp-green);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .phase-card.active .phase-number {
+            background: var(--uwp-yellow);
+            color: var(--uwp-black);
+        }
+        
+        h2 {
+            color: var(--uwp-green);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            color: var(--uwp-green);
+            margin: 1rem 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+        
+        .reference-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 1rem auto;
+            display: block;
+            border: 3px solid var(--uwp-green);
+            border-radius: 8px;
+        }
+        
+        .canvas-container {
+            background: white;
+            border: 3px solid var(--uwp-green);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        canvas {
+            border: 2px dashed #ccc;
+            cursor: crosshair;
+            display: block;
+            margin: 0 auto;
+            touch-action: none;
+        }
+        
+        .tools {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        button {
+            background: var(--uwp-green);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #014d28;
+            transform: translateY(-2px);
+        }
+        
+        button.secondary {
+            background: var(--uwp-yellow);
+            color: var(--uwp-black);
+        }
+        
+        button.secondary:hover {
+            background: #e6bc00;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .checklist {
+            background: var(--uwp-cream);
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+        
+        .timer {
+            background: var(--uwp-yellow);
+            color: var(--uwp-black);
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .high-yield {
+            background: #fff9e6;
+            border-left: 4px solid var(--uwp-yellow);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .high-yield h3 {
+            color: var(--uwp-black);
+            margin-top: 0;
+        }
+        
+        ul {
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: var(--uwp-cream);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--uwp-green), var(--uwp-yellow));
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .color-btn:hover, .color-btn.active {
+            border-color: var(--uwp-black);
+            transform: scale(1.1);
+        }
+        
+        .notes-area {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem;
+            border: 2px solid var(--uwp-green);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            canvas {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- BIOS101 Navigation Bar -->
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../../index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
+        </div>
+    </nav>
+
+    <header>
+        <h1>🎨 DITKI: Draw It To Know It</h1>
+        <p>Phospholipid Bilayer & Cell Membrane - BIOS101 Learning Tool</p>
+    </header>
+    
+    <div class="container">
+        <!-- Phase 1: Observation -->
+        <div class="phase-card active" id="phase1">
+            <div class="phase-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="phase-number">1</div>
+                    <h2>Phase 1: Observe the Reference Image</h2>
+                </div>
+                <button onclick="startPhase(2)" class="secondary">Start Drawing →</button>
+            </div>
+            
+            <p><strong>Goal:</strong> Study the membrane structure carefully. Don't try to memorize—focus on understanding WHY each component is positioned where it is.</p>
+            
+            <img src="phospholipid.jpg" alt="Phospholipid Bilayer Reference" class="reference-image">
+            
+            <div class="high-yield">
+                <h3>🎯 High-Yield Components for MCAT/Premed Exams:</h3>
+                <ul>
+                    <li><strong>Phospholipid Structure:</strong> Hydrophilic heads (phosphate groups) face aqueous environments; hydrophobic tails (fatty acids) face inward</li>
+                    <li><strong>Cholesterol:</strong> Wedged between phospholipids; regulates fluidity (increases at low temp, decreases at high temp)</li>
+                    <li><strong>Integral Proteins:</strong> Transmembrane proteins that span the entire bilayer; often form channels or receptors</li>
+                    <li><strong>Peripheral Proteins:</strong> Attached to membrane surface; often cytoskeletal anchors</li>
+                    <li><strong>Glycocalyx:</strong> Glycoproteins and glycolipids on extracellular surface; cell recognition and protection</li>
+                    <li><strong>Cytoskeleton:</strong> Microfilaments provide structural support underneath membrane</li>
+                    <li><strong>Selective Permeability:</strong> Small nonpolar molecules and gases pass freely; large/polar molecules need transport proteins</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h3>✓ Observation Checklist:</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check1"> <label for="check1">I understand why phospholipids form a bilayer (amphipathic nature)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check2"> <label for="check2">I can identify the hydrophilic heads vs hydrophobic tails</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check3"> <label for="check3">I understand the position and function of cholesterol</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check4"> <label for="check4">I can distinguish integral vs peripheral proteins</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check5"> <label for="check5">I understand the glycocalyx and its location</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Phase 2: Draw from Memory -->
+        <div class="phase-card" id="phase2">
+            <div class="phase-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="phase-number">2</div>
+                    <h2>Phase 2: Draw from Memory</h2>
+                </div>
+                <div class="timer" id="timer">Time: 00:00</div>
+            </div>
+            
+            <p><strong>Instructions:</strong> Close or minimize the reference image. Draw the phospholipid bilayer with all major components from memory. Take 10-15 minutes.</p>
+            
+            <div class="canvas-container">
+                <h3>Your Drawing Canvas</h3>
+                <div class="tools">
+                    <div class="color-picker">
+                        <button class="color-btn active" style="background: black;" onclick="setColor('black')"></button>
+                        <button class="color-btn" style="background: #016836;" onclick="setColor('#016836')"></button>
+                        <button class="color-btn" style="background: #FFD100;" onclick="setColor('#FFD100')"></button>
+                        <button class="color-btn" style="background: red;" onclick="setColor('red')"></button>
+                        <button class="color-btn" style="background: blue;" onclick="setColor('blue')"></button>
+                        <button class="color-btn" style="background: purple;" onclick="setColor('purple')"></button>
+                    </div>
+                    <button onclick="clearCanvas()">🗑️ Clear Canvas</button>
+                    <button onclick="saveDrawing()" class="secondary">💾 Save Drawing</button>
+                    <button onclick="startPhase(3)" class="secondary">Next Phase →</button>
+                </div>
+                <canvas id="drawingCanvas" width="800" height="500"></canvas>
+            </div>
+            
+            <h3>Label Your Drawing:</h3>
+            <textarea class="notes-area" id="labels" placeholder="List the components you drew and their functions...
+
+Example:
+- Phospholipid bilayer: hydrophilic heads facing water, hydrophobic tails inside
+- Cholesterol: between phospholipids for fluidity
+- Integral proteins: spanning membrane
+..."></textarea>
+        </div>
+        
+        <!-- Phase 3: Compare and Analyze -->
+        <div class="phase-card" id="phase3">
+            <div class="phase-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="phase-number">3</div>
+                    <h2>Phase 3: Compare & Identify Gaps</h2>
+                </div>
+            </div>
+            
+            <p><strong>Critical Step:</strong> Compare your drawing with the original. Be honest about what you missed!</p>
+            
+            <h3>Self-Assessment Questions:</h3>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <input type="checkbox" id="assess1"> <label for="assess1">Did I correctly orient the phospholipid heads and tails?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="assess2"> <label for="assess2">Did I include cholesterol in the correct position?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="assess3"> <label for="assess3">Did I draw both integral and peripheral proteins?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="assess4"> <label for="assess4">Did I include the glycocalyx on the extracellular side?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="assess5"> <label for="assess5">Did I show cytoskeleton connections?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="assess6"> <label for="assess6">Did I label extracellular vs cytoplasmic sides?</label>
+                </div>
+            </div>
+            
+            <h3>What Did You Miss?</h3>
+            <textarea class="notes-area" id="gaps" placeholder="Be specific about what you forgot or got wrong:
+
+- Forgot to include...
+- Misplaced the...
+- Didn't understand...
+- Need to review..."></textarea>
+            
+            <h3>Why Did You Miss It?</h3>
+            <textarea class="notes-area" id="why-missed" placeholder="Reflect on WHY you missed these components:
+
+- Did I not understand the function?
+- Did I not notice it in the original?
+- Did I forget the relationship to other structures?"></textarea>
+            
+            <button onclick="startPhase(4)" class="secondary" style="margin-top: 1rem;">Continue to Re-study →</button>
+        </div>
+        
+        <!-- Phase 4: Targeted Re-study -->
+        <div class="phase-card" id="phase4">
+            <div class="phase-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="phase-number">4</div>
+                    <h2>Phase 4: Targeted Re-study</h2>
+                </div>
+            </div>
+            
+            <p><strong>Focus:</strong> Study ONLY what you missed. Understand the structure-function relationship.</p>
+            
+            <div class="high-yield">
+                <h3>Quick Reference Guide:</h3>
+                <p><strong>Phospholipids:</strong> Amphipathic molecules with glycerol backbone, 2 fatty acid tails (hydrophobic), and phosphate head (hydrophilic). They spontaneously form bilayers in aqueous solutions.</p>
+                
+                <p><strong>Cholesterol:</strong> Steroid molecule that fits between phospholipids. At low temperatures: prevents tight packing (maintains fluidity). At high temperatures: restrains movement (reduces fluidity).</p>
+                
+                <p><strong>Integral Proteins:</strong> Hydrophobic regions interact with fatty acid tails. Functions include: transport channels, receptors, enzymes, cell adhesion.</p>
+                
+                <p><strong>Peripheral Proteins:</strong> Attached to membrane surface via ionic bonds. Often anchor cytoskeleton or serve as enzymes.</p>
+                
+                <p><strong>Glycocalyx:</strong> Carbohydrate coating on extracellular surface. Functions: cell recognition, protection, adhesion, immune response.</p>
+                
+                <p><strong>ECM Fibers:</strong> Extracellular matrix provides structural support and cell signaling.</p>
+                
+                <p><strong>Cytoskeleton:</strong> Microfilaments (actin) provide mechanical support and help maintain cell shape.</p>
+            </div>
+            
+            <h3>Research Notes:</h3>
+            <textarea class="notes-area" id="research" placeholder="Take notes on components you missed:
+
+Use your textbook (pp. 74-75, 98, 126-129) to understand:
+- Structure
+- Function  
+- Why it's positioned there
+- Clinical relevance"></textarea>
+            
+            <button onclick="startPhase(5)" class="secondary" style="margin-top: 1rem;">Ready to Redraw →</button>
+        </div>
+        
+        <!-- Phase 5: Redraw -->
+        <div class="phase-card" id="phase5">
+            <div class="phase-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="phase-number">5</div>
+                    <h2>Phase 5: Redraw (Spaced Repetition)</h2>
+                </div>
+            </div>
+            
+            <p><strong>Instructions:</strong> Draw the complete structure again from memory. This time, aim for 100% accuracy!</p>
+            
+            <div class="canvas-container">
+                <h3>Second Attempt Canvas</h3>
+                <div class="tools">
+                    <div class="color-picker">
+                        <button class="color-btn active" style="background: black;" onclick="setColor2('black')"></button>
+                        <button class="color-btn" style="background: #016836;" onclick="setColor2('#016836')"></button>
+                        <button class="color-btn" style="background: #FFD100;" onclick="setColor2('#FFD100')"></button>
+                        <button class="color-btn" style="background: red;" onclick="setColor2('red')"></button>
+                        <button class="color-btn" style="background: blue;" onclick="setColor2('blue')"></button>
+                        <button class="color-btn" style="background: purple;" onclick="setColor2('purple')"></button>
+                    </div>
+                    <button onclick="clearCanvas2()">🗑️ Clear Canvas</button>
+                    <button onclick="saveDrawing2()" class="secondary">💾 Save Drawing</button>
+                </div>
+                <canvas id="drawingCanvas2" width="800" height="500"></canvas>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress" style="width: 100%">
+                    🎉 Congratulations! You've completed the DITKI cycle!
+                </div>
+            </div>
+            
+            <div class="high-yield">
+                <h3>Next Steps for Mastery:</h3>
+                <ul>
+                    <li>⏰ <strong>Spaced Repetition:</strong> Redraw tomorrow, then in 3 days, then in 1 week</li>
+                    <li>🗣️ <strong>Teach It:</strong> Explain the membrane to a study partner while drawing</li>
+                    <li>📝 <strong>Apply It:</strong> Practice questions on osmosis, diffusion, transport mechanisms</li>
+                    <li>🔄 <strong>Variations:</strong> Draw membranes in different cell types (RBC, neuron, plant cell)</li>
+                    <li>🎯 <strong>Clinical Context:</strong> How does cystic fibrosis affect membrane proteins? How do drugs cross membranes?</li>
+                </ul>
+            </div>
+            
+            <button onclick="resetTool()" style="margin-top: 1rem;">🔄 Start New DITKI Session</button>
+        </div>
+    </div>
+    
+    <script>
+        // Canvas setup
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvas2 = document.getElementById('drawingCanvas2');
+        const ctx2 = canvas2.getContext('2d');
+        
+        let drawing = false;
+        let currentColor = 'black';
+        let startTime;
+        let timerInterval;
+        
+        // Drawing functions for canvas 1
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
+        
+        function startDrawing(e) {
+            drawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+        
+        function draw(e) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.strokeStyle = currentColor;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+        
+        function stopDrawing() {
+            drawing = false;
+        }
+        
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+        
+        // Drawing functions for canvas 2
+        canvas2.addEventListener('mousedown', startDrawing2);
+        canvas2.addEventListener('mousemove', draw2);
+        canvas2.addEventListener('mouseup', stopDrawing);
+        canvas2.addEventListener('mouseout', stopDrawing);
+        
+        canvas2.addEventListener('touchstart', handleTouch2);
+        canvas2.addEventListener('touchmove', handleTouch2);
+        canvas2.addEventListener('touchend', stopDrawing);
+        
+        function startDrawing2(e) {
+            drawing = true;
+            const rect = canvas2.getBoundingClientRect();
+            ctx2.beginPath();
+            ctx2.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+        
+        function draw2(e) {
+            if (!drawing) return;
+            const rect = canvas2.getBoundingClientRect();
+            ctx2.strokeStyle = currentColor;
+            ctx2.lineWidth = 2;
+            ctx2.lineCap = 'round';
+            ctx2.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx2.stroke();
+        }
+        
+        function handleTouch2(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas2.dispatchEvent(mouseEvent);
+        }
+        
+        function setColor(color) {
+            currentColor = color;
+            document.querySelectorAll('#phase2 .color-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function setColor2(color) {
+            currentColor = color;
+            document.querySelectorAll('#phase5 .color-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        function clearCanvas2() {
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+        }
+        
+        function saveDrawing() {
+            const link = document.createElement('a');
+            link.download = 'membrane-drawing-1.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function saveDrawing2() {
+            const link = document.createElement('a');
+            link.download = 'membrane-drawing-2.png';
+            link.href = canvas2.toDataURL();
+            link.click();
+        }
+        
+        // Phase management
+        function startPhase(phaseNum) {
+            document.querySelectorAll('.phase-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.getElementById('phase' + phaseNum).classList.add('active');
+            document.getElementById('phase' + phaseNum).scrollIntoView({ behavior: 'smooth' });
+            
+            if (phaseNum === 2) {
+                startTimer();
+            } else if (phaseNum === 3) {
+                stopTimer();
+            }
+        }
+        
+        // Timer
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+        
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('timer').textContent = 
+                `Time: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        
+        function resetTool() {
+            clearCanvas();
+            clearCanvas2();
+            document.getElementById('labels').value = '';
+            document.getElementById('gaps').value = '';
+            document.getElementById('why-missed').value = '';
+            document.getElementById('research').value = '';
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            startPhase(1);
+        }
+        
+        // Navigation Bar Initialization
+        (function() {
+            function initNav() {
+                var labs = [
+                    {title:"Metacognition", folder:"bios101-learning"},
+                    {title:"Scientific Process", folder:"01_Science_of_Biology"},
+                    {title:"Eukaryotes", folder:"02_Eukaryotes"},
+                    {title:"Carbohydrates", folder:"03_Carbohydrates"},
+                    {title:"Proteins", folder:"04_Proteins"},
+                    {title:"Lipids", folder:"05_Lipids"},
+                    {title:"Photosynthesis", folder:"06_Photosynthetic_Pigments"},
+                    {title:"Nucleic Acids", folder:"07_Nucleic Acids"},
+                    {title:"Mitosis", folder:"08_Mitosis"},
+                    {title:"Meiosis", folder:"09_Meiosis"},
+                    {title:"Genetics", folder:"10_Genetics"}
+                ];
+                
+                var menus = document.getElementById('biosMenus');
+                var path = location.pathname;
+                if (!menus) return;
+                
+                labs.forEach(function(lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    var bp = '../../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a>' +
+                                  '<a href="' + bp + '/prelab/prelab.html">Pre-Lab</a>' +
+                                  '<a href="' + bp + '/during_lab/in-lab.html">In-Lab</a>' +
+                                  '<a href="' + bp + '/postlab/postlab.html">Post-Lab</a>' +
+                                  '<a href="' + bp + '/advanced/optional.html">Optional</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+                
+                var t = document.querySelector('.bios-toggle');
+                if (t) t.onclick = function() { menus.classList.toggle('open'); };
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+    </script>
+</body>
+</html>
