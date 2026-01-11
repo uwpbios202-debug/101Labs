@@ -1,3 +1,4 @@
+f
 <!DOCTYPE html>
 <html lang="en">
 
@@ -777,7 +778,7 @@
                     <div class="observation-box" id="curiosityBox"></div>
 
                     <div class="field">
-                        <label>Based on your actual study habits:</label>
+                        <label>Based on your actual test taking experiences:</label>
                         <div class="radio-group">
                             <label class="checkbox-label">
                                 <input type="radio" name="curiosityResponse" id="agreeCuriosity" value="agree">
@@ -809,9 +810,14 @@
             <!-- Phase 3a: Research Question Only -->
             <section id="phase3a" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 3: Research Foundation (1/3) - Research Question</h2>
-                    <p class="explanation-box"><strong>What this phase is about:</strong> Understanding the precise
-                        scientific question researchers asked to investigate this issue.</p>
+                    <h2>Phase 3: Research Foundation (1/3) - Turn the Curiosity Question Into Research Question</h2>
+                    <p class="explanation-box">
+                        <strong>What this phase is about:</strong>
+                        This phase refines broad curiosity into a precise, scientifically testable research question.
+                        You move from wondering *why* something happens to clearly defining *what exactly* will be
+                        investigated, specifying the focus, boundaries, and meaning of the question so it can be
+                        answered through evidence rather than intuition.
+                    </p>
 
                     <div class="observation-box">
                         <h3>Research Question</h3>
@@ -836,34 +842,40 @@
             <section id="phase3b" class="hidden">
                 <div class="card stack">
                     <h2>Phase 3: Research Foundation (2/3) - Hypothesis</h2>
-                    <p class="explanation-box"><strong>What this phase is about:</strong> A hypothesis predicts the
-                        relationship between variables. Let's test YOUR understanding of proper hypothesis formulation.
+                    <p class="explanation-box">
+                        <strong>Hypothesis vs. Prediction:</strong><br>
+                        It is common to confuse these two. <br>
+                        A <strong>Hypothesis</strong> is a <em>testable and falsifiable</em> statement that proposes an
+                        <span style="background-color: yellow;"><strong>answer</strong></span> to
+                        the research question. It must clearly identify the independent variable (IV)—the factor being
+                        manipulated or changed—and the dependent variable (DV)—the outcome being measured. A good
+                        hypothesis states the expected relationship between the IV and DV without predicting specific
+                        results or describing procedures.<br>
+                        A <strong>Prediction</strong> is the specific <em>outcome</em> you expect to see if the
+                        hypothesis is true (usually written as "If... then...").
                     </p>
 
                     <div id="hypothesisContent"></div>
 
-                    <div class="field">
-                        <label>Test Your Understanding: Which is the correct hypothesis format?</label>
+                    <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                        <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
                         <div class="radio-group">
                             <label class="checkbox-label">
-                                <input type="radio" name="hypothesisFormat" value="format1">
-                                <span>"I think group A will do better than group B"</span>
+                                <input type="radio" name="hypothesisFormat" value="prediction_error">
+                                <span>"It is an 'If... then...' statement about specific test scores."</span>
                             </label>
                             <label class="checkbox-label">
-                                <input type="radio" name="hypothesisFormat" value="format2">
-                                <span>"If [Independent Variable changes], then [Dependent Variable will change]"</span>
+                                <input type="radio" name="hypothesisFormat" value="correct_answer">
+                                <span>"It is a tentative answer to the Research Question."</span>
                             </label>
                             <label class="checkbox-label">
-                                <input type="radio" name="hypothesisFormat" value="format3">
-                                <span>"The research will show something interesting about learning"</span>
+                                <input type="radio" name="hypothesisFormat" value="vague_error">
+                                <span>"It is a proven fact found in a textbook."</span>
                             </label>
                         </div>
                     </div>
 
-                    <div class="hypothesis-feedback" id="hypothesisFeedback">
-                        <p><strong>Correct!</strong> A proper hypothesis must state: <em>If [Independent Variable
-                                changes], then [Dependent Variable will change].</em> This format allows for clear
-                            testing and falsifiability.</p>
+                    <div class="hypothesis-feedback" id="hypothesisFeedback" style="display:none; margin-top:0.5rem;">
                     </div>
 
                     <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction
@@ -875,11 +887,14 @@
             <section id="phase3c" class="hidden">
                 <div class="card stack">
                     <h2>Phase 3: Research Foundation (3/3) - Your Prediction</h2>
-                    <p class="explanation-box"><strong>What this phase is about:</strong> Now apply your understanding
-                        to make YOUR specific prediction about the research outcome.</p>
+                    <p class="explanation-box"><strong>What this phase is about:</strong> My prediction is a specific,
+                        testable statement about what I expect to happen if my hypothesis is correct. I usually write it
+                        as an “if…then…” statement that connects my hypothesis to an expected outcome. It guides my
+                        experiment by showing what results I should see, and the evidence I collect will tell me whether
+                        my prediction—and my hypothesis—is supported.</p>
 
                     <div class="field">
-                        <label for="predictionChoice">Based on the hypothesis, which strategy do you predict will
+                        <label for="predictionChoice">Based on the hypothesis, select the prediction strategy that will
                             produce better results?</label>
                         <select id="predictionChoice">
                             <option value="">-- Select your prediction --</option>
@@ -901,8 +916,16 @@
             <section id="phase4" class="hidden">
                 <div class="card stack">
                     <h2>Phase 4: Experimental Design</h2>
-                    <p class="explanation-box"><strong>What this phase is about:</strong> Understanding how researchers
-                        tested the hypothesis in a controlled study.</p>
+
+                    <p class="explanation-box">
+                        <strong>What this phase is about:</strong>
+                        I want to understand whether my current study strategies are fooling me.<br>
+                        Sometimes studying feels productive even when it isn’t.<br><br>
+                        By tracking prediction vs. actual performance, I can see:<br><br>
+                        • Are my strategies giving me a false sense of mastery?<br>
+                        • Am I studying in ways that feel good but don’t actually work?
+                    </p>
+
                     <div id="designContent"></div>
                     <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
                 </div>
@@ -912,8 +935,15 @@
             <section id="phase5" class="hidden">
                 <div class="card stack">
                     <h2>Phase 5: The Results</h2>
-                    <p class="explanation-box"><strong>What this phase is about:</strong> Here's what actually happened
-                        in the original research study. Compare with your prediction.</p>
+                    <p class="explanation-box">
+                        <strong>What this phase is about:</strong>
+                        Here's what actually happened in the
+                        <a href="https://link.springer.com/article/10.1007/s10648-020-09550-x" target="_blank"
+                            rel="noopener noreferrer">
+                            original research study (de Bruin et al., 2020)
+                        </a>.
+                        Compare with your prediction.
+                    </p>
 
                     <h3>Actual Study Results</h3>
                     <div class="data-viz-box">
@@ -1120,7 +1150,7 @@
 
         <h3>Conceptual Distinction</h3>
         <ul>
-            <li>Is there a difference between knowing the correct answers and knowing whether I know the correct answers?</li>
+            <li>Is there a difference between getting the answer right and knowing that I got it right?</li>
         </ul>
 
         <h3>Role of Feedback</h3>
@@ -1131,33 +1161,35 @@
     </div>
 </div>
 `,
-                rq: 'Does tracking calibration between predicted and actual performance improve students\' ability to select effective study strategies?',
-                hypothesis: '<strong>Calibration awareness</strong> (IV) improves <strong>study strategy selection and academic performance</strong> (DV) when <strong>students track their predictions</strong> (mechanism).',
-                why: 'Recognizing when confidence doesn\'t match performance helps students recognize which study methods actually work versus which just feel fluent.',
+                rq: 'Does comparing my predicted performance with my actual performance help me choose more effective study strategies?',
+                hypothesis: '<strong>Research Question:</strong> Does systematically comparing my predicted exam scores with my actual results improve my future study decisions and performance?<br><br><strong>Hypothesis:</strong> Systematically tracking the gap between my predicted and actual scores (IV) increases my study strategy effectiveness and academic performance (DV).',
+                why: 'This hypothesis is testable (we can measure if students who track predictions choose better strategies and get higher grades) and falsifiable (it could be proven wrong if tracking doesn\'t improve strategy selection or grades). It clearly identifies the independent variable (tracking predictions) and dependent variables (strategy effectiveness and grades).', study: 'de Bruin et al. (2020)',
                 prediction: '<strong>If</strong> I predict my performance before each quiz and compare it to actual results, <strong>then</strong> I\'ll make better decisions about which study strategies to use.',
                 study: 'de Bruin et al. (2020)',
                 design: 'Students predict their quiz score, take the quiz, then compare. Over 4 quizzes, they track calibration patterns. Control group takes quizzes without predictions. All receive same study materials.',
-                predictionOptions: [
-                    { value: 'track', label: 'Tracking predicted vs actual scores' },
-                    { value: 'notrack', label: 'Not tracking my predictions' },
-                    { value: 'same', label: 'No significant difference' }
-                ],
+                predictionOptions:
+                    [
+                        { value: 'track', label: 'Tracking my predicted vs actual scores (IV) improves future strategy selection and exam performance (DV)' },
+                        { value: 'notrack', label: 'Not tracking my predictions (Control) does not improve strategy selection or exam performance' },
+                        { value: 'same', label: 'No significant difference between tracking and not tracking predictions' }
+                    ]
+                ,
                 chartType: 'calibration',
-                resultsSummary: '<h3>Data Interpretation</h3><p><strong>No calibration tracking:</strong> Average grade 72, strategy consistency poor. <strong>With calibration tracking:</strong> Average grade 79, strategy consistency improved.</p><p>Students who tracked predictions learned to recognize when their confidence was misplaced and adjusted their study approach accordingly.</p><h3>Conclusion</h3><p style="font-size: 1.1rem; font-weight: 600; color: var(--uwp-green);">✓ Hypothesis ACCEPTED</p>',
+
+                resultsSummary: '<h3>Data Interpretation</h3><p><strong>No calibration tracking (Control):</strong> Average grade 72, strategy consistency poor.<br><strong>With calibration tracking (Experimental):</strong> Average grade 79, strategy consistency improved.</p><p>Students who tracked predictions (IV manipulation) learned to recognize when their confidence was misplaced and adjusted their study approach (DV improvement) accordingly.</p><h3>Conclusion</h3><p style="font-size: 1.1rem; font-weight: 600; color: var(--uwp-green);">✓ Hypothesis SUPPORTED: Calibration tracking improves study strategy selection</p>',
                 realData: {
                     citation: "de Bruin, A. B., Roelle, J., Carpenter, S. K., & Baars, M. (2020). Synthesizing cognitive load and self-regulation theory. Educational Psychology Review, 32(4), 903-915.",
                     sample: "n=85 undergraduate students",
                     effectSize: "η² = 0.21 (medium to large effect)",
                     stats: "F(1,83) = 22.17, p < .001, 95% CI [4.2, 9.8]",
-                    conclusion: "Students who tracked predictions significantly improved strategy selection and grades.",
-                    implication: "Metacognitive monitoring (knowing what you know) directly improves learning outcomes."
+                    conclusion: "The independent variable (calibration tracking) had a statistically significant effect on the dependent variables (strategy selection and grades).",
+                    implication: "Metacognitive monitoring (knowing what you know) directly improves learning outcomes when operationalized through prediction-actual comparison."
                 }
             },
             pretest: {
                 title: 'Error-Hunting Expedition',
                 subtitle: 'Pretesting makes later learning stick.',
-                observation: '"I never attempt practice questions until I\'ve thoroughly studied the material. The idea of guessing and being wrong makes me uncomfortable. But then my understanding stays surface-level, and my grades don\'t improve."',
-                curiosity: 'What would happen if I tried answering practice questions before studying the chapter, even if I get them wrong?',
+                observation: '"Whenever I study, I always feel like I need to \'learn it first\' before I even think about trying any practice questions. I avoid guessing because I don’t want to get things wrong — it makes me feel unprepared, and I worry that wrong answers will confuse me. But when I’m honest with myself, this habit keeps me in a comfort zone. I reread the chapter, highlight, and convince myself I understand it — but when I finally try the questions later, I’m surprised by how many I miss. It feels like I spent all that time studying without actually figuring out what I didn’t know. I’m starting to notice that by avoiding questions until the end, I’m also avoiding the exact moments that would reveal my weak spots. I think I’ve been protecting my confidence instead of improving my learning."', curiosity: 'What would happen if I tried answering practice questions before studying the chapter, even if I get them wrong?',
                 rq: 'Does pretesting (attempting questions before studying) enhance subsequent learning compared to studying first without pretesting?',
                 hypothesis: '<strong>Pretesting with errors</strong> (IV) enhances <strong>subsequent learning and retention</strong> (DV) more than studying first without pretesting when <strong>total study time is held constant</strong> (CV).',
                 why: 'Productive errors during pretesting highlight knowledge gaps, deepen processing, and make corrective feedback more memorable.',
@@ -1183,7 +1215,7 @@
             activerecallarena: {
                 title: 'Active Recall Arena',
                 subtitle: 'Retrieval vs Rereading: why recognition ≠ learning.',
-                observation: '"Honestly, this is just how I\'ve always studied. I read the chapter, then I read it again. I highlight, I take notes, I rewrite those notes. But if I\'m being real, the results don\'t match the effort. I\'m putting in hours and still landing Cs."',
+                observation: '"When I study, I usually rely on rereading — sometimes over and over. It feels productive, and it makes the material seem familiar, so I convince myself I\'m learning. I highlight, rewrite notes, reorganize them, and go through my textbook again thinking the repetition is helping. But when I actually test myself later, most of that familiarity disappears. I freeze, or I realize I can\'t recall the information without my notes. It\'s frustrating because during studying I feel confident, but during the test I feel stuck. I\'m beginning to notice that I rarely practice retrieving information — I mostly practice recognizing it. Maybe that\'s why my grades don\'t match how prepared I thought I was."',
                 curiosity: 'What would happen if I tested myself on the material instead of just reading it over and over?',
                 rq: 'Does retrieval practice (self-testing) produce better long-term retention than repeated rereading?',
                 hypothesis: '<strong>Retrieval practice</strong> (IV) produces better <strong>long-term retention</strong> (DV) than repeated rereading when <strong>study time is held constant</strong> (CV).',
@@ -1210,7 +1242,7 @@
             spacingvscramming: {
                 title: 'Spacing vs Cramming Trial',
                 subtitle: 'Distributed beats massed for durable retention.',
-                observation: '"I always wait until the night before an exam to study. I pull an all-nighter, rereading every chapter. In the moment, it feels efficient. But a week later, on a midterm, I can barely remember any of it."',
+                observation: '"I’ve started noticing a pattern in how I study before exams. I tend to put everything off until the night before, then I go all‑in — rereading chapters, rewriting notes, making last‑minute flashcards. I convince myself that the intensity means I\'m learning. But what really happens is that I can remember the material for the quiz the next morning, and then a week later it’s mostly gone. When older material shows up on exams or midterms, I blank out and feel frustrated because I know I spent hours trying to learn it. I’m starting to realize that cramming gives me a short burst of confidence, but not long‑term understanding. I never give my brain time to revisit the material or let it sink in. I don’t think I’ve ever truly tested what would happen if I spread my studying across multiple days instead of trying to do everything in one long session."',
                 curiosity: 'Would breaking my study sessions into smaller chunks over several days help me remember better?',
                 rq: 'Does distributed spaced practice lead to superior long-term retention compared to massed cramming?',
                 hypothesis: '<strong>Distributed practice</strong> (IV) leads to superior <strong>long-term retention</strong> (DV) compared to massed practice when <strong>total study time is held constant</strong> (CV).',
@@ -1237,7 +1269,7 @@
             interleavinggauntlet: {
                 title: 'Interleaving Gauntlet',
                 subtitle: 'Mixed practice wins on delayed, mixed tests.',
-                observation: '"When I do practice problems, I always group them by type. All derivatives first, then all integrals. It feels orderly and satisfying. But on the real test, when problems are mixed, I get confused about which method to use."',
+                observation: '"When I practice problems for math or science classes, I usually organize them by type because it feels more efficient. I’ll do all the derivative problems first, then all the integrals, then all the chain‑rule problems. It makes my homework feel smooth and predictable, like I’m on a roll. But on tests, the problems are mixed, and suddenly I freeze. I’m not always sure which strategy to use, and I end up second‑guessing myself. It’s frustrating because I thought I understood the material while practicing, but the test reveals I only knew how to do each type when they were grouped together. I’m starting to notice that my practice might be too tidy. I never force myself to identify which method a problem needs — I just follow the pattern in the homework. I think I’ve been practicing execution without practicing decision‑making, and that might be why I struggle on mixed or unfamiliar problems."',
                 curiosity: 'Would mixing different types of problems together during practice help me identify which strategy to use on real exams?',
                 rq: 'Does interleaved practice (mixing problem types) improve problem-solving and transfer better than blocked practice?',
                 hypothesis: '<strong>Interleaved practice</strong> (IV) improves <strong>delayed and transfer performance</strong> (DV) more than blocked practice when <strong>study time is held constant</strong> (CV).',
@@ -1264,8 +1296,7 @@
             encoding: {
                 title: 'The Encoding Showdown',
                 subtitle: 'Draw/diagram vs summarize vs explain aloud.',
-                observation: '"I always stick to text-based studying—outlining, summarizing, highlighting. It feels neat and manageable. But when I encounter topics involving processes like in biology or physics, I struggle to understand how parts connect."',
-                curiosity: 'Would drawing diagrams or explaining concepts out loud help me understand complex systems better than just writing summaries?',
+                observation: '"Whenever I study complex topics, I usually stick to writing summaries or rewriting my notes because it feels structured and safe. I convince myself that if I can restate the material in my own words, then I really understand it. But when I run into diagrams, processes, or multi‑step systems — like cellular respiration, the kidney, or signal pathways — I struggle to keep track of how everything connects. I can explain pieces of the system, but not how one part leads to another. I’m realizing that the way I encode information might be too flat. I rarely draw diagrams or talk through explanations out loud, even though those might help me see relationships more clearly. I think my studying focuses on describing information instead of organizing it, and that could be why these complex systems still feel confusing."', curiosity: 'Would drawing diagrams or explaining concepts out loud help me understand complex systems better than just writing summaries?',
                 rq: 'Do different encoding strategies (visual diagrams, written summaries, verbal explanations) differentially affect comprehension and retention of complex systems?',
                 hypothesis: '<strong>Visual encoding</strong> (IV) produces <strong>better system understanding</strong> (DV) than text-based or verbal approaches when <strong>study time and materials are held constant</strong> (CV).',
                 why: 'Visual representations highlight spatial and causal relationships that text descriptions alone cannot capture as effectively.',
@@ -1291,7 +1322,8 @@
             environment: {
                 title: 'Environment Exposure Test',
                 subtitle: 'Quiet > lyrics/busy spaces (for complex reading).',
-                observation: '"I usually study in noisy, busy places like coffee shops or the student union. The background activity makes me feel less isolated. But I often find I have to reread the same material multiple times, and my comprehension isn\'t as deep as I\'d like."',
+
+                observation: '"I usually study in places that feel comfortable or familiar — coffee shops, the student union, my dorm with music playing, or anywhere that doesn’t feel too quiet. I think I choose these spots because silence makes studying feel harder or more serious, and background noise makes me feel less stressed. But when I’m honest, I notice I end up rereading paragraphs over and over. I get distracted by conversations, people walking around, or even just the music I thought was helping me focus. Sometimes I leave a study session feeling like I was studying the whole time, but I can’t remember much of what I read. I’m starting to realize that the environment I choose might be sabotaging the quality of my studying. I don’t think I’ve ever actually tested whether I learn better in a quiet space — I’ve just assumed the busy background helps me. Now I’m wondering if my surroundings are making my studying feel productive without truly helping me concentrate."',
                 curiosity: 'How much would my comprehension improve if I studied the same material in a quiet library versus my usual coffee shop?',
                 rq: 'Does studying in quiet environments produce better reading comprehension and memory performance compared to studying in noisy or busy environments?',
                 hypothesis: '<strong>Quiet environment</strong> (IV) produces <strong>better comprehension and retention</strong> (DV) than noisy environments when <strong>material and time are held constant</strong> (CV).',
@@ -1318,7 +1350,7 @@
             timeofday: {
                 title: 'Time-of-Day Trial',
                 subtitle: 'Study at your chronotype\'s peak.',
-                observation: '"I study whenever I can fit it in, which is often late at night after everything else is done. It\'s the only time that feels available, but I notice I\'m less focused and make more mistakes. I often have to reread the same paragraph several times."',
+                observation: "When I think about when I study, it's usually based on convenience, not on when I'm mentally at my best. I often end up studying late at night, not because I focus better then, but because that's when everything else in my day finally settles down. But I've noticed that during those late-night sessions, I reread the same lines repeatedly, and my mind wanders more. I make more mistakes, I get frustrated faster, and I tell myself I'm just tired, but I never actually test whether I'd do better at a different time of day. I'm starting to realize that I might have a natural peak time — a time when I'm more alert, think more clearly, and retain information better — but I've never paid attention to it. I study whenever I can squeeze it in, even if that means fighting my own brain's clock. I've never tested whether studying at my peak time could make learning feel easier and more effective.",
                 curiosity: 'Would I learn better if I studied at different times of day and tracked which time I\'m most focused?',
                 rq: 'Does studying during one\'s optimal circadian time (chronotype alignment) improve cognitive performance and retention compared to studying during off-peak times?',
                 hypothesis: '<strong>Peak circadian time</strong> (IV) produces <strong>better cognitive performance</strong> (DV) than off-peak times when <strong>material difficulty is held constant</strong> (CV).',
@@ -1525,13 +1557,11 @@
 
             // Phase 3b
             document.getElementById('hypothesisContent').innerHTML = `
-                <h3>Study Hypothesis</h3>
+                <h3>Your Hypothesis</h3>
                 <div class="observation-box">
                     <p>${data.hypothesis}</p>
-                    <p class="meta"><strong>Why?</strong> ${data.why}</p>
                 </div>
-                <h3>Prediction (If…Then)</h3>
-                <p>${data.prediction}</p>
+                <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> ${data.why}</p>
             `;
 
             // Phase 3c
@@ -1542,12 +1572,32 @@
             });
 
             // Phase 4
+
             document.getElementById('designContent').innerHTML = `
-                <h3>The Study Design: ${data.study}</h3>
-                <div class="observation-box">
-                    <p>${data.design}</p>
-                </div>
-            `;
+    <h3>The Study Design: ${data.study}</h3>
+    <div class="observation-box">
+        <p>${data.design}</p>
+    </div>
+
+    <h3>My Personal Study Design</h3>
+    <div class="observation-box">
+        <p>
+            For each quiz, I will write down my predicted overall score before starting.  
+            I will also mark my confidence for every individual question before answering it:
+        </p>
+
+        <ul style="margin-top: 0.5rem;">
+            <li><strong>✔ Check mark</strong> — I predict I will get this question correct.</li>
+            <li><strong>? Question mark</strong> — I am unsure and cannot confidently predict.</li>
+            <li><strong>🛑 Stop sign</strong> — I predict I will get this question incorrect.</li>
+        </ul>
+
+        <p style="margin-top: 0.5rem;">
+            After the quiz, I will compare all of my predictions—both overall and per‑question—to what actually happened.  
+            This will show me whether my study strategies are giving me a false sense of mastery or accurately preparing me.
+        </p>
+    </div>
+`;
 
             // Phase 5
             document.getElementById('resultsInterpretation').innerHTML = data.resultsSummary;
@@ -2143,22 +2193,35 @@
             document.getElementById('phase3b').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
 
-        // Phase 3b: Hypothesis format quiz
+        // Phase 3b: Hypothesis format quiz logic
         document.querySelectorAll('input[name="hypothesisFormat"]').forEach(radio => {
             radio.addEventListener('change', function () {
                 const expId = state.lastViewedExperimentId;
                 const feedback = document.getElementById('hypothesisFeedback');
                 const continueBtn = document.getElementById('hypothesisContinueBtn');
 
-                if (this.value === 'format2') {
-                    feedback.style.display = 'block';
+                // Reset feedback visibility
+                feedback.style.display = 'block';
+                feedback.className = 'hypothesis-feedback'; // reset classes
+
+                if (this.value === 'correct_answer') {
+                    feedback.style.backgroundColor = '#e8f5e9';
+                    feedback.style.borderLeft = '3px solid #4caf50';
+                    feedback.innerHTML = '<p><strong>Correct!</strong> A Hypothesis is a testable and falsifiable statement that proposes an <em>answer</em> to the research question.</p>';
                     continueBtn.disabled = false;
                     state.experiments[expId].hypothesisFormatCorrect = true;
-                } else {
-                    feedback.style.display = 'none';
+                } else if (this.value === 'prediction_error') {
+                    feedback.style.backgroundColor = '#fff3e0';
+                    feedback.style.borderLeft = '3px solid #ff9800';
+                    feedback.innerHTML = '<p><strong>Not quite.</strong> That is the format for a <strong>Prediction</strong> (Phase 3c). A Hypothesis is the proposed <em>answer</em> that leads to that prediction.</p>';
                     continueBtn.disabled = true;
                     state.experiments[expId].hypothesisFormatCorrect = false;
-                    alert('Try again! Remember: A hypothesis needs an "If...then..." structure with clear variables (IV affects DV).');
+                } else {
+                    feedback.style.backgroundColor = '#ffebee';
+                    feedback.style.borderLeft = '3px solid #f44336';
+                    feedback.innerHTML = '<p><strong>Incorrect.</strong> A hypothesis is not a known fact; it is a proposal to be tested.</p>';
+                    continueBtn.disabled = true;
+                    state.experiments[expId].hypothesisFormatCorrect = false;
                 }
                 saveState();
             });
