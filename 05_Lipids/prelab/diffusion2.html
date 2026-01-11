@@ -4,9 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>05 • Lipids, Membranes, and Transport — Passive Transport Video Quiz</title>
-    <base target="_blank">
+    <title>05 • Passive Transport — Video Quiz</title>
+    <base target="_self">
     <style>
+        /* --- Styles mirrored from VideoQuizPrototype.html --- */
         :root {
             --uwp-green: #016836;
             --accent: #FABA31;
@@ -30,233 +31,209 @@
         }
 
         header {
-            padding: 0.8rem;
+            padding: 0.4rem 0.8rem;
             border-bottom: 2px solid var(--uwp-green);
             background: #f5f5f5;
-            text-align: center;
+            font-size: 0.85rem;
         }
 
         main {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 0.5rem 0.8rem;
         }
 
         h1 {
+            font-size: 1.2rem;
+            color: var(--uwp-green);
+            margin: 0.3rem 0 1rem 0;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* --- Instruction Box (Always Visible) --- */
+        .instruction-box {
+            background: var(--light-bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .instruction-box h3 {
             color: var(--uwp-green);
             margin-bottom: 0.5rem;
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
 
-        h2 {
-            color: var(--uwp-green);
-            margin: 1.5rem 0 0.8rem 0;
-            font-size: 1.2rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.3rem;
+        /* --- Video Box Styles --- */
+        .video-container-frame {
+            background: white;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            max-width: 820px;
+            margin: 0 auto;
         }
 
-        .video-container {
+        .video-wrapper {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            margin: 1rem auto;
             background: #000;
             border-radius: 4px;
             overflow: hidden;
+            /* Aspect ratio placeholder to prevent layout shift */
+            aspect-ratio: 16 / 9; 
         }
 
         video {
             width: 100%;
+            height: 100%;
             display: block;
         }
 
-        .transcript {
-            background: var(--light-bg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            max-height: 300px;
-            overflow-y: auto;
-            font-size: 0.9rem;
-            line-height: 1.5;
+        /* --- Quiz Overlay (Hidden until triggered) --- */
+        .quiz-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
         }
 
-        .timestamp {
-            color: var(--uwp-green);
-            font-weight: 600;
-            margin-right: 0.5rem;
-        }
-
-        .quiz-container {
-            margin: 2rem 0;
-        }
-
-        .question {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s;
-        }
-
-        .question.correct {
-            border-color: #2ecc71;
-            background-color: #f0fff4;
-        }
-
-        .question.incorrect {
-            border-color: #e74c3c;
-            background-color: #fff5f5;
+        .quiz-overlay.active {
+            display: flex;
         }
 
         .question-text {
-            font-weight: 600;
-            margin-bottom: 1rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--uwp-green);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--border);
             color: #333;
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            text-align: left;
+            font-weight: 500;
         }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .option-btn:hover {
+            border-color: var(--uwp-green);
+            background: #f0f7f3;
         }
 
-        .option {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem;
-            border: 1px solid var(--border);
+        .option-btn.correct {
+            background: var(--uwp-green);
+            color: white;
+            border-color: var(--uwp-green);
+        }
+
+        .option-btn.incorrect {
+            background: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+        .feedback-msg {
+            margin-top: 1rem;
+            font-weight: bold;
+            min-height: 1.5rem;
+        }
+
+        .continue-btn {
+            margin-top: 1rem;
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 10px 24px;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s;
+            font-weight: 700;
+            font-size: 1rem;
+            display: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .option:hover {
-            background-color: #f8f8f8;
-            border-color: #ccc;
+        .continue-btn:hover {
+            background: #e5aa2b;
+            transform: translateY(-1px);
         }
 
-        .option.selected {
-            border-color: var(--uwp-green);
-            background-color: #e8f5e9;
+        /* --- End Screen (Hidden until video ends) --- */
+        .end-screen {
+            display: none; 
+            text-align: center;
+            padding: 2.5rem;
+            background: #fff;
+            border: 2px solid var(--uwp-green);
+            border-radius: 8px;
+            margin-top: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .option.correct-answer {
-            border-color: #2ecc71;
-            background-color: #d4edda;
+        .end-screen h2 {
+            color: var(--uwp-green);
+            margin-bottom: 1rem;
         }
 
-        .option.incorrect-answer {
-            border-color: #e74c3c;
-            background-color: #f8d7da;
-        }
-
-        input[type="radio"] {
-            margin-right: 0.8rem;
-            accent-color: var(--uwp-green);
-        }
-
-        .actions {
-            display: flex;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
+        .btn-primary {
             background: var(--uwp-green);
             color: white;
             border: none;
             border-radius: 4px;
-            padding: 0.7rem 1.2rem;
-            font-size: 0.95rem;
+            padding: 12px 24px;
+            font-size: 1rem;
             cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
             font-weight: 600;
-            transition: background-color 0.2s;
+            margin-top: 1rem;
         }
 
-        .btn:hover {
+        .btn-primary:hover {
             background: #00502f;
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: #666;
-        }
-
-        .btn-secondary:hover {
-            background: #555;
-        }
-
-        .results {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 4px;
-            background: var(--light-bg);
-            border: 1px solid var(--border);
-            display: none;
-        }
-
-        .results.show {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        .score {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--uwp-green);
-            margin-bottom: 0.5rem;
-        }
-
-        .feedback {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
+        /* --- Debug/Test Controls (Optional) --- */
+        .debug-controls {
+            margin-top: 10px;
+            font-size: 0.75rem;
             color: #666;
+            text-align: center;
+        }
+        .debug-btn {
+            background: #eee;
+            border: 1px solid #ccc;
+            padding: 2px 6px;
+            cursor: pointer;
         }
 
-        .progress-bar {
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0.5rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--uwp-green);
-            width: 0%;
-            transition: width 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @media (max-width: 768px) {
-            main {
-                padding: 0.8rem;
-            }
-            
-            .actions {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-        }
-    </style>
-    <style>
+        /* --- Navbar CSS (Mirrored) --- */
         .bios-nav {
             position: sticky;
             top: 0;
@@ -367,436 +344,66 @@
 <body>
     <nav class="bios-nav">
         <div class="bios-nav-inner">
-            <a href="../index.html" class="bios-home">BIOS101</a>
+            <a href="index.html" class="bios-home">BIOS101</a>
             <button class="bios-toggle" aria-label="Toggle menu">☰</button>
             <div class="bios-menus" id="biosMenus"></div>
         </div>
     </nav>
-    
+
     <header>
-        <h1>Passive Transport: Structure of the Cell Membrane</h1>
-        <p>Watch the video and test your understanding with the quiz below</p>
+        <div><strong>UW‑Parkside</strong> • Chapter 5: Lipids, Membranes, and Transport — Video Quiz</div>
+        <div style="font-size: 0.75rem; margin-top: 0.1rem;">Interactive Learning Module</div>
     </header>
 
     <main>
-        <div class="video-container">
-            <video controls id="passiveTransportVideo">
-                <source src="PassiveTransport.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+        <h1>Structure of the Cell Membrane</h1>
+
+        <div class="instruction-box">
+            <h3>Instructions</h3>
+            <p>1. Click the play button on the video below.</p>
+            <p>2. The video will automatically pause when a question appears.</p>
+            <p>3. Answer the question correctly to continue watching.</p>
+            <p>4. At the end of the video, a link to the next activity will appear.</p>
         </div>
 
-        <div class="transcript">
-            <h3>Video Transcript</h3>
-            <p><span class="timestamp">[00:00:04]</span>In this video we will be discussing the structure of the cell membrane.</p>
-            <p><span class="timestamp">[00:00:09]</span>When scientists looked at the selectively permeable cell membrane they described its structure as a fluid mosaic.</p>
-            <p><span class="timestamp">[00:00:19]</span>You might know that a mosaic is a picture made up of little tiles. Like a mosaic, the cell membrane is made up of different parts as well.</p>
-            <p><span class="timestamp">[00:00:35]</span>The cell membrane has two layers of phospholipids referred to as a lipid bilayer.</p>
-            <p><span class="timestamp">[00:00:41]</span>The lipid bilayer isn't rigid - the phospholipids in it have the ability to move in a flexible wave-like motion.</p>
-            <p><span class="timestamp">[00:00:55]</span>The round head portions are hydrophilic which means they are attracted to water.</p>
-            <p><span class="timestamp">[00:01:01]</span>Both the extracellular fluid (meaning fluid outside the cell) and the cytoplasm inside the cell are mostly made up of water.</p>
-            <p><span class="timestamp">[00:01:14]</span>So the hydrophilic phospholipid heads of the outer layer will be oriented toward the extracellular fluid and the heads of the inner layer will be oriented toward the cytoplasm.</p>
-            <p><span class="timestamp">[00:01:28]</span>The phospholipid tails are hydrophobic which means watery areas repel them.</p>
-            <p><span class="timestamp">[00:01:36]</span>So they orient toward each other in a direction as far away from the watery content as possible.</p>
-            <p><span class="timestamp">[00:01:43]</span>There are also scattered proteins embedded in the phospholipid layers, some with carbohydrates attached.</p>
-            <p><span class="timestamp">[00:01:53]</span>So in the fluid mosaic model, the cell membrane is made up of different parts and these parts make up a flexible boundary around the cell.</p>
-            <p><span class="timestamp">[00:02:04]</span>But how do the majority of substances get in or out of the cell?</p>
-            <p><span class="timestamp">[00:02:09]</span>Some molecules seep through the little spaces in between the phospholipids, which make up the majority of the semipermeable cell membrane.</p>
-            <p><span class="timestamp">[00:02:18]</span>However other molecules are too big to fit through the cell membrane this way.</p>
-            <p><span class="timestamp">[00:02:24]</span>So how do these larger molecules pass through the cell membrane?</p>
-            <p><span class="timestamp">[00:02:29]</span>The molecules move through proteins embedded in the cell membrane either from the extracellular area into the cell or from the intracellular area out of the cell.</p>
-            <p><span class="timestamp">[00:02:41]</span>These substances will move through tunnels made up of these proteins.</p>
+        <div class="video-container-frame">
+            <div class="video-wrapper">
+                <video id="quizVideo" controls playsinline>
+                    <source src="PassiveTransport.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                <div class="quiz-overlay" id="quizOverlay">
+                    <div class="question-text" id="questionText">Question goes here?</div>
+                    <div class="options-grid" id="optionsGrid">
+                        </div>
+                    <div class="feedback-msg" id="feedbackMsg"></div>
+                    <button class="continue-btn" id="continueBtn">Continue Video</button>
+                </div>
+            </div>
         </div>
 
-        <div class="quiz-container">
-            <h2>Video Comprehension Quiz</h2>
-            <p>Answer the following questions based on the video. Select the best answer for each question.</p>
-            
-            <div id="quizQuestions">
-                <!-- Question 1 -->
-                <div class="question" id="q1">
-                    <div class="question-text">1. What term describes the structure of the cell membrane according to the video?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q1" value="a"> Rigid barrier
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q1" value="b"> Fluid mosaic
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q1" value="c"> Solid wall
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q1" value="d"> Static framework
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="question" id="q2">
-                    <div class="question-text">2. How many layers of phospholipids make up the lipid bilayer?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q2" value="a"> One
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q2" value="b"> Two
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q2" value="c"> Three
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q2" value="d"> Four
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="question" id="q3">
-                    <div class="question-text">3. What does "hydrophilic" mean in reference to phospholipid heads?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q3" value="a"> Water-fearing
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q3" value="b"> Water-loving
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q3" value="c"> Waterproof
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q3" value="d"> Neutral to water
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="question" id="q4">
-                    <div class="question-text">4. Where are the hydrophilic heads oriented in the cell membrane?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q4" value="a"> Toward the center of the membrane
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q4" value="b"> Toward each other
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q4" value="c"> Toward extracellular fluid and cytoplasm
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q4" value="d"> Randomly oriented
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="question" id="q5">
-                    <div class="question-text">5. What is the characteristic of the hydrophobic tails of phospholipids?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q5" value="a"> They are attracted to water
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q5" value="b"> They are repelled by water
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q5" value="c"> They dissolve in water
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q5" value="d"> They change based on temperature
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 6 -->
-                <div class="question" id="q6">
-                    <div class="question-text">6. Besides phospholipids, what other components are embedded in the cell membrane?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q6" value="a"> Only carbohydrates
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q6" value="b"> Only proteins
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q6" value="c"> Proteins, some with carbohydrates
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q6" value="d"> Nucleic acids
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 7 -->
-                <div class="question" id="q7">
-                    <div class="question-text">7. How do small molecules typically pass through the cell membrane?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q7" value="a"> Through protein channels only
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q7" value="b"> Through spaces between phospholipids
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q7" value="c"> By active transport only
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q7" value="d"> They cannot pass through
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 8 -->
-                <div class="question" id="q8">
-                    <div class="question-text">8. How do larger molecules pass through the cell membrane?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q8" value="a"> Through spaces between phospholipids
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q8" value="b"> Through protein channels/tunnels
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q8" value="c"> By dissolving in the lipid bilayer
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q8" value="d"> They cannot pass through at all
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 9 -->
-                <div class="question" id="q9">
-                    <div class="question-text">9. What is the main characteristic of the lipid bilayer's movement?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q9" value="a"> It is completely rigid
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q9" value="b"> It has flexible, wave-like motion
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q9" value="c"> It only moves during cell division
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q9" value="d"> It doesn't move at all
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Question 10 -->
-                <div class="question" id="q10">
-                    <div class="question-text">10. What does the "fluid" part of the fluid mosaic model refer to?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q10" value="a"> The water content inside and outside the cell
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q10" value="b"> The ability of membrane components to move
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q10" value="c"> The liquid nature of cytoplasm
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q10" value="d"> The flow of materials through the membrane
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="actions">
-                <button class="btn" id="submitBtn">Submit Quiz</button>
-                <button class="btn btn-secondary" id="resetBtn">Reset Answers</button>
-            </div>
-
-            <div class="results" id="resultsContainer">
-                <div class="score" id="scoreDisplay"></div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="feedback" id="feedback"></div>
-            </div>
+        <div class="debug-controls">
+            Testing? <button class="debug-btn" onclick="document.getElementById('quizVideo').currentTime = 16.5; document.getElementById('quizVideo').play()">Jump to Question 1</button>
         </div>
+
+        <div class="end-screen" id="endScreen">
+            <h2>🎉 Module Complete!</h2>
+            <p style="margin-bottom: 1rem; font-size: 1.1rem;">You have completed the video quiz on the Cell Membrane Structure.</p>
+            <p style="margin-bottom: 1.5rem;">Next, apply what you've learned by drawing the model.</p>
+            <a href="cellmembraneDITKI.html" class="btn-primary">Proceed to Draw It To Know It →</a>
+        </div>
+
     </main>
 
     <script>
-        // Quiz configuration
-        const correctAnswers = {
-            q1: 'b', // Fluid mosaic
-            q2: 'b', // Two
-            q3: 'b', // Water-loving
-            q4: 'c', // Toward extracellular fluid and cytoplasm
-            q5: 'b', // Repelled by water
-            q6: 'c', // Proteins, some with carbohydrates
-            q7: 'b', // Through spaces between phospholipids
-            q8: 'b', // Through protein channels/tunnels
-            q9: 'b', // Flexible, wave-like motion
-            q10: 'b' // Ability of membrane components to move
-        };
-
-        const questionFeedback = {
-            q1: "The fluid mosaic model describes the cell membrane as a flexible structure made of different components.",
-            q2: "The lipid bilayer consists of two layers of phospholipids.",
-            q3: "Hydrophilic means 'water-loving' - these parts are attracted to water.",
-            q4: "Hydrophilic heads face the watery environments: extracellular fluid outside and cytoplasm inside.",
-            q5: "Hydrophobic means 'water-fearing' - these parts are repelled by water.",
-            q6: "The membrane contains proteins (some with carbohydrates) embedded in the phospholipid bilayer.",
-            q7: "Small molecules can pass through the spaces between phospholipids.",
-            q8: "Larger molecules use protein channels or tunnels to pass through the membrane.",
-            q9: "The lipid bilayer is not rigid; phospholipids can move in a flexible, wave-like motion.",
-            q10: "The 'fluid' refers to the movement of membrane components, while 'mosaic' refers to the variety of components."
-        };
-
-        // DOM elements
-        const submitBtn = document.getElementById('submitBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const resultsContainer = document.getElementById('resultsContainer');
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        const progressFill = document.getElementById('progressFill');
-        const feedback = document.getElementById('feedback');
-        const questions = document.querySelectorAll('.question');
-        const options = document.querySelectorAll('.option');
-
-        // Event listeners for option selection
-        options.forEach(option => {
-            const radio = option.querySelector('input[type="radio"]');
-            option.addEventListener('click', () => {
-                if (!radio.checked) {
-                    radio.checked = true;
-                    updateOptionStyles();
-                }
-            });
-        });
-
-        // Update visual styles for selected options
-        function updateOptionStyles() {
-            options.forEach(option => {
-                option.classList.remove('selected');
-                const radio = option.querySelector('input[type="radio"]');
-                if (radio.checked) {
-                    option.classList.add('selected');
-                }
-            });
-        }
-
-        // Submit quiz
-        submitBtn.addEventListener('click', () => {
-            let score = 0;
-            const totalQuestions = Object.keys(correctAnswers).length;
-            
-            // Reset all question styles first
-            questions.forEach(question => {
-                question.classList.remove('correct', 'incorrect');
-            });
-            
-            // Reset all option styles
-            options.forEach(option => {
-                option.classList.remove('correct-answer', 'incorrect-answer');
-            });
-            
-            // Check each question
-            for (const [questionId, correctAnswer] of Object.entries(correctAnswers)) {
-                const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
-                const questionElement = document.getElementById(questionId);
-                
-                if (selectedOption) {
-                    if (selectedOption.value === correctAnswer) {
-                        score++;
-                        questionElement.classList.add('correct');
-                        
-                        // Highlight correct answer
-                        const correctOption = document.querySelector(`input[name="${questionId}"][value="${correctAnswer}"]`);
-                        if (correctOption) {
-                            correctOption.parentElement.classList.add('correct-answer');
-                        }
-                    } else {
-                        questionElement.classList.add('incorrect');
-                        
-                        // Highlight selected incorrect answer
-                        selectedOption.parentElement.classList.add('incorrect-answer');
-                        
-                        // Also highlight the correct answer
-                        const correctOption = document.querySelector(`input[name="${questionId}"][value="${correctAnswer}"]`);
-                        if (correctOption) {
-                            correctOption.parentElement.classList.add('correct-answer');
-                        }
-                    }
-                }
-            }
-            
-            // Calculate percentage
-            const percentage = (score / totalQuestions) * 100;
-            
-            // Display results
-            scoreDisplay.textContent = `Score: ${score}/${totalQuestions} (${percentage.toFixed(0)}%)`;
-            progressFill.style.width = `${percentage}%`;
-            
-            // Provide feedback
-            let feedbackText = '';
-            if (percentage >= 90) {
-                feedbackText = 'Excellent! You have a strong understanding of cell membrane structure and function.';
-            } else if (percentage >= 70) {
-                feedbackText = 'Good job! You understand the main concepts of the cell membrane.';
-            } else if (percentage >= 50) {
-                feedbackText = 'Not bad! Review the video and try again to improve your score.';
-            } else {
-                feedbackText = 'Keep practicing! Watch the video again and pay attention to key terms like "fluid mosaic", "hydrophilic", and "hydrophobic".';
-            }
-            
-            feedback.textContent = feedbackText;
-            resultsContainer.classList.add('show');
-            
-            // Scroll to results
-            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-
-        // Reset quiz
-        resetBtn.addEventListener('click', () => {
-            // Clear all selections
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.checked = false;
-            });
-            
-            // Reset styles
-            questions.forEach(question => {
-                question.classList.remove('correct', 'incorrect');
-            });
-            
-            options.forEach(option => {
-                option.classList.remove('selected', 'correct-answer', 'incorrect-answer');
-            });
-            
-            // Hide results
-            resultsContainer.classList.remove('show');
-            
-            // Reset progress bar
-            progressFill.style.width = '0%';
-        });
-
-        // Initialize option styles
-        document.addEventListener('change', updateOptionStyles);
-        updateOptionStyles();
-    </script>
-    <script>
+        // --- Navbar Script (Mirrored) ---
         (function () {
             function initNav() {
-                var labs = [
-                    { "folder": "bios101-learning", "title": "Metacognition" },
-                    { "folder": "01_Science_of_Biology", "title": "Scientific Process" },
-                    { "folder": "02_Eukaryotes", "title": "Eukaryotes" },
-                    { "folder": "03_Carbohydrates", "title": "Carbohydrates" },
-                    { "folder": "04_Proteins", "title": "Proteins" },
-                    { "folder": "05_Lipids", "title": "Lipids" },
-                    { "folder": "06_Photosynthetic_Pigments", "title": "Photosynthesis" },
-                    { "folder": "07_Nucleic Acids", "title": "Nucleic Acids" },
-                    { "folder": "08_Mitosis", "title": "Mitosis" },
-                    { "folder": "09_Meiosis", "title": "Meiosis" },
-                    { "folder": "10_Genetics", "title": "Genetics" }
-                ];
+                var labs = [{ "folder": "bios101-learning", "title": "Metacognition" }, { "folder": "01_Science_of_Biology", "title": "Scientific Process" }, { "folder": "02_Eukaryotes", "title": "Eukaryotes" }, { "folder": "03_Carbohydrates", "title": "Carbohydrates" }, { "folder": "04_Proteins", "title": "Proteins" }, { "folder": "05_Lipids", "title": "Lipids" }, { "folder": "06_Photosynthetic_Pigments", "title": "Photosynthesis" }, { "folder": "07_Nucleic Acids", "title": "Nucleic Acids" }, { "folder": "08_Mitosis", "title": "Mitosis" }, { "folder": "09_Meiosis", "title": "Meiosis" }, { "folder": "10_Genetics", "title": "Genetics" }];
                 var menus = document.getElementById('biosMenus');
                 var path = location.pathname;
                 if (!menus) return;
-                
                 labs.forEach(function (lab) {
                     var m = document.createElement('div');
                     m.className = 'bios-menu';
@@ -806,23 +413,143 @@
                     if (path.indexOf(lab.folder) !== -1) b.classList.add('active');
                     var d = document.createElement('div');
                     d.className = 'bios-dropdown';
-                    var bp = '../../' + lab.folder;
+                    var bp = '../' + lab.folder;
                     d.innerHTML = '<a href="' + bp + '/index.html">Overview</a><a href="' + bp + '/prelab/prelab.html">Pre-Lab</a><a href="' + bp + '/during_lab/in-lab.html">In-Lab</a><a href="' + bp + '/postlab/postlab.html">Post-Lab</a><a href="' + bp + '/advanced/optional.html">Optional</a>';
                     m.appendChild(b);
                     m.appendChild(d);
                     menus.appendChild(m);
                 });
-                
                 var t = document.querySelector('.bios-toggle');
                 if (t) t.onclick = function () { menus.classList.toggle('open'); };
             }
-            
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initNav);
             } else {
                 initNav();
             }
         })();
+
+        // --- Video Quiz Logic ---
+        
+        [cite_start]// Questions derived from transcript [cite: 1]
+        const quizData = [
+            {
+                [cite_start]time: 17, // ~0:15 "fluid mosaic" [cite: 1]
+                question: "How do scientists describe the structure of the cell membrane?",
+                options: ["Rigid Shell", "Fluid Mosaic", "Static Barrier", "Solid Wall"],
+                answer: 1 
+            },
+            {
+                [cite_start]time: 42, // ~0:38 "lipid bilayer" [cite: 1]
+                question: "The cell membrane consists of two layers of phospholipids, referred to as a:",
+                options: ["Protein Coat", "Carbohydrate Chain", "Lipid Bilayer", "Mosaic Tile"],
+                answer: 2
+            },
+            {
+                [cite_start]time: 63, // ~0:58 "heads... hydrophilic" [cite: 1]
+                question: "The round head portions of the phospholipids are:",
+                options: ["Hydrophobic (repelled by water)", "Hydrophilic (attracted to water)", "Neutral", "Non-polar"],
+                answer: 1
+            },
+            {
+                [cite_start]time: 98, // ~1:32 "tails... hydrophobic" [cite: 1]
+                question: "The phospholipid tails orient away from water because they are:",
+                options: ["Hydrophilic", "Magnetic", "Hydrophobic", "Charged"],
+                answer: 2
+            },
+            {
+                [cite_start]time: 157, // ~2:32 "move through proteins" [cite: 4]
+                question: "How do large molecules that cannot seep between phospholipids cross the membrane?",
+                options: ["They break the membrane", "They move through embedded protein tunnels", "They dissolve the lipids", "They cannot enter the cell"],
+                answer: 1
+            }
+        ];
+
+        const video = document.getElementById('quizVideo');
+        const overlay = document.getElementById('quizOverlay');
+        const questionText = document.getElementById('questionText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const feedbackMsg = document.getElementById('feedbackMsg');
+        const continueBtn = document.getElementById('continueBtn');
+        const endScreen = document.getElementById('endScreen');
+
+        let currentQuestionIndex = 0;
+        let isQuizActive = false;
+
+        // Sort quiz data by time
+        quizData.sort((a, b) => a.time - b.time);
+
+        video.addEventListener('timeupdate', () => {
+            if (isQuizActive || currentQuestionIndex >= quizData.length) return;
+
+            // Trigger question when time is reached
+            if (video.currentTime >= quizData[currentQuestionIndex].time) {
+                triggerQuiz(quizData[currentQuestionIndex]);
+            }
+        });
+
+        video.addEventListener('ended', () => {
+            if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+            if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            
+            endScreen.style.display = 'block';
+            endScreen.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function triggerQuiz(qData) {
+            video.pause();
+            isQuizActive = true;
+            
+            // Exit fullscreen so overlay is visible
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+               if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+               else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            }
+
+            // Populate Interface
+            questionText.textContent = qData.question;
+            optionsGrid.innerHTML = '';
+            feedbackMsg.textContent = '';
+            feedbackMsg.style.color = 'inherit';
+            continueBtn.style.display = 'none';
+
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = () => handleAnswer(index, qData.answer, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            overlay.classList.add('active');
+        }
+
+        function handleAnswer(selectedIndex, correctIndex, btnElement) {
+            // Disable all buttons to prevent changing answer
+            const buttons = optionsGrid.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                btnElement.classList.add('correct');
+                feedbackMsg.textContent = "Correct! ★";
+                feedbackMsg.style.color = "var(--uwp-green)";
+                continueBtn.style.display = 'inline-block';
+            } else {
+                btnElement.classList.add('incorrect');
+                // Highlight the actual correct answer
+                buttons[correctIndex].classList.add('correct');
+                feedbackMsg.textContent = "Incorrect. The correct answer is highlighted.";
+                feedbackMsg.style.color = "#d32f2f";
+                continueBtn.style.display = 'inline-block';
+            }
+        }
+
+        continueBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            isQuizActive = false;
+            currentQuestionIndex++;
+            video.play();
+        });
     </script>
 </body>
 
