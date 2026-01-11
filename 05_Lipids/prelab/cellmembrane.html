@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cell Membrane Structure Video Quiz - BIOS101</title>
+    <style>
+        :root {
+            --uwp-green: #016836;
+            --uwp-gold: #FFD100;
+            --uwp-white: #FFFFFF;
+            --uwp-black: #212721;
+            --uwp-gray: #58595B;
+            --uwp-light-gray: #EFECE2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--uwp-black);
+            background-color: var(--uwp-white);
+            line-height: 1.6;
+        }
+        .bios-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: var(--uwp-green);
+            border-bottom: 2px solid var(--uwp-gold);
+        }
+        .bios-nav-inner {
+            max-width: 1400px; margin: 0 auto;
+            display: flex; align-items: center;
+            gap: 12px; padding: 4px 8px;
+        }
+        .bios-home {
+            color: var(--uwp-white);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: .5px;
+            font-size: 1.1rem;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        h1 { color: var(--uwp-green); margin-bottom: 20px; font-size: 2rem; }
+        .quiz-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .video-section {
+            background: var(--uwp-black);
+            padding: 10px;
+            border-radius: 4px;
+        }
+        #video-player { width: 100%; aspect-ratio: 16/9; }
+        .controls {
+            display: flex; gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        button {
+            background: var(--uwp-green);
+            color: var(--uwp-white);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        button:hover { background: #014d28; }
+        button:disabled { background: var(--uwp-gray); cursor: not-allowed; }
+        .video-control-btn { padding: 6px 12px; font-size: 0.85rem; font-weight: 500; }
+        .skip-btn { padding: 5px 10px; font-size: 0.8rem; background: var(--uwp-gray); }
+        .skip-btn:hover { background: #404041; }
+        .question-section {
+            background: var(--uwp-light-gray);
+            padding: 20px;
+            border-radius: 4px;
+            border: 2px solid var(--uwp-green);
+            min-height: 400px;
+        }
+        .instructions {
+            background: var(--uwp-white);
+            padding: 20px;
+            border-radius: 4px;
+            border: 2px solid var(--uwp-gold);
+        }
+        .instructions h2 { color: var(--uwp-green); margin-bottom: 15px; }
+        .instructions ul { margin-left: 20px; margin-bottom: 15px; }
+        .instructions li { margin-bottom: 8px; }
+        .key-concepts-box {
+            background: var(--uwp-light-gray);
+            padding: 15px;
+            border-left: 4px solid var(--uwp-green);
+            margin: 15px 0;
+        }
+        .key-concepts-prompt { font-weight: 600; color: var(--uwp-green); margin-bottom: 10px; }
+        .hidden { display: none; }
+        .question-content h3 { color: var(--uwp-green); margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+        .option-btn {
+            background: var(--uwp-white);
+            color: var(--uwp-black);
+            border: 2px solid var(--uwp-gray);
+            padding: 12px;
+            text-align: left;
+            font-size: 1rem;
+        }
+        .option-btn:hover {
+            background: var(--uwp-light-gray);
+            border-color: var(--uwp-green);
+        }
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .option-btn.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .fill-blank-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid var(--uwp-gray);
+            border-radius: 4px;
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            background: var(--uwp-white);
+            border-left: 4px solid var(--uwp-green);
+        }
+        .score-display {
+            background: var(--uwp-white);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            border: 2px solid var(--uwp-gold);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--uwp-green);
+        }
+        .final-results {
+            background: var(--uwp-white);
+            padding: 30px;
+            border-radius: 4px;
+            border: 2px solid var(--uwp-green);
+            text-align: center;
+        }
+        .final-results h2 {
+            color: var(--uwp-green);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .final-score {
+            font-size: 3rem;
+            color: var(--uwp-gold);
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 768px) {
+            .quiz-layout { grid-template-columns: 1fr; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Cell Membrane Structure Video Quiz</h1>
+        
+        <div class="quiz-layout">
+            <div class="video-section">
+                <video id="video-player" controls>
+                    <source src="cellmembrane.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="controls">
+                    <button id="playBtn" class="video-control-btn">▶ Play</button>
+                    <button id="pauseBtn" class="video-control-btn">⏸ Pause</button>
+                    <button id="rewind5Btn" class="skip-btn">↶ 5s</button>
+                    <button id="forward5Btn" class="skip-btn">5s ↷</button>
+                    <button id="rewind10Btn" class="skip-btn">↶ 10s</button>
+                    <button id="forward10Btn" class="skip-btn">10s ↷</button>
+                    <button id="restartBtn" class="video-control-btn">↻ Restart</button>
+                </div>
+            </div>
+
+            <div class="question-section">
+                <div id="instructions" class="instructions">
+                    <h2>How to Use This Quiz</h2>
+                    <ul>
+                        <li>Questions appear automatically at specific points</li>
+                        <li>Video pauses when questions appear</li>
+                        <li>Select your answer and click "Submit Answer"</li>
+                        <li>Video auto-resumes in 0.5 seconds</li>
+                        <li>Read feedback while video plays</li>
+                    </ul>
+                    
+                    <div class="key-concepts-box">
+                        <div class="key-concepts-prompt">Key Concepts:</div>
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li><strong>Fluid Mosaic Model:</strong> Cell membrane structure</li>
+                            <li><strong>Phospholipid Bilayer:</strong> Two layers</li>
+                            <li><strong>Hydrophilic:</strong> Attracted to water</li>
+                            <li><strong>Hydrophobic:</strong> Repelled by water</li>
+                        </ul>
+                    </div>
+                    <p style="margin-top: 15px; font-weight: 600; color: var(--uwp-green);">
+                        Click Play to begin!
+                    </p>
+                </div>
+
+                <div id="questionContent" class="question-content hidden">
+                    <h3 id="questionText"></h3>
+                    <div id="optionsContainer" class="options"></div>
+                    <div id="feedbackContainer" class="feedback hidden"></div>
+                    <button id="submitBtn" class="hidden">Submit Answer</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scoreDisplay" class="score-display hidden">
+            Score: <span id="currentScore">0</span> / <span id="totalQuestions">0</span>
+        </div>
+
+        <div id="finalResults" class="final-results hidden">
+            <h2>Quiz Complete!</h2>
+            <div class="final-score" id="finalScore"></div>
+            <p id="finalMessage"></p>
+            <button id="retakeBtn">Retake Quiz</button>
+        </div>
+    </div>
+
+    <script src="cellmembrane-quiz.js"></script>
+</body>
+</html>
