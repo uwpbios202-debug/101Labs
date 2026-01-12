@@ -1,3 +1,5 @@
+[file name]: diffusion.html
+[file content begin]
 <!DOCTYPE html>
 <html lang="en">
 
@@ -759,12 +761,13 @@
             videoElement.addEventListener('pause', () => onPlayerStateChange({ data: 2 }));
             videoElement.addEventListener('ended', () => onPlayerStateChange({ data: 0 }));
         }
-        
+
         function onPlayerReady(event) {
             document.getElementById('playBtn').addEventListener('click', () => {
                 player.playVideo();
                 if (!hasStarted) {
                     hasStarted = true;
+                    // Hide instructions when quiz starts
                     document.getElementById('instructions').classList.add('hidden');
                     document.getElementById('scoreDisplay').classList.remove('hidden');
                     document.getElementById('totalQuestions').textContent = quizData.length;
@@ -792,7 +795,7 @@
                 const duration = player.getDuration();
                 player.seekTo(Math.min(duration, currentTime + 10));
             });
-            
+
             // Set up submit button
             document.getElementById('submitBtn').addEventListener('click', submitAnswer);
         }
@@ -1016,4 +1019,4 @@
     </script>
 </body>
 
-</html>s
+</html>
