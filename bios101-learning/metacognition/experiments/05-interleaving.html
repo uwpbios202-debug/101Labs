@@ -1,56 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exp 05: Interleaving Gauntlet | Metacognition Lab</title>
-    
-    <link rel="stylesheet" href="../assets/css/style.css">
-    
+    <title>Interleaving Gauntlet - Metacognition Lab</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        /* Page-specific overrides */
+        .banner {
+            border-left-color: var(--uwp-green);
+        }
+    </style>
 </head>
-<body>
 
+<body>
     <nav class="bios-nav">
         <div class="bios-nav-inner">
             <a href="../index.html" class="bios-home">BIOS101</a>
             <div class="bios-menus">
+                <div class="bios-menu">
+                    <a href="../dashboard.html" class="bios-trigger">Metacognition Dashboard</a>
                 </div>
+            </div>
         </div>
     </nav>
 
     <header>
         <div class="shell">
             <div class="header-brand">
-                <div class="header-brand-icon">UWP</div>
-                <span>Metacognition Discovery Lab</span>
+                <div class="header-brand-icon">05</div>
+                <span>Interleaving Gauntlet</span>
             </div>
-            <div style="font-size: 0.9rem;">
-                Experiment 5 of 10
+            <div class="progress-shell">
+                <div class="progress-track">
+                    <div class="progress-bar" id="localProgressBar" style="width: 0%"></div>
+                </div>
+                <div class="progress-label" id="localProgressLabel">Phase 1 of 7</div>
             </div>
         </div>
     </header>
 
     <main>
         <div class="view active" id="view-experiment">
-            
             <div class="pill-nav">
                 <a href="../dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
             </div>
 
-            <div class="card stack" style="margin-bottom: 1rem; border-left: 4px solid var(--uwp-goldenrod);">
-                <h1 style="font-size: 1.5rem; margin:0;">Interleaving Gauntlet</h1>
-                <p class="subline">Mixed practice wins on delayed, mixed tests.</p>
+            <div class="banner">
+                <h2>Mixed Practice Wins on Delayed, Mixed Tests</h2>
+                <p class="subline">Why grouped practice feels smooth but fails on real exams.</p>
             </div>
 
             <section id="phase1">
                 <div class="card stack">
-                    <h2>Phase 1: Observation: Your Current Habit</h2>
+                    <h2>Phase 1: Observation</h2>
                     <p class="meta">Carefully read, analyze, and reflect on the following.</p>
+
                     <div class="observation-box" id="observationBox">
-                        </div>
+                        <p>"When I practice problems for math or science classes, I usually organize them by type because it feels more efficient. I'll do all the derivative problems first, then all the integrals, then all the chain-rule problems. It makes my homework feel smooth and predictable, like I'm on a roll. But on tests, the problems are mixed, and suddenly I freeze. I'm not always sure which strategy to use, and I end up second-guessing myself. It's frustrating because I thought I understood the material while practicing, but the test reveals I only knew how to do each type when they were grouped together. I'm starting to notice that my practice might be too tidy. I never force myself to identify which method a problem needs — I just follow the pattern in the homework. I think I've been practicing execution without practicing decision-making, and that might be why I struggle on mixed or unfamiliar problems."</p>
+                    </div>
+
                     <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own experience?</label>
-                    <textarea id="reflectionText" placeholder="Write at least 50 words describing how the above observation mirrors or differs from your actual experience..."></textarea>
+                    <textarea id="reflectionText" placeholder="Write at least 10 words describing how the above observation mirrors or differs from your actual experience. Do you practice by type or mix problems?"></textarea>
                     <p class="meta"><span id="reflectionMeta">0</span> / 50 words minimum</p>
                     <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to Curiosity Question</button>
                 </div>
@@ -59,9 +72,11 @@
             <section id="phase2" class="hidden">
                 <div class="card stack">
                     <h2>Phase 2: The Curiosity Question</h2>
-                    <p class="explanation-box">This phase transforms personal observation into structured scientific curiosity.</p>
+                    <p class="explanation-box"><strong>What this phase is about:</strong> This phase transforms a personal observation into structured scientific curiosity.</p>
+
                     <div class="observation-box" id="curiosityBox">
-                        </div>
+                        <p><strong>Would mixing different types of problems together during practice help me identify which strategy to use on real exams?</strong></p>
+                    </div>
 
                     <div class="field">
                         <label>Based on your actual test taking experiences:</label>
@@ -92,78 +107,97 @@
 
             <section id="phase3a" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 3: Research Foundation (1/3) - The Question</h2>
+                    <h2>Phase 3: Research Foundation (1/3)</h2>
                     <div class="observation-box">
                         <h3>Research Question</h3>
-                        <p id="researchQuestionText" style="font-weight: 600;"></p>
+                        <p style="font-weight: 600;">Does interleaved practice (mixing problem types) improve problem-solving and transfer better than blocked practice?</p>
                     </div>
+
                     <div class="field">
-                        <label for="rqUnderstanding">Rate your understanding:</label>
+                        <label for="rqUnderstanding">Rate your understanding of this research question:</label>
                         <select id="rqUnderstanding">
-                            <option value="">-- Select --</option>
-                            <option value="clear">Clear</option>
-                            <option value="somewhat">Somewhat</option>
-                            <option value="confused">Confused</option>
+                            <option value="">-- Select your understanding level --</option>
+                            <option value="clear">Clear - I understand exactly what's being investigated</option>
+                            <option value="somewhat">Somewhat - I have a general idea but some questions</option>
+                            <option value="confused">Confused - I'm not sure what's being studied</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" id="rqContinueBtn">Proceed to Hypothesis →</button>
+
+                    <button class="btn btn-primary" id="rqContinueBtn" disabled>Proceed to Hypothesis →</button>
                 </div>
             </section>
 
             <section id="phase3b" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 3: Research Foundation (2/3) - Hypothesis</h2>
-                    <div id="hypothesisContent"></div>
-                    
+                    <h2>Phase 3: Research Foundation (2/3)</h2>
+
+                    <h3>The Hypothesis</h3>
+                    <div class="observation-box">
+                        <p><strong>Interleaved practice</strong> (IV) improves <strong>delayed and transfer performance</strong> (DV) more than blocked practice when <strong>study time is held constant</strong> (CV).</p>
+                    </div>
+                    <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> Interleaving forces learners to discriminate between problem types and retrieve the correct strategy, creating stronger memory and better transfer.</p>
+
                     <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
                         <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
                         <div class="radio-group">
                             <label class="checkbox-label">
                                 <input type="radio" name="hypothesisFormat" value="prediction_error">
-                                <span>"It is an 'If... then...' statement about specific test scores."</span>
+                                <span>"If I study hard, I will get an A."</span>
                             </label>
                             <label class="checkbox-label">
                                 <input type="radio" name="hypothesisFormat" value="correct_answer">
-                                <span>"It is a tentative answer to the Research Question."</span>
+                                <span>"It is a tentative answer to the Research Question proposing a relationship between variables."</span>
                             </label>
                             <label class="checkbox-label">
                                 <input type="radio" name="hypothesisFormat" value="vague_error">
-                                <span>"It is a proven fact found in a textbook."</span>
+                                <span>"It is a fact found in the textbook."</span>
                             </label>
                         </div>
                     </div>
 
-                    <div class="hypothesis-feedback" id="hypothesisFeedback" style="display:none; margin-top:0.5rem;"></div>
-                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Prediction →</button>
+                    <div class="hypothesis-feedback" id="hypothesisFeedback"></div>
+                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction →</button>
                 </div>
             </section>
 
             <section id="phase3c" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 3: Research Foundation (3/3) - Your Prediction</h2>
-                    <p class="explanation-box">"If [Hypothesis] is true, then [Specific Outcome] will happen."</p>
+                    <h2>Phase 3: Research Foundation (3/3) - Prediction</h2>
 
                     <div class="field">
-                        <label for="predictionChoice">Select the prediction strategy:</label>
+                        <label for="predictionChoice">Based on the hypothesis, which practice strategy will produce better results on delayed tests?</label>
                         <select id="predictionChoice">
                             <option value="">-- Select your prediction --</option>
+                            <option value="blocked">Blocked practice (grouped by type)</option>
+                            <option value="interleaved">Interleaved practice (mixed types)</option>
+                            <option value="same">They will be about the same</option>
                         </select>
                     </div>
 
                     <div class="field">
-                        <label for="predictionConfidence">Confidence (1-5):</label>
+                        <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 = very confident)</label>
                         <input type="range" id="predictionConfidence" min="1" max="5" value="3">
                         <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
                     </div>
 
-                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Lock in prediction →</button>
+                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Lock in my prediction →</button>
                 </div>
             </section>
 
             <section id="phase4" class="hidden">
                 <div class="card stack">
                     <h2>Phase 4: Experimental Design</h2>
-                    <div id="designContent"></div>
+
+                    <h3>The Original Study: Rohrer & Taylor (2007)</h3>
+                    <div class="observation-box">
+                        <p>Students completed practice problems. One group practiced blocked (all of one type, then next). Another practiced interleaved (mixed types). Equal time and total problems. Performance was measured on immediate, delayed, and transfer tests.</p>
+                    </div>
+
+                    <h3>My Personal Experiment Design</h3>
+                    <div class="observation-box">
+                        <p>For my next math or science unit, I will create a mixed problem set combining different types of problems (e.g., derivatives, integrals, limits mixed together). Instead of doing all of one type, I'll shuffle them so I have to identify which strategy each problem requires before solving it. I'll track how this affects my ability to solve mixed problems on the actual test.</p>
+                    </div>
+
                     <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
                 </div>
             </section>
@@ -171,38 +205,26 @@
             <section id="phase5" class="hidden">
                 <div class="card stack">
                     <h2>Phase 5: The Results</h2>
+                    <p class="explanation-box">Here is what happened in the original study.</p>
+
                     <div class="data-viz-box">
                         <canvas id="resultsChart" style="max-height:250px;"></canvas>
                     </div>
 
-                    <div class="row-flex">
-                        <div style="flex: 1;">
-                            <div class="citation-box">
-                                <h4>Study Details</h4>
-                                <p class="meta"><strong>Citation:</strong> <span id="studyCitation"></span></p>
-                                <p class="meta"><strong>Sample:</strong> <span id="studySample"></span></p>
-                                <p class="meta"><strong>Effect:</strong> <span id="studyEffect"></span></p>
-                            </div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div class="stats-box">
-                                <h4>Statistical Results</h4>
-                                <p id="statisticalResults"></p>
-                                <p id="significanceResult" style="font-weight: 600; margin-top: 0.5rem;"></p>
-                            </div>
-                        </div>
+                    <div class="citation-box">
+                        <h4>Original Study Details</h4>
+                        <p class="meta"><strong>Citation:</strong> Rohrer, D., & Taylor, K. (2007). The shuffling of mathematics problems improves learning. Instructional Science, 35(6), 481-498.</p>
+                        <p class="meta"><strong>Result:</strong> Blocked practice produced 85% immediate accuracy but dropped to 62% on delayed tests. Interleaved practice started at 72% but rose to 88% on delayed tests—a 26 percentage-point advantage!</p>
                     </div>
 
-                    <div id="resultsInterpretation"></div>
-
-                    <div class="observation-box" style="background-color: var(--uwp-white-birch); border-left: 3px solid var(--uwp-green);">
-                        <h4>Research Conclusion</h4>
-                        <p id="researchConclusion" style="font-weight: 600;"></p>
-                        <p class="meta" id="researchImplication"></p>
+                    <div class="observation-box" style="border-left: 3px solid var(--uwp-green);">
+                        <h4>Conclusion</h4>
+                        <p><strong>Hypothesis ACCEPTED.</strong> Blocked practice creates short-term fluency that fades; interleaving forces discrimination skills that improve long-term retention.</p>
                     </div>
 
                     <div class="field">
-                        <label for="resultsReflection">Your Metacognitive Reflection:</label>
+                        <label for="resultsReflection">Your Metacognitive Reflection (Required):</label>
+                        <p class="subline">How does this evidence challenge or confirm your current study habits?</p>
                         <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because..."></textarea>
                         <p class="meta"><span id="reflectionWordCount">0</span> / 75 words minimum</p>
                     </div>
@@ -214,31 +236,31 @@
             <section id="phase6" class="hidden">
                 <div class="card stack">
                     <h2>Phase 6: Your Personal Experiment</h2>
-                    <p class="explanation-box">Design a small, testable experiment in your real coursework.</p>
-                    
+                    <p class="explanation-box">Commit to applying this strategy in your actual coursework.</p>
+
                     <div class="field">
-                        <label for="expCourse">Which course?</label>
-                        <input type="text" id="expCourse" placeholder="e.g., Calculus II">
+                        <label for="expCourse">Which course will you test this in?</label>
+                        <input type="text" id="expCourse" placeholder="e.g., Calculus, Chemistry">
                     </div>
                     <div class="field">
-                        <label for="expMaterial">What material?</label>
-                        <input type="text" id="expMaterial" placeholder="e.g., Integration techniques">
+                        <label for="expMaterial">What specific material/topic?</label>
+                        <input type="text" id="expMaterial" placeholder="e.g., Derivative rules, Stoichiometry problems">
                     </div>
                     <div class="field">
                         <label for="expChange">What will you do differently?</label>
-                        <textarea id="expChange" placeholder="I will mix up problem types..."></textarea>
+                        <textarea id="expChange" placeholder="Instead of practicing by problem type, I will..."></textarea>
                     </div>
                     <div class="field">
                         <label for="expMeasure">How will you measure success?</label>
-                        <input type="text" id="expMeasure" placeholder="e.g., Score >80% on mixed practice set">
+                        <input type="text" id="expMeasure" placeholder="e.g., Mixed problem set score > 80%">
                     </div>
                     <div class="row-flex">
                         <div class="field">
-                            <label for="expStart">Start Date:</label>
+                            <label for="expStart">Start Date</label>
                             <input type="date" id="expStart">
                         </div>
                         <div class="field">
-                            <label for="expEval">Eval Date:</label>
+                            <label for="expEval">Evaluation Date</label>
                             <input type="date" id="expEval">
                         </div>
                     </div>
@@ -253,54 +275,136 @@
             </section>
 
             <section id="phase7" class="hidden">
-                <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: linear-gradient(135deg, #f0f9f0, #ffffff);">
-                    <div style="font-size: 3rem; color: var(--uwp-green); margin-bottom: 0.5rem;">✓</div>
+                <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: #f0f9f0;">
+                    <div style="font-size: 3rem; color: var(--uwp-green);">✓</div>
                     <h2>Experiment Complete!</h2>
-                    <p>You have unlocked the Interleaving strategy.</p>
+                    <p>You have successfully designed an Interleaving strategy.</p>
                     <div class="row-flex" style="justify-content: center; margin-top: 1rem;">
                         <a href="../dashboard.html" class="btn btn-secondary">Return to Dashboard</a>
-                        <a href="06-encoding.html" class="btn btn-primary">Next: Encoding Showdown →</a>
+                        <a href="06-encoding.html" class="btn btn-primary">Next Experiment →</a>
                     </div>
                 </div>
             </section>
-
         </div>
     </main>
 
-    <footer>
-        <div class="shell">
-            <p><strong>Privacy:</strong> Data stored locally on device.</p>
-            <p style="font-size: 0.75rem;">Metacognition Discovery Lab | UW–Parkside PreMed</p>
-        </div>
-    </footer>
-
-    <script src="../assets/js/data.js"></script> 
-    
+    <script src="../assets/js/data.js"></script>
     <script src="../assets/js/logic.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. Set the specific ID for this file based on data.js keys
-            // Key from monolithic source: 'interleavinggauntlet'
-            const thisExperimentId = 'interleavinggauntlet'; 
+        const CURRENT_EXPERIMENT_ID = 'interleavinggauntlet';
 
-            // 2. Ensure state is loaded (logic.js usually handles this, but we force context)
-            if (typeof state !== 'undefined') {
-                state.lastViewedExperimentId = thisExperimentId;
-                
-                // 3. Trigger the UI hydration using the shared logic
-                if (typeof hydrateExperimentUI === 'function') {
-                    hydrateExperimentUI();
-                }
-
-                // 4. Ensure visual state matches progress
-                if (typeof showPhases === 'function') {
-                    showPhases();
-                }
-            } else {
-                console.error("State or Logic not loaded correctly from ../assets/js/logic.js");
+        // Helper to show next phase and scroll
+        const goToPhase = (currentId, nextId) => {
+            const nextPhase = document.getElementById(nextId);
+            if (nextPhase) {
+                nextPhase.classList.remove('hidden');
+                nextPhase.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
+        };
+
+        // Initialize Specific Chart for Interleaving
+        function renderSpecificChart() {
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Blocked (Immediate)', 'Blocked (Delayed)', 'Interleaved (Immediate)', 'Interleaved (Delayed)'],
+                    datasets: [{
+                        label: 'Accuracy (%)',
+                        data: [85, 62, 72, 88],
+                        backgroundColor: ['#94a3b8', '#cbd5e1', '#4b7c4c', '#016836'],
+                        borderColor: ['#4b5563', '#4b5563', '#00502f', '#00502f'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, max: 100 } },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Blocked vs. Interleaved Practice Performance'
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof initExperiment === 'function') initExperiment(CURRENT_EXPERIMENT_ID);
+
+            // --- PHASE 1: Reflection Logic ---
+            const reflectionInput = document.getElementById('reflectionText');
+            const reflectionBtn = document.getElementById('reflectionContinueBtn');
+            reflectionInput?.addEventListener('input', () => {
+                const wordCount = reflectionInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionMeta').textContent = wordCount;
+                reflectionBtn.disabled = wordCount < 50;
+            });
+            reflectionBtn?.addEventListener('click', () => goToPhase('phase1', 'phase2'));
+
+            // --- PHASE 2: Curiosity Logic ---
+            const curiosityBtn = document.getElementById('curiosityContinueBtn');
+            document.querySelectorAll('input[name="curiosityResponse"]').forEach(radio => {
+                radio.addEventListener('change', () => curiosityBtn.disabled = false);
+            });
+            curiosityBtn?.addEventListener('click', () => goToPhase('phase2', 'phase3a'));
+
+            // --- PHASE 3a: RQ Logic ---
+            const rqBtn = document.getElementById('rqContinueBtn');
+            document.getElementById('rqUnderstanding')?.addEventListener('change', (e) => {
+                rqBtn.disabled = e.target.value === "";
+            });
+            rqBtn?.addEventListener('click', () => goToPhase('phase3a', 'phase3b'));
+
+            // --- PHASE 3b: Hypothesis Logic ---
+            const hypBtn = document.getElementById('hypothesisContinueBtn');
+            document.querySelectorAll('input[name="hypothesisFormat"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const feedback = document.getElementById('hypothesisFeedback');
+                    if (e.target.value === 'correct_answer') {
+                        feedback.innerHTML = "<p style='color:green;'>Correct! A hypothesis is a testable prediction.</p>";
+                        hypBtn.disabled = false;
+                    } else {
+                        feedback.innerHTML = "<p style='color:red;'>Not quite. Try again.</p>";
+                        hypBtn.disabled = true;
+                    }
+                });
+            });
+            hypBtn?.addEventListener('click', () => goToPhase('phase3b', 'phase3c'));
+
+            // --- PHASE 3c: Prediction Logic ---
+            const predBtn = document.getElementById('predictionContinueBtn');
+            document.getElementById('predictionChoice')?.addEventListener('change', (e) => {
+                predBtn.disabled = e.target.value === "";
+            });
+            predBtn?.addEventListener('click', () => goToPhase('phase3c', 'phase4'));
+
+            // --- PHASE 4: Design Logic ---
+            document.getElementById('designContinueBtn')?.addEventListener('click', () => {
+                renderSpecificChart();
+                goToPhase('phase4', 'phase5');
+            });
+
+            // --- PHASE 5: Results Reflection ---
+            const resInput = document.getElementById('resultsReflection');
+            const resBtn = document.getElementById('resultsContinueBtn');
+            resInput?.addEventListener('input', () => {
+                const count = resInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionWordCount').textContent = count;
+                resBtn.disabled = count < 75;
+            });
+            resBtn?.addEventListener('click', () => goToPhase('phase5', 'phase6'));
+
+            // --- PHASE 6: Personal Experiment Logic ---
+            const commitBtn = document.getElementById('commitContinueBtn');
+            document.getElementById('expCommit')?.addEventListener('change', (e) => {
+                commitBtn.disabled = !e.target.checked;
+            });
+            commitBtn?.addEventListener('click', () => goToPhase('phase6', 'phase7'));
         });
     </script>
 </body>
+
 </html>
