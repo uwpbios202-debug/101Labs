@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacing vs. Cramming - Metacognition Lab</title>
+    <title>Spacing vs Cramming Trial - Metacognition Lab</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        .banner { border-left-color: #4a90e2; }
+        /* Page-specific overrides */
+        .banner {
+            border-left-color: var(--uwp-green);
+        }
     </style>
 </head>
+
 <body>
     <nav class="bios-nav">
         <div class="bios-nav-inner">
             <a href="../index.html" class="bios-home">BIOS101</a>
-            <div class="bios-menus"><div class="bios-menu"><a href="../dashboard.html" class="bios-trigger">Dashboard</a></div></div>
+            <div class="bios-menus">
+                <div class="bios-menu">
+                    <a href="../dashboard.html" class="bios-trigger">Metacognition Dashboard</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -22,83 +31,258 @@
         <div class="shell">
             <div class="header-brand">
                 <div class="header-brand-icon">04</div>
-                <span>Spacing vs. Cramming</span>
+                <span>Spacing vs Cramming Trial</span>
+            </div>
+            <div class="progress-shell">
+                <div class="progress-track">
+                    <div class="progress-bar" id="localProgressBar" style="width: 0%"></div>
+                </div>
+                <div class="progress-label" id="localProgressLabel">Phase 1 of 7</div>
             </div>
         </div>
     </header>
 
     <main>
-        <div class="view active">
-            <div class="pill-nav"><a href="../dashboard.html" class="btn btn-secondary">← Back</a></div>
+        <div class="view active" id="view-experiment">
+            <div class="pill-nav">
+                <a href="../dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
+            </div>
+
+            <div class="banner">
+                <h2>Distributed Beats Massed for Durable Retention</h2>
+                <p class="subline">Why cramming gives you a short burst of confidence, but not long-term understanding.</p>
+            </div>
 
             <section id="phase1">
                 <div class="card stack">
                     <h2>Phase 1: Observation</h2>
-                    <div class="observation-box">
-                        <p>"I study in 10-hour marathons before exams. It feels efficient, but a week later, I remember nothing."</p>
+                    <p class="meta">Carefully read, analyze, and reflect on the following.</p>
+
+                    <div class="observation-box" id="observationBox">
+                        <p>"I've started noticing a pattern in how I study before exams. I tend to put everything off until the night before, then I go all-in — rereading chapters, rewriting notes, making last-minute flashcards. I convince myself that the intensity means I'm learning. But what really happens is that I can remember the material for the quiz the next morning, and then a week later it's mostly gone. When older material shows up on exams or midterms, I blank out and feel frustrated because I know I spent hours trying to learn it. I'm starting to realize that cramming gives me a short burst of confidence, but not long-term understanding. I never give my brain time to revisit the material or let it sink in. I don't think I've ever truly tested what would happen if I spread my studying across multiple days instead of trying to do everything in one long session."</p>
                     </div>
-                    <label for="reflectionText">How has "cramming" affected your long-term memory?</label>
-                    <textarea id="reflectionText" placeholder="Write at least 50 words..."></textarea>
-                    <p class="meta"><span id="reflectionMeta">0</span> / 50 words</p>
-                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>Continue to Curiosity</button>
+
+                    <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own experience?</label>
+                    <textarea id="reflectionText" placeholder="Write at least 10 words describing how the above observation mirrors or differs from your actual experience. Do you relate to the cycle of cramming and forgetting?"></textarea>
+                    <p class="meta"><span id="reflectionMeta">0</span> / 50 words minimum</p>
+                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to Curiosity Question</button>
                 </div>
             </section>
 
             <section id="phase2" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 2: Curiosity</h2>
-                    <p>What if I broke those 10 hours into 1-hour chunks over 10 days?</p>
-                    <div class="radio-group">
-                        <label class="checkbox-label"><input type="radio" name="curiosityResponse" value="spacing"> <span>Spacing is better</span></label>
-                        <label class="checkbox-label"><input type="radio" name="curiosityResponse" value="cramming"> <span>Cramming is better</span></label>
+                    <h2>Phase 2: The Curiosity Question</h2>
+                    <p class="explanation-box"><strong>What this phase is about:</strong> This phase transforms a personal observation into structured scientific curiosity.</p>
+
+                    <div class="observation-box" id="curiosityBox">
+                        <p><strong>Would breaking my study sessions into smaller chunks over several days help me remember better?</strong></p>
                     </div>
-                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Prediction</button>
+
+                    <div class="field">
+                        <label>Based on your actual study patterns:</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="agree">
+                                <span><strong>Agree</strong> - This reflects my experience exactly</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="disagree">
+                                <span><strong>Disagree</strong> - This doesn't match my habits</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="unsure">
+                                <span><strong>Unsure</strong> - I need to think about this more</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="curiosityExplanation">Briefly explain your choice:</label>
+                        <textarea id="curiosityExplanation" placeholder="Why does/doesn't this question resonate with you? What's your typical approach to scheduling study sessions?"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Research Question</button>
                 </div>
             </section>
 
-            <section id="phase3" class="hidden">
+            <section id="phase3a" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 3: Prediction</h2>
+                    <h2>Phase 3: Research Foundation (1/3)</h2>
+                    <div class="observation-box">
+                        <h3>Research Question</h3>
+                        <p style="font-weight: 600;">Does distributed spaced practice lead to superior long-term retention compared to massed cramming?</p>
+                    </div>
+
                     <div class="field">
-                        <label>Select your predicted outcome:</label>
-                        <select id="predictionChoice">
-                            <option value="">-- Select --</option>
-                            <option value="spacing">Spacing improves retention</option>
-                            <option value="cramming">Cramming improves retention</option>
+                        <label for="rqUnderstanding">Rate your understanding of this research question:</label>
+                        <select id="rqUnderstanding">
+                            <option value="">-- Select your understanding level --</option>
+                            <option value="clear">Clear - I understand exactly what's being investigated</option>
+                            <option value="somewhat">Somewhat - I have a general idea but some questions</option>
+                            <option value="confused">Confused - I'm not sure what's being studied</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Continue to Design</button>
+
+                    <button class="btn btn-primary" id="rqContinueBtn" disabled>Proceed to Hypothesis →</button>
+                </div>
+            </section>
+
+            <section id="phase3b" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (2/3)</h2>
+
+                    <h3>The Hypothesis</h3>
+                    <div class="observation-box">
+                        <p><strong>Distributed practice</strong> (IV) leads to superior <strong>long-term retention</strong> (DV) compared to massed practice when <strong>total study time is held constant</strong> (CV).</p>
+                    </div>
+                    <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> Spacing allows time for memory consolidation between sessions, while cramming creates only short-term fluency that quickly fades.</p>
+
+                    <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                        <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="prediction_error">
+                                <span>"If I space out my studying, I will get a better grade."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="correct_answer">
+                                <span>"It is a tentative answer to the Research Question proposing a relationship between variables."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="vague_error">
+                                <span>"It is a fact found in the textbook."</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="hypothesis-feedback" id="hypothesisFeedback"></div>
+                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction →</button>
+                </div>
+            </section>
+
+            <section id="phase3c" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (3/3) - Prediction</h2>
+
+                    <div class="field">
+                        <label for="predictionChoice">Based on the hypothesis, select the prediction strategy that will produce better long-term retention?</label>
+                        <select id="predictionChoice">
+                            <option value="">-- Select your prediction --</option>
+                            <option value="massed">Massed practice (one big session)</option>
+                            <option value="distributed">Distributed practice (spread over days)</option>
+                            <option value="combined">Distributed + Retrieval combined</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 = very confident)</label>
+                        <input type="range" id="predictionConfidence" min="1" max="5" value="3">
+                        <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Lock in my prediction →</button>
                 </div>
             </section>
 
             <section id="phase4" class="hidden">
                 <div class="card stack">
                     <h2>Phase 4: Experimental Design</h2>
-                    <p>Cepeda et al. (2008) compared massed vs. distributed practice with equal total study time.</p>
-                    <button class="btn btn-primary" id="designContinueBtn">View Results</button>
+
+                    <h3>The Original Study: Cepeda et al. (2008)</h3>
+                    <div class="observation-box">
+                        <p>Students learn vocabulary. One group studies in one concentrated session (massed). Another group studies spread across 3-7 days (distributed). Total study time is equal. All take a retention test 1-4 weeks later. A third group combines distributed practice with retrieval practice for comparison.</p>
+                    </div>
+
+                    <h3>My Personal Experiment Design</h3>
+                    <div class="observation-box">
+                        <p>For my next exam, I will choose one topic and study it using spaced intervals. Instead of cramming for 3 hours the night before, I will study for 1 hour on three different days spread across one week. After each study session, I will take a short self-quiz to reinforce the material. I will track my retention by comparing my performance on this spaced topic versus topics I study using my usual cramming method.</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
                 </div>
             </section>
 
             <section id="phase5" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 5: Results</h2>
-                    <canvas id="resultsChart" style="max-height: 300px;"></canvas>
-                    <div class="field">
-                        <label>Reflect on these results (75 words min):</label>
-                        <textarea id="resultsReflection"></textarea>
-                        <p class="meta"><span id="reflectionWordCount">0</span> / 75 words</p>
+                    <h2>Phase 5: The Results</h2>
+                    <p class="explanation-box">Here is what happened in the original study.</p>
+
+                    <div class="data-viz-box">
+                        <canvas id="resultsChart" style="max-height:250px;"></canvas>
                     </div>
-                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Commitment</button>
+
+                    <div class="citation-box">
+                        <h4>Original Study Details</h4>
+                        <p class="meta"><strong>Citation:</strong> Cepeda, N. J., Vul, E., Rohrer, D., Wixted, J. T., & Pashler, H. (2008). Spacing effects in learning: A temporal ridgeline of optimal retention. Psychological Science, 19(11), 1095-1102.</p>
+                        <p class="meta"><strong>Result:</strong> Distributed practice produced significantly better long-term retention than massed practice, with the combination of spacing + retrieval showing the strongest effects.</p>
+                    </div>
+
+                    <div class="observation-box" style="border-left: 3px solid var(--uwp-green);">
+                        <h4>Conclusion</h4>
+                        <p><strong>Hypothesis ACCEPTED.</strong> The spacing effect is one of the most robust findings in cognitive psychology. Cramming creates an illusion of learning that disappears quickly, while distributed practice builds durable memory.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="resultsReflection">Your Metacognitive Reflection (Required):</label>
+                        <p class="subline">How does this evidence challenge or confirm your current study habits?</p>
+                        <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because..."></textarea>
+                        <p class="meta"><span id="reflectionWordCount">0</span> / 75 words minimum</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Design Your Experiment</button>
                 </div>
             </section>
 
             <section id="phase6" class="hidden">
                 <div class="card stack">
-                    <h2>Phase 6: Commitment</h2>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="expCommit"> <span>I commit to spacing my study sessions.</span>
-                    </label>
+                    <h2>Phase 6: Your Personal Experiment</h2>
+                    <p class="explanation-box">Commit to applying this strategy in your actual coursework.</p>
+
+                    <div class="field">
+                        <label for="expCourse">Which course will you test this in?</label>
+                        <input type="text" id="expCourse" placeholder="e.g., Biology 101">
+                    </div>
+                    <div class="field">
+                        <label for="expMaterial">What specific material/topic?</label>
+                        <input type="text" id="expMaterial" placeholder="e.g., Photosynthesis, Cellular Respiration">
+                    </div>
+                    <div class="field">
+                        <label for="expChange">What will you do differently?</label>
+                        <textarea id="expChange" placeholder="Instead of cramming, I will..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="expMeasure">How will you measure success?</label>
+                        <input type="text" id="expMeasure" placeholder="e.g., Retention test score > 80% after 2 weeks">
+                    </div>
+                    <div class="row-flex">
+                        <div class="field">
+                            <label for="expStart">Start Date</label>
+                            <input type="date" id="expStart">
+                        </div>
+                        <div class="field">
+                            <label for="expEval">Evaluation Date</label>
+                            <input type="date" id="expEval">
+                        </div>
+                    </div>
+                    <div style="margin: 0.5rem 0;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="expCommit">
+                            <strong>I commit to running this experiment</strong>
+                        </label>
+                    </div>
                     <button class="btn btn-primary" id="commitContinueBtn" disabled>Complete Experiment</button>
+                </div>
+            </section>
+
+            <section id="phase7" class="hidden">
+                <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: #f0f9f0;">
+                    <div style="font-size: 3rem; color: var(--uwp-green);">✓</div>
+                    <h2>Experiment Complete!</h2>
+                    <p>You have successfully designed a Spaced Practice strategy.</p>
+                    <div class="row-flex" style="justify-content: center; margin-top: 1rem;">
+                        <a href="../dashboard.html" class="btn btn-secondary">Return to Dashboard</a>
+                        <a href="05-interleaving.html" class="btn btn-primary">Next Experiment →</a>
+                    </div>
                 </div>
             </section>
         </div>
@@ -106,74 +290,130 @@
 
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/logic.js"></script>
+
     <script>
         const CURRENT_EXPERIMENT_ID = 'spacingvscramming';
 
-        const showNext = (nextId) => {
-            document.getElementById(nextId).classList.remove('hidden');
-            document.getElementById(nextId).scrollIntoView({ behavior: 'smooth' });
+        // Helper to show next phase and scroll
+        const goToPhase = (currentId, nextId) => {
+            const nextPhase = document.getElementById(nextId);
+            if (nextPhase) {
+                nextPhase.classList.remove('hidden');
+                nextPhase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         };
 
-        function renderChart() {
+        // Initialize Specific Chart for Spacing vs Cramming
+        function renderSpecificChart() {
             const ctx = document.getElementById('resultsChart').getContext('2d');
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Cramming', 'Spacing'],
-                    datasets: [{ label: 'Retention %', data: [35, 72], backgroundColor: ['#cbd5e1', '#016836'] }]
+                    labels: ['Massed (Cramming)', 'Spaced Alone', 'Spaced + Retrieval'],
+                    datasets: [{
+                        label: 'Retention After 4 Weeks (%)',
+                        data: [67, 74, 86],
+                        backgroundColor: ['#cbd5e1', '#4b7c4c', '#016836'],
+                        borderColor: ['#4b5563', '#00502f', '#00502f'],
+                        borderWidth: 2
+                    }]
                 },
-                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+                options: {
+                    responsive: true,
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Retention (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Spacing Effect: Long-Term Retention Comparison'
+                        }
+                    }
+                }
             });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Phase 1 Button logic
-            const refl1 = document.getElementById('reflectionText');
-            const btn1 = document.getElementById('reflectionContinueBtn');
-            refl1.oninput = () => {
-                const words = refl1.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-                document.getElementById('reflectionMeta').innerText = words;
-                btn1.disabled = words < 50;
-            };
-            btn1.onclick = () => showNext('phase2');
+            if (typeof initExperiment === 'function') initExperiment(CURRENT_EXPERIMENT_ID);
 
-            // Phase 2 Button logic
-            document.querySelectorAll('input[name="curiosityResponse"]').forEach(r => {
-                r.onchange = () => document.getElementById('curiosityContinueBtn').disabled = false;
+            // --- PHASE 1: Reflection Logic ---
+            const reflectionInput = document.getElementById('reflectionText');
+            const reflectionBtn = document.getElementById('reflectionContinueBtn');
+            reflectionInput?.addEventListener('input', () => {
+                const wordCount = reflectionInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionMeta').textContent = wordCount;
+                reflectionBtn.disabled = wordCount < 50;
             });
-            document.getElementById('curiosityContinueBtn').onclick = () => showNext('phase3');
+            reflectionBtn?.addEventListener('click', () => goToPhase('phase1', 'phase2'));
 
-            // Phase 3 Button logic
-            document.getElementById('predictionChoice').onchange = (e) => {
-                document.getElementById('predictionContinueBtn').disabled = e.target.value === "";
-            };
-            document.getElementById('predictionContinueBtn').onclick = () => showNext('phase4');
+            // --- PHASE 2: Curiosity Logic ---
+            const curiosityBtn = document.getElementById('curiosityContinueBtn');
+            document.querySelectorAll('input[name="curiosityResponse"]').forEach(radio => {
+                radio.addEventListener('change', () => curiosityBtn.disabled = false);
+            });
+            curiosityBtn?.addEventListener('click', () => goToPhase('phase2', 'phase3a'));
 
-            // Phase 4 Button logic
-            document.getElementById('designContinueBtn').onclick = () => {
-                showNext('phase5');
-                renderChart();
-            };
+            // --- PHASE 3a: RQ Logic ---
+            const rqBtn = document.getElementById('rqContinueBtn');
+            document.getElementById('rqUnderstanding')?.addEventListener('change', (e) => {
+                rqBtn.disabled = e.target.value === "";
+            });
+            rqBtn?.addEventListener('click', () => goToPhase('phase3a', 'phase3b'));
 
-            // Phase 5 Button logic
-            const refl2 = document.getElementById('resultsReflection');
-            const btn5 = document.getElementById('resultsContinueBtn');
-            refl2.oninput = () => {
-                const words = refl2.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-                document.getElementById('reflectionWordCount').innerText = words;
-                btn5.disabled = words < 75;
-            };
-            btn5.onclick = () => showNext('phase6');
+            // --- PHASE 3b: Hypothesis Logic ---
+            const hypBtn = document.getElementById('hypothesisContinueBtn');
+            document.querySelectorAll('input[name="hypothesisFormat"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const feedback = document.getElementById('hypothesisFeedback');
+                    if (e.target.value === 'correct_answer') {
+                        feedback.innerHTML = "<p style='color:green;'>Correct! A hypothesis is a testable prediction.</p>";
+                        hypBtn.disabled = false;
+                    } else {
+                        feedback.innerHTML = "<p style='color:red;'>Not quite. Try again.</p>";
+                        hypBtn.disabled = true;
+                    }
+                });
+            });
+            hypBtn?.addEventListener('click', () => goToPhase('phase3b', 'phase3c'));
 
-            // Phase 6 Button logic
-            document.getElementById('expCommit').onchange = (e) => {
-                document.getElementById('commitContinueBtn').disabled = !e.target.checked;
-            };
-            document.getElementById('commitContinueBtn').onclick = () => {
-                alert("Experiment Complete!");
-                window.location.href = "../dashboard.html";
-            };
+            // --- PHASE 3c: Prediction Logic ---
+            const predBtn = document.getElementById('predictionContinueBtn');
+            document.getElementById('predictionChoice')?.addEventListener('change', (e) => {
+                predBtn.disabled = e.target.value === "";
+            });
+            predBtn?.addEventListener('click', () => goToPhase('phase3c', 'phase4'));
+
+            // --- PHASE 4: Design Logic ---
+            document.getElementById('designContinueBtn')?.addEventListener('click', () => {
+                renderSpecificChart();
+                goToPhase('phase4', 'phase5');
+            });
+
+            // --- PHASE 5: Results Reflection ---
+            const resInput = document.getElementById('resultsReflection');
+            const resBtn = document.getElementById('resultsContinueBtn');
+            resInput?.addEventListener('input', () => {
+                const count = resInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionWordCount').textContent = count;
+                resBtn.disabled = count < 75;
+            });
+            resBtn?.addEventListener('click', () => goToPhase('phase5', 'phase6'));
+
+            // --- PHASE 6: Personal Experiment Logic ---
+            const commitBtn = document.getElementById('commitContinueBtn');
+            document.getElementById('expCommit')?.addEventListener('change', (e) => {
+                commitBtn.disabled = !e.target.checked;
+            });
+            commitBtn?.addEventListener('click', () => goToPhase('phase6', 'phase7'));
         });
     </script>
 </body>
+
 </html>
