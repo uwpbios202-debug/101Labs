@@ -293,10 +293,18 @@
     <script src="../assets/js/logic.js"></script>
 
     <script>
-        // Set the specific ID for this experiment so logic.js knows what to load/save
         const CURRENT_EXPERIMENT_ID = 'activerecallarena';
 
-        // 1. Initialize Chart
+        // Helper to show next phase and scroll
+        const goToPhase = (currentId, nextId) => {
+            const nextPhase = document.getElementById(nextId);
+            if (nextPhase) {
+                nextPhase.classList.remove('hidden');
+                nextPhase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // Initialize Specific Chart
         function renderSpecificChart() {
             const ctx = document.getElementById('resultsChart').getContext('2d');
             new Chart(ctx, {
@@ -305,7 +313,7 @@
                     labels: ['Repeated Reading', 'Retrieval Practice'],
                     datasets: [{
                         label: 'Retention (%)',
-                        data: [40, 80], // Data from Roediger & Karpicke
+                        data: [40, 80],
                         backgroundColor: ['#cbd5e1', '#016836'],
                         borderColor: ['#4b5563', '#00502f'],
                         borderWidth: 2
@@ -313,69 +321,87 @@
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        title: { display: true, text: 'Retention Performance 1 Week Later' },
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'Retention (%)' } }
-                    }
+                    scales: { y: { beginAtZero: true, max: 100 } }
                 }
             });
         }
 
-        // 2. Initialize Page Logic
         window.addEventListener('DOMContentLoaded', () => {
-            // A. Initialize Generic Logic if available
-            if (typeof initExperiment === 'function') {
-                initExperiment(CURRENT_EXPERIMENT_ID);
-            }
-            
-            // B. Manual Event Listeners (To ensure functionality)
+            if (typeof initExperiment === 'function') initExperiment(CURRENT_EXPERIMENT_ID);
+
+            // --- PHASE 1: Reflection Logic ---
             const reflectionInput = document.getElementById('reflectionText');
-            const continueBtn = document.getElementById('reflectionContinueBtn');
-            const metaCounter = document.getElementById('reflectionMeta');
+            const reflectionBtn = document.getElementById('reflectionContinueBtn');
+            reflectionInput?.addEventListener('input', () => {
+                const wordCount = reflectionInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionMeta').textContent = wordCount;
+                reflectionBtn.disabled = wordCount < 50;
+            });
+            reflectionBtn?.addEventListener('click', () => goToPhase('phase1', 'phase2'));
 
-            if (reflectionInput) {
-                reflectionInput.addEventListener('input', function() {
-                    const text = this.value.trim();
-                    // Count words by splitting by spaces
-                    const wordCount = text ? text.split(/\s+/).length : 0;
-                    
-                    if(metaCounter) metaCounter.textContent = wordCount;
+            // --- PHASE 2: Curiosity Logic ---
+            const curiosityBtn = document.getElementById('curiosityContinueBtn');
+            document.querySelectorAll('input[name="curiosityResponse"]').forEach(radio => {
+                radio.addEventListener('change', () => curiosityBtn.disabled = false);
+            });
+            curiosityBtn?.addEventListener('click', () => goToPhase('phase2', 'phase3a'));
 
-                    // REQUIREMENT: 10 Words 
-                    if (wordCount >= 10) {
-                        continueBtn.disabled = false;
-                        continueBtn.classList.remove('btn-disabled'); // Optional visual cue
+            // --- PHASE 3a: RQ Logic ---
+            const rqBtn = document.getElementById('rqContinueBtn');
+            document.getElementById('rqUnderstanding')?.addEventListener('change', (e) => {
+                rqBtn.disabled = e.target.value === "";
+            });
+            rqBtn?.addEventListener('click', () => goToPhase('phase3a', 'phase3b'));
+
+            // --- PHASE 3b: Hypothesis Logic ---
+            const hypBtn = document.getElementById('hypothesisContinueBtn');
+            document.querySelectorAll('input[name="hypothesisFormat"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const feedback = document.getElementById('hypothesisFeedback');
+                    if (e.target.value === 'correct_answer') {
+                        feedback.innerHTML = "<p style='color:green;'>Correct! A hypothesis is a testable prediction.</p>";
+                        hypBtn.disabled = false;
                     } else {
-                        continueBtn.disabled = true;
+                        feedback.innerHTML = "<p style='color:red;'>Not quite. Try again.</p>";
+                        hypBtn.disabled = true;
                     }
                 });
-            }
+            });
+            hypBtn?.addEventListener('click', () => goToPhase('phase3b', 'phase3c'));
 
-            // C. Navigation Logic for Phase 1 -> Phase 2
-            if (continueBtn) {
-                continueBtn.addEventListener('click', function() {
-                    const phase2 = document.getElementById('phase2');
-                    phase2.classList.remove('hidden');
-                    phase2.scrollIntoView({ behavior: 'smooth' });
-                });
-            }
+            // --- PHASE 3c: Prediction Logic ---
+            const predBtn = document.getElementById('predictionContinueBtn');
+            document.getElementById('predictionChoice')?.addEventListener('change', (e) => {
+                predBtn.disabled = e.target.value === "";
+            });
+            predBtn?.addEventListener('click', () => goToPhase('phase3c', 'phase4'));
 
-            // D. Navigation Logic for Phase 4 -> Phase 5 (Results)
-            const designBtn = document.getElementById('designContinueBtn');
-            if(designBtn) {
-                designBtn.addEventListener('click', function() {
-                    const phase5 = document.getElementById('phase5');
-                    phase5.classList.remove('hidden');
-                    renderSpecificChart();
-                    phase5.scrollIntoView({ behavior: 'smooth' });
-                });
-            }
+            // --- PHASE 4: Design Logic ---
+            document.getElementById('designContinueBtn')?.addEventListener('click', () => {
+                renderSpecificChart();
+                goToPhase('phase4', 'phase5');
+            });
+
+            // --- PHASE 5: Results Reflection ---
+            const resInput = document.getElementById('resultsReflection');
+            const resBtn = document.getElementById('resultsContinueBtn');
+            resInput?.addEventListener('input', () => {
+                const count = resInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionWordCount').textContent = count;
+                resBtn.disabled = count < 75;
+            });
+            resBtn?.addEventListener('click', () => goToPhase('phase5', 'phase6'));
+
+            // --- PHASE 6: Personal Experiment Logic ---
+            const commitBtn = document.getElementById('commitContinueBtn');
+            document.getElementById('expCommit')?.addEventListener('change', (e) => {
+                commitBtn.disabled = !e.target.checked;
+            });
+            commitBtn?.addEventListener('click', () => goToPhase('phase6', 'phase7'));
         });
     </script>
 </body>
 </html>
+
 
 
