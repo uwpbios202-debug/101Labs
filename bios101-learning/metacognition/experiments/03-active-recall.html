@@ -296,7 +296,7 @@
         // Set the specific ID for this experiment so logic.js knows what to load/save
         const CURRENT_EXPERIMENT_ID = 'activerecallarena';
 
-        // Initialize specific Chart.js config for Active Recall
+        // 1. Initialize Chart
         function renderSpecificChart() {
             const ctx = document.getElementById('resultsChart').getContext('2d');
             new Chart(ctx, {
@@ -324,20 +324,57 @@
             });
         }
 
-        // Hook into the logic.js initialization
+        // 2. Initialize Page Logic
         window.addEventListener('DOMContentLoaded', () => {
-            // logic.js function to initialize the state for this specific experiment
+            // A. Initialize Generic Logic if available
             if (typeof initExperiment === 'function') {
                 initExperiment(CURRENT_EXPERIMENT_ID);
             }
             
-            // Render the chart when the user reaches Phase 5 (handled by logic.js triggers, 
-            // but we register the renderer here for when the button is clicked)
+            // B. Manual Event Listeners (To ensure functionality)
+            const reflectionInput = document.getElementById('reflectionText');
+            const continueBtn = document.getElementById('reflectionContinueBtn');
+            const metaCounter = document.getElementById('reflectionMeta');
+
+            if (reflectionInput) {
+                reflectionInput.addEventListener('input', function() {
+                    const text = this.value.trim();
+                    // Count words by splitting by spaces
+                    const wordCount = text ? text.split(/\s+/).length : 0;
+                    
+                    if(metaCounter) metaCounter.textContent = wordCount;
+
+                    // REQUIREMENT: 10 Words 
+                    if (wordCount >= 10) {
+                        continueBtn.disabled = false;
+                        continueBtn.classList.remove('btn-disabled'); // Optional visual cue
+                    } else {
+                        continueBtn.disabled = true;
+                    }
+                });
+            }
+
+            // C. Navigation Logic for Phase 1 -> Phase 2
+            if (continueBtn) {
+                continueBtn.addEventListener('click', function() {
+                    const phase2 = document.getElementById('phase2');
+                    phase2.classList.remove('hidden');
+                    phase2.scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+
+            // D. Navigation Logic for Phase 4 -> Phase 5 (Results)
             const designBtn = document.getElementById('designContinueBtn');
             if(designBtn) {
-                designBtn.addEventListener('click', renderSpecificChart);
+                designBtn.addEventListener('click', function() {
+                    const phase5 = document.getElementById('phase5');
+                    phase5.classList.remove('hidden');
+                    renderSpecificChart();
+                    phase5.scrollIntoView({ behavior: 'smooth' });
+                });
             }
         });
     </script>
 </body>
 </html>
+
