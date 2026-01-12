@@ -8,9 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        /* Page-specific overrides if necessary */
+        /* Page-specific overrides */
         .banner {
-            border-left-color: var(--uwp-goldenrod); /* Distinct color for this experiment */
+            border-left-color: var(--uwp-goldenrod);
         }
     </style>
 </head>
@@ -332,8 +332,11 @@
             }
             
             // Render the chart when the user reaches Phase 5 (handled by logic.js triggers, 
-            // but we register the renderer here)
-            document.getElementById('designContinueBtn').addEventListener('click', renderSpecificChart);
+            // but we register the renderer here for when the button is clicked)
+            const designBtn = document.getElementById('designContinueBtn');
+            if(designBtn) {
+                designBtn.addEventListener('click', renderSpecificChart);
+            }
         });
     </script>
 </body>
