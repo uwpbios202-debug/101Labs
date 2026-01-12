@@ -1,0 +1,24 @@
+/metacognition-lab/
+│
+├── index.html                (The Landing Page / "Phase 1" intro)
+├── dashboard.html            (The Menu Grid)
+├── roadmap.html              (The Final Result / "View Roadmap")
+│
+├── assets/
+│   ├── css/
+│   │   └── style.css         (Copy all content from <style> tags here)
+│   └── js/
+│       ├── data.js           (The 'experimentData' object)
+│       └── logic.js          (The state management and DOM logic)
+│
+└── experiments/              (The 10 individual experiment pages)
+    ├── 01-calibration.html
+    ├── 02-error-hunting.html
+    ├── 03-active-recall.html
+    ├── 04-spacing-vs-cramming.html
+    ├── 05-interleaving.html
+    ├── 06-encoding.html
+    ├── 07-environment.html
+    ├── 08-time-of-day.html
+    ├── 09-dual-task.html
+    └── 10-combined-strategy.html

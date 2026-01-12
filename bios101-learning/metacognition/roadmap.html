@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your PreMed Study Roadmap - Metacognition Discovery Lab</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- BIOS101 Navigation -->
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus">
+                <div class="bios-menu">
+                    <button class="bios-trigger">Experiments</button>
+                    <div class="bios-dropdown">
+                        <a href="experiments/01-calibration.html">1. Calibration</a>
+                        <a href="experiments/02-error-hunting.html">2. Error-Hunting</a>
+                        <a href="experiments/03-active-recall.html">3. Active Recall</a>
+                        <a href="experiments/04-spacing-vs-cramming.html">4. Spacing vs Cramming</a>
+                        <a href="experiments/05-interleaving.html">5. Interleaving</a>
+                        <a href="experiments/06-encoding.html">6. Encoding</a>
+                        <a href="experiments/07-environment.html">7. Environment</a>
+                        <a href="experiments/08-time-of-day.html">8. Time-of-Day</a>
+                        <a href="experiments/09-dual-task.html">9. Dual-Task</a>
+                        <a href="experiments/10-combined-strategy.html">10. Combined Strategy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header with Progress Bar -->
+    <header>
+        <div class="shell">
+            <div class="header-brand">
+                <div class="header-brand-icon">UWP</div>
+                <span>Your PreMed Study Roadmap</span>
+            </div>
+            <div class="progress-shell">
+                <div class="progress-track">
+                    <div class="progress-bar" id="globalProgressBar" style="width: 100%;"></div>
+                </div>
+                <div class="progress-label" id="globalProgressLabel">10 of 10 experiments completed</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Navigation -->
+        <div class="pill-nav">
+            <a href="dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
+            <button class="btn btn-secondary" id="printRoadmapBtn">Print Roadmap</button>
+            <button class="btn btn-secondary" id="exportRoadmapBtn">Download as PDF</button>
+        </div>
+
+        <!-- Locked State (shown when experiments incomplete) -->
+        <div class="card stack" id="lockedState">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="font-size: 4rem; color: var(--muted); margin-bottom: 1rem;">🔒</div>
+                <h1>Roadmap Locked</h1>
+                <p class="subline">Complete all 10 metacognitive experiments to unlock your personalized PreMed learning strategy roadmap.</p>
+                
+                <div style="background: var(--uwp-white-birch); padding: 1.5rem; border-radius: 0.6rem; margin: 1.5rem 0;">
+                    <h3>Your Progress</h3>
+                    <p><strong><span id="completedCount">0</span>/10</strong> experiments completed</p>
+                    <div class="progress-track" style="margin-top: 1rem;">
+                        <div class="progress-bar" id="lockedProgressBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <a href="dashboard.html" class="btn btn-primary btn-lg">Return to Experiments</a>
+            </div>
+        </div>
+
+        <!-- Unlocked Roadmap (shown when all 10 complete) -->
+        <div id="unlockedRoadmap" class="hidden">
+            <!-- Congratulations Header -->
+            <div class="card stack" style="background: linear-gradient(135deg, #e8f5e9, #ffffff); border: 2px solid var(--uwp-green);">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 0.5rem;">🎓</div>
+                    <h1>Congratulations! You've Completed Your Metacognitive Journey</h1>
+                    <p class="subline">You've systematically transformed from passive learner to scientific strategist. Below is your evidence-based, personalized PreMed study roadmap.</p>
+                </div>
+            </div>
+
+            <!-- Key Insights Summary -->
+            <div class="card stack">
+                <h2>Your Metacognitive Transformation: Key Insights</h2>
+                <div id="keyInsights">
+                    <!-- Dynamically generated based on experiment responses -->
+                </div>
+            </div>
+
+            <!-- Semester-by-Semester Roadmap -->
+            <div class="card stack">
+                <h2>Your Personalized Study Roadmap</h2>
+                <p class="meta">This roadmap integrates all 10 experiments into a practical, semester-long strategy tailored to PreMed coursework.</p>
+
+                <!-- Semester 1: Foundation Phase -->
+                <div class="observation-box" style="background: #f0f9ff; border-left: 4px solid var(--uwp-green); margin: 1rem 0;">
+                    <h3>📚 Weeks 1-4: Foundation Phase</h3>
+                    <p><strong>Primary Focus:</strong> Calibration + Active Recall + Environment</p>
+                    
+                    <div style="margin-top: 0.5rem;">
+                        <strong>What to do:</strong>
+                        <ul style="margin: 0.5rem 0;">
+                            <li><strong>Calibration Practice:</strong> Before every quiz/exam, write down your predicted score. After results, analyze the gap. Track this in a simple spreadsheet.</li>
+                            <li><strong>Active Recall Sessions:</strong> Replace 80% of rereading with self-quizzing. Use flashcards, practice problems, or teach-back method.</li>
+                            <li><strong>Study Environment:</strong> Establish a quiet, distraction-free study zone. Turn off notifications during study blocks.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 0.5rem; border-radius: 0.4rem; margin-top: 0.5rem;">
+                        <strong>⏱️ Time Commitment:</strong> 12-15 hours/week study time
+                    </div>
+                </div>
+
+                <!-- Semester 2: Optimization Phase -->
+                <div class="observation-box" style="background: #fff8e1; border-left: 4px solid var(--uwp-goldenrod); margin: 1rem 0;">
+                    <h3>🔬 Weeks 5-8: Optimization Phase</h3>
+                    <p><strong>Primary Focus:</strong> Spacing + Error-Hunting + Time-of-Day</p>
+                    
+                    <div style="margin-top: 0.5rem;">
+                        <strong>What to do:</strong>
+                        <ul style="margin: 0.5rem 0;">
+                            <li><strong>Distributed Practice:</strong> Break study sessions into 50-minute blocks across 3-5 days instead of marathon sessions. Use a study calendar.</li>
+                            <li><strong>Productive Failure:</strong> Attempt practice questions BEFORE reading the chapter. Flag errors and study those topics first.</li>
+                            <li><strong>Chronotype Alignment:</strong> Schedule your hardest subjects during your peak cognitive hours (track when you feel most alert).</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 0.5rem; border-radius: 0.4rem; margin-top: 0.5rem;">
+                        <strong>⏱️ Time Commitment:</strong> 15-18 hours/week (distributed across more days)
+                    </div>
+                </div>
+
+                <!-- Semester 3: Integration Phase -->
+                <div class="observation-box" style="background: #f3e5f5; border-left: 4px solid var(--uwp-dark-green); margin: 1rem 0;">
+                    <h3>🧩 Weeks 9-12: Integration Phase</h3>
+                    <p><strong>Primary Focus:</strong> Interleaving + Encoding + Dual-Task Elimination</p>
+                    
+                    <div style="margin-top: 0.5rem;">
+                        <strong>What to do:</strong>
+                        <ul style="margin: 0.5rem 0;">
+                            <li><strong>Mixed Practice:</strong> Intentionally mix problem types during practice sessions. Don't do all Chapter 3 problems, then all Chapter 4—shuffle them.</li>
+                            <li><strong>Multi-Modal Encoding:</strong> For complex systems (biochemical pathways, anatomy), create visual diagrams. Explain processes aloud. Don't just read/write.</li>
+                            <li><strong>Single-Tasking:</strong> Complete phone/social media elimination during study blocks. Use website blockers if needed.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 0.5rem; border-radius: 0.4rem; margin-top: 0.5rem;">
+                        <strong>⏱️ Time Commitment:</strong> 18-20 hours/week (higher quality per hour)
+                    </div>
+                </div>
+
+                <!-- Semester 4: Mastery Phase -->
+                <div class="observation-box" style="background: #e8f5e9; border-left: 4px solid var(--uwp-green); margin: 1rem 0;">
+                    <h3>🏆 Weeks 13-16: Mastery Phase (Exam Prep)</h3>
+                    <p><strong>Primary Focus:</strong> Combined Strategies + Calibration Refinement</p>
+                    
+                    <div style="margin-top: 0.5rem;">
+                        <strong>What to do:</strong>
+                        <ul style="margin: 0.5rem 0;">
+                            <li><strong>Synergistic Study:</strong> Combine spacing + retrieval + interleaving in every study session. Example: Day 1 mixed quiz on Weeks 1-3 material, Day 3 mixed quiz on Weeks 2-4.</li>
+                            <li><strong>Metacognitive Monitoring:</strong> Before practice exams, predict your score by topic. Identify weak areas and target them aggressively.</li>
+                            <li><strong>Simulation Testing:</strong> Take full practice exams under timed, test-like conditions. Review using error analysis, not just answer keys.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 0.5rem; border-radius: 0.4rem; margin-top: 0.5rem;">
+                        <strong>⏱️ Time Commitment:</strong> 20-25 hours/week (final push)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Template -->
+            <div class="card stack">
+                <h2>Sample Weekly Study Schedule Template</h2>
+                <p class="meta">Adapt this template based on your course load and peak cognitive times</p>
+
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: var(--uwp-green); color: white;">
+                            <th style="padding: 0.5rem; border: 1px solid var(--card-border);">Day</th>
+                            <th style="padding: 0.5rem; border: 1px solid var(--card-border);">Morning (Peak)</th>
+                            <th style="padding: 0.5rem; border: 1px solid var(--card-border);">Afternoon</th>
+                            <th style="padding: 0.5rem; border: 1px solid var(--card-border);">Evening</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border); font-weight: 600;">Monday</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Bio: Retrieval practice (50 min)</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Chem: Mixed problem set</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Review errors</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border); font-weight: 600;">Tuesday</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Chem: Visual diagrams</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Bio: Pre-test next chapter</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Light review</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border); font-weight: 600;">Wednesday</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Bio: Retrieval quiz (Week 1-2)</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Chem: Interleaved practice</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Study group</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border); font-weight: 600;">Thursday</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Chem: Retrieval practice</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Bio: Error correction</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Calibration reflection</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border); font-weight: 600;">Friday</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Mixed Bio/Chem quiz</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Teach-back method</td>
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border);">Rest</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="padding: 0.5rem; border: 1px solid var(--card-border); font-weight: 600;">Weekend</td>
+                            <td colspan="3" style="padding: 0.5rem; border: 1px solid var(--card-border);">
+                                <strong>Saturday:</strong> Long spaced review session (3 hours distributed: 50 min work, 10 min break)<br>
+                                <strong>Sunday:</strong> Practice exam under test conditions + error analysis
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Personalized Commitments -->
+            <div class="card stack">
+                <h2>Your Personal Commitments (From Experiments)</h2>
+                <p class="meta">These are the specific changes you committed to during your experiments:</p>
+                <div id="personalCommitments">
+                    <!-- Dynamically generated from experiment data -->
+                </div>
+            </div>
+
+            <!-- Resources and Tools -->
+            <div class="card stack">
+                <h2>Recommended Tools & Resources</h2>
+                
+                <div class="row-flex">
+                    <div style="flex: 1;">
+                        <h3>📱 Digital Tools</h3>
+                        <ul>
+                            <li><strong>Anki:</strong> Spaced repetition flashcards</li>
+                            <li><strong>Notion/OneNote:</strong> Organized note-taking</li>
+                            <li><strong>Forest App:</strong> Focus timer with distractions blocked</li>
+                            <li><strong>Google Calendar:</strong> Study session scheduling</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="flex: 1;">
+                        <h3>📚 Study Techniques</h3>
+                        <ul>
+                            <li><strong>Feynman Technique:</strong> Teach concepts in simple terms</li>
+                            <li><strong>Cornell Notes:</strong> Active note-taking method</li>
+                            <li><strong>Pomodoro Technique:</strong> 25-min focused sessions</li>
+                            <li><strong>Concept Mapping:</strong> Visual relationship diagrams</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1rem; background: var(--uwp-white-birch); padding: 1rem; border-radius: 0.5rem;">
+                    <h3>📖 Further Reading</h3>
+                    <ul style="margin: 0.5rem 0;">
+                        <li><em>Make It Stick</em> by Brown, Roediger, & McDaniel (evidence-based learning strategies)</li>
+                        <li><em>How We Learn</em> by Benedict Carey (cognitive science of learning)</li>
+                        <li><em>Deep Work</em> by Cal Newport (focus and productivity)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Progress Monitoring -->
+            <div class="card stack">
+                <h2>Tracking Your Progress</h2>
+                <p>Use this simple framework to monitor your metacognitive development:</p>
+
+                <div style="background: var(--uwp-white-birch); padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
+                    <h3>Monthly Self-Assessment</h3>
+                    <ol>
+                        <li><strong>Calibration Accuracy:</strong> Are my predicted vs actual scores getting closer?</li>
+                        <li><strong>Strategy Adherence:</strong> Am I actually using spacing, retrieval, and interleaving?</li>
+                        <li><strong>Performance Trend:</strong> Are my grades improving over the semester?</li>
+                        <li><strong>Efficiency Gains:</strong> Am I retaining more information with less total study time?</li>
+                    </ol>
+                </div>
+
+                <div style="background: #f0f9ff; border-left: 3px solid var(--uwp-green); padding: 1rem; margin-top: 1rem;">
+                    <p><strong>Remember:</strong> Metacognition is a skill that improves with practice. Don't expect perfection immediately. Track trends over weeks and months, not days.</p>
+                </div>
+            </div>
+
+            <!-- Final Encouragement -->
+            <div class="card stack" style="background: linear-gradient(135deg, var(--uwp-white-birch), #ffffff); border: 2px solid var(--uwp-green);">
+                <div style="text-align: center;">
+                    <h2>You Are Now a Metacognitive Learner</h2>
+                    <p>You've moved beyond "working hard" to "working smart." You understand that:</p>
+                    <ul style="text-align: left; max-width: 600px; margin: 1rem auto;">
+                        <li>Familiarity ≠ Mastery</li>
+                        <li>Effort ≠ Evidence of learning</li>
+                        <li>Comfort ≠ Growth</li>
+                        <li>Prediction accuracy = Metacognitive awareness</li>
+                    </ul>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: var(--uwp-green); margin-top: 1.5rem;">
+                        This roadmap isn't just for one semester—it's a framework for medical school and beyond.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="shell">
+            <p><strong>Your Privacy:</strong> All reflections are stored locally on your device. No data is transmitted.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+                <strong>Metacognition Discovery Lab</strong> - Designed for UW–Parkside PreMed Students | 
+                Built on evidence-based learning science
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/logic.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            var toggle = document.querySelector('.bios-toggle');
+            var menus = document.getElementById('biosMenus');
+            if (toggle && menus) {
+                toggle.onclick = function() {
+                    menus.classList.toggle('open');
+                };
+            }
+
+            // Check if all experiments are complete
+            checkRoadmapAccess();
+            
+            // Generate personalized content if unlocked
+            if (isRoadmapUnlocked()) {
+                generatePersonalizedInsights();
+                generatePersonalCommitments();
+            }
+        });
+
+        function checkRoadmapAccess() {
+            const state = loadState();
+            const completedCount = Object.values(state.experiments).filter(e => e.completed).length;
+            
+            // Update progress indicators
+            document.getElementById('completedCount').textContent = completedCount;
+            document.getElementById('lockedProgressBar').style.width = (completedCount / 10 * 100) + '%';
+            document.getElementById('globalProgressBar').style.width = (completedCount / 10 * 100) + '%';
+            document.getElementById('globalProgressLabel').textContent = completedCount + ' of 10 experiments completed';
+
+            // Show/hide appropriate sections
+            if (completedCount === 10) {
+                document.getElementById('lockedState').classList.add('hidden');
+                document.getElementById('unlockedRoadmap').classList.remove('hidden');
+            } else {
+                document.getElementById('lockedState').classList.remove('hidden');
+                document.getElementById('unlockedRoadmap').classList.add('hidden');
+            }
+        }
+
+        function isRoadmapUnlocked() {
+            const state = loadState();
+            const completedCount = Object.values(state.experiments).filter(e => e.completed).length;
+            return completedCount === 10;
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem('metacognitionDiscoveryLab');
+                return raw ? JSON.parse(raw) : { experiments: {} };
+            } catch (e) {
+                return { experiments: {} };
+            }
+        }
+
+        function generatePersonalizedInsights() {
+            const state = loadState();
+            const container = document.getElementById('keyInsights');
+            
+            let html = '<div style="display: grid; gap: 1rem;">';
+            
+            // Analyze calibration
+            const calibration = state.experiments.calibration;
+            if (calibration && calibration.predictionChoice) {
+                html += `
+                    <div class="observation-box">
+                        <strong>🎯 Calibration Awareness:</strong> You predicted that ${calibration.predictionChoice} would improve your study decisions. 
+                        ${calibration.resultsReflection ? 'Your reflection: "' + calibration.resultsReflection.substring(0, 150) + '..."' : ''}
+                    </div>
+                `;
+            }
+
+            // Analyze retrieval preference
+            const activerecall = state.experiments.activerecallarena;
+            if (activerecall && activerecall.predictionChoice) {
+                html += `
+                    <div class="observation-box">
+                        <strong>💪 Retrieval Practice:</strong> You learned that active recall is more effective than passive rereading. 
+                        Confidence in this strategy: ${activerecall.predictionConfidence}/5
+                    </div>
+                `;
+            }
+
+            // Analyze spacing commitment
+            const spacing = state.experiments.spacingvscramming;
+            if (spacing && spacing.experimentDesign.course) {
+                html += `
+                    <div class="observation-box">
+                        <strong>📅 Distributed Practice:</strong> You committed to testing spacing in ${spacing.experimentDesign.course}. 
+                        Your planned change: "${spacing.experimentDesign.change.substring(0, 120)}..."
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function generatePersonalCommitments() {
+            const state = loadState();
+            const container = document.getElementById('personalCommitments');
+            const experimentOrder = [
+                'calibration', 'pretest', 'activerecallarena', 'spacingvscramming', 
+                'interleavinggauntlet', 'encoding', 'environment', 'timeofday', 
+                'dualtaskchallenge', 'combined'
+            ];
+
+            let html = '<div style="display: grid; gap: 0.8rem;">';
+
+            experimentOrder.forEach((expId, index) => {
+                const exp = state.experiments[expId];
+                if (exp && exp.experimentDesign && exp.experimentDesign.course) {
+                    const design = exp.experimentDesign;
+                    html += `
+                        <div style="background: var(--uwp-white-birch); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid var(--uwp-green);">
+                            <strong>Experiment ${index + 1}:</strong> ${design.course}<br>
+                            <strong>Topic:</strong> ${design.material}<br>
+                            <strong>Strategy:</strong> ${design.change}<br>
+                            <strong>Success Metric:</strong> ${design.measure}<br>
+                            <strong>Timeline:</strong> ${design.start} → ${design.eval}
+                        </div>
+                    `;
+                }
+            });
+
+            html += '</div>';
+            
+            if (html === '<div style="display: grid; gap: 0.8rem;"></div>') {
+                html = '<p class="meta">No specific commitments recorded. Review your experiments to add them.</p>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Print functionality
+        document.getElementById('printRoadmapBtn')?.addEventListener('click', function() {
+            window.print();
+        });
+
+        // Export as PDF (uses print dialog)
+        document.getElementById('exportRoadmapBtn')?.addEventListener('click', function() {
+            alert('Use your browser\'s print dialog and select "Save as PDF" as the destination.');
+            window.print();
+        });
+    </script>
+    
+    <style>
+        @media print {
+            .pill-nav, .bios-nav, footer {
+                display: none;
+            }
+            .card {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</body>
+</html>
