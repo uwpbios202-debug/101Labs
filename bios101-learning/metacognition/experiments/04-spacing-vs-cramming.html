@@ -3,25 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacing vs Cramming Trial</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Spacing vs. Cramming - Metacognition Lab</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .banner { border-left-color: #4a90e2; }
+    </style>
 </head>
 <body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <div class="bios-menus"><div class="bios-menu"><a href="../dashboard.html" class="bios-trigger">Dashboard</a></div></div>
+        </div>
+    </nav>
+
     <header>
         <div class="shell">
             <div class="header-brand">
-                <a href="../dashboard.html" style="color:white; text-decoration:none;">← Back to Dashboard</a>
+                <div class="header-brand-icon">04</div>
+                <span>Spacing vs. Cramming</span>
             </div>
         </div>
     </header>
 
     <main>
-        <div class="view active" id="view-experiment" data-experiment-id="spacingvscramming">
-            </div>
+        <div class="view active">
+            <div class="pill-nav"><a href="../dashboard.html" class="btn btn-secondary">← Back</a></div>
+
+            <section id="phase1">
+                <div class="card stack">
+                    <h2>Phase 1: Observation</h2>
+                    <div class="observation-box">
+                        <p>"I study in 10-hour marathons before exams. It feels efficient, but a week later, I remember nothing."</p>
+                    </div>
+                    <label for="reflectionText">How has "cramming" affected your long-term memory?</label>
+                    <textarea id="reflectionText" placeholder="Write at least 50 words..."></textarea>
+                    <p class="meta"><span id="reflectionMeta">0</span> / 50 words</p>
+                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>Continue to Curiosity</button>
+                </div>
+            </section>
+
+            <section id="phase2" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 2: Curiosity</h2>
+                    <p>What if I broke those 10 hours into 1-hour chunks over 10 days?</p>
+                    <div class="radio-group">
+                        <label class="checkbox-label"><input type="radio" name="curiosityResponse" value="spacing"> <span>Spacing is better</span></label>
+                        <label class="checkbox-label"><input type="radio" name="curiosityResponse" value="cramming"> <span>Cramming is better</span></label>
+                    </div>
+                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Prediction</button>
+                </div>
+            </section>
+
+            <section id="phase3" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Prediction</h2>
+                    <div class="field">
+                        <label>Select your predicted outcome:</label>
+                        <select id="predictionChoice">
+                            <option value="">-- Select --</option>
+                            <option value="spacing">Spacing improves retention</option>
+                            <option value="cramming">Cramming improves retention</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Continue to Design</button>
+                </div>
+            </section>
+
+            <section id="phase4" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 4: Experimental Design</h2>
+                    <p>Cepeda et al. (2008) compared massed vs. distributed practice with equal total study time.</p>
+                    <button class="btn btn-primary" id="designContinueBtn">View Results</button>
+                </div>
+            </section>
+
+            <section id="phase5" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 5: Results</h2>
+                    <canvas id="resultsChart" style="max-height: 300px;"></canvas>
+                    <div class="field">
+                        <label>Reflect on these results (75 words min):</label>
+                        <textarea id="resultsReflection"></textarea>
+                        <p class="meta"><span id="reflectionWordCount">0</span> / 75 words</p>
+                    </div>
+                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Commitment</button>
+                </div>
+            </section>
+
+            <section id="phase6" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 6: Commitment</h2>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="expCommit"> <span>I commit to spacing my study sessions.</span>
+                    </label>
+                    <button class="btn btn-primary" id="commitContinueBtn" disabled>Complete Experiment</button>
+                </div>
+            </section>
+        </div>
     </main>
 
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/logic.js"></script>
+    <script>
+        const CURRENT_EXPERIMENT_ID = 'spacingvscramming';
+
+        const showNext = (nextId) => {
+            document.getElementById(nextId).classList.remove('hidden');
+            document.getElementById(nextId).scrollIntoView({ behavior: 'smooth' });
+        };
+
+        function renderChart() {
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Cramming', 'Spacing'],
+                    datasets: [{ label: 'Retention %', data: [35, 72], backgroundColor: ['#cbd5e1', '#016836'] }]
+                },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Phase 1 Button logic
+            const refl1 = document.getElementById('reflectionText');
+            const btn1 = document.getElementById('reflectionContinueBtn');
+            refl1.oninput = () => {
+                const words = refl1.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionMeta').innerText = words;
+                btn1.disabled = words < 50;
+            };
+            btn1.onclick = () => showNext('phase2');
+
+            // Phase 2 Button logic
+            document.querySelectorAll('input[name="curiosityResponse"]').forEach(r => {
+                r.onchange = () => document.getElementById('curiosityContinueBtn').disabled = false;
+            });
+            document.getElementById('curiosityContinueBtn').onclick = () => showNext('phase3');
+
+            // Phase 3 Button logic
+            document.getElementById('predictionChoice').onchange = (e) => {
+                document.getElementById('predictionContinueBtn').disabled = e.target.value === "";
+            };
+            document.getElementById('predictionContinueBtn').onclick = () => showNext('phase4');
+
+            // Phase 4 Button logic
+            document.getElementById('designContinueBtn').onclick = () => {
+                showNext('phase5');
+                renderChart();
+            };
+
+            // Phase 5 Button logic
+            const refl2 = document.getElementById('resultsReflection');
+            const btn5 = document.getElementById('resultsContinueBtn');
+            refl2.oninput = () => {
+                const words = refl2.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionWordCount').innerText = words;
+                btn5.disabled = words < 75;
+            };
+            btn5.onclick = () => showNext('phase6');
+
+            // Phase 6 Button logic
+            document.getElementById('expCommit').onchange = (e) => {
+                document.getElementById('commitContinueBtn').disabled = !e.target.checked;
+            };
+            document.getElementById('commitContinueBtn').onclick = () => {
+                alert("Experiment Complete!");
+                window.location.href = "../dashboard.html";
+            };
+        });
+    </script>
 </body>
 </html>
