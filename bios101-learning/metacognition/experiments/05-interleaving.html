@@ -3,25 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interleaving Gauntlet</title>
+    <title>Exp 05: Interleaving Gauntlet | Metacognition Lab</title>
+    
     <link rel="stylesheet" href="../assets/css/style.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <div class="bios-menus">
+                </div>
+        </div>
+    </nav>
+
     <header>
         <div class="shell">
             <div class="header-brand">
-                <a href="../dashboard.html" style="color:white; text-decoration:none;">← Back to Dashboard</a>
+                <div class="header-brand-icon">UWP</div>
+                <span>Metacognition Discovery Lab</span>
+            </div>
+            <div style="font-size: 0.9rem;">
+                Experiment 5 of 10
             </div>
         </div>
     </header>
 
     <main>
-        <div class="view active" id="view-experiment" data-experiment-id="interleavinggauntlet">
+        <div class="view active" id="view-experiment">
+            
+            <div class="pill-nav">
+                <a href="../dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
             </div>
+
+            <div class="card stack" style="margin-bottom: 1rem; border-left: 4px solid var(--uwp-goldenrod);">
+                <h1 style="font-size: 1.5rem; margin:0;">Interleaving Gauntlet</h1>
+                <p class="subline">Mixed practice wins on delayed, mixed tests.</p>
+            </div>
+
+            <section id="phase1">
+                <div class="card stack">
+                    <h2>Phase 1: Observation: Your Current Habit</h2>
+                    <p class="meta">Carefully read, analyze, and reflect on the following.</p>
+                    <div class="observation-box" id="observationBox">
+                        </div>
+                    <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own experience?</label>
+                    <textarea id="reflectionText" placeholder="Write at least 50 words describing how the above observation mirrors or differs from your actual experience..."></textarea>
+                    <p class="meta"><span id="reflectionMeta">0</span> / 50 words minimum</p>
+                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to Curiosity Question</button>
+                </div>
+            </section>
+
+            <section id="phase2" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 2: The Curiosity Question</h2>
+                    <p class="explanation-box">This phase transforms personal observation into structured scientific curiosity.</p>
+                    <div class="observation-box" id="curiosityBox">
+                        </div>
+
+                    <div class="field">
+                        <label>Based on your actual test taking experiences:</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="agree">
+                                <span><strong>Agree</strong> - This reflects my experience exactly</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="disagree">
+                                <span><strong>Disagree</strong> - This doesn't match my habits</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="unsure">
+                                <span><strong>Unsure</strong> - I need to think about this more</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="curiosityExplanation">Briefly explain your choice:</label>
+                        <textarea id="curiosityExplanation" placeholder="Why does/doesn't this question resonate with you?"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Research Question</button>
+                </div>
+            </section>
+
+            <section id="phase3a" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (1/3) - The Question</h2>
+                    <div class="observation-box">
+                        <h3>Research Question</h3>
+                        <p id="researchQuestionText" style="font-weight: 600;"></p>
+                    </div>
+                    <div class="field">
+                        <label for="rqUnderstanding">Rate your understanding:</label>
+                        <select id="rqUnderstanding">
+                            <option value="">-- Select --</option>
+                            <option value="clear">Clear</option>
+                            <option value="somewhat">Somewhat</option>
+                            <option value="confused">Confused</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="rqContinueBtn">Proceed to Hypothesis →</button>
+                </div>
+            </section>
+
+            <section id="phase3b" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (2/3) - Hypothesis</h2>
+                    <div id="hypothesisContent"></div>
+                    
+                    <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                        <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="prediction_error">
+                                <span>"It is an 'If... then...' statement about specific test scores."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="correct_answer">
+                                <span>"It is a tentative answer to the Research Question."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="vague_error">
+                                <span>"It is a proven fact found in a textbook."</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="hypothesis-feedback" id="hypothesisFeedback" style="display:none; margin-top:0.5rem;"></div>
+                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Prediction →</button>
+                </div>
+            </section>
+
+            <section id="phase3c" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (3/3) - Your Prediction</h2>
+                    <p class="explanation-box">"If [Hypothesis] is true, then [Specific Outcome] will happen."</p>
+
+                    <div class="field">
+                        <label for="predictionChoice">Select the prediction strategy:</label>
+                        <select id="predictionChoice">
+                            <option value="">-- Select your prediction --</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="predictionConfidence">Confidence (1-5):</label>
+                        <input type="range" id="predictionConfidence" min="1" max="5" value="3">
+                        <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Lock in prediction →</button>
+                </div>
+            </section>
+
+            <section id="phase4" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 4: Experimental Design</h2>
+                    <div id="designContent"></div>
+                    <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
+                </div>
+            </section>
+
+            <section id="phase5" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 5: The Results</h2>
+                    <div class="data-viz-box">
+                        <canvas id="resultsChart" style="max-height:250px;"></canvas>
+                    </div>
+
+                    <div class="row-flex">
+                        <div style="flex: 1;">
+                            <div class="citation-box">
+                                <h4>Study Details</h4>
+                                <p class="meta"><strong>Citation:</strong> <span id="studyCitation"></span></p>
+                                <p class="meta"><strong>Sample:</strong> <span id="studySample"></span></p>
+                                <p class="meta"><strong>Effect:</strong> <span id="studyEffect"></span></p>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="stats-box">
+                                <h4>Statistical Results</h4>
+                                <p id="statisticalResults"></p>
+                                <p id="significanceResult" style="font-weight: 600; margin-top: 0.5rem;"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="resultsInterpretation"></div>
+
+                    <div class="observation-box" style="background-color: var(--uwp-white-birch); border-left: 3px solid var(--uwp-green);">
+                        <h4>Research Conclusion</h4>
+                        <p id="researchConclusion" style="font-weight: 600;"></p>
+                        <p class="meta" id="researchImplication"></p>
+                    </div>
+
+                    <div class="field">
+                        <label for="resultsReflection">Your Metacognitive Reflection:</label>
+                        <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because..."></textarea>
+                        <p class="meta"><span id="reflectionWordCount">0</span> / 75 words minimum</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Design Your Experiment</button>
+                </div>
+            </section>
+
+            <section id="phase6" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 6: Your Personal Experiment</h2>
+                    <p class="explanation-box">Design a small, testable experiment in your real coursework.</p>
+                    
+                    <div class="field">
+                        <label for="expCourse">Which course?</label>
+                        <input type="text" id="expCourse" placeholder="e.g., Calculus II">
+                    </div>
+                    <div class="field">
+                        <label for="expMaterial">What material?</label>
+                        <input type="text" id="expMaterial" placeholder="e.g., Integration techniques">
+                    </div>
+                    <div class="field">
+                        <label for="expChange">What will you do differently?</label>
+                        <textarea id="expChange" placeholder="I will mix up problem types..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="expMeasure">How will you measure success?</label>
+                        <input type="text" id="expMeasure" placeholder="e.g., Score >80% on mixed practice set">
+                    </div>
+                    <div class="row-flex">
+                        <div class="field">
+                            <label for="expStart">Start Date:</label>
+                            <input type="date" id="expStart">
+                        </div>
+                        <div class="field">
+                            <label for="expEval">Eval Date:</label>
+                            <input type="date" id="expEval">
+                        </div>
+                    </div>
+                    <div style="margin: 0.5rem 0;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="expCommit">
+                            <strong>I commit to running this experiment</strong>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" id="commitContinueBtn" disabled>Complete Experiment</button>
+                </div>
+            </section>
+
+            <section id="phase7" class="hidden">
+                <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: linear-gradient(135deg, #f0f9f0, #ffffff);">
+                    <div style="font-size: 3rem; color: var(--uwp-green); margin-bottom: 0.5rem;">✓</div>
+                    <h2>Experiment Complete!</h2>
+                    <p>You have unlocked the Interleaving strategy.</p>
+                    <div class="row-flex" style="justify-content: center; margin-top: 1rem;">
+                        <a href="../dashboard.html" class="btn btn-secondary">Return to Dashboard</a>
+                        <a href="06-encoding.html" class="btn btn-primary">Next: Encoding Showdown →</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </main>
 
-    <script src="../assets/js/data.js"></script>
+    <footer>
+        <div class="shell">
+            <p><strong>Privacy:</strong> Data stored locally on device.</p>
+            <p style="font-size: 0.75rem;">Metacognition Discovery Lab | UW–Parkside PreMed</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/data.js"></script> 
+    
     <script src="../assets/js/logic.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Set the specific ID for this file based on data.js keys
+            // Key from monolithic source: 'interleavinggauntlet'
+            const thisExperimentId = 'interleavinggauntlet'; 
+
+            // 2. Ensure state is loaded (logic.js usually handles this, but we force context)
+            if (typeof state !== 'undefined') {
+                state.lastViewedExperimentId = thisExperimentId;
+                
+                // 3. Trigger the UI hydration using the shared logic
+                if (typeof hydrateExperimentUI === 'function') {
+                    hydrateExperimentUI();
+                }
+
+                // 4. Ensure visual state matches progress
+                if (typeof showPhases === 'function') {
+                    showPhases();
+                }
+            } else {
+                console.error("State or Logic not loaded correctly from ../assets/js/logic.js");
+            }
+        });
+    </script>
 </body>
 </html>
