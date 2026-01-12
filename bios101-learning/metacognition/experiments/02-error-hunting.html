@@ -1,27 +1,774 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error-Hunting Expedition</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Error-Hunting Expedition | Metacognition Lab</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
+            <div class="bios-menus" id="biosMenus"></div>
+        </div>
+    </nav>
+
     <header>
         <div class="shell">
             <div class="header-brand">
-                <a href="../dashboard.html" style="color:white; text-decoration:none;">← Back to Dashboard</a>
+                <div class="header-brand-icon">UWP</div>
+                <span>Error-Hunting Expedition</span>
+            </div>
+            <div class="progress-shell">
+                <div class="progress-track">
+                    <div class="progress-bar" id="experimentProgressBar" style="width: 0%;"></div>
+                </div>
+                <div class="progress-label" id="experimentProgressLabel">Phase 1 of 7</div>
             </div>
         </div>
     </header>
 
     <main>
-        <div class="view active" id="view-experiment" data-experiment-id="pretest">
+        <div class="pill-nav">
+            <button class="btn btn-secondary" onclick="window.location.href='../dashboard.html'">← Back to Dashboard</button>
+        </div>
+
+        <!-- Phase 1: Your Current Habit -->
+        <section id="phase1">
+            <div class="card stack">
+                <h2>Phase 1: Observation: Your Current Habit</h2>
+                <p class="meta">Carefully read, analyze, and reflect on the following.</p>
+                <div class="observation-box">
+                    <p>"Whenever I study, I always feel like I need to 'learn it first' before I even think about trying any practice questions. I avoid guessing because I don't want to get things wrong — it makes me feel unprepared, and I worry that wrong answers will confuse me. But when I'm honest with myself, this habit keeps me in a comfort zone. I reread the chapter, highlight, and convince myself I understand it — but when I finally try the questions later, I'm surprised by how many I miss. It feels like I spent all that time studying without actually figuring out what I didn't know. I'm starting to notice that by avoiding questions until the end, I'm also avoiding the exact moments that would reveal my weak spots. I think I've been protecting my confidence instead of improving my learning."</p>
+                </div>
+                <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own experience?</label>
+                <textarea id="reflectionText" placeholder="Write at least 50 words describing how the above observation mirrors or differs from your actual experience. Can you relate to the observation?"></textarea>
+                <p class="meta"><span id="reflectionMeta">0</span> / 50 words minimum</p>
+                <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to Curiosity Question</button>
             </div>
+        </section>
+
+        <!-- Phase 2: Interactive Curiosity Question -->
+        <section id="phase2" class="hidden">
+            <div class="card stack">
+                <h2>Phase 2: The Curiosity Question</h2>
+                <p class="explanation-box"><strong>What this phase is about:</strong> This phase transforms a personal observation into structured scientific curiosity. Rather than jumping to answers, you examine your own experience from multiple angles, asking why the mismatch between confidence and performance exists, how widespread it may be, and what mechanisms might explain it. These questions do not test anything yet—they define the phenomenon clearly enough that a testable hypothesis can eventually emerge.</p>
+                <div class="observation-box">
+                    <p><strong>What would happen if I tried answering practice questions before studying the chapter, even if I get them wrong?</strong></p>
+                </div>
+
+                <div class="field">
+                    <label>Based on your actual test taking experiences:</label>
+                    <div class="radio-group">
+                        <label class="checkbox-label">
+                            <input type="radio" name="curiosityResponse" value="agree">
+                            <span><strong>Agree</strong> - This reflects my experience exactly</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="curiosityResponse" value="disagree">
+                            <span><strong>Disagree</strong> - This doesn't match my habits</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="curiosityResponse" value="unsure">
+                            <span><strong>Unsure</strong> - I need to think about this more</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="curiosityExplanation">Briefly explain your choice (optional but helpful for self-awareness):</label>
+                    <textarea id="curiosityExplanation" placeholder="Why does/doesn't this question resonate with you? What aspects of your study habits come to mind?"></textarea>
+                </div>
+
+                <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Research Question</button>
+            </div>
+        </section>
+
+        <!-- Phase 3a: Research Question Only -->
+        <section id="phase3a" class="hidden">
+            <div class="card stack">
+                <h2>Phase 3: Research Foundation (1/3) - Turn the Curiosity Question Into Research Question</h2>
+                <p class="explanation-box">
+                    <strong>What this phase is about:</strong>
+                    This phase refines broad curiosity into a precise, scientifically testable research question.
+                    You move from wondering *why* something happens to clearly defining *what exactly* will be
+                    investigated, specifying the focus, boundaries, and meaning of the question so it can be
+                    answered through evidence rather than intuition.
+                </p>
+
+                <div class="observation-box">
+                    <h3>Research Question</h3>
+                    <p style="font-weight: 600;">Does pretesting (attempting questions before studying) enhance subsequent learning compared to studying first without pretesting?</p>
+                </div>
+
+                <div class="field">
+                    <label for="rqUnderstanding">Rate your understanding of this research question:</label>
+                    <select id="rqUnderstanding">
+                        <option value="">-- Select your understanding level --</option>
+                        <option value="clear">Clear - I understand exactly what's being investigated</option>
+                        <option value="somewhat">Somewhat - I have a general idea but some questions</option>
+                        <option value="confused">Confused - I'm not sure what's being studied</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" id="rqContinueBtn" disabled>Proceed to Hypothesis →</button>
+            </div>
+        </section>
+
+        <!-- Phase 3b: Hypothesis (Interactive) -->
+        <section id="phase3b" class="hidden">
+            <div class="card stack">
+                <h2>Phase 3: Research Foundation (2/3) - Hypothesis</h2>
+                <p class="explanation-box">
+                    <strong>Hypothesis vs. Prediction:</strong><br>
+                    It is common to confuse these two. <br>
+                    A <strong>Hypothesis</strong> is a <em>testable and falsifiable</em> statement that proposes an
+                    <span style="background-color: yellow;"><strong>answer</strong></span> to
+                    the research question. It must clearly identify the independent variable (IV)—the factor being
+                    manipulated or changed—and the dependent variable (DV)—the outcome being measured. A good
+                    hypothesis states the expected relationship between the IV and DV without predicting specific
+                    results or describing procedures.<br>
+                    A <strong>Prediction</strong> is the specific <em>outcome</em> you expect to see if the
+                    hypothesis is true (usually written as "If... then...").
+                </p>
+
+                <h3>Your Hypothesis</h3>
+                <div class="observation-box">
+                    <p><strong>Pretesting with errors</strong> (IV) enhances <strong>subsequent learning and retention</strong> (DV) more than studying first without pretesting when <strong>total study time is held constant</strong> (CV).</p>
+                </div>
+                <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> Productive errors during pretesting highlight knowledge gaps, deepen processing, and make corrective feedback more memorable.</p>
+
+                <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                    <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
+                    <div class="radio-group">
+                        <label class="checkbox-label">
+                            <input type="radio" name="hypothesisFormat" value="prediction_error">
+                            <span>"It is an 'If... then...' statement about specific test scores."</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="hypothesisFormat" value="correct_answer">
+                            <span>"It is a tentative answer to the Research Question."</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="hypothesisFormat" value="vague_error">
+                            <span>"It is a proven fact found in a textbook."</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="hypothesis-feedback" id="hypothesisFeedback" style="display:none; margin-top:0.5rem;"></div>
+
+                <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction →</button>
+            </div>
+        </section>
+
+        <!-- Phase 3c: Your Prediction -->
+        <section id="phase3c" class="hidden">
+            <div class="card stack">
+                <h2>Phase 3: Research Foundation (3/3) - Your Prediction</h2>
+                <p class="explanation-box"><strong>What this phase is about:</strong> My prediction is a specific, testable statement about what I expect to happen if my hypothesis is correct. I usually write it as an "if…then…" statement that connects my hypothesis to an expected outcome. It guides my experiment by showing what results I should see, and the evidence I collect will tell me whether my prediction—and my hypothesis—is supported.</p>
+
+                <div class="field">
+                    <label for="predictionChoice">Based on the hypothesis, select the prediction strategy that will produce better results?</label>
+                    <select id="predictionChoice">
+                        <option value="">-- Select your prediction --</option>
+                        <option value="pretest">Attempting questions before studying</option>
+                        <option value="nopretest">Studying first without pretest</option>
+                        <option value="same">No significant difference</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 = very confident)</label>
+                    <input type="range" id="predictionConfidence" min="1" max="5" value="3">
+                    <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
+                </div>
+
+                <button class="btn btn-primary" id="predictionContinueBtn" disabled>Lock in my prediction →</button>
+            </div>
+        </section>
+
+        <!-- Phase 4: Experimental Design -->
+        <section id="phase4" class="hidden">
+            <div class="card stack">
+                <h2>Phase 4: Experimental Design</h2>
+
+                <p class="explanation-box">
+                    <strong>What this phase is about:</strong>
+                    I want to understand whether my current study strategies are fooling me.<br>
+                    Sometimes studying feels productive even when it isn't.<br><br>
+                    By tracking prediction vs. actual performance, I can see:<br><br>
+                    • Are my strategies giving me a false sense of mastery?<br>
+                    • Am I studying in ways that feel good but don't actually work?
+                </p>
+
+                <h3>The Study Design: Richland, Kornell & Kao (2009)</h3>
+                <div class="observation-box">
+                    <p>Students attempt a pretest on material they haven't studied, then study. Control group just studies without pretest. Both groups study the same material for equal time. All take a final comprehension test.</p>
+                </div>
+
+                <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
+            </div>
+        </section>
+
+        <!-- Phase 5: The Results (with real data) -->
+        <section id="phase5" class="hidden">
+            <div class="card stack">
+                <h2>Phase 5: The Results</h2>
+                <p class="explanation-box">
+                    <strong>What this phase is about:</strong>
+                    Here's what actually happened in the
+                    <a href="https://psycnet.apa.org/record/2009-13729-007" target="_blank" rel="noopener noreferrer">
+                        original research study (Richland, Kornell & Kao, 2009)
+                    </a>.
+                    Compare with your prediction.
+                </p>
+
+                <h3>Actual Study Results</h3>
+                <div class="data-viz-box">
+                    <canvas id="resultsChart" style="max-height:250px;"></canvas>
+                </div>
+
+                <div class="row-flex">
+                    <div style="flex: 1;">
+                        <div class="citation-box">
+                            <h4>Original Study Details</h4>
+                            <p class="meta"><strong>Citation:</strong> Richland, L. E., Kornell, N., & Kao, L. S. (2009). The pretesting effect: Do unsuccessful retrieval attempts enhance learning? Journal of Experimental Psychology: Applied, 15(3), 243-257.</p>
+                            <p class="meta"><strong>Sample Size:</strong> n=92 college students</p>
+                            <p class="meta"><strong>Effect Size:</strong> d = 0.78 (medium to large effect)</p>
+                        </div>
+                    </div>
+                    <div style="flex: 1;">
+                        <div class="stats-box">
+                            <h4>Statistical Results</h4>
+                            <p>t(90) = 3.72, p < .001, 95% CI [6.1, 19.9]</p>
+                            <p style="font-weight: 600; margin-top: 0.5rem;">Statistically significant (p < .05)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Data Interpretation</h3>
+                <p><strong>No pretest:</strong> 71% correct on final test. <strong>With pretest:</strong> 84% correct on final test.</p>
+                <p>A 13 percentage-point boost! Even though the pretest group got answers wrong initially, those productive errors actually deepened learning.</p>
+                
+                <h3>Conclusion</h3>
+                <p style="font-size: 1.1rem; font-weight: 600; color: var(--uwp-green);">✓ Hypothesis ACCEPTED</p>
+
+                <div class="observation-box" style="background-color: var(--uwp-white-birch); border-left: 3px solid var(--uwp-green);">
+                    <h4>Research Conclusion</h4>
+                    <p style="font-weight: 600;">Pretesting significantly improved final test performance despite initial errors.</p>
+                    <p class="meta">Making and correcting errors creates stronger memory traces than avoiding errors entirely.</p>
+                </div>
+
+                <div class="field">
+                    <label for="resultsReflection">Your Metacognitive Reflection (Required):</label>
+                    <p class="subline">How does this evidence challenge or confirm your current study habits? What specific, measurable change will you implement based on these findings?</p>
+                    <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because... Starting next week, I will specifically change the following about my study habits: ..."></textarea>
+                    <p class="meta"><span id="reflectionWordCount">0</span> / 75 words minimum</p>
+                </div>
+
+                <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Design Your Experiment</button>
+            </div>
+        </section>
+
+        <!-- Phase 6: Your Experiment -->
+        <section id="phase6" class="hidden">
+            <div class="card stack">
+                <h2>Phase 6: Your Personal Experiment</h2>
+                <p class="explanation-box"><strong>What this phase is about:</strong> Now it's your turn. Design a small, testable experiment in your real coursework to apply what you've learned.</p>
+                <h3>Design Your Experiment</h3>
+                <div class="field">
+                    <label for="expCourse">Which course will you test this in?</label>
+                    <input type="text" id="expCourse" placeholder="e.g., Biology 101">
+                </div>
+                <div class="field">
+                    <label for="expMaterial">What specific material/topic?</label>
+                    <input type="text" id="expMaterial" placeholder="e.g., Cell membrane structure, Cardiovascular system">
+                </div>
+                <div class="field">
+                    <label for="expChange">What will you do differently? (Be specific)</label>
+                    <textarea id="expChange" placeholder="Describe your experimental change... (e.g., Before studying Chapter 5, I will attempt the end-of-chapter questions first, then study and correct my errors)"></textarea>
+                </div>
+                <div class="field">
+                    <label for="expMeasure">How will you measure success? (Make it measurable)</label>
+                    <input type="text" id="expMeasure" placeholder="e.g., I'll know this worked if I score at least 85% on the next quiz, or if I can recall key concepts without notes">
+                </div>
+                <div class="row-flex">
+                    <div class="field">
+                        <label for="expStart">When will you start?</label>
+                        <input type="date" id="expStart">
+                    </div>
+                    <div class="field">
+                        <label for="expEval">When will you evaluate?</label>
+                        <input type="date" id="expEval">
+                    </div>
+                </div>
+                <div style="margin: 0.5rem 0;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="expCommit">
+                        <strong>I commit to running this experiment</strong>
+                    </label>
+                    <p class="meta" style="margin-left: 1.5rem;">By checking this, you're making a commitment to apply metacognitive principles in your actual studies.</p>
+                </div>
+                <button class="btn btn-primary" id="commitContinueBtn" disabled>Complete Experiment</button>
+            </div>
+        </section>
+
+        <!-- Phase 7: Completion -->
+        <section id="phase7" class="hidden">
+            <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: linear-gradient(135deg, #f0f9f0, #ffffff);">
+                <div style="font-size: 3rem; color: var(--uwp-green); margin-bottom: 0.5rem;">✓</div>
+                <h2>Metacognitive Experiment Complete!</h2>
+                <p style="font-size: 1.05rem;">You've successfully completed the scientific process: observation → question → hypothesis → prediction → analysis → application.</p>
+                <p class="meta">Your data has been saved locally. Return to dashboard to continue your metacognitive development journey.</p>
+                <div class="row-flex" style="justify-content: center; margin-top: 1rem;">
+                    <button class="btn btn-secondary" onclick="window.location.href='../dashboard.html'">Return to Dashboard</button>
+                    <button class="btn btn-primary" onclick="window.location.href='03-active-recall.html'">Start Next Experiment →</button>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <script src="../assets/js/data.js"></script>
-    <script src="../assets/js/logic.js"></script>
+    <footer>
+        <div class="shell">
+            <p><strong>Your Privacy:</strong> All your reflections are stored locally on your device. We do not collect or transmit your personal data.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;"><strong>Metacognition Discovery Lab - Designed for UW–Parkside PreMed Students.</strong> Built on evidence-based learning science from peer-reviewed research.</p>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = 'metacognitionDiscoveryLab';
+        const EXPERIMENT_ID = 'pretest';
+
+        // Load state
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return createDefaultState();
+                const parsed = JSON.parse(raw);
+                if (!parsed.experiments || !parsed.experiments[EXPERIMENT_ID]) {
+                    return createDefaultState();
+                }
+                return parsed;
+            } catch (e) {
+                return createDefaultState();
+            }
+        }
+
+        function createDefaultState() {
+            return {
+                experiments: {
+                    [EXPERIMENT_ID]: {
+                        id: EXPERIMENT_ID,
+                        completed: false,
+                        personalReflection: '',
+                        reflectionWordCount: 0,
+                        curiosityResponse: '',
+                        curiosityExplanation: '',
+                        rqUnderstanding: '',
+                        hypothesisFormatCorrect: false,
+                        predictionChoice: '',
+                        predictionConfidence: 3,
+                        resultsReflection: '',
+                        resultsReflectionWordCount: 0,
+                        experimentDesign: {
+                            course: '',
+                            material: '',
+                            change: '',
+                            measure: '',
+                            start: '',
+                            eval: ''
+                        },
+                        experimentCommit: false,
+                        completedDate: null
+                    }
+                }
+            };
+        }
+
+        let state = loadState();
+        let currentChartInstance = null;
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function countWords(str) {
+            return str.trim().match(/\b\w+\b/g)?.length || 0;
+        }
+
+        function updateProgressBar() {
+            const phases = ['phase1', 'phase2', 'phase3a', 'phase3b', 'phase3c', 'phase4', 'phase5', 'phase6', 'phase7'];
+            let currentPhase = 1;
+            
+            phases.forEach((phaseId, index) => {
+                const el = document.getElementById(phaseId);
+                if (el && !el.classList.contains('hidden')) {
+                    currentPhase = index + 1;
+                }
+            });
+
+            const percentage = (currentPhase / phases.length) * 100;
+            document.getElementById('experimentProgressBar').style.width = percentage + '%';
+            document.getElementById('experimentProgressLabel').textContent = `Phase ${currentPhase} of ${phases.length}`;
+        }
+
+        function hydrateUI() {
+            const exp = state.experiments[EXPERIMENT_ID];
+
+            // Phase 1
+            document.getElementById('reflectionText').value = exp.personalReflection;
+            updateReflectionMeta();
+
+            // Phase 2
+            if (exp.curiosityResponse) {
+                document.querySelector(`input[name="curiosityResponse"][value="${exp.curiosityResponse}"]`).checked = true;
+            }
+            document.getElementById('curiosityExplanation').value = exp.curiosityExplanation || '';
+
+            // Phase 3a
+            document.getElementById('rqUnderstanding').value = exp.rqUnderstanding || '';
+
+            // Phase 3b
+            if (exp.hypothesisFormatCorrect) {
+                document.querySelector('input[name="hypothesisFormat"][value="correct_answer"]').checked = true;
+                document.getElementById('hypothesisFeedback').style.display = 'block';
+                document.getElementById('hypothesisFeedback').style.backgroundColor = '#e8f5e9';
+                document.getElementById('hypothesisFeedback').style.borderLeft = '3px solid #4caf50';
+                document.getElementById('hypothesisFeedback').innerHTML = '<p><strong>Correct!</strong> A Hypothesis is a testable and falsifiable statement that proposes an <em>answer</em> to the research question.</p>';
+                document.getElementById('hypothesisContinueBtn').disabled = false;
+            }
+
+            // Phase 3c
+            document.getElementById('predictionChoice').value = exp.predictionChoice || '';
+            document.getElementById('predictionConfidence').value = exp.predictionConfidence || 3;
+            document.getElementById('confValue').textContent = exp.predictionConfidence || 3;
+
+            // Phase 5
+            document.getElementById('resultsReflection').value = exp.resultsReflection || '';
+            updateResultsReflectionMeta();
+
+            // Phase 6
+            document.getElementById('expCourse').value = exp.experimentDesign.course || '';
+            document.getElementById('expMaterial').value = exp.experimentDesign.material || '';
+            document.getElementById('expChange').value = exp.experimentDesign.change || '';
+            document.getElementById('expMeasure').value = exp.experimentDesign.measure || '';
+            document.getElementById('expStart').value = exp.experimentDesign.start || '';
+            document.getElementById('expEval').value = exp.experimentDesign.eval || '';
+            document.getElementById('expCommit').checked = exp.experimentCommit || false;
+
+            validateAll();
+            showPhases();
+            updateProgressBar();
+        }
+
+        function showPhases() {
+            const exp = state.experiments[EXPERIMENT_ID];
+            const phases = ['phase1', 'phase2', 'phase3a', 'phase3b', 'phase3c', 'phase4', 'phase5', 'phase6', 'phase7'];
+            
+            phases.forEach(id => document.getElementById(id).classList.add('hidden'));
+
+            document.getElementById('phase1').classList.remove('hidden');
+            
+            if (exp.reflectionWordCount >= 50) {
+                document.getElementById('phase2').classList.remove('hidden');
+            }
+            if (exp.curiosityResponse) {
+                document.getElementById('phase3a').classList.remove('hidden');
+            }
+            if (exp.rqUnderstanding) {
+                document.getElementById('phase3b').classList.remove('hidden');
+            }
+            if (exp.hypothesisFormatCorrect) {
+                document.getElementById('phase3c').classList.remove('hidden');
+            }
+            if (exp.predictionChoice) {
+                document.getElementById('phase4').classList.remove('hidden');
+            }
+            if (exp.predictionConfidence) {
+                document.getElementById('phase5').classList.remove('hidden');
+            }
+            if (exp.resultsReflectionWordCount >= 75) {
+                document.getElementById('phase6').classList.remove('hidden');
+            }
+            if (exp.completed) {
+                document.getElementById('phase7').classList.remove('hidden');
+            }
+        }
+
+        function updateReflectionMeta() {
+            const text = document.getElementById('reflectionText').value;
+            const words = countWords(text);
+            document.getElementById('reflectionMeta').textContent = words;
+            state.experiments[EXPERIMENT_ID].reflectionWordCount = words;
+            return words;
+        }
+
+        function updateResultsReflectionMeta() {
+            const text = document.getElementById('resultsReflection').value;
+            const words = countWords(text);
+            document.getElementById('reflectionWordCount').textContent = words;
+            state.experiments[EXPERIMENT_ID].resultsReflectionWordCount = words;
+            return words;
+        }
+
+        function validateAll() {
+            validateReflection();
+            validateCuriosity();
+            validateRQ();
+            validatePrediction();
+            validateResultsReflection();
+            validateExperimentDesign();
+        }
+
+        function validateReflection() {
+            const words = updateReflectionMeta();
+            document.getElementById('reflectionContinueBtn').disabled = words < 50;
+        }
+
+        function validateCuriosity() {
+            const response = document.querySelector('input[name="curiosityResponse"]:checked');
+            document.getElementById('curiosityContinueBtn').disabled = !response;
+        }
+
+        function validateRQ() {
+            const understanding = document.getElementById('rqUnderstanding').value;
+            document.getElementById('rqContinueBtn').disabled = !understanding;
+        }
+
+        function validatePrediction() {
+            const choice = document.getElementById('predictionChoice').value;
+            const conf = document.getElementById('predictionConfidence').value;
+            document.getElementById('predictionContinueBtn').disabled = !(choice && conf);
+        }
+
+        function validateResultsReflection() {
+            const words = updateResultsReflectionMeta();
+            document.getElementById('resultsContinueBtn').disabled = words < 75;
+        }
+
+        function validateExperimentDesign() {
+            const design = state.experiments[EXPERIMENT_ID].experimentDesign;
+            const allFilled = design.course && design.material && design.change && design.measure && design.start && design.eval;
+            const commit = document.getElementById('expCommit').checked;
+            document.getElementById('commitContinueBtn').disabled = !(allFilled && commit);
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('resultsChart')?.getContext('2d');
+            if (!ctx) return;
+            if (currentChartInstance) currentChartInstance.destroy();
+
+            currentChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Study First', 'Pretest First'],
+                    datasets: [{
+                        label: 'Final Test (%)',
+                        data: [71, 84],
+                        backgroundColor: ['#cbd5e1', '#016836'],
+                        borderColor: ['#4b5563', '#00502f'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'Pretest Effect on Learning' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'Score (%)' } }
+                    }
+                }
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('reflectionText').addEventListener('input', function() {
+            state.experiments[EXPERIMENT_ID].personalReflection = this.value;
+            validateReflection();
+            saveState();
+        });
+
+        document.getElementById('reflectionContinueBtn').addEventListener('click', function() {
+            document.getElementById('phase2').classList.remove('hidden');
+            document.getElementById('phase2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateProgressBar();
+        });
+
+        document.querySelectorAll('input[name="curiosityResponse"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                state.experiments[EXPERIMENT_ID].curiosityResponse = this.value;
+                validateCuriosity();
+                saveState();
+            });
+        });
+
+        document.getElementById('curiosityExplanation').addEventListener('input', function() {
+            state.experiments[EXPERIMENT_ID].curiosityExplanation = this.value;
+            saveState();
+        });
+
+        document.getElementById('curiosityContinueBtn').addEventListener('click', function() {
+            document.getElementById('phase3a').classList.remove('hidden');
+            document.getElementById('phase3a').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateProgressBar();
+        });
+
+        document.getElementById('rqUnderstanding').addEventListener('change', function() {
+            state.experiments[EXPERIMENT_ID].rqUnderstanding = this.value;
+            validateRQ();
+            saveState();
+        });
+
+        document.getElementById('rqContinueBtn').addEventListener('click', function() {
+            document.getElementById('phase3b').classList.remove('hidden');
+            document.getElementById('phase3b').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateProgressBar();
+        });
+
+        document.querySelectorAll('input[name="hypothesisFormat"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const feedback = document.getElementById('hypothesisFeedback');
+                const continueBtn = document.getElementById('hypothesisContinueBtn');
+
+                feedback.style.display = 'block';
+
+                if (this.value === 'correct_answer') {
+                    feedback.style.backgroundColor = '#e8f5e9';
+                    feedback.style.borderLeft = '3px solid #4caf50';
+                    feedback.innerHTML = '<p><strong>Correct!</strong> A Hypothesis is a testable and falsifiable statement that proposes an <em>answer</em> to the research question.</p>';
+                    continueBtn.disabled = false;
+                    state.experiments[EXPERIMENT_ID].hypothesisFormatCorrect = true;
+                } else if (this.value === 'prediction_error') {
+                    feedback.style.backgroundColor = '#fff3e0';
+                    feedback.style.borderLeft = '3px solid #ff9800';
+                    feedback.innerHTML = '<p><strong>Not quite.</strong> That is the format for a <strong>Prediction</strong> (Phase 3c). A Hypothesis is the proposed <em>answer</em> that leads to that prediction.</p>';
+                    continueBtn.disabled = true;
+                    state.experiments[EXPERIMENT_ID].hypothesisFormatCorrect = false;
+                } else {
+                    feedback.style.backgroundColor = '#ffebee';
+                    feedback.style.borderLeft = '3px solid #f44336';
+                    feedback.innerHTML = '<p><strong>Incorrect.</strong> A hypothesis is not a known fact; it is a proposal to be tested.</p>';
+                    continueBtn.disabled = true;
+                    state.experiments[EXPERIMENT_ID].hypothesisFormatCorrect = false;
+                }
+                saveState();
+            });
+        });
+
+        document.getElementById('hypothesisContinueBtn').addEventListener('click', function() {
+            document.getElementById('phase3c').classList.remove('hidden');
+            document.getElementById('phase3c').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateProgressBar();
+        });
+
+        document.getElementById('predictionChoice').addEventListener('change', function() {
+            state.experiments[EXPERIMENT_ID].predictionChoice = this.value;
+            validatePrediction();
+            saveState();
+        });
+
+        document.getElementById('predictionConfidence').addEventListener('input', function() {
+            const val = this.value;
+            document.getElementById('confValue').textContent = val;
+            state.experiments[EXPERIMENT_ID].predictionConfidence = val;
+            validatePrediction();
+            saveState();
+        });
+
+        document.getElementById('predictionContinueBtn').addEventListener('click', function() {
+            document.getElementById('phase4').classList.remove('hidden');
+            document.getElementById('phase4').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateProgressBar();
+        });
+
+        document.getElementById('designContinueBtn').addEventListener('click', function() {
+            document.getElementById('phase5').classList.remove('hidden');
+            document.getElementById('phase5').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            renderChart();
+            updateProgressBar();
+        });
+
+        document.getElementById('resultsReflection').addEventListener('input', function() {
+            state.experiments[EXPERIMENT_ID].resultsReflection = this.value;
+            validateResultsReflection();
+            saveState();
+        });
+
+        document.getElementById('resultsContinueBtn').addEventListener('click', function() {
+            document.getElementById('phase6').classList.remove('hidden');
+            document.getElementById('phase6').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateProgressBar();
+        });
+
+        ['expCourse', 'expMaterial', 'expChange', 'expMeasure', 'expStart', 'expEval'].forEach(id => {
+            document.getElementById(id).addEventListener('input', function() {
+                const field = id.replace('exp', '').toLowerCase();
+                state.experiments[EXPERIMENT_ID].experimentDesign[field] = this.value;
+                validateExperimentDesign();
+                saveState();
+            });
+        });
+
+        document.getElementById('expCommit').addEventListener('change', function() {
+            state.experiments[EXPERIMENT_ID].experimentCommit = this.checked;
+            validateExperimentDesign();
+            saveState();
+        });
+
+        document.getElementById('commitContinueBtn').addEventListener('click', function() {
+            state.experiments[EXPERIMENT_ID].completed = true;
+            state.experiments[EXPERIMENT_ID].completedDate = new Date().toISOString().split('T')[0];
+            saveState();
+
+            document.getElementById('phase7').classList.remove('hidden');
+            document.getElementById('phase7').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            updateProgressBar();
+        });
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', function() {
+            hydrateUI();
+        });
+
+        // Navigation menu
+        (function() {
+            function initNav() {
+                var labs = [
+                    {"folder": "bios101-learning", "title": "Metacognition"},
+                    {"folder": "01_Science_of_Biology", "title": "Scientific Process"},
+                    {"folder": "02_Eukaryotes", "title": "Eukaryotes"}
+                ];
+                var menus = document.getElementById('biosMenus');
+                if (!menus) return;
+                labs.forEach(function(lab) {
+                    var m = document.createElement('div');
+                    m.className = 'bios-menu';
+                    var b = document.createElement('button');
+                    b.className = 'bios-trigger';
+                    b.textContent = lab.title;
+                    var d = document.createElement('div');
+                    d.className = 'bios-dropdown';
+                    var bp = '../../' + lab.folder;
+                    d.innerHTML = '<a href="' + bp + '/index.html">Overview</a>';
+                    m.appendChild(b);
+                    m.appendChild(d);
+                    menus.appendChild(m);
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initNav);
+            } else {
+                initNav();
+            }
+        })();
+    </script>
 </body>
+
 </html>
