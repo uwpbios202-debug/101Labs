@@ -1,27 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dual-Task Challenge</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Dual-Task Challenge - Metacognition Lab</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        /* Page-specific overrides */
+        .banner {
+            border-left-color: var(--uwp-goldenrod);
+        }
+    </style>
 </head>
+
 <body>
+    <nav class="bios-nav">
+        <div class="bios-nav-inner">
+            <a href="../index.html" class="bios-home">BIOS101</a>
+            <div class="bios-menus">
+                <div class="bios-menu">
+                    <a href="../dashboard.html" class="bios-trigger">Metacognition Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <header>
         <div class="shell">
             <div class="header-brand">
-                <a href="../dashboard.html" style="color:white; text-decoration:none;">← Back to Dashboard</a>
+                <div class="header-brand-icon">09</div>
+                <span>Dual-Task Challenge</span>
+            </div>
+            <div class="progress-shell">
+                <div class="progress-track">
+                    <div class="progress-bar" id="localProgressBar" style="width: 0%"></div>
+                </div>
+                <div class="progress-label" id="localProgressLabel">Phase 1 of 7</div>
             </div>
         </div>
     </header>
 
     <main>
-        <div class="view active" id="view-experiment" data-experiment-id="dualtaskchallenge">
+        <div class="view active" id="view-experiment">
+            <div class="pill-nav">
+                <a href="../dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
             </div>
+
+            <div class="banner">
+                <h2>Distraction Taxes Comprehension and Note Quality</h2>
+                <p class="subline">Why divided attention impairs learning effectiveness.</p>
+            </div>
+
+            <section id="phase1">
+                <div class="card stack">
+                    <h2>Phase 1: Observation</h2>
+                    <p class="meta">Carefully read, analyze, and reflect on the following.</p>
+
+                    <div class="observation-box" id="observationBox">
+                        <p>"I always have something on in the background when I study—music, TV, my phone buzzing. It makes studying feel less boring, like I'm multitasking effectively. Sometimes I tell myself I'm good at handling multiple things at once, and the background noise helps me focus by blocking out other distractions. But when I'm honest, I notice my notes are incomplete, and I have to reread paragraphs multiple times. I catch myself losing track of complex explanations, missing key details, and my mind wanders more often than I'd like to admit. After a study session, I sometimes realize I spent a lot of time 'studying' but can't recall much of what I read. I'm starting to suspect that what I call 'multitasking' might actually be 'task-switching' that fragments my attention. Maybe the background stimulation is making my studying feel productive without actually helping me learn."</p>
+                    </div>
+
+                    <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own experience?</label>
+                    <textarea id="reflectionText" placeholder="Write at least 10 words describing how the above observation mirrors or differs from your actual experience. Do you study with distractions?"></textarea>
+                    <p class="meta"><span id="reflectionMeta">0</span> / 50 words minimum</p>
+                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to Curiosity Question</button>
+                </div>
+            </section>
+
+            <section id="phase2" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 2: The Curiosity Question</h2>
+                    <p class="explanation-box"><strong>What this phase is about:</strong> This phase transforms a personal observation into structured scientific curiosity.</p>
+
+                    <div class="observation-box" id="curiosityBox">
+                        <p><strong>How much would my comprehension improve if I studied the same material with full focus versus with my usual background distractions?</strong></p>
+                    </div>
+
+                    <div class="field">
+                        <label>Based on your study habits:</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="agree">
+                                <span><strong>Agree</strong> - This reflects my experience exactly</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="disagree">
+                                <span><strong>Disagree</strong> - I can multitask effectively</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="unsure">
+                                <span><strong>Unsure</strong> - I need to test this myself</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="curiosityExplanation">Briefly explain your choice:</label>
+                        <textarea id="curiosityExplanation" placeholder="Why does/doesn't this question resonate with you?"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Research Question</button>
+                </div>
+            </section>
+
+            <section id="phase3a" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (1/3)</h2>
+                    <div class="observation-box">
+                        <h3>Research Question</h3>
+                        <p style="font-weight: 600;">Does divided attention during studying (multitasking) negatively impact learning compared to focused, single-task studying?</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="rqUnderstanding">Rate your understanding of this research question:</label>
+                        <select id="rqUnderstanding">
+                            <option value="">-- Select your understanding level --</option>
+                            <option value="clear">Clear - I understand exactly what's being investigated</option>
+                            <option value="somewhat">Somewhat - I have a general idea but some questions</option>
+                            <option value="confused">Confused - I'm not sure what's being studied</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary" id="rqContinueBtn" disabled>Proceed to Hypothesis →</button>
+                </div>
+            </section>
+
+            <section id="phase3b" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (2/3)</h2>
+
+                    <h3>The Hypothesis</h3>
+                    <div class="observation-box">
+                        <p><strong>Focused attention</strong> (IV) produces better <strong>note quality and test performance</strong> (DV) than multitasking when <strong>study material and time are held constant</strong> (CV).</p>
+                    </div>
+                    <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> Attention is a limited resource. Dividing it between study and distractions reduces encoding depth and working memory capacity for the material.</p>
+
+                    <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                        <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="prediction_error">
+                                <span>"If I study without my phone, I'll get better grades."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="correct_answer">
+                                <span>"It is a tentative answer to the Research Question proposing a relationship between variables."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="vague_error">
+                                <span>"Multitasking is always bad for learning."</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="hypothesis-feedback" id="hypothesisFeedback"></div>
+                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction →</button>
+                </div>
+            </section>
+
+            <section id="phase3c" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (3/3) - Prediction</h2>
+
+                    <div class="field">
+                        <label for="predictionChoice">Based on the hypothesis, select the study condition that will produce better learning outcomes?</label>
+                        <select id="predictionChoice">
+                            <option value="">-- Select your prediction --</option>
+                            <option value="focused">Focused study (no distractions)</option>
+                            <option value="distracted">Distracted study (multitasking)</option>
+                            <option value="same">They will be about the same</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 = very confident)</label>
+                        <input type="range" id="predictionConfidence" min="1" max="5" value="3">
+                        <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Lock in my prediction →</button>
+                </div>
+            </section>
+
+            <section id="phase4" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 4: Experimental Design</h2>
+
+                    <h3>The Original Study: Kuznekoff & Titsworth (2013)</h3>
+                    <div class="observation-box">
+                        <p>Students watched an educational video lecture while either focusing fully or multitasking with phones/social media. Researchers measured note-taking quality, comprehension, and retention. The multitasking group had phones available and received notifications during the lecture. Both groups had identical lecture content and duration.</p>
+                    </div>
+
+                    <h3>My Personal Experiment Design</h3>
+                    <div class="observation-box">
+                        <p>I will choose two similar study sessions of equal length (e.g., two 45-minute blocks). In one session, I will study with my usual distractions (phone available, music/TV). In the other session, I will put my phone in another room, close all unrelated tabs, and study in complete focus. After each session, I will immediately write down everything I remember, then compare the quality and completeness of my recall between the two conditions.</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
+                </div>
+            </section>
+
+            <section id="phase5" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 5: The Results</h2>
+                    <p class="explanation-box">Here is what happened in the original study.</p>
+
+                    <div class="data-viz-box">
+                        <canvas id="resultsChart" style="max-height:250px;"></canvas>
+                    </div>
+
+                    <div class="citation-box">
+                        <h4>Original Study Details</h4>
+                        <p class="meta"><strong>Citation:</strong> Kuznekoff, J. H., & Titsworth, S. (2013). The impact of mobile phone usage on student learning. Communication Education, 62(3), 233-252.</p>
+                        <p class="meta"><strong>Result:</strong> Focused study produced 82% comprehension vs. 64% for multitasking—an 18 percentage-point difference in learning outcomes.</p>
+                    </div>
+
+                    <div class="observation-box" style="border-left: 3px solid var(--uwp-green);">
+                        <h4>Conclusion</h4>
+                        <p><strong>Hypothesis ACCEPTED.</strong> Divided attention significantly impairs encoding and comprehension. The myth of multitasking is particularly harmful for complex cognitive tasks like studying.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="resultsReflection">Your Metacognitive Reflection (Required):</label>
+                        <p class="subline">How does this evidence challenge or confirm your current study habits with distractions?</p>
+                        <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because..."></textarea>
+                        <p class="meta"><span id="reflectionWordCount">0</span> / 75 words minimum</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Design Your Experiment</button>
+                </div>
+            </section>
+
+            <section id="phase6" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 6: Your Personal Experiment</h2>
+                    <p class="explanation-box">Commit to applying this strategy in your actual coursework.</p>
+
+                    <div class="field">
+                        <label for="expCourse">Which course will you test this in?</label>
+                        <input type="text" id="expCourse" placeholder="e.g., Biology 101">
+                    </div>
+                    <div class="field">
+                        <label for="expMaterial">What specific material/topic?</label>
+                        <input type="text" id="expMaterial" placeholder="e.g., Cellular Respiration, Cardiovascular System">
+                    </div>
+                    <div class="field">
+                        <label for="expChange">What will you do differently?</label>
+                        <textarea id="expChange" placeholder="Instead of studying with distractions, I will..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="expMeasure">How will you measure success?</label>
+                        <input type="text" id="expMeasure" placeholder="e.g., Quality of notes, Retention test score">
+                    </div>
+                    <div class="row-flex">
+                        <div class="field">
+                            <label for="expStart">Start Date</label>
+                            <input type="date" id="expStart">
+                        </div>
+                        <div class="field">
+                            <label for="expEval">Evaluation Date</label>
+                            <input type="date" id="expEval">
+                        </div>
+                    </div>
+                    <div style="margin: 0.5rem 0;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="expCommit">
+                            <strong>I commit to running this experiment</strong>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" id="commitContinueBtn" disabled>Complete Experiment</button>
+                </div>
+            </section>
+
+            <section id="phase7" class="hidden">
+                <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: #f0f9f0;">
+                    <div style="font-size: 3rem; color: var(--uwp-green);">✓</div>
+                    <h2>Experiment Complete!</h2>
+                    <p>You have successfully designed a Focused Attention strategy.</p>
+                    <div class="row-flex" style="justify-content: center; margin-top: 1rem;">
+                        <a href="../dashboard.html" class="btn btn-secondary">Return to Dashboard</a>
+                        <a href="10-combined-strategy.html" class="btn btn-primary">Final Experiment →</a>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/logic.js"></script>
+
+    <script>
+        const CURRENT_EXPERIMENT_ID = 'dualtaskchallenge';
+
+        // Helper to show next phase and scroll
+        const goToPhase = (currentId, nextId) => {
+            const nextPhase = document.getElementById(nextId);
+            if (nextPhase) {
+                nextPhase.classList.remove('hidden');
+                nextPhase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // Initialize Specific Chart
+        function renderSpecificChart() {
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Multitasking (Distracted)', 'Focused Study'],
+                    datasets: [{
+                        label: 'Comprehension (%)',
+                        data: [64, 82],
+                        backgroundColor: ['#cbd5e1', '#016836'],
+                        borderColor: ['#4b5563', '#00502f'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof initExperiment === 'function') initExperiment(CURRENT_EXPERIMENT_ID);
+
+            // --- PHASE 1: Reflection Logic ---
+            const reflectionInput = document.getElementById('reflectionText');
+            const reflectionBtn = document.getElementById('reflectionContinueBtn');
+            reflectionInput?.addEventListener('input', () => {
+                const wordCount = reflectionInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionMeta').textContent = wordCount;
+                reflectionBtn.disabled = wordCount < 50;
+            });
+            reflectionBtn?.addEventListener('click', () => goToPhase('phase1', 'phase2'));
+
+            // --- PHASE 2: Curiosity Logic ---
+            const curiosityBtn = document.getElementById('curiosityContinueBtn');
+            document.querySelectorAll('input[name="curiosityResponse"]').forEach(radio => {
+                radio.addEventListener('change', () => curiosityBtn.disabled = false);
+            });
+            curiosityBtn?.addEventListener('click', () => goToPhase('phase2', 'phase3a'));
+
+            // --- PHASE 3a: RQ Logic ---
+            const rqBtn = document.getElementById('rqContinueBtn');
+            document.getElementById('rqUnderstanding')?.addEventListener('change', (e) => {
+                rqBtn.disabled = e.target.value === "";
+            });
+            rqBtn?.addEventListener('click', () => goToPhase('phase3a', 'phase3b'));
+
+            // --- PHASE 3b: Hypothesis Logic ---
+            const hypBtn = document.getElementById('hypothesisContinueBtn');
+            document.querySelectorAll('input[name="hypothesisFormat"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const feedback = document.getElementById('hypothesisFeedback');
+                    if (e.target.value === 'correct_answer') {
+                        feedback.innerHTML = "<p style='color:green;'>Correct! A hypothesis is a testable prediction.</p>";
+                        hypBtn.disabled = false;
+                    } else {
+                        feedback.innerHTML = "<p style='color:red;'>Not quite. Try again.</p>";
+                        hypBtn.disabled = true;
+                    }
+                });
+            });
+            hypBtn?.addEventListener('click', () => goToPhase('phase3b', 'phase3c'));
+
+            // --- PHASE 3c: Prediction Logic ---
+            const predBtn = document.getElementById('predictionContinueBtn');
+            document.getElementById('predictionChoice')?.addEventListener('change', (e) => {
+                predBtn.disabled = e.target.value === "";
+            });
+            predBtn?.addEventListener('click', () => goToPhase('phase3c', 'phase4'));
+
+            // --- PHASE 4: Design Logic ---
+            document.getElementById('designContinueBtn')?.addEventListener('click', () => {
+                renderSpecificChart();
+                goToPhase('phase4', 'phase5');
+            });
+
+            // --- PHASE 5: Results Reflection ---
+            const resInput = document.getElementById('resultsReflection');
+            const resBtn = document.getElementById('resultsContinueBtn');
+            resInput?.addEventListener('input', () => {
+                const count = resInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionWordCount').textContent = count;
+                resBtn.disabled = count < 75;
+            });
+            resBtn?.addEventListener('click', () => goToPhase('phase5', 'phase6'));
+
+            // --- PHASE 6: Personal Experiment Logic ---
+            const commitBtn = document.getElementById('commitContinueBtn');
+            document.getElementById('expCommit')?.addEventListener('change', (e) => {
+                commitBtn.disabled = !e.target.checked;
+            });
+            commitBtn?.addEventListener('click', () => goToPhase('phase6', 'phase7'));
+        });
+    </script>
 </body>
+
 </html>

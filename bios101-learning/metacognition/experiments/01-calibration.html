@@ -3,463 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Experiment 1: Confidence Calibration Lab - Metacognition Discovery Lab</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Confidence Calibration Lab - Metacognition Lab</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        /* Page-specific overrides */
+        .banner {
+            border-left-color: var(--uwp-goldenrod);
+        }
+    </style>
 </head>
 <body>
-    <!-- BIOS101 Navigation -->
     <nav class="bios-nav">
         <div class="bios-nav-inner">
             <a href="../index.html" class="bios-home">BIOS101</a>
-            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
-            <div class="bios-menus" id="biosMenus">
+            <div class="bios-menus">
                 <div class="bios-menu">
-                    <button class="bios-trigger">Experiments</button>
-                    <div class="bios-dropdown">
-                        <a href="01-calibration.html">1. Calibration</a>
-                        <a href="02-error-hunting.html">2. Error-Hunting</a>
-                        <a href="03-active-recall.html">3. Active Recall</a>
-                        <a href="04-spacing-vs-cramming.html">4. Spacing vs Cramming</a>
-                        <a href="05-interleaving.html">5. Interleaving</a>
-                        <a href="06-encoding.html">6. Encoding</a>
-                        <a href="07-environment.html">7. Environment</a>
-                        <a href="08-time-of-day.html">8. Time-of-Day</a>
-                        <a href="09-dual-task.html">9. Dual-Task</a>
-                        <a href="10-combined-strategy.html">10. Combined Strategy</a>
-                    </div>
+                    <a href="../dashboard.html" class="bios-trigger">Metacognition Dashboard</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Header -->
     <header>
         <div class="shell">
             <div class="header-brand">
-                <div class="header-brand-icon">UWP</div>
-                <span>Experiment 1: Confidence Calibration Lab</span>
+                <div class="header-brand-icon">01</div>
+                <span>Confidence Calibration Lab</span>
             </div>
             <div class="progress-shell">
                 <div class="progress-track">
-                    <div class="progress-bar" id="experimentProgressBar"></div>
+                    <div class="progress-bar" id="localProgressBar" style="width: 0%"></div>
                 </div>
-                <div class="progress-label" id="experimentProgressLabel">Phase 1 of 7</div>
+                <div class="progress-label" id="localProgressLabel">Phase 1 of 7</div>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- Navigation Pills -->
-        <div class="pill-nav">
-            <a href="../dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
-            <span class="meta">Experiment 1 of 10 | Estimated time: 20 minutes</span>
-        </div>
+        <div class="view active" id="view-experiment">
+            <div class="pill-nav">
+                <a href="../dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
+            </div>
 
-        <!-- Phase 1: Observation - Your Current Habit -->
-        <section id="phase1">
-            <div class="card stack">
-                <h2>Phase 1: Observation - Your Current Habit</h2>
-                <p class="meta">Carefully read and reflect on the following observation about exam confidence.</p>
-                
-                <div class="observation-box">
-                    <p>"In my own experience, I have noticed that after exams I often feel confident about how I did, but when I receive my grade, the result does not always match that confidence. Sometimes I am surprised that my score is lower than expected, even though I believed I understood the material while studying and during the test. Other times, I feel unsure about my performance and yet still receive a reasonable grade. This mismatch between how confident I feel and how I actually perform has made me realize that judging my own learning is difficult. I can tell when I studied hard, but I am not always able to accurately evaluate whether my understanding is strong enough to lead to good exam results."</p>
-                </div>
+            <div class="banner">
+                <h2>Prediction vs Reality Sharpens Study Choices</h2>
+                <p class="subline">Why confidence doesn't always match performance.</p>
+            </div>
 
-                <div class="field">
+            <section id="phase1">
+                <div class="card stack">
+                    <h2>Phase 1: Observation</h2>
+                    <p class="meta">Carefully read, analyze, and reflect on the following.</p>
+
+                    <div class="observation-box" id="observationBox">
+                        <p>"In my own experience, I have noticed that after exams I often feel confident about how I did, but when I receive my grade, the result does not always match that confidence. Sometimes I am surprised that my score is lower than expected, even though I believed I understood the material while studying and during the test. Other times, I feel unsure about my performance and yet still receive a reasonable grade. This mismatch between how confident I feel and how I actually perform has made me realize that judging my own learning is difficult. I can tell when I studied hard, but I am not always able to accurately evaluate whether my understanding is strong enough to lead to good exam results."</p>
+                    </div>
+
                     <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own experience?</label>
-                    <p class="subline">Write at least 50 words describing how the above observation mirrors or differs from your actual experience. Can you relate to the observation?</p>
-                    <textarea id="reflectionText" placeholder="Example: I really relate to this. Last semester in Biology, I walked out of the midterm feeling like I aced it because everything seemed familiar. I got a 68%. But on the final, I felt horrible and uncertain—ended up with an 82%. I realize now I can't trust my gut feeling about how well I know something..."></textarea>
-                    <p class="meta"><span id="reflectionWordCount">0</span> / 50 words minimum</p>
+                    <textarea id="reflectionText" placeholder="Write at least 10 words describing how the above observation mirrors or differs from your actual experience. Can you relate to the mismatch between confidence and performance?"></textarea>
+                    <p class="meta"><span id="reflectionMeta">0</span> / 50 words minimum</p>
+                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to Curiosity Question</button>
                 </div>
+            </section>
 
-                <button class="btn btn-primary btn-full-width" id="phase1ContinueBtn" disabled>
-                    I've reflected — Continue to Curiosity Question →
-                </button>
-            </div>
-        </section>
+            <section id="phase2" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 2: The Curiosity Question</h2>
+                    <p class="explanation-box"><strong>What this phase is about:</strong> This phase transforms a personal observation into structured scientific curiosity.</p>
 
-        <!-- Phase 2: The Curiosity Question -->
-        <section id="phase2" class="hidden">
-            <div class="card stack">
-                <h2>Phase 2: The Curiosity Question</h2>
-                <p class="explanation-box">
-                    <strong>What this phase is about:</strong> This phase transforms a personal observation into structured scientific curiosity. Rather than jumping to answers, you examine your own experience from multiple angles, asking why the mismatch between confidence and performance exists, how widespread it may be, and what mechanisms might explain it.
-                </p>
-
-                <div class="observation-box" id="curiosityBox">
-                    <h3>Causal Focus</h3>
-                    <ul>
-                        <li>Why does my confidence after an exam sometimes fail to match my actual score?</li>
-                    </ul>
-
-                    <h3>Population-Level Generalization</h3>
-                    <ul>
-                        <li>How accurate are students, in general, at judging their own performance before receiving feedback?</li>
-                    </ul>
-
-                    <h3>Performance-Level Differences</h3>
-                    <ul>
-                        <li>Do students who perform poorly tend to be more or less confident than they should be?</li>
-                    </ul>
-
-                    <h3>Developmental Change</h3>
-                    <ul>
-                        <li>Does experience in school help students become better at evaluating their own understanding?</li>
-                    </ul>
-
-                    <h3>Metacognitive Awareness</h3>
-                    <ul>
-                        <li>Are some students aware that their performance judgments might be inaccurate, while others are not?</li>
-                    </ul>
-
-                    <h3>Mechanisms and Cues</h3>
-                    <ul>
-                        <li>What cues do I use to decide whether I "did well" or "did poorly" on an exam?</li>
-                        <li>Does feeling confident mean that I actually understood the material, or just that it felt familiar?</li>
-                    </ul>
-
-                    <h3>Trainability and Change Over Time</h3>
-                    <ul>
-                        <li>Can students learn to improve the accuracy of their self-judgments over time?</li>
-                    </ul>
-
-                    <h3>Conceptual Distinction</h3>
-                    <ul>
-                        <li>Is there a difference between getting the answer right and knowing that I got it right?</li>
-                    </ul>
-
-                    <h3>Role of Feedback</h3>
-                    <ul>
-                        <li>How does feedback from past exams influence how confident I feel about future exams?</li>
-                    </ul>
-                </div>
-
-                <div class="field">
-                    <label>Based on your actual test-taking experiences:</label>
-                    <div class="radio-group">
-                        <label class="checkbox-label">
-                            <input type="radio" name="curiosityResponse" value="agree">
-                            <span><strong>Agree</strong> - This reflects my experience exactly</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="radio" name="curiosityResponse" value="disagree">
-                            <span><strong>Disagree</strong> - This doesn't match my habits</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="radio" name="curiosityResponse" value="unsure">
-                            <span><strong>Unsure</strong> - I need to think about this more</span>
-                        </label>
+                    <div class="observation-box" id="curiosityBox">
+                        <p><strong>What would happen if I tracked my predictions versus my actual performance to see if I can improve my self-awareness?</strong></p>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label for="curiosityExplanation">Briefly explain your choice (optional but helpful for self-awareness):</label>
-                    <textarea id="curiosityExplanation" placeholder="Why does/doesn't this question resonate with you? What aspects of your study habits come to mind?"></textarea>
-                </div>
-
-                <button class="btn btn-primary btn-full-width" id="phase2ContinueBtn" disabled>
-                    Continue to Research Question →
-                </button>
-            </div>
-        </section>
-
-        <!-- Phase 3a: Research Question -->
-        <section id="phase3a" class="hidden">
-            <div class="card stack">
-                <h2>Phase 3: Research Foundation (1/3) - Turn the Curiosity Question Into Research Question</h2>
-                <p class="explanation-box">
-                    <strong>What this phase is about:</strong> This phase refines broad curiosity into a precise, scientifically testable research question. You move from wondering *why* something happens to clearly defining *what exactly* will be investigated.
-                </p>
-
-                <div class="observation-box">
-                    <h3>Research Question</h3>
-                    <p style="font-weight: 600;">Does comparing my predicted performance with my actual performance help me choose more effective study strategies?</p>
-                </div>
-
-                <div class="field">
-                    <label for="rqUnderstanding">Rate your understanding of this research question:</label>
-                    <select id="rqUnderstanding">
-                        <option value="">-- Select your understanding level --</option>
-                        <option value="clear">Clear - I understand exactly what's being investigated</option>
-                        <option value="somewhat">Somewhat - I have a general idea but some questions</option>
-                        <option value="confused">Confused - I'm not sure what's being studied</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-primary btn-full-width" id="phase3aContinueBtn" disabled>
-                    Proceed to Hypothesis →
-                </button>
-            </div>
-        </section>
-
-        <!-- Phase 3b: Hypothesis -->
-        <section id="phase3b" class="hidden">
-            <div class="card stack">
-                <h2>Phase 3: Research Foundation (2/3) - Hypothesis</h2>
-                <p class="explanation-box">
-                    <strong>Hypothesis vs. Prediction:</strong><br>
-                    A <strong>Hypothesis</strong> is a <em>testable and falsifiable</em> statement that proposes an 
-                    <span style="background-color: yellow;"><strong>answer</strong></span> to the research question. It must clearly identify the independent variable (IV)—the factor being manipulated—and the dependent variable (DV)—the outcome being measured.<br><br>
-                    A <strong>Prediction</strong> is the specific <em>outcome</em> you expect to see if the hypothesis is true (usually written as "If... then...").
-                </p>
-
-                <div class="observation-box">
-                    <h3>Your Hypothesis</h3>
-                    <p><strong>Research Question:</strong> Does systematically comparing my predicted exam scores with my actual results improve my future study decisions and performance?</p>
-                    <p style="margin-top: 1rem;"><strong>Hypothesis:</strong> Systematically tracking the gap between my predicted and actual scores (IV) increases my study strategy effectiveness and academic performance (DV).</p>
-                </div>
-
-                <p class="meta" style="margin-top: 1rem;">
-                    <strong>Why this works:</strong> This hypothesis is testable (we can measure if students who track predictions choose better strategies and get higher grades) and falsifiable (it could be proven wrong if tracking doesn't improve strategy selection or grades). It clearly identifies the independent variable (tracking predictions) and dependent variables (strategy effectiveness and grades).
-                </p>
-
-                <div class="field" style="margin-top: 1.5rem; border-top: 2px solid #eee; padding-top: 1rem;">
-                    <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
-                    <div class="radio-group">
-                        <label class="checkbox-label">
-                            <input type="radio" name="hypothesisFormat" value="prediction_error">
-                            <span>"It is an 'If... then...' statement about specific test scores."</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="radio" name="hypothesisFormat" value="correct_answer">
-                            <span>"It is a tentative answer to the Research Question."</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="radio" name="hypothesisFormat" value="vague_error">
-                            <span>"It is a proven fact found in a textbook."</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="hypothesis-feedback" id="hypothesisFeedback" style="display:none; margin-top:1rem;"></div>
-
-                <button class="btn btn-primary btn-full-width" id="phase3bContinueBtn" disabled>
-                    Proceed to Your Prediction →
-                </button>
-            </div>
-        </section>
-
-        <!-- Phase 3c: Your Prediction -->
-        <section id="phase3c" class="hidden">
-            <div class="card stack">
-                <h2>Phase 3: Research Foundation (3/3) - Your Prediction</h2>
-                <p class="explanation-box">
-                    <strong>What this phase is about:</strong> My prediction is a specific, testable statement about what I expect to happen if my hypothesis is correct. I usually write it as an "if…then…" statement that connects my hypothesis to an expected outcome.
-                </p>
-
-                <div class="field">
-                    <label for="predictionChoice">Based on the hypothesis, select the prediction strategy that will produce better results:</label>
-                    <select id="predictionChoice">
-                        <option value="">-- Select your prediction --</option>
-                        <option value="track">Tracking my predicted vs actual scores (IV) improves future strategy selection and exam performance (DV)</option>
-                        <option value="notrack">Not tracking my predictions (Control) does not improve strategy selection or exam performance</option>
-                        <option value="same">No significant difference between tracking and not tracking predictions</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 = very confident)</label>
-                    <input type="range" id="predictionConfidence" min="1" max="5" value="3">
-                    <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
-                </div>
-
-                <button class="btn btn-primary btn-full-width" id="phase3cContinueBtn" disabled>
-                    Lock in my prediction →
-                </button>
-            </div>
-        </section>
-
-        <!-- Phase 4: Experimental Design -->
-        <section id="phase4" class="hidden">
-            <div class="card stack">
-                <h2>Phase 4: Experimental Design</h2>
-                <p class="explanation-box">
-                    <strong>What this phase is about:</strong> I want to understand whether my current study strategies are fooling me. Sometimes studying feels productive even when it isn't. By tracking prediction vs. actual performance, I can see if my strategies are giving me a false sense of mastery.
-                </p>
-
-                <h3>The Study Design: de Bruin et al. (2020)</h3>
-                <div class="observation-box">
-                    <p>Students predict their quiz score, take the quiz, then compare. Over 4 quizzes, they track calibration patterns. Control group takes quizzes without predictions. All receive same study materials.</p>
-                </div>
-
-                <h3>My Personal Study Design</h3>
-                <div class="observation-box">
-                    <p>For each quiz, I will write down my predicted overall score before starting. I will also mark my confidence for every individual question before answering it:</p>
-                    <ul style="margin-top: 0.5rem;">
-                        <li><strong>✓ Check mark</strong> — I predict I will get this question correct.</li>
-                        <li><strong>? Question mark</strong> — I am unsure and cannot confidently predict.</li>
-                        <li><strong>🛑 Stop sign</strong> — I predict I will get this question incorrect.</li>
-                    </ul>
-                    <p style="margin-top: 0.5rem;">After the quiz, I will compare all of my predictions—both overall and per-question—to what actually happened. This will show me whether my study strategies are giving me a false sense of mastery or accurately preparing me.</p>
-                </div>
-
-                <button class="btn btn-primary btn-full-width" id="phase4ContinueBtn">
-                    Show me the results →
-                </button>
-            </div>
-        </section>
-
-        <!-- Phase 5: The Results -->
-        <section id="phase5" class="hidden">
-            <div class="card stack">
-                <h2>Phase 5: The Results</h2>
-                <p class="explanation-box">
-                    <strong>What this phase is about:</strong> Here's what actually happened in the 
-                    <a href="https://link.springer.com/article/10.1007/s10648-020-09550-x" target="_blank" rel="noopener noreferrer">
-                        original research study (de Bruin et al., 2020)
-                    </a>. Compare with your prediction.
-                </p>
-
-                <h3>Actual Study Results</h3>
-                <div class="data-viz-box">
-                    <canvas id="resultsChart" style="max-height:300px;"></canvas>
-                </div>
-
-                <div class="row-flex">
-                    <div style="flex: 1;">
-                        <div class="citation-box">
-                            <h4>Original Study Details</h4>
-                            <p class="meta"><strong>Citation:</strong> de Bruin, A. B., Roelle, J., Carpenter, S. K., & Baars, M. (2020). Synthesizing cognitive load and self-regulation theory. Educational Psychology Review, 32(4), 903-915.</p>
-                            <p class="meta"><strong>Sample Size:</strong> n=85 undergraduate students</p>
-                            <p class="meta"><strong>Effect Size:</strong> η² = 0.21 (medium to large effect)</p>
+                    <div class="field">
+                        <label>Based on your actual test taking experiences:</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="agree">
+                                <span><strong>Agree</strong> - This reflects my experience exactly</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="disagree">
+                                <span><strong>Disagree</strong> - This doesn't match my habits</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="curiosityResponse" value="unsure">
+                                <span><strong>Unsure</strong> - I need to think about this more</span>
+                            </label>
                         </div>
                     </div>
-                    <div style="flex: 1;">
-                        <div class="stats-box">
-                            <h4>Statistical Results</h4>
-                            <p>F(1,83) = 22.17, p < .001, 95% CI [4.2, 9.8]</p>
-                            <p style="font-weight: 600; margin-top: 0.5rem; color: var(--uwp-green);">
-                                Statistically significant (p < .05)
-                            </p>
+
+                    <div class="field">
+                        <label for="curiosityExplanation">Briefly explain your choice:</label>
+                        <textarea id="curiosityExplanation" placeholder="Why does/doesn't this question resonate with you?"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Research Question</button>
+                </div>
+            </section>
+
+            <section id="phase3a" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (1/3)</h2>
+                    <div class="observation-box">
+                        <h3>Research Question</h3>
+                        <p style="font-weight: 600;">Does comparing my predicted performance with my actual performance help me choose more effective study strategies?</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="rqUnderstanding">Rate your understanding of this research question:</label>
+                        <select id="rqUnderstanding">
+                            <option value="">-- Select your understanding level --</option>
+                            <option value="clear">Clear - I understand exactly what's being investigated</option>
+                            <option value="somewhat">Somewhat - I have a general idea but some questions</option>
+                            <option value="confused">Confused - I'm not sure what's being studied</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary" id="rqContinueBtn" disabled>Proceed to Hypothesis →</button>
+                </div>
+            </section>
+
+            <section id="phase3b" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (2/3)</h2>
+
+                    <h3>The Hypothesis</h3>
+                    <div class="observation-box">
+                        <p><strong>Systematically tracking the gap between predicted and actual scores</strong> (IV) increases <strong>study strategy effectiveness and academic performance</strong> (DV).</p>
+                    </div>
+                    <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> Metacognitive monitoring (knowing what you know) directly improves learning outcomes when operationalized through prediction-actual comparison.</p>
+
+                    <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                        <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
+                        <div class="radio-group">
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="prediction_error">
+                                <span>"If I study hard, I will get an A."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="correct_answer">
+                                <span>"It is a tentative answer to the Research Question proposing a relationship between variables."</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="hypothesisFormat" value="vague_error">
+                                <span>"It is a fact found in the textbook."</span>
+                            </label>
                         </div>
                     </div>
+
+                    <div class="hypothesis-feedback" id="hypothesisFeedback"></div>
+                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction →</button>
                 </div>
+            </section>
 
-                <h3>Data Interpretation</h3>
-                <p><strong>No calibration tracking (Control):</strong> Average grade 72, strategy consistency poor.</p>
-                <p><strong>With calibration tracking (Experimental):</strong> Average grade 79, strategy consistency improved.</p>
-                <p>Students who tracked predictions (IV manipulation) learned to recognize when their confidence was misplaced and adjusted their study approach (DV improvement) accordingly.</p>
+            <section id="phase3c" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 3: Research Foundation (3/3) - Prediction</h2>
 
-                <div class="observation-box" style="background-color: var(--uwp-white-birch); border-left: 3px solid var(--uwp-green); margin-top: 1rem;">
-                    <h4>Research Conclusion</h4>
-                    <p style="font-weight: 600;">The independent variable (calibration tracking) had a statistically significant effect on the dependent variables (strategy selection and grades).</p>
-                    <p class="meta">Metacognitive monitoring (knowing what you know) directly improves learning outcomes when operationalized through prediction-actual comparison.</p>
-                </div>
-
-                <div class="field" style="margin-top: 1.5rem;">
-                    <label for="resultsReflection">Your Metacognitive Reflection (Required):</label>
-                    <p class="subline">How does this evidence challenge or confirm your current study habits? What specific, measurable change will you implement based on these findings?</p>
-                    <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because... Starting next week, I will specifically change the following about my study habits: ..."></textarea>
-                    <p class="meta"><span id="resultsReflectionWordCount">0</span> / 75 words minimum</p>
-                </div>
-
-                <button class="btn btn-primary btn-full-width" id="phase5ContinueBtn" disabled>
-                    Continue to Design Your Experiment →
-                </button>
-            </div>
-        </section>
-
-        <!-- Phase 6: Your Personal Experiment -->
-        <section id="phase6" class="hidden">
-            <div class="card stack">
-                <h2>Phase 6: Your Personal Experiment</h2>
-                <p class="explanation-box">
-                    <strong>What this phase is about:</strong> Now it's your turn. Design a small, testable experiment in your real coursework to apply what you've learned.
-                </p>
-
-                <h3>Design Your Experiment</h3>
-                
-                <div class="field">
-                    <label for="expCourse">Which course will you test this in?</label>
-                    <input type="text" id="expCourse" placeholder="e.g., Biology 101, Chemistry 201">
-                </div>
-
-                <div class="field">
-                    <label for="expMaterial">What specific material/topic?</label>
-                    <input type="text" id="expMaterial" placeholder="e.g., Cell membrane structure, Cardiovascular system">
-                </div>
-
-                <div class="field">
-                    <label for="expChange">What will you do differently? (Be specific)</label>
-                    <textarea id="expChange" placeholder="Describe your experimental change... (e.g., Before each quiz, I will write down my predicted score and mark each question with ✓, ?, or 🛑. After the quiz, I'll compare my predictions to actual results and identify which topics I misjudged.)"></textarea>
-                </div>
-
-                <div class="field">
-                    <label for="expMeasure">How will you measure success? (Make it measurable)</label>
-                    <input type="text" id="expMeasure" placeholder="e.g., My prediction accuracy improves from Quiz 1 to Quiz 4, AND my overall grade increases by at least 5 points">
-                </div>
-
-                <div class="row-flex">
                     <div class="field">
-                        <label for="expStart">When will you start?</label>
-                        <input type="date" id="expStart">
+                        <label for="predictionChoice">Based on the hypothesis, select the prediction strategy that will produce better results?</label>
+                        <select id="predictionChoice">
+                            <option value="">-- Select your prediction --</option>
+                            <option value="track">Tracking my predicted vs actual scores</option>
+                            <option value="notrack">Not tracking my predictions</option>
+                            <option value="same">They will be about the same</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 = very confident)</label>
+                        <input type="range" id="predictionConfidence" min="1" max="5" value="3">
+                        <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="predictionContinueBtn" disabled>Lock in my prediction →</button>
+                </div>
+            </section>
+
+            <section id="phase4" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 4: Experimental Design</h2>
+
+                    <h3>The Original Study: de Bruin et al. (2020)</h3>
+                    <div class="observation-box">
+                        <p>Students predict their quiz score, take the quiz, then compare. Over 4 quizzes, they track calibration patterns. Control group takes quizzes without predictions. All receive same study materials.</p>
+                    </div>
+
+                    <h3>My Personal Experiment Design</h3>
+                    <div class="observation-box">
+                        <p>For each quiz, I will write down my predicted overall score before starting. I will also mark my confidence for every individual question before answering it: ✓ (predict correct), ? (unsure), or 🛑 (predict incorrect). After the quiz, I will compare all predictions to actual results to see whether my study strategies are giving me a false sense of mastery or accurately preparing me.</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
+                </div>
+            </section>
+
+            <section id="phase5" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 5: The Results</h2>
+                    <p class="explanation-box">Here is what happened in the original study.</p>
+
+                    <div class="data-viz-box">
+                        <canvas id="resultsChart" style="max-height:250px;"></canvas>
+                    </div>
+
+                    <div class="citation-box">
+                        <h4>Original Study Details</h4>
+                        <p class="meta"><strong>Citation:</strong> de Bruin, A. B., Roelle, J., Carpenter, S. K., & Baars, M. (2020). Synthesizing cognitive load and self-regulation theory. Educational Psychology Review, 32(4), 903-915.</p>
+                        <p class="meta"><strong>Result:</strong> Tracking predictions improved average grades from 72% to 79% and enhanced study strategy consistency.</p>
+                    </div>
+
+                    <div class="observation-box" style="border-left: 3px solid var(--uwp-green);">
+                        <h4>Conclusion</h4>
+                        <p><strong>Hypothesis ACCEPTED.</strong> Calibration tracking improves study strategy selection and academic performance.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="resultsReflection">Your Metacognitive Reflection (Required):</label>
+                        <p class="subline">How does this evidence challenge or confirm your current study habits?</p>
+                        <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because..."></textarea>
+                        <p class="meta"><span id="reflectionWordCount">0</span> / 75 words minimum</p>
+                    </div>
+
+                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Design Your Experiment</button>
+                </div>
+            </section>
+
+            <section id="phase6" class="hidden">
+                <div class="card stack">
+                    <h2>Phase 6: Your Personal Experiment</h2>
+                    <p class="explanation-box">Commit to applying this strategy in your actual coursework.</p>
+
+                    <div class="field">
+                        <label for="expCourse">Which course will you test this in?</label>
+                        <input type="text" id="expCourse" placeholder="e.g., Biology 101">
                     </div>
                     <div class="field">
-                        <label for="expEval">When will you evaluate?</label>
-                        <input type="date" id="expEval">
+                        <label for="expMaterial">What specific material/topic?</label>
+                        <input type="text" id="expMaterial" placeholder="e.g., Cellular Respiration">
+                    </div>
+                    <div class="field">
+                        <label for="expChange">What will you do differently?</label>
+                        <textarea id="expChange" placeholder="Instead of just studying, I will..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="expMeasure">How will you measure success?</label>
+                        <input type="text" id="expMeasure" placeholder="e.g., Prediction accuracy improves by 20%">
+                    </div>
+                    <div class="row-flex">
+                        <div class="field">
+                            <label for="expStart">Start Date</label>
+                            <input type="date" id="expStart">
+                        </div>
+                        <div class="field">
+                            <label for="expEval">Evaluation Date</label>
+                            <input type="date" id="expEval">
+                        </div>
+                    </div>
+                    <div style="margin: 0.5rem 0;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="expCommit">
+                            <strong>I commit to running this experiment</strong>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" id="commitContinueBtn" disabled>Complete Experiment</button>
+                </div>
+            </section>
+
+            <section id="phase7" class="hidden">
+                <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: #f0f9f0;">
+                    <div style="font-size: 3rem; color: var(--uwp-green);">✓</div>
+                    <h2>Experiment Complete!</h2>
+                    <p>You have successfully designed a Confidence Calibration strategy.</p>
+                    <div class="row-flex" style="justify-content: center; margin-top: 1rem;">
+                        <a href="../dashboard.html" class="btn btn-secondary">Return to Dashboard</a>
+                        <a href="02-error-hunting.html" class="btn btn-primary">Next Experiment →</a>
                     </div>
                 </div>
-
-                <div style="margin: 1rem 0;">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="expCommit">
-                        <strong>I commit to running this experiment</strong>
-                    </label>
-                    <p class="meta" style="margin-left: 1.5rem;">
-                        By checking this, you're making a commitment to apply metacognitive principles in your actual studies.
-                    </p>
-                </div>
-
-                <button class="btn btn-primary btn-full-width" id="phase6ContinueBtn" disabled>
-                    Complete Experiment →
-                </button>
-            </div>
-        </section>
-
-        <!-- Phase 7: Completion -->
-        <section id="phase7" class="hidden">
-            <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: linear-gradient(135deg, #f0f9f0, #ffffff);">
-                <div style="font-size: 3rem; color: var(--uwp-green); margin-bottom: 0.5rem;">✓</div>
-                <h2>Metacognitive Experiment Complete!</h2>
-                <p style="font-size: 1.05rem;">
-                    You've successfully completed the scientific process: observation → question → hypothesis → prediction → analysis → application.
-                </p>
-                <p class="meta">Your data has been saved locally. Return to dashboard to continue your metacognitive development journey.</p>
-                
-                <div class="row-flex" style="justify-content: center; margin-top: 1.5rem; gap: 1rem;">
-                    <a href="../dashboard.html" class="btn btn-secondary">Return to Dashboard</a>
-                    <a href="02-error-hunting.html" class="btn btn-primary">Start Next Experiment →</a>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
 
-    <footer>
-        <div class="shell">
-            <p><strong>Your Privacy:</strong> All your reflections are stored locally on your device. We do not collect or transmit your personal data.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem;">
-                <strong>Metacognition Discovery Lab</strong> - Designed for UW–Parkside PreMed Students
-            </p>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/logic.js"></script>
-    <script>
-        // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            var toggle = document.querySelector('.bios-toggle');
-            var menus = document.getElementById('biosMenus');
-            if (toggle && menus) {
-                toggle.onclick = function() {
-                    menus.classList.toggle('open');
-                };
-            }
 
-            // Initialize experiment
-            initExperiment('calibration');
+    <script>
+        const CURRENT_EXPERIMENT_ID = 'calibration';
+
+        // Helper to show next phase and scroll
+        const goToPhase = (currentId, nextId) => {
+            const nextPhase = document.getElementById(nextId);
+            if (nextPhase) {
+                nextPhase.classList.remove('hidden');
+                nextPhase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // Initialize Specific Chart for Calibration
+        function renderSpecificChart() {
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['No Tracking', 'With Tracking'],
+                    datasets: [{
+                        label: 'Average Grade (%)',
+                        data: [72, 79],
+                        backgroundColor: ['#cbd5e1', '#016836'],
+                        borderColor: ['#4b5563', '#00502f'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Grade (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Impact of Calibration Tracking'
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof initExperiment === 'function') initExperiment(CURRENT_EXPERIMENT_ID);
+
+            // --- PHASE 1: Reflection Logic ---
+            const reflectionInput = document.getElementById('reflectionText');
+            const reflectionBtn = document.getElementById('reflectionContinueBtn');
+            reflectionInput?.addEventListener('input', () => {
+                const wordCount = reflectionInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionMeta').textContent = wordCount;
+                reflectionBtn.disabled = wordCount < 50;
+            });
+            reflectionBtn?.addEventListener('click', () => goToPhase('phase1', 'phase2'));
+
+            // --- PHASE 2: Curiosity Logic ---
+            const curiosityBtn = document.getElementById('curiosityContinueBtn');
+            document.querySelectorAll('input[name="curiosityResponse"]').forEach(radio => {
+                radio.addEventListener('change', () => curiosityBtn.disabled = false);
+            });
+            curiosityBtn?.addEventListener('click', () => goToPhase('phase2', 'phase3a'));
+
+            // --- PHASE 3a: RQ Logic ---
+            const rqBtn = document.getElementById('rqContinueBtn');
+            document.getElementById('rqUnderstanding')?.addEventListener('change', (e) => {
+                rqBtn.disabled = e.target.value === "";
+            });
+            rqBtn?.addEventListener('click', () => goToPhase('phase3a', 'phase3b'));
+
+            // --- PHASE 3b: Hypothesis Logic ---
+            const hypBtn = document.getElementById('hypothesisContinueBtn');
+            document.querySelectorAll('input[name="hypothesisFormat"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const feedback = document.getElementById('hypothesisFeedback');
+                    if (e.target.value === 'correct_answer') {
+                        feedback.innerHTML = "<p style='color:green;'>Correct! A hypothesis is a testable prediction.</p>";
+                        hypBtn.disabled = false;
+                    } else {
+                        feedback.innerHTML = "<p style='color:red;'>Not quite. Try again.</p>";
+                        hypBtn.disabled = true;
+                    }
+                });
+            });
+            hypBtn?.addEventListener('click', () => goToPhase('phase3b', 'phase3c'));
+
+            // --- PHASE 3c: Prediction Logic ---
+            const predBtn = document.getElementById('predictionContinueBtn');
+            document.getElementById('predictionChoice')?.addEventListener('change', (e) => {
+                predBtn.disabled = e.target.value === "";
+            });
+            predBtn?.addEventListener('click', () => goToPhase('phase3c', 'phase4'));
+
+            // --- PHASE 4: Design Logic ---
+            document.getElementById('designContinueBtn')?.addEventListener('click', () => {
+                renderSpecificChart();
+                goToPhase('phase4', 'phase5');
+            });
+
+            // --- PHASE 5: Results Reflection ---
+            const resInput = document.getElementById('resultsReflection');
+            const resBtn = document.getElementById('resultsContinueBtn');
+            resInput?.addEventListener('input', () => {
+                const count = resInput.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+                document.getElementById('reflectionWordCount').textContent = count;
+                resBtn.disabled = count < 75;
+            });
+            resBtn?.addEventListener('click', () => goToPhase('phase5', 'phase6'));
+
+            // --- PHASE 6: Personal Experiment Logic ---
+            const commitBtn = document.getElementById('commitContinueBtn');
+            document.getElementById('expCommit')?.addEventListener('change', (e) => {
+                commitBtn.disabled = !e.target.checked;
+            });
+            commitBtn?.addEventListener('click', () => goToPhase('phase6', 'phase7'));
         });
     </script>
 </body>
