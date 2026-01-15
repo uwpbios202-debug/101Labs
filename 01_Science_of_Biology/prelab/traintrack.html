@@ -17,26 +17,7 @@
 
         h1 {
             color: #2c3e50;
-        }
-
-        .controls-container {
-            width: 90%;
-            max-width: 900px;
-            display: flex;
-            gap: 20px;
             margin-bottom: 20px;
-            justify-content: center;
-        }
-
-        .instructions-block {
-            border: 1px solid #bdc3c7;
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 25px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 900px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         /* --- DIFFICULTY SELECTOR --- */
@@ -54,17 +35,14 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.8em;
-            /* Smaller font */
         }
 
         .ref-table th,
         .ref-table td {
             border: 1px solid #bdc3c7;
             padding: 2px 4px;
-            /* Minimized padding */
             text-align: center;
             height: 20px;
-            /* Minimized row height */
         }
 
         .ref-table th {
@@ -81,12 +59,40 @@
             background-color: #ffffff;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
+        }
+
+        /* New header section inside track-wrapper */
+        .track-header {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .controls-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .problem-display {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            width: 100%;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
         }
 
         .step-label {
@@ -232,14 +238,12 @@
             height: 25px;
             font-size: 0.9em;
             margin-bottom: 15px;
-            /* Superscript look */
             border: 2px solid #95a5a6;
         }
 
         /* For the second track (rewrite) */
         .rewrite-input {
             margin-bottom: 0;
-            /* Align normally in rewrite line */
         }
 
         /* --- RESULT AREA --- */
@@ -278,6 +282,50 @@
             padding: 15px;
             border: 1px solid #bdc3c7;
             width: 100%;
+        }
+
+        /* Instructions dropdown */
+        .instructions-dropdown {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 25px;
+        }
+
+        .instructions-dropdown summary {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: background-color 0.2s;
+        }
+
+        .instructions-dropdown summary:hover {
+            background-color: #34495e;
+        }
+
+        .instructions-dropdown[open] summary {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .instructions-content {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #bdc3c7;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .instructions-content ul {
+            margin: 10px 0 0 0;
+            padding-left: 20px;
+        }
+
+        .instructions-content li {
+            margin-bottom: 8px;
         }
 
         /* NEW: Step 3 with inline buttons */
@@ -564,51 +612,49 @@
     <nav class="bios-nav">
         <div class="bios-nav-inner">
             <a href="../index.html" class="bios-home">BIOS101</a>
-            <button class="bios-toggle" aria-label="Toggle menu">â˜°</button>
+            <button class="bios-toggle" aria-label="Toggle menu">☰</button>
             <div class="bios-menus" id="biosMenus"></div>
         </div>
     </nav>
-    <div
-        style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1200px; margin-bottom: 10px;">
-        <a href="prelab.html" style="color: #333; text-decoration: none; font-size: 1em;">← Back to Hub</a>
-        <h3 style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%);">🚆 Metric Conversion Tool
-        </h3>
-        <div style="width: 100px;"></div>
-    </div>
 
-    <div class="controls-container">
-        <select id="difficulty-selector" onchange="generateProblem()">
-            <option value="easy">Level 1: Simple (1 Step: Prefix ↔ Base)</option>
-            <option value="medium">Level 2: Challenging 1 (2 Steps: Same Side)</option>
-            <option value="hard">Level 3: Chellenging 2 (2 Steps: Crossing Base)</option>
-        </select>
-        <button class="btn-new" onclick="generateProblem()">🔄 New Problem</button>
-    </div>
+    <h1>Metric Conversion Tool</h1>
 
-    <div class="instructions-block" style="margin: 0; padding: 0;">
-        <p id="problem-text"
-            style="font-size: 1.3em; font-weight: bold; color: #2c3e50; margin: 2px 0 4px 0; padding: 0; line-height: 1.2;">
-            Loading...</p>
-        <p style="margin: 6px 0 2px 0; padding: 0;"><strong>Instructions:</strong></p>
-        <ul style="margin: 0 0 6px 0; padding: 0 0 0 20px;">
-            <li style="margin: 0 0 2px 0; padding: 0;"><strong>Step 1 (Top Track):</strong> Set up the problem.
-                Enter Units and Exponents. <span style="color:#e74c3c; font-weight:bold;">Click the units to
-                    cancel them!</span></li>
-            <li style="margin: 0 0 2px 0; padding: 0;"><strong>Step 2 (Bottom Track):</strong> Move the Exponents to
-                the top. <span style="color:#e74c3c; font-weight:bold;">Don't forget to flip the sign AND enter the
-                    FINAL unit!</span></li>
-            <li style="margin: 0 0 2px 0; padding: 0;"><strong>Step 3:</strong> Enter your final answers in scientific
-                and decimal notation.</li>
-            <li style="margin: 0; padding: 0;"><strong>Step 4:</strong> Click - Verify Setup & Signs.</li>
-            <li style="margin: 0; padding: 0;"><strong>Step 5:</strong> Click Check final answer.</li>
-        </ul>
-    </div>
+    <!-- Instructions Dropdown -->
+    <details class="instructions-dropdown">
+        <summary>📋 Instructions (Click to Expand)</summary>
+        <div class="instructions-content">
+            <p><strong>Instructions:</strong></p>
+            <ul>
+                <li><strong>Step 1 (Top Track):</strong> Set up the problem. Enter Units and Exponents. <span style="color:#e74c3c; font-weight:bold;">Click the units to cancel them!</span></li>
+                <li><strong>Step 2 (Bottom Track):</strong> Move the Exponents to the top. <span style="color:#e74c3c; font-weight:bold;">Don't forget to flip the sign AND enter the FINAL unit!</span></li>
+                <li><strong>Step 3:</strong> Enter your final answers in scientific and decimal notation.</li>
+                <li><strong>Step 4:</strong> Click - Verify Setup & Signs.</li>
+                <li><strong>Step 5:</strong> Click Check final answer.</li>
+            </ul>
+        </div>
+    </details>
 
     <div class="main-content-wrapper">
         <!-- Left Column: Steps 1-3 -->
         <div class="left-column">
             <!-- Steps 1 & 2 Container -->
             <div class="track-wrapper">
+                <!-- New header section with controls and problem display -->
+                <div class="track-header">
+                    <!-- Difficulty controls at the top -->
+                    <div class="controls-group">
+                        <select id="difficulty-selector" onchange="generateProblem()">
+                            <option value="easy">Level 1: Simple (1 Step: Prefix ↔ Base)</option>
+                            <option value="medium">Level 2: Challenging 1 (2 Steps: Same Side)</option>
+                            <option value="hard">Level 3: Challenging 2 (2 Steps: Crossing Base)</option>
+                        </select>
+                        <button class="btn-new" onclick="generateProblem()">🔄 New Problem</button>
+                    </div>
+                    
+                    <!-- Conversion problem text below the controls -->
+                    <div class="problem-display" id="problem-text">Loading...</div>
+                </div>
+
                 <div class="step-label">Step 1: Set up Units & Powers</div>
                 <div class="train-track-model">
 
@@ -672,12 +718,10 @@
                         <div class="numerator">
                             <div class="scientific-group">
                                 <span class="base-ten">x 10</span>
-                                <input type="number" id="exp-flip-1" class="exponent-input rewrite-input"
-                                    placeholder="?">
+                                <input type="number" id="exp-flip-1" class="exponent-input rewrite-input" placeholder="?">
                             </div>
                             <!-- FIXED: Only show unit box for easy difficulty -->
-                            <input type="text" id="unit-flip-1" class="unit-input rewrite-unit-input" placeholder="Unit"
-                                style="display: none;">
+                            <input type="text" id="unit-flip-1" class="unit-input rewrite-unit-input" placeholder="Unit" style="display: none;">
                         </div>
                         <div class="denominator"></div>
                     </div>
@@ -687,12 +731,10 @@
                         <div class="numerator">
                             <div class="scientific-group">
                                 <span class="base-ten">x 10</span>
-                                <input type="number" id="exp-flip-2" class="exponent-input rewrite-input"
-                                    placeholder="?">
+                                <input type="number" id="exp-flip-2" class="exponent-input rewrite-input" placeholder="?">
                             </div>
                             <!-- FIXED: Only show unit box for medium/hard difficulty -->
-                            <input type="text" id="unit-flip-2" class="unit-input rewrite-unit-input" placeholder="Unit"
-                                style="display: none;">
+                            <input type="text" id="unit-flip-2" class="unit-input rewrite-unit-input" placeholder="Unit" style="display: none;">
                         </div>
                         <div class="denominator"></div>
                     </div>
@@ -701,8 +743,7 @@
                     <!-- NEW: Answer box that appears after the equals sign -->
                     <div id="step2-answer-box" class="answer-display-box">
                         <span id="step2-answer-value" class="answer-display-value"></span>
-                        <span class="base-ten"> × 10<sup id="step2-answer-exponent"
-                                class="answer-display-exponent"></sup></span>
+                        <span class="base-ten"> × 10<sup id="step2-answer-exponent" class="answer-display-exponent"></sup></span>
                         <span id="step2-answer-unit" class="answer-display-unit"></span>
                     </div>
                 </div>
@@ -746,8 +787,7 @@
 
                 <!-- Table 1: Direct Conversion Table -->
                 <h4 style="margin:10px 0 5px 0; color:#34495e;">Direct Conversion Table</h4>
-                <p style="font-size:0.9em; color:#555;">Purpose: Shows how each metric prefix relates to the base units
-                    (m, g, l).</p>
+                <p style="font-size:0.9em; color:#555;">Purpose: Shows how each metric prefix relates to the base units (m, g, l).</p>
 
                 <table class="ref-table">
                     <thead>
@@ -798,8 +838,7 @@
 
                 <!-- Table 2: Inverse Conversion Table -->
                 <h4 style="margin:15px 0 5px 0; color:#34495e;">Inverse Conversion Table</h4>
-                <p style="font-size:0.9em; color:#555;">Purpose: Shows how the base units (m, g, l) relate to each
-                    metric prefix.</p>
+                <p style="font-size:0.9em; color:#555;">Purpose: Shows how the base units (m, g, l) relate to each metric prefix.</p>
 
                 <table class="ref-table">
                     <thead>
@@ -868,6 +907,77 @@
         window.onload = generateProblem;
 
         function getRandomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        // --- CORRECTED: Unit cancellation with proper train-track diagonal pattern ---
+        function setupUnitCancellation() {
+            // Clear any existing event listeners by removing and re-adding
+            document.querySelectorAll('.unit-box').forEach(box => {
+                box.replaceWith(box.cloneNode(true));
+            });
+            
+            // Get all unit boxes again after cloning
+            const unitBoxes = document.querySelectorAll('.unit-box');
+            
+            unitBoxes.forEach(box => {
+                box.addEventListener('click', function() {
+                    // Don't cancel empty units
+                    if (this.value.trim() === "") return;
+                    
+                    // Don't cancel the target unit
+                    if (this.value.trim() === targetUnit) return;
+                    
+                    const thisUnit = this.value.trim();
+                    const isNumerator = this.closest('.numerator') !== null;
+                    const allCells = Array.from(document.querySelectorAll('.train-track-model')[0].querySelectorAll('.cell'));
+                    
+                    // Find current cell index
+                    const currentCell = this.closest('.cell');
+                    const currentIndex = allCells.indexOf(currentCell);
+                    
+                    // For train-track cancellation:
+                    // If it's a numerator, look for a matching denominator in the NEXT cell
+                    // If it's a denominator, look for a matching numerator in the PREVIOUS cell
+                    
+                    let matchingUnit = null;
+                    
+                    if (isNumerator) {
+                        // Look in next cell for matching denominator
+                        if (currentIndex < allCells.length - 1) {
+                            const nextCell = allCells[currentIndex + 1];
+                            if (nextCell && !nextCell.classList.contains('hidden')) {
+                                const denominatorUnits = nextCell.querySelectorAll('.denominator .unit-box');
+                                denominatorUnits.forEach(denomBox => {
+                                    if (denomBox.value.trim() === thisUnit && 
+                                        denomBox.value.trim() !== targetUnit) {
+                                        matchingUnit = denomBox;
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        // Look in previous cell for matching numerator
+                        if (currentIndex > 0) {
+                            const prevCell = allCells[currentIndex - 1];
+                            if (prevCell && !prevCell.classList.contains('hidden')) {
+                                const numeratorUnits = prevCell.querySelectorAll('.numerator .unit-box');
+                                numeratorUnits.forEach(numBox => {
+                                    if (numBox.value.trim() === thisUnit && 
+                                        numBox.value.trim() !== targetUnit) {
+                                        matchingUnit = numBox;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    
+                    // If we found a matching unit, cancel both
+                    if (matchingUnit) {
+                        this.classList.toggle('cancelled');
+                        matchingUnit.classList.toggle('cancelled');
+                    }
+                });
+            });
+        }
 
         // --- GENERATE PROBLEM ---
         function generateProblem() {
@@ -969,18 +1079,10 @@
                 unitFlip2.style.display = 'inline-block';
                 unitFlip2.placeholder = 'Unit';
             }
-        }
 
-        // --- FIX: Restored click (not double-click) to cancel units, but prevent target unit from being cancelled ---
-        document.querySelectorAll('.unit-box').forEach(box => {
-            box.addEventListener('click', function () {
-                // Prevent cancelling if this is the target unit
-                if (this.value.trim() === targetUnit) {
-                    return; // Don't allow cancelling the target unit
-                }
-                if (this.value.trim() !== "") this.classList.toggle('cancelled');
-            });
-        });
+            // Set up unit cancellation after generating the problem
+            setupUnitCancellation();
+        }
 
         // --- CALCULATE & VERIFY SETUP ---
         function calculateSetup() {
@@ -990,17 +1092,35 @@
             // 1. UNIT CANCELLATION CHECK
             let boxes = [];
             if (currentDifficulty === 'easy') {
-                boxes = [{ id: 'start-unit', w: 1 }, { id: 'unit-n1', w: 1 }, { id: 'unit-d1', w: -1 }];
+                boxes = [
+                    { id: 'start-unit', w: 1, cancelled: document.getElementById('start-unit').classList.contains('cancelled') },
+                    { id: 'unit-n1', w: 1, cancelled: document.getElementById('unit-n1').classList.contains('cancelled') },
+                    { id: 'unit-d1', w: -1, cancelled: document.getElementById('unit-d1').classList.contains('cancelled') }
+                ];
             } else {
-                boxes = [{ id: 'start-unit', w: 1 }, { id: 'unit-n1', w: 1 }, { id: 'unit-n2', w: 1 }, { id: 'unit-d1', w: -1 }, { id: 'unit-d2', w: -1 }];
+                boxes = [
+                    { id: 'start-unit', w: 1, cancelled: document.getElementById('start-unit').classList.contains('cancelled') },
+                    { id: 'unit-n1', w: 1, cancelled: document.getElementById('unit-n1').classList.contains('cancelled') },
+                    { id: 'unit-n2', w: 1, cancelled: document.getElementById('unit-n2').classList.contains('cancelled') },
+                    { id: 'unit-d1', w: -1, cancelled: document.getElementById('unit-d1').classList.contains('cancelled') },
+                    { id: 'unit-d2', w: -1, cancelled: document.getElementById('unit-d2').classList.contains('cancelled') }
+                ];
             }
 
             let tally = {};
-            const addTally = (val, weight) => { if (val) tally[val] = (tally[val] || 0) + weight; };
+            const addTally = (val, weight) => { 
+                if (val && val.trim() !== "") {
+                    tally[val] = (tally[val] || 0) + weight; 
+                }
+            };
+
             boxes.forEach(item => {
                 const el = document.getElementById(item.id);
-                if (!el.classList.contains('cancelled')) addTally(el.value.trim(), item.w);
+                if (!item.cancelled) {
+                    addTally(el.value.trim(), item.w);
+                }
             });
+
             const remaining = Object.keys(tally).filter(k => tally[k] !== 0);
 
             if (remaining.length !== 1 || remaining[0] !== targetUnit) {
@@ -1014,7 +1134,8 @@
             const flip1 = parseFloat(document.getElementById('exp-flip-1').value);
 
             if (isNaN(exp1) || isNaN(flip1)) {
-                feedback.textContent = "Error: Please fill in all exponent fields."; return;
+                feedback.textContent = "Error: Please fill in all exponent fields.";
+                return;
             }
 
             // Logic: The flipped exponent must be equal to -1 * original exponent
@@ -1046,7 +1167,8 @@
                 const rewriteUnit2 = document.getElementById('unit-flip-2').value.trim();
 
                 if (isNaN(exp2) || isNaN(flip2)) {
-                    feedback.textContent = "Error: Fill in all exponent fields."; return;
+                    feedback.textContent = "Error: Fill in all exponent fields.";
+                    return;
                 }
 
                 if (flip2 !== -1 * exp2) {
@@ -1091,7 +1213,8 @@
             const decInput = document.getElementById('ans-dec');
 
             if (currentSolution === null) {
-                alert("Please click '1. Verify Setup' first."); return;
+                alert("Please click '1. Verify Setup' first.");
+                return;
             }
 
             // Show the answer in the Step 2 answer box
@@ -1115,23 +1238,37 @@
 
             const check = (input) => {
                 const val = parseFloat(input.value);
-                if (isNaN(val)) { input.classList.remove('correct', 'incorrect'); return false; }
+                if (isNaN(val)) {
+                    input.classList.remove('correct', 'incorrect');
+                    return false;
+                }
                 const diff = Math.abs(val - currentSolution);
                 const percentError = diff / (Math.abs(currentSolution) || 1);
 
                 if (percentError < 0.01) {
-                    input.classList.add('correct'); input.classList.remove('incorrect'); return true;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    return true;
                 } else {
-                    input.classList.add('incorrect'); input.classList.remove('correct'); return false;
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                    return false;
                 }
             };
 
             const sciOk = check(sciInput);
             const decOk = check(decInput);
 
-            if (sciOk && decOk) { status.textContent = "✅ Both Correct!"; status.style.color = "#27ae60"; }
-            else if (sciOk || decOk) { status.textContent = "⚠️ Partially Correct"; status.style.color = "#f39c12"; }
-            else { status.textContent = "❌ Incorrect"; status.style.color = "#e74c3c"; }
+            if (sciOk && decOk) {
+                status.textContent = "✅ Both Correct!";
+                status.style.color = "#27ae60";
+            } else if (sciOk || decOk) {
+                status.textContent = "⚠️ Partially Correct";
+                status.style.color = "#f39c12";
+            } else {
+                status.textContent = "❌ Incorrect";
+                status.style.color = "#e74c3c";
+            }
         }
     </script>
     <script>
@@ -1157,7 +1294,9 @@
                     menus.appendChild(m);
                 });
                 var t = document.querySelector('.bios-toggle');
-                if (t) t.onclick = function () { menus.classList.toggle('open'); };
+                if (t) t.onclick = function () {
+                    menus.classList.toggle('open');
+                };
             }
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initNav);
@@ -1167,5 +1306,4 @@
         })();
     </script>
 </body>
-
 </html>
