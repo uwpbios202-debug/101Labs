@@ -617,7 +617,13 @@
         </div>
     </nav>
 
-    <h1>Metric Conversion Tool</h1>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px;">
+        <h1>Metric Conversion Tool</h1>
+        <a href="https://www.youtube.com/watch?v=dCY43xLsb_I" target="_blank"
+            style="font-size: 0.9em; text-decoration: none; color: #3498db; border: 1px solid #3498db; padding: 5px 10px; border-radius: 4px;">
+            Watch Tutorial On Youtube
+        </a>
+    </div>
 
     <!-- Instructions Dropdown -->
     <details class="instructions-dropdown">
@@ -625,8 +631,11 @@
         <div class="instructions-content">
             <p><strong>Instructions:</strong></p>
             <ul>
-                <li><strong>Step 1 (Top Track):</strong> Set up the problem. Enter Units and Exponents. <span style="color:#e74c3c; font-weight:bold;">Click the units to cancel them!</span></li>
-                <li><strong>Step 2 (Bottom Track):</strong> Move the Exponents to the top. <span style="color:#e74c3c; font-weight:bold;">Don't forget to flip the sign AND enter the FINAL unit!</span></li>
+                <li><strong>Step 1 (Top Track):</strong> Set up the problem. Enter Units and Exponents. <span
+                        style="color:#e74c3c; font-weight:bold;">Click the units to cancel them!</span></li>
+                <li><strong>Step 2 (Bottom Track):</strong> Move the Exponents to the top. <span
+                        style="color:#e74c3c; font-weight:bold;">Don't forget to flip the sign AND enter the FINAL
+                        unit!</span></li>
                 <li><strong>Step 3:</strong> Enter your final answers in scientific and decimal notation.</li>
                 <li><strong>Step 4:</strong> Click - Verify Setup & Signs.</li>
                 <li><strong>Step 5:</strong> Click Check final answer.</li>
@@ -650,7 +659,7 @@
                         </select>
                         <button class="btn-new" onclick="generateProblem()">🔄 New Problem</button>
                     </div>
-                    
+
                     <!-- Conversion problem text below the controls -->
                     <div class="problem-display" id="problem-text">Loading...</div>
                 </div>
@@ -718,10 +727,12 @@
                         <div class="numerator">
                             <div class="scientific-group">
                                 <span class="base-ten">x 10</span>
-                                <input type="number" id="exp-flip-1" class="exponent-input rewrite-input" placeholder="?">
+                                <input type="number" id="exp-flip-1" class="exponent-input rewrite-input"
+                                    placeholder="?">
                             </div>
                             <!-- FIXED: Only show unit box for easy difficulty -->
-                            <input type="text" id="unit-flip-1" class="unit-input rewrite-unit-input" placeholder="Unit" style="display: none;">
+                            <input type="text" id="unit-flip-1" class="unit-input rewrite-unit-input" placeholder="Unit"
+                                style="display: none;">
                         </div>
                         <div class="denominator"></div>
                     </div>
@@ -731,10 +742,12 @@
                         <div class="numerator">
                             <div class="scientific-group">
                                 <span class="base-ten">x 10</span>
-                                <input type="number" id="exp-flip-2" class="exponent-input rewrite-input" placeholder="?">
+                                <input type="number" id="exp-flip-2" class="exponent-input rewrite-input"
+                                    placeholder="?">
                             </div>
                             <!-- FIXED: Only show unit box for medium/hard difficulty -->
-                            <input type="text" id="unit-flip-2" class="unit-input rewrite-unit-input" placeholder="Unit" style="display: none;">
+                            <input type="text" id="unit-flip-2" class="unit-input rewrite-unit-input" placeholder="Unit"
+                                style="display: none;">
                         </div>
                         <div class="denominator"></div>
                     </div>
@@ -743,7 +756,8 @@
                     <!-- NEW: Answer box that appears after the equals sign -->
                     <div id="step2-answer-box" class="answer-display-box">
                         <span id="step2-answer-value" class="answer-display-value"></span>
-                        <span class="base-ten"> × 10<sup id="step2-answer-exponent" class="answer-display-exponent"></sup></span>
+                        <span class="base-ten"> × 10<sup id="step2-answer-exponent"
+                                class="answer-display-exponent"></sup></span>
                         <span id="step2-answer-unit" class="answer-display-unit"></span>
                     </div>
                 </div>
@@ -787,7 +801,8 @@
 
                 <!-- Table 1: Direct Conversion Table -->
                 <h4 style="margin:10px 0 5px 0; color:#34495e;">Direct Conversion Table</h4>
-                <p style="font-size:0.9em; color:#555;">Purpose: Shows how each metric prefix relates to the base units (m, g, l).</p>
+                <p style="font-size:0.9em; color:#555;">Purpose: Shows how each metric prefix relates to the base units
+                    (m, g, l).</p>
 
                 <table class="ref-table">
                     <thead>
@@ -838,7 +853,8 @@
 
                 <!-- Table 2: Inverse Conversion Table -->
                 <h4 style="margin:15px 0 5px 0; color:#34495e;">Inverse Conversion Table</h4>
-                <p style="font-size:0.9em; color:#555;">Purpose: Shows how the base units (m, g, l) relate to each metric prefix.</p>
+                <p style="font-size:0.9em; color:#555;">Purpose: Shows how the base units (m, g, l) relate to each
+                    metric prefix.</p>
 
                 <table class="ref-table">
                     <thead>
@@ -914,32 +930,32 @@
             document.querySelectorAll('.unit-box').forEach(box => {
                 box.replaceWith(box.cloneNode(true));
             });
-            
+
             // Get all unit boxes again after cloning
             const unitBoxes = document.querySelectorAll('.unit-box');
-            
+
             unitBoxes.forEach(box => {
-                box.addEventListener('click', function() {
+                box.addEventListener('click', function () {
                     // Don't cancel empty units
                     if (this.value.trim() === "") return;
-                    
+
                     // Don't cancel the target unit
                     if (this.value.trim() === targetUnit) return;
-                    
+
                     const thisUnit = this.value.trim();
                     const isNumerator = this.closest('.numerator') !== null;
                     const allCells = Array.from(document.querySelectorAll('.train-track-model')[0].querySelectorAll('.cell'));
-                    
+
                     // Find current cell index
                     const currentCell = this.closest('.cell');
                     const currentIndex = allCells.indexOf(currentCell);
-                    
+
                     // For train-track cancellation:
                     // If it's a numerator, look for a matching denominator in the NEXT cell
                     // If it's a denominator, look for a matching numerator in the PREVIOUS cell
-                    
+
                     let matchingUnit = null;
-                    
+
                     if (isNumerator) {
                         // Look in next cell for matching denominator
                         if (currentIndex < allCells.length - 1) {
@@ -947,7 +963,7 @@
                             if (nextCell && !nextCell.classList.contains('hidden')) {
                                 const denominatorUnits = nextCell.querySelectorAll('.denominator .unit-box');
                                 denominatorUnits.forEach(denomBox => {
-                                    if (denomBox.value.trim() === thisUnit && 
+                                    if (denomBox.value.trim() === thisUnit &&
                                         denomBox.value.trim() !== targetUnit) {
                                         matchingUnit = denomBox;
                                     }
@@ -961,7 +977,7 @@
                             if (prevCell && !prevCell.classList.contains('hidden')) {
                                 const numeratorUnits = prevCell.querySelectorAll('.numerator .unit-box');
                                 numeratorUnits.forEach(numBox => {
-                                    if (numBox.value.trim() === thisUnit && 
+                                    if (numBox.value.trim() === thisUnit &&
                                         numBox.value.trim() !== targetUnit) {
                                         matchingUnit = numBox;
                                     }
@@ -969,7 +985,7 @@
                             }
                         }
                     }
-                    
+
                     // If we found a matching unit, cancel both
                     if (matchingUnit) {
                         this.classList.toggle('cancelled');
@@ -1108,9 +1124,9 @@
             }
 
             let tally = {};
-            const addTally = (val, weight) => { 
+            const addTally = (val, weight) => {
                 if (val && val.trim() !== "") {
-                    tally[val] = (tally[val] || 0) + weight; 
+                    tally[val] = (tally[val] || 0) + weight;
                 }
             };
 
@@ -1306,4 +1322,5 @@
         })();
     </script>
 </body>
+
 </html>
