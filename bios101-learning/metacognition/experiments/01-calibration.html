@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="bios-nav">
         <div class="bios-nav-inner">
@@ -43,7 +45,7 @@
     <main>
         <div class="view active" id="view-experiment">
             <div class="pill-nav">
-                <a href="../dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
+                <a href="../index.html" class="btn btn-secondary">← Back to Dashboard</a>
             </div>
 
             <div class="banner">
@@ -57,23 +59,35 @@
                     <p class="meta">Carefully read, analyze, and reflect on the following.</p>
 
                     <div class="observation-box" id="observationBox">
-                        <p>"In my own experience, I have noticed that after exams I often feel confident about how I did, but when I receive my grade, the result does not always match that confidence. Sometimes I am surprised that my score is lower than expected, even though I believed I understood the material while studying and during the test. Other times, I feel unsure about my performance and yet still receive a reasonable grade. This mismatch between how confident I feel and how I actually perform has made me realize that judging my own learning is difficult. I can tell when I studied hard, but I am not always able to accurately evaluate whether my understanding is strong enough to lead to good exam results."</p>
+                        <p>"In my own experience, I have noticed that after exams I often feel confident about how I
+                            did, but when I receive my grade, the result does not always match that confidence.
+                            Sometimes I am surprised that my score is lower than expected, even though I believed I
+                            understood the material while studying and during the test. Other times, I feel unsure about
+                            my performance and yet still receive a reasonable grade. This mismatch between how confident
+                            I feel and how I actually perform has made me realize that judging my own learning is
+                            difficult. I can tell when I studied hard, but I am not always able to accurately evaluate
+                            whether my understanding is strong enough to lead to good exam results."</p>
                     </div>
 
-                    <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own experience?</label>
-                    <textarea id="reflectionText" placeholder="Write at least 10 words describing how the above observation mirrors or differs from your actual experience. Can you relate to the mismatch between confidence and performance?"></textarea>
+                    <label for="reflectionText">Take a moment to reflect. How does this observation connect to YOUR own
+                        experience?</label>
+                    <textarea id="reflectionText"
+                        placeholder="Write at least 10 words describing how the above observation mirrors or differs from your actual experience. Can you relate to the mismatch between confidence and performance?"></textarea>
                     <p class="meta"><span id="reflectionMeta">0</span> / 50 words minimum</p>
-                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to Curiosity Question</button>
+                    <button class="btn btn-primary" id="reflectionContinueBtn" disabled>I've reflected — Continue to
+                        Curiosity Question</button>
                 </div>
             </section>
 
             <section id="phase2" class="hidden">
                 <div class="card stack">
                     <h2>Phase 2: The Curiosity Question</h2>
-                    <p class="explanation-box"><strong>What this phase is about:</strong> This phase transforms a personal observation into structured scientific curiosity.</p>
+                    <p class="explanation-box"><strong>What this phase is about:</strong> This phase transforms your
+                        personal observation into a real life structured scientific curiosity.</p>
 
                     <div class="observation-box" id="curiosityBox">
-                        <p><strong>What would happen if I tracked my predictions versus my actual performance to see if I can improve my self-awareness?</strong></p>
+                        <p><strong>What would happen if I tracked my predictions versus my actual performance to see if
+                                I can improve my self-awareness?</strong></p>
                     </div>
 
                     <div class="field">
@@ -81,11 +95,11 @@
                         <div class="radio-group">
                             <label class="checkbox-label">
                                 <input type="radio" name="curiosityResponse" value="agree">
-                                <span><strong>Agree</strong> - This reflects my experience exactly</span>
+                                <span><strong>Agree</strong> - This is what I do naturally</span>
                             </label>
                             <label class="checkbox-label">
                                 <input type="radio" name="curiosityResponse" value="disagree">
-                                <span><strong>Disagree</strong> - This doesn't match my habits</span>
+                                <span><strong>Disagree</strong> - I have never done this</span>
                             </label>
                             <label class="checkbox-label">
                                 <input type="radio" name="curiosityResponse" value="unsure">
@@ -96,10 +110,12 @@
 
                     <div class="field">
                         <label for="curiosityExplanation">Briefly explain your choice:</label>
-                        <textarea id="curiosityExplanation" placeholder="Why does/doesn't this question resonate with you?"></textarea>
+                        <textarea id="curiosityExplanation"
+                            placeholder="Why does/doesn't this question resonate with you?"></textarea>
                     </div>
 
-                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Research Question</button>
+                    <button class="btn btn-primary" id="curiosityContinueBtn" disabled>Continue to Research
+                        Question</button>
                 </div>
             </section>
 
@@ -108,7 +124,8 @@
                     <h2>Phase 3: Research Foundation (1/3)</h2>
                     <div class="observation-box">
                         <h3>Research Question</h3>
-                        <p style="font-weight: 600;">Does comparing my predicted performance with my actual performance help me choose more effective study strategies?</p>
+                        <p style="font-weight: 600;">Does comparing my predicted performance with my actual performance
+                            help me choose more effective study strategies?</p>
                     </div>
 
                     <div class="field">
@@ -116,7 +133,7 @@
                         <select id="rqUnderstanding">
                             <option value="">-- Select your understanding level --</option>
                             <option value="clear">Clear - I understand exactly what's being investigated</option>
-                            <option value="somewhat">Somewhat - I have a general idea but some questions</option>
+                            <option value="somewhat">Somewhat - I have a general idea but have some questions</option>
                             <option value="confused">Confused - I'm not sure what's being studied</option>
                         </select>
                     </div>
@@ -131,9 +148,13 @@
 
                     <h3>The Hypothesis</h3>
                     <div class="observation-box">
-                        <p><strong>Systematically tracking the gap between predicted and actual scores</strong> (IV) increases <strong>study strategy effectiveness and academic performance</strong> (DV).</p>
+                        <p><strong>Systematically tracking the gap between my predicted and my actual scores</strong>
+                            (IV)
+                            increases <strong>study strategy effectiveness and academic performance</strong> (DV).</p>
                     </div>
-                    <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> Metacognitive monitoring (knowing what you know) directly improves learning outcomes when operationalized through prediction-actual comparison.</p>
+                    <p class="meta" style="margin-top:0.5rem;"><strong>Why this works:</strong> Metacognitive monitoring
+                        (knowing what you know) directly improves learning outcomes when operationalized through
+                        prediction-actual comparison.</p>
 
                     <div class="field" style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
                         <label>Test Your Understanding: Which statement describes a valid Hypothesis?</label>
@@ -144,17 +165,20 @@
                             </label>
                             <label class="checkbox-label">
                                 <input type="radio" name="hypothesisFormat" value="correct_answer">
-                                <span>"It is a tentative answer to the Research Question proposing a relationship between variables."</span>
+                                <span>"My self-assessments of learning are not consistently accurate, resulting in
+                                    differences between my perceived exam performance and my actual exam
+                                    results."</span>
                             </label>
                             <label class="checkbox-label">
                                 <input type="radio" name="hypothesisFormat" value="vague_error">
-                                <span>"It is a fact found in the textbook."</span>
+                                <span>"Learning is about self evaluation after every quiz or exam."</span>
                             </label>
                         </div>
                     </div>
 
                     <div class="hypothesis-feedback" id="hypothesisFeedback"></div>
-                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction →</button>
+                    <button class="btn btn-primary" id="hypothesisContinueBtn" disabled>Proceed to Your Prediction
+                        →</button>
                 </div>
             </section>
 
@@ -163,17 +187,24 @@
                     <h2>Phase 3: Research Foundation (3/3) - Prediction</h2>
 
                     <div class="field">
-                        <label for="predictionChoice">Based on the hypothesis, select the prediction strategy that will produce better results?</label>
+                        <label for="predictionChoice">Based on the hypothesis, select the prediction strategy that will
+                            produce better results?</label>
                         <select id="predictionChoice">
                             <option value="">-- Select your prediction --</option>
-                            <option value="track">Tracking my predicted vs actual scores</option>
-                            <option value="notrack">Not tracking my predictions</option>
-                            <option value="same">They will be about the same</option>
+                            <option value="track">If I feel highly confident after an exam, then my exam score will
+                                sometimes be lower than expected.</option>
+                            <option value="notrack">If I compare my confidence judgments to my exam results across
+                                multiple exams, then mismatches between perceived and actual performance will occur
+                                frequently.</option>
+                            <option value="same">If I compare my post-exam confidence ratings with my exam scores, then
+                                the correlation between confidence and performance will be weak or inconsistent.
+                            </option>
                         </select>
                     </div>
 
                     <div class="field">
-                        <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 = very confident)</label>
+                        <label for="predictionConfidence">How confident are you in this prediction? (1 = guessing, 5 =
+                            very confident)</label>
                         <input type="range" id="predictionConfidence" min="1" max="5" value="3">
                         <p class="meta">Confidence: <span id="confValue">3</span>/5</p>
                     </div>
@@ -188,12 +219,18 @@
 
                     <h3>The Original Study: de Bruin et al. (2020)</h3>
                     <div class="observation-box">
-                        <p>Students predict their quiz score, take the quiz, then compare. Over 4 quizzes, they track calibration patterns. Control group takes quizzes without predictions. All receive same study materials.</p>
+                        <p>Students predict their quiz score, take the quiz, then compare. Over 4 quizzes, they track
+                            calibration patterns. Control group takes quizzes without predictions. All receive same
+                            study materials.</p>
                     </div>
 
                     <h3>My Personal Experiment Design</h3>
                     <div class="observation-box">
-                        <p>For each quiz, I will write down my predicted overall score before starting. I will also mark my confidence for every individual question before answering it: ✓ (predict correct), ? (unsure), or 🛑 (predict incorrect). After the quiz, I will compare all predictions to actual results to see whether my study strategies are giving me a false sense of mastery or accurately preparing me.</p>
+                        <p>For each quiz, I will write down my predicted overall score before starting. I will also mark
+                            my confidence for every individual question before answering it: ✓ (predict correct), ?
+                            (unsure), or 🛑 (predict incorrect). After the quiz, I will compare all predictions to
+                            actual results to see whether my study strategies are giving me a false sense of mastery or
+                            accurately preparing me.</p>
                     </div>
 
                     <button class="btn btn-primary" id="designContinueBtn">Show me the results</button>
@@ -211,23 +248,29 @@
 
                     <div class="citation-box">
                         <h4>Original Study Details</h4>
-                        <p class="meta"><strong>Citation:</strong> de Bruin, A. B., Roelle, J., Carpenter, S. K., & Baars, M. (2020). Synthesizing cognitive load and self-regulation theory. Educational Psychology Review, 32(4), 903-915.</p>
-                        <p class="meta"><strong>Result:</strong> Tracking predictions improved average grades from 72% to 79% and enhanced study strategy consistency.</p>
+                        <p class="meta"><strong>Citation:</strong> de Bruin, A. B., Roelle, J., Carpenter, S. K., &
+                            Baars, M. (2020). Synthesizing cognitive load and self-regulation theory. Educational
+                            Psychology Review, 32(4), 903-915.</p>
+                        <p class="meta"><strong>Result:</strong> Tracking predictions improved average grades from 72%
+                            to 79% and enhanced study strategy consistency.</p>
                     </div>
 
                     <div class="observation-box" style="border-left: 3px solid var(--uwp-green);">
                         <h4>Conclusion</h4>
-                        <p><strong>Hypothesis ACCEPTED.</strong> Calibration tracking improves study strategy selection and academic performance.</p>
+                        <p><strong>Hypothesis ACCEPTED.</strong> Calibration tracking improves study strategy selection
+                            and academic performance.</p>
                     </div>
 
                     <div class="field">
                         <label for="resultsReflection">Your Metacognitive Reflection (Required):</label>
                         <p class="subline">How does this evidence challenge or confirm your current study habits?</p>
-                        <textarea id="resultsReflection" placeholder="I was surprised to learn... This matters for my studying because..."></textarea>
+                        <textarea id="resultsReflection"
+                            placeholder="I was surprised to learn... This matters for my studying because..."></textarea>
                         <p class="meta"><span id="reflectionWordCount">0</span> / 75 words minimum</p>
                     </div>
 
-                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Design Your Experiment</button>
+                    <button class="btn btn-primary" id="resultsContinueBtn" disabled>Continue to Design Your
+                        Experiment</button>
                 </div>
             </section>
 
@@ -273,7 +316,8 @@
             </section>
 
             <section id="phase7" class="hidden">
-                <div class="card stack" style="text-align: center; border: 2px solid var(--uwp-green); background: #f0f9f0;">
+                <div class="card stack"
+                    style="text-align: center; border: 2px solid var(--uwp-green); background: #f0f9f0;">
                     <div style="font-size: 3rem; color: var(--uwp-green);">✓</div>
                     <h2>Experiment Complete!</h2>
                     <p>You have successfully designed a Confidence Calibration strategy.</p>
@@ -318,9 +362,9 @@
                 },
                 options: {
                     responsive: true,
-                    scales: { 
-                        y: { 
-                            beginAtZero: true, 
+                    scales: {
+                        y: {
+                            beginAtZero: true,
                             max: 100,
                             title: {
                                 display: true,
@@ -413,4 +457,5 @@
         });
     </script>
 </body>
+
 </html>
